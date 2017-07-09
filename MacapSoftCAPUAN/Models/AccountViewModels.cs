@@ -52,7 +52,7 @@ namespace MacapSoftCAPUAN.Models
         [Display(Name = "Email")]
         [EmailAddress]
         public string Email { get; set; }
-
+        public bool Active { get; set; }
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Contraseña")]
@@ -94,7 +94,7 @@ namespace MacapSoftCAPUAN.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "El {0} debe tener al menos {2} caractres de longitud", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "El {0} debe tener al menos {2} caracteres de longitud", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }

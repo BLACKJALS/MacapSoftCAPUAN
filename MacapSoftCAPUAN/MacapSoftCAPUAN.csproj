@@ -207,20 +207,35 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="BO\AccountBO.cs" />
+    <Compile Include="BO\HistoriaClinicaBO.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DiagnosticoController.cs" />
     <Compile Include="Controllers\HistoriaClinicaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="DALC\DiagnosticosDALC.cs" />
+    <Compile Include="DALC\HistoriaClinicaDALC.cs" />
+    <Compile Include="DALC\UsuarioDALC.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mapeo.cs" />
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="ModelsVM\DiagnosticoVM.cs" />
+    <Compile Include="ModelsVM\RecepcionCaso.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Consultante.cs" />
     <Compile Include="Models\Diagnostico.cs" />
+    <Compile Include="Models\Eps.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\IngresoClinica.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Paciente.cs" />
+    <Compile Include="Models\Paises.cs" />
+    <Compile Include="Models\Remision.cs" />
+    <Compile Include="Models\Remitido.cs" />
+    <Compile Include="Models\TiposDocumentos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -422,6 +437,15 @@
     <Content Include="Views\Diagnostico\ModificarDiagnostico.cshtml" />
     <Content Include="Views\Diagnostico\ErrorModificarDiagnostico.cshtml" />
     <Content Include="Views\Account\ListaUsuarios.cshtml" />
+    <Content Include="Views\HistoriaClinica\RecepcionCaso.cshtml" />
+    <Content Include="Views\HistoriaClinica\HistoriaClinica.cshtml" />
+    <Content Include="Views\HistoriaClinica\IngresoPacientes.cshtml" />
+    <Content Include="Views\HistoriaClinica\IngresoPacienteCreado.cshtml" />
+    <Content Include="Views\HistoriaClinica\listaHistoriasClinicas.cshtml" />
+    <Content Include="Views\HistoriaClinica\ingresoHistoriaClinica.cshtml" />
+    <Content Include="Views\HistoriaClinica\ListaSesiones.cshtml" />
+    <Content Include="Views\Account\cambiarContraseña.cshtml" />
+    <Content Include="Views\Account\RecuperarContraseña.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

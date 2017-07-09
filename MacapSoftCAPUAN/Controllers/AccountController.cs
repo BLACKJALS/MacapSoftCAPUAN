@@ -9,10 +9,12 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using MacapSoftCAPUAN.Models;
+using System.Collections.Generic;
+using MacapSoftCAPUAN.BO;
 
 namespace MacapSoftCAPUAN.Controllers
 {
-    [Authorize]
+    
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -62,7 +64,7 @@ namespace MacapSoftCAPUAN.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
-
+        public ApplicationDbContext UsersContext { get; set; }
         //
         // POST: /Account/Login
         [HttpPost]
@@ -75,22 +77,33 @@ namespace MacapSoftCAPUAN.Controllers
                 return View(model);
             }
 
+            var user = UserManager.FindByEmailAsync(model.Email).Result;
+
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
+            if(user != null)
             {
-                case SignInStatus.Success:
-                    return RedirectToAction("Index", "HistoriaClinica");
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "El usuario y/o contraseña que has introducido son incorrectas");
-                    return View(model);
+                if (user.Activo == false)
+                {
+                    result = Microsoft.AspNet.Identity.Owin.SignInStatus.Failure;
+                }
             }
+            
+            switch (result)
+                {
+                    case SignInStatus.Success:
+                        return RedirectToAction("Index", "HistoriaClinica");
+                    case SignInStatus.LockedOut:
+                        return View("Lockout");
+                    case SignInStatus.RequiresVerification:
+                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    case SignInStatus.Failure:
+                    default:
+                        ModelState.AddModelError("", "El usuario y/o contraseña que has introducido son incorrectas");
+                        AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                    return View(model);
+                }
         }
 
         //
@@ -139,7 +152,7 @@ namespace MacapSoftCAPUAN.Controllers
         //
         // GET: /Account/Register
         [AllowAnonymous]
-        [Authorize]
+        //[Authorize]
         public ActionResult Register()
         {
             ViewBag.Name = new SelectList(context.Roles.ToList(), "Name", "Name");
@@ -149,14 +162,14 @@ namespace MacapSoftCAPUAN.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         //[AllowAnonymous]
         //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Activo = true };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -170,10 +183,11 @@ namespace MacapSoftCAPUAN.Controllers
                     await this.UserManager.AddToRoleAsync(user.Id, model.UserRoles);
                     return RedirectToAction("Index", "HistoriaClinica");
                 }
-                AddErrors(result);
+                ModelState.AddModelError("", "Las contraseñas deben tener al menos una letra o un carácter de dígito.Las contraseñas deben tener al menos una minúscula('a' - 'z').Las contraseñas deben tener al menos una mayúscula('A' - 'Z').");
             }
 
             // If we got this far, something failed, redisplay form
+            ViewBag.Name = new SelectList(context.Roles.ToList(), "Name", "Name");
             return View(model);
         }
 
@@ -186,8 +200,42 @@ namespace MacapSoftCAPUAN.Controllers
             {
                 return View("Error");
             }
-            var result = await UserManager.ConfirmEmailAsync(userId, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+            IdentityResult result;
+            try
+            {
+                result = await UserManager.ConfirmEmailAsync(userId, code);
+            }
+            catch (InvalidOperationException ioe)
+            {
+                // ConfirmEmailAsync throws when the userId is not found.
+                ViewBag.errorMessage = ioe.Message;
+                return View("Error");
+            }
+
+            if (result.Succeeded)
+            {
+                return View();
+            }
+
+            // If we got this far, something failed.
+            AddErrors(result);
+            ViewBag.errorMessage = "ConfirmEmail failed";
+            return View("Error");
+
+            //if (userId == null || code == null)
+            //{
+            //    return View("Error");
+            //}
+            //var result = await UserManager.ConfirmEmailAsync(userId, code);
+            //if (result.Succeeded)
+            //{
+            //    return View("ConfirmEmail");
+            //}
+            //AddErrors(result);
+            //return View();
+
+            //var result = await UserManager.ConfirmEmailAsync(userId, code);
+            //return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
         //
@@ -202,24 +250,38 @@ namespace MacapSoftCAPUAN.Controllers
         // POST: /Account/ForgotPassword
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
+        [Route("ForgotPassword")]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
+                var user = await UserManager.FindByEmailAsync(model.Email);
+
+                //if (ModelState.IsValid)
+                //{
+                //    var user = await UserManager.FindByNameAsync(model.Email);
                 if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
                 }
 
+                //    var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                //    var callbackUrl = Url.Action("ResetPassword", "Account",new { UserId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                //    await UserManager.SendEmailAsync(user.Id, "Reset Password","Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
+                //    return View("ForgotPasswordConfirmation");
+
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
+
+                //string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                //await UserManager.SendEmailAsync(user.Id, "Reset Password", $"Please reset your password by using this {code}");
+                //return View("ForgotPasswordConfirmation");
             }
 
             // If we got this far, something failed, redisplay form
@@ -253,7 +315,7 @@ namespace MacapSoftCAPUAN.Controllers
             {
                 return View(model);
             }
-            var user = await UserManager.FindByNameAsync(model.Email);
+            var user = await UserManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
@@ -488,6 +550,19 @@ namespace MacapSoftCAPUAN.Controllers
 
         public ActionResult ListaUsuarios()
         {
+            List<SelectListItem> listaItemsActivo = new List<SelectListItem>();
+            SelectListItem itemActivo = new SelectListItem();
+            itemActivo.Text = "Activo";
+            itemActivo.Value = "1";
+            listaItemsActivo.Add(itemActivo);
+
+            SelectListItem itemInactivo = new SelectListItem();
+            itemInactivo.Text = "Inactivo";
+            itemInactivo.Value = "0";
+            listaItemsActivo.Add(itemInactivo);
+
+            ViewBag.ItemsHabilitarUsuario = listaItemsActivo.ToList(); 
+
             return View();
         }
 
@@ -504,7 +579,8 @@ namespace MacapSoftCAPUAN.Controllers
                             Id = user.Id,
                             nombreUsuario = user.UserName,
                             Email = user.Email,
-                            Role = role.Name
+                            Role = role.Name,
+                            Estado = user.Activo
                         };
 
             var listaUsuarios = users.ToList();
@@ -513,22 +589,99 @@ namespace MacapSoftCAPUAN.Controllers
 
 
         [HttpPost]
-        public JsonResult EditRoleUser(string idColumna, string rolEditado)
+        public JsonResult EditRoleUser(string idColumna, string rolEditado , string estadoUsuario)
         {
-
-
             var UsersContext = new ApplicationDbContext();
             var oldUser = UserManager.FindById(idColumna);
             var oldRoleId = oldUser.Roles.SingleOrDefault().RoleId;
             var oldRoleName = UsersContext.Roles.SingleOrDefault(r => r.Id == oldRoleId).Name;
-
+            AccountBO accBO = new AccountBO();
             if (oldRoleName != rolEditado)
             {
                 UserManager.RemoveFromRole(idColumna, oldRoleName);
                 UserManager.AddToRole(idColumna, rolEditado);
             }
+
+            bool estadoUs = false;
+            if (estadoUsuario == "1")
+            {
+                estadoUs = true;
+                accBO.editarUsuario(oldUser, estadoUs);
+            }
+            else
+            {
+                estadoUs = false;
+                accBO.editarUsuario(oldUser, estadoUs);
+            }
+            
+
             return Json("Ok", JsonRequestBehavior.AllowGet);
         }
+
+
+        public ActionResult cambiarContraseña() {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CambiarContraseña(LoginViewModel model, string nuevaContra)
+        {
+            AccountBO accBO = new AccountBO();
+            var userId = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            var email = System.Web.HttpContext.Current.User.Identity.Name;
+            model.Email = email;
+            model.Active = true;
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var user = UserManager.FindByEmailAsync(model.Email).Result;
+
+            if (result == Microsoft.AspNet.Identity.Owin.SignInStatus.Success) {
+                user.PasswordHash = null;
+                //var user1 = new ApplicationUser { UserName = model.Email, Email = model.Email, Activo = true };
+                var result1 = await UserManager.AddPasswordAsync(userId, nuevaContra);
+                //accBO.listarUsuarios(user, nuevaContra);
+
+                if (result1.Succeeded)
+                {
+                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+
+                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                    // Send an email with this link
+                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    //await this.UserManager.AddToRoleAsync(user.Id, model.UserRoles);
+                    return RedirectToAction("Index", "HistoriaClinica");
+                }
+            }
+            
+
+            return RedirectToAction("cambiarContraseña", "Account");
+            //return Json("Ok",JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult RecuperarContraseña()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> RecuperarContraseña(LoginViewModel model, string nuevaContra)
+        {
+            var user = UserManager.FindByEmailAsync(model.Email).Result;
+            
+            if (user != null)
+            {
+                user.PasswordHash = null;
+                var result1 = await UserManager.AddPasswordAsync(user.Id, nuevaContra);
+                if (result1.Succeeded)
+                {
+                    return RedirectToAction("Index", "HistoriaClinica");
+                }
+            }
+            return RedirectToAction("RecuperarContraseña", "Account");
+        }
+
         #endregion
     }
 }

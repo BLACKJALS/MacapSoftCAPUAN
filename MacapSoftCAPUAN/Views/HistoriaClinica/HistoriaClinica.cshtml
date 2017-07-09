@@ -1,0 +1,390 @@
+﻿
+@{
+    ViewBag.Title = "Historia Clinica";
+}
+
+<div class="col-lg-12 jumbotron">
+    @*style="border:dashed"*@
+<div class="container">
+    <h4 style="text-align:center; background-color:#9BC2E6">Historia Clínica</h4>
+    <div class="row">
+        <div class="col-md-3">
+            <label style="font-size:smaller">Fecha de recepción de caso:</label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="FechaRecepcion" placeholder="Fecha de recepción" />
+        </div>
+        <div class="col-md-2">
+            <label style="font-size:smaller">Fecha atención:</label>
+        </div>
+        <div class="col-md-4">
+            <input class="form-control" id="FechaAtencion" placeholder="Fecha atención" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <label style="font-size:smaller">Numero de Historia Clínica:</label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="NumeroHC" placeholder="Numero HC" />
+        </div>
+        <div class="col-md-2">
+            <label style="font-size:smaller">CIE10:</label>
+        </div>
+        <div class="col-md-4">
+            <input class="form-control" id="CIE10" placeholder="CIE10" />
+        </div>
+    </div>
+    <h4 style="text-align:center; background-color:#9BC2E6">Datos del consultante</h4>
+    <div class="row">
+        <div class="col-md-1">
+            <label style="font-size:smaller">Nombres:</label>
+        </div>
+        <div class="col-md-4">
+            <input class="form-control" placeholder="Nombre" />
+        </div>
+        <div class="col-md-2">
+            <label style="font-size:smaller">Apellidos:</label>
+        </div>
+        <div class="col-md-4">
+            <input class="form-control" placeholder="Apellidos" />
+        </div>
+    </div>
+    <div class="row">
+
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+            <label style="font-size:smaller">Parentezco:</label>
+        </div>
+        <div class="col-md-4">
+            <input class="form-control" id="Parentezco" placeholder="Parentezco" />
+        </div>
+        <div class="col-md-2">
+            <label style="font-size:smaller">Teléfonos de contacto:</label>
+        </div>
+        <div class="col-md-4">
+            <input class="form-control" id="Consecutivo" placeholder="Teléfonos de contacto" />
+        </div>
+    </div>
+    <h4 style="text-align:center; background-color:#9BC2E6">Datos del paciente</h4>
+    <div class="row">
+        <div class="col-md-1">
+            <label style="font-size:smaller">Primer nombre:</label>
+        </div>
+        <div class="col-md-2">
+            <input class="form-control" placeholder="Primer nombre" />
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">Segundo nombre:</label>
+        </div>
+        <div class="col-md-2">
+            <input class="form-control" placeholder="Segundo nombre" />
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">Primer apellido:</label>
+        </div>
+        <div class="col-md-2">
+            <input class="form-control" placeholder="Primer apellido" />
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">Segundo apellido:</label>
+        </div>
+        <div class="col-md-2">
+            <input class="form-control" placeholder="Segundo apellido" />
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-md-3" style="font-size:smaller">Tipo de documento:</label>
+        <div class="col-md-3">
+            @*@Html.DropDownList("Lista", (IEnumerable<SelectListItem>)ViewBag.ItemTypes, new { @class = "form-control", title = "Choose one of the following...", value = "asdas" })*@
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+            <label style="font-size:smaller">Fecha de nacimiento:</label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="FechaNacimiento" placeholder="fecha de nacimiento" />
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">Lugar de nacimiento:</label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="LugarNacimiento" placeholder="Lugar de nacimiento" />
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">Edad:</label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="Edad" placeholder="Edad (años)" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-1">
+            <label style="font-size:smaller">Dirección:</label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="Direccion" placeholder="Direccion" />
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">Barrio:</label>
+        </div>
+        <div class="col-md-3">
+            @*@Html.DropDownList("lista", (IEnumerable<SelectListItem>)ViewBag.ItemBarrios, new { @class = "form-control", title = "Seleccione uno de los siguientes barrios", placeholder = "asdas" })*@
+            <input class="form-control" id="Barrio" placeholder="Barrio" />
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">Localidad:</label>
+        </div>
+        <div class="col-md-3">
+            @*@Html.DropDownList("ListaLocalidades", (IEnumerable<SelectListItem>)ViewBag.ItemLocalidades, new { @class = "form-control", title = "Seleccione uno de los siguientes barrios", placeholder = "asdas" })*@
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-1">
+            <label style="font-size:smaller">Estrato:</label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="Estrato" placeholder="Estrato" />
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">Telefonos:</label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="Telefonos" placeholder="Telefonos" />
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">Email:</label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="Email" placeholder="Email" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-1">
+            <label style="font-size:smaller">EPSS:</label>
+        </div>
+        <div class="col-md-2">
+            <input class="form-control" id="EPSS" placeholder="EPSS" />
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">EPSC:</label>
+        </div>
+        <div class="col-md-2">
+            <input class="form-control" id="EPSC" placeholder="EPSC" />
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">Institución:</label>
+        </div>
+        <div class="col-md-2">
+            <input class="form-control" id="Institución" placeholder="Institución" />
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">Viene remitido:</label>
+        </div>
+        <div class="col-md-2">
+            <input class="form-control" id="VRemitido:" placeholder="VRemitido" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-2">
+            <label style="font-size:smaller">Institución que remite:</label>
+        </div>
+        <div class="col-md-10">
+            <input class="form-control" id="IRemite:" placeholder="IRemite" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-2">
+            <label style="font-size:smaller">Profesional que remite:</label>
+        </div>
+        <div class="col-md-9">
+            <input class="form-control" id="ProfRemite:" placeholder="Profeisonal que remite" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-2">
+            <label style="font-size:smaller">El paciente es nuevo en el CAP :</label>
+        </div>
+        <div class="col-md-4">
+            <input class="form-control" id="PaNuevoCAP" placeholder="fecha de atención" />
+        </div>
+        <div class="col-md-2">
+            <label style="font-size:smaller">El paciente ya ha asistido a terapia en el CAP:</label>
+        </div>
+        <div class="col-md-4">
+            <input class="form-control" id="PaExisteCAP" placeholder="El paciente ya ha asistido a terapia en el CAP" />
+        </div>
+    </div>
+    <h4 style="text-align:center; background-color:#9BC2E6">Motivo de consulta</h4>
+    <div class="form-group">
+        <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
+    </div>
+    <h4 style="text-align:center; background-color:#9BC2E6">RUTA DE ATENCIÓN</h4>
+    <div class="row">
+        <div class="col-md-1">
+            <label style="font-size:smaller">Lista de espera:</label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="EPSS" placeholder="EPSS" />
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">Se remite:</label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="EPSC" placeholder="EPSC" />
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">SM:</label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="Institución" placeholder="Institución" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+            <label style="font-size:smaller">AS:</label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="VRemitido" placeholder="VRemitido" />
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">SPA:</label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="SPA" placeholder="SPA" />
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">VI:</label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="VI" placeholder="VI" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-2">
+            <label style="font-size:smaller">Se programa:</label>
+        </div>
+        <div class="col-md-9">
+            <input class="form-control" id="programa" placeholder="Se programa" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <label style="font-size:smaller">Motivo de la remisión:</label>
+        </div>
+        <div class="col-md-9">
+            <input class="form-control" id="motivoRemision" placeholder="Motivo de la remisión" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <label style="font-size:smaller">Remitido a:</label>
+        </div>
+        <div class="col-md-9">
+            <input class="form-control" id="RemitidoA" placeholder="Remitido a" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <label style="font-size:smaller">Anexos:</label>
+        </div>
+        <div class="col-md-9">
+            <input class="form-control" id="Anexos" placeholder="Anexos" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-1">
+            <label style="font-size:smaller">Agendado con psicólogo (a): </label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="Agendado" placeholder="Agendado con psicólogo (a)" />
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">Fecha: </label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="FechaAgenda" placeholder="Fecha Agenda" />
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">Hora: </label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="HoraAgendado" placeholder="Hora" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+            <label style="font-size:smaller">Valor consulta: </label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="ValorConsulta" placeholder="Valor consulta" />
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">Recepción de caso: </label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="RecepciónCaso" placeholder="Recepción de caso" />
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">Telefónico: </label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="Telefónico" placeholder="Telefónico" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+            <label style="font-size:smaller">Personalizado:</label>
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" id="Personalizado" placeholder="Personalizado" />
+        </div>
+    </div>
+    <h4 style="text-align:center; background-color:#9BC2E6">Observaciones</h4>
+    <div class="form-group">
+        <textarea class="form-control" style="min-width: 100%" rows="6" id="Observaciones"></textarea>
+    </div>
+    <br />
+    <br />
+    <h4 style="text-align:center; background-color:#9BC2E6">Diagnósticos</h4>
+    <div class="form-group">
+        <textarea class="form-control" style="min-width: 100%" rows="6" id="Observaciones"></textarea>
+    </div>
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-md-2">
+            <label class="col-md-3">Estudiante Practicante</label>
+        </div>
+        <div class="col-md-3">
+            <input type="text" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <label class="col-md-3">Docente supervisor</label>
+        </div>
+        <div class="col-md-3">
+            <input type="text" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-2">
+            <input type="submit" value="Guardar" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <input type="submit" value="Cancelar" class="form-control" onclick="location.href='@Url.Action("Index", "HistoriaClinica" )'" />
+        </div>
+    </div>
+</div>
+</div>
+
+

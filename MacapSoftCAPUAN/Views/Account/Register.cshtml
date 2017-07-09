@@ -1,6 +1,6 @@
 ﻿@model MacapSoftCAPUAN.Models.RegisterViewModel
 @{
-    ViewBag.Title = "Registrar un usuario";
+    ViewBag.Title = "Registrar un nuevo usuario";
 }
 
 <h2>@ViewBag.Title.</h2>
@@ -8,7 +8,6 @@
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h4>Crear un nuevo usuario.</h4>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
@@ -37,12 +36,20 @@
         </div>
     </div>
     <div class="form-group">
-        <div class="col-md-1">
+        <div class="row">
+            <div class="col-md-1">
+                <input type="button" class="btn btn-default" value="Regresar" onclick="location.href='@Url.Action("Index", "HistoriaClinica" )'" />
+            </div>
+            <div class="col-md-2">
+                <input type="submit" class="btn btn-primary" value="Registrar" />
+            </div>
+        </div>
+        @*<div class="col-md-1">
             <input type="button" class="btn btn-primary" value="Regresar" onclick="location.href='@Url.Action("Index", "HistoriaClinica" )'" />
         </div>
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" class="btn btn-default" value="Registrar" />
-        </div>
+        </div>*@
     </div>
 }
 

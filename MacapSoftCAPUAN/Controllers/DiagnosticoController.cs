@@ -11,6 +11,7 @@ namespace MacapSoftCAPUAN.Controllers
     public class DiagnosticoController : Controller
     {
         private DiagnosticosDALC diag;
+        private Mapeo map { get; set; }
         // GET: Diagnostico
         public ActionResult Index()
         {
@@ -55,12 +56,20 @@ namespace MacapSoftCAPUAN.Controllers
             }
         }
 
-        public ActionResult ModificarDiagnostico()
+        public ActionResult ModificarDiagnostico()//string Codigo)
         {
+
             diagnosticosPrincipales();
             return View();
+            //diag = new DiagnosticosDALC();
+            //map = new Mapeo();
+            //var diagnostico = diag.mostrarDiagnostico(Codigo);
+            //var mapeoDiag = map.MapeoDiagnostico(diagnostico);
+            //diagnosticosPrincipales();
+            //return View(mapeoDiag);
         }
 
+        [HttpPost]
         public ActionResult ModificarDiagnosticoCAP(string idCodigo, string nombreEditado, string casoEditado)
         {
             diag = new DiagnosticosDALC();

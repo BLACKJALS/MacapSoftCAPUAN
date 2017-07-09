@@ -1,5 +1,3 @@
-C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\Microsoft.Owin.dll
-C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\Microsoft.Owin.Security.Cookies.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\ApplicationInsights.config
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\roslyn\csc.exe
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
@@ -31,7 +29,9 @@ C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSo
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\Microsoft.AspNet.Identity.EntityFramework.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\Microsoft.AspNet.Identity.Owin.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\Microsoft.Owin.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\Microsoft.Owin.Host.SystemWeb.dll
+C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\Microsoft.Owin.Security.Cookies.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\Microsoft.Owin.Security.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\Microsoft.Owin.Security.Facebook.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\Microsoft.Owin.Security.Google.dll

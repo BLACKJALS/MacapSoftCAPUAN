@@ -37,9 +37,9 @@
                 '<a class="edit" href="javascript:void(0)" title="Editar">',
                 '<i class="glyphicon glyphicon-pencil"></i>',
                 '</a>  &nbsp;&nbsp; &nbsp;&nbsp;',
-                '<a class="remove" href="javascript:void(0)" title="Eliminar">',
-                '<i class="glyphicon glyphicon-remove"></i>',
-                '</a>'
+                //'<a class="remove" href="javascript:void(0)" title="Eliminar">',
+                //'<i class="glyphicon glyphicon-remove"></i>',
+                //'</a>'
             ].join('');
         }
 
@@ -48,6 +48,18 @@
                 $("#txtRoleEditado").val(row.Role);
                 $("#hdnIdColumna").val(row.Id);
                 $("#btnEditar").click();
+                var usrName = "@HttpContext.Current.User.Identity.Name";
+                $.each(row, function (key, value) {
+                    //var myBookId = $("#prueba").val();
+                    if (key == "nombreUsuario") {
+                        if (usrName != value) {
+                            $("#habilitarUsuarios").prop('disabled', false);
+                        } else {
+                            $("#habilitarUsuarios").prop('disabled', true);
+                        }
+                        //$(".modal-body #Nombre").val(value);
+                    }
+                });
             },
             'click .remove': function (e, value, row, index) {
                 $("#eliminarUsuario").val(row.Id);
@@ -59,7 +71,7 @@
         };
 
         function btnAceptarEdicionCampo_Click() {
-            var parametrosFuncion = JSON.stringify({ 'idColumna': $("#hdnIdColumna").val(), 'rolEditado': $("#txtRoleEditado").val() });
+            var parametrosFuncion = JSON.stringify({ 'idColumna': $("#hdnIdColumna").val(), 'rolEditado': $("#txtRoleEditado").val(), 'estadoUsuario': $("#habilitarUsuarios").val() });
             $.ajax({
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
@@ -125,6 +137,7 @@
                 <th data-field="nombreUsuario">Nombre Usuario</th>
                 <th data-field="Email">Email</th>
                 <th data-field="Role">Rol</th>
+                <th data-field="Estado">Estado Usuario</th>
                 <th data-field="Operaciones" data-align="center" data-events="eventosOperaciones" data-formatter="formatoOperaciones">Operaciones</th>
             </tr>
         </thead>
@@ -188,7 +201,16 @@
                                 <select type="text" id="txtRoleEditado" name="txtRoleEditado" class="form-control" required>
                                     <option value="Admin">Admin</option>
                                     <option value="Student">Student</option>
+                                    <option value="Teacher">Teacher</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Habilitar o deshabilitar usuario</label>
+                            </div>
+                            <div class="col-md-8">
+                                @Html.DropDownList("ListaHabilitarUsuario", (IEnumerable<SelectListItem>)ViewBag.ItemsHabilitarUsuario, new { @class = "form-control", id="habilitarUsuarios" }) 
                             </div>
                         </div>
                     </div>

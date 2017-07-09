@@ -47,5 +47,16 @@ namespace MacapSoftCAPUAN.DALC
             }
             bd.SaveChanges();
         }
+
+        public Diagnostico mostrarDiagnostico(string id) {
+            bd = new ApplicationDbContext();
+            Diagnostico diag = new Diagnostico();
+            foreach (var item in bd.diagnosticoContext) {
+                if (item.Codigo == id) {
+                    diag = item;
+                }
+            }
+            return diag;
+        }
     }
 }
