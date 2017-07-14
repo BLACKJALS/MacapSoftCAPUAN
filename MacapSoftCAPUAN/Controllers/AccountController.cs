@@ -100,7 +100,7 @@ namespace MacapSoftCAPUAN.Controllers
                         return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                     case SignInStatus.Failure:
                     default:
-                        ModelState.AddModelError("", "El usuario y/o contraseña que has introducido son incorrectas");
+                        ModelState.AddModelError("", "El usuario y/o contraseña que has introducido son incorrectas, si el error persiste comuníquese con el coordinador del CAP.");
                         AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
                     return View(model);
                 }
@@ -580,7 +580,7 @@ namespace MacapSoftCAPUAN.Controllers
                             nombreUsuario = user.UserName,
                             Email = user.Email,
                             Role = role.Name,
-                            Estado = user.Activo
+                            Estado = user.Activo? "Activo":"Inactivo"
                         };
 
             var listaUsuarios = users.ToList();
@@ -596,25 +596,25 @@ namespace MacapSoftCAPUAN.Controllers
             var oldRoleId = oldUser.Roles.SingleOrDefault().RoleId;
             var oldRoleName = UsersContext.Roles.SingleOrDefault(r => r.Id == oldRoleId).Name;
             AccountBO accBO = new AccountBO();
-            if (oldRoleName != rolEditado)
-            {
-                UserManager.RemoveFromRole(idColumna, oldRoleName);
-                UserManager.AddToRole(idColumna, rolEditado);
-            }
+            if(rolEditado != null) {
+                if (oldRoleName != rolEditado)
+                {
+                    UserManager.RemoveFromRole(idColumna, oldRoleName);
+                    UserManager.AddToRole(idColumna, rolEditado);
+                }
 
-            bool estadoUs = false;
-            if (estadoUsuario == "1")
-            {
-                estadoUs = true;
-                accBO.editarUsuario(oldUser, estadoUs);
+                bool estadoUs = false;
+                if (estadoUsuario == "1")
+                {
+                    estadoUs = true;
+                    accBO.editarUsuario(oldUser, estadoUs);
+                }
+                else
+                {
+                    estadoUs = false;
+                    accBO.editarUsuario(oldUser, estadoUs);
+                }
             }
-            else
-            {
-                estadoUs = false;
-                accBO.editarUsuario(oldUser, estadoUs);
-            }
-            
-
             return Json("Ok", JsonRequestBehavior.AllowGet);
         }
 
@@ -633,29 +633,32 @@ namespace MacapSoftCAPUAN.Controllers
             model.Active = true;
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
             var user = UserManager.FindByEmailAsync(model.Email).Result;
-
-            if (result == Microsoft.AspNet.Identity.Owin.SignInStatus.Success) {
-                user.PasswordHash = null;
-                //var user1 = new ApplicationUser { UserName = model.Email, Email = model.Email, Activo = true };
-                var result1 = await UserManager.AddPasswordAsync(userId, nuevaContra);
-                //accBO.listarUsuarios(user, nuevaContra);
-
-                if (result1.Succeeded)
+            if (model.Password != nuevaContra) {
+                if (result == Microsoft.AspNet.Identity.Owin.SignInStatus.Success)
                 {
-                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    user.PasswordHash = null;
+                    //var user1 = new ApplicationUser { UserName = model.Email, Email = model.Email, Activo = true };
+                    var result1 = await UserManager.AddPasswordAsync(userId, nuevaContra);
+                    //accBO.listarUsuarios(user, nuevaContra);
 
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                    //await this.UserManager.AddToRoleAsync(user.Id, model.UserRoles);
-                    return RedirectToAction("Index", "HistoriaClinica");
+                    if (result1.Succeeded)
+                    {
+                        //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+
+                        // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                        // Send an email with this link
+                        // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                        // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                        // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                        //await this.UserManager.AddToRoleAsync(user.Id, model.UserRoles);
+                        return RedirectToAction("Index", "HistoriaClinica");
+                    }
                 }
             }
-            
 
-            return RedirectToAction("cambiarContraseña", "Account");
+            TempData["mensajeError"] = "Error de validación, no ingreso una contraseña valida o digito la misma contraseña.";
+            ViewBag.ErrorMessage = "Email not found or matched";
+            return RedirectToAction("CambiarContraseña", "Account");
             //return Json("Ok",JsonRequestBehavior.AllowGet);
         }
 

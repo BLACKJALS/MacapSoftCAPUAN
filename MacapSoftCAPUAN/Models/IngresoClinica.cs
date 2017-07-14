@@ -13,14 +13,16 @@ namespace MacapSoftCAPUAN.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int idIngresoClinica { get; set; }
-        public string idPaciente { get; set; }
-        public string idUsuario { get; set; }
         public DateTime fechaIngreso { get; set; }
-        public string remitido { get; set; }//si o no
-        public string entidadRemitente { get; set; }
+        public string motivoConsulta { get; set; }
+        public string observaciones { get; set; }
+        public Paciente idPaciente { get; set; }
+        public string idUsuario { get; set; }
+        public string remitido { get; set; }//cambiar la propiedad a foranea
+        public Remitido entidadRemitente { get; set; }
+        public Consulta consulta { get; set; }
+
         public string especialidadRemitente { get; set; }
         public DateTime fechaRemision { get; set; }
-        public string motivoConsulta { get; set; }
-        public string observacion { get; set; }
     }
 }

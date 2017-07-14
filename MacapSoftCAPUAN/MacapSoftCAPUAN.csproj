@@ -221,16 +221,24 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Mapeo.cs" />
+    <Compile Include="Migrations\201707120233134_m1.cs" />
+    <Compile Include="Migrations\201707120233134_m1.Designer.cs">
+      <DependentUpon>201707120233134_m1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelsVM\DiagnosticoVM.cs" />
     <Compile Include="ModelsVM\RecepcionCaso.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CierreHC.cs" />
     <Compile Include="Models\Consultante.cs" />
     <Compile Include="Models\Diagnostico.cs" />
     <Compile Include="Models\Eps.cs" />
+    <Compile Include="Models\EstrategiasEvaluacion.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Inasistencias.cs" />
     <Compile Include="Models\IngresoClinica.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\NivelEscolaridad.cs" />
     <Compile Include="Models\Paciente.cs" />
     <Compile Include="Models\Paises.cs" />
     <Compile Include="Models\Remision.cs" />
@@ -277,6 +285,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <None Include="Properties\PublishProfiles\MacapsoftUAN.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap-table\bootstrap-table.js" />
     <Content Include="Scripts\bootstrap-table\bootstrap-table.min.js" />
@@ -454,6 +463,11 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201707120233134_m1.resx">
+      <DependentUpon>201707120233134_m1.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

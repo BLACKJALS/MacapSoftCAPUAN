@@ -42,6 +42,7 @@ namespace MacapSoftCAPUAN.Models
         public DbSet<Remision> remisionContext { get; set; }
         public DbSet<Remitido> remitidoContext { get; set; }
         public DbSet<Eps> epsConext { get; set; }
+        public DbSet<Inasistencias> inasistenciasConext { get; set; }
 
     }
 }

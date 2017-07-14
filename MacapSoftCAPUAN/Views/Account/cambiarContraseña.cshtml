@@ -27,6 +27,10 @@
         @Html.Hidden("nuevaContra")
         <hr />
         @Html.ValidationSummary("La contraseña debe tener al menos 6 caracteres, al menos un carácter (#,$,%,&,/,(,),=,_,-), letra y dígito ('0' - '9'), al menos una minúscula ('a' - 'z') y al menos una mayúscula ('A' - 'Z').", new { @class = "formf-control" })
+        <div style="color:red">
+            @TempData["mensajeError"]
+        </div>
+        @*<p>@ViewBag.ErrorMessage</p>*@
         <div class="form-group">
             <div class="row">
                 <div class="col-md-3">

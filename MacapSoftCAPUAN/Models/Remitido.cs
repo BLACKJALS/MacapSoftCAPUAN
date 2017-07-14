@@ -7,7 +7,7 @@ using System.Web;
 
 namespace MacapSoftCAPUAN.Models
 {
-    [Table("dbo.Remitente")]
+    [Table("dbo.EntidadRemitente")]
     public class Remitido
     {
         [Key]

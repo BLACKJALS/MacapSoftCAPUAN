@@ -114,8 +114,18 @@
     </script>
 }
 
-<h2>Eliminar o Editar usuarios.</h2>
-
+<h2>Listar y modificar usuarios.</h2>
+<div class="form-group">
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-md-11"></div>
+        <div class="col-md-1">
+            <input type="button" class="btn btn-primary" style="align-content:center" value="Regresar" onclick="location.href='@Url.Action("Index", "HistoriaClinica" )'" />
+        </div>
+    </div>
+    
+</div>
 <div class="container">
 
     <table id="tablaCampos"
@@ -198,10 +208,10 @@
                                 <label>Role: </label>
                             </div>
                             <div class="col-md-8">
-                                <select type="text" id="txtRoleEditado" name="txtRoleEditado" class="form-control" required>
-                                    <option value="Admin">Admin</option>
-                                    <option value="Student">Student</option>
-                                    <option value="Teacher">Teacher</option>
+                                <select type="text" id="txtRoleEditado" name="txtRoleEditado" class="form-control" placeholder="Seleccione" required>
+                                    <option value="Coordinador">Administrador</option>
+                                    <option value="Docente">Estudiante psicólogo</option>
+                                    <option value="Psicologo">Docente</option>
                                 </select>
                             </div>
                         </div>
@@ -220,11 +230,6 @@
                     <button id="buttonSalir" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-1">
-            <input type="button" class="btn btn-primary" value="Regresar" onclick="location.href='@Url.Action("Index", "HistoriaClinica" )'" />
         </div>
     </div>
 </div>
