@@ -151,8 +151,8 @@ namespace MacapSoftCAPUAN.Controllers
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
-        //[Authorize]
+        //[AllowAnonymous]
+        [Authorize(Roles = "Coordinador")]
         public ActionResult Register()
         {
             ViewBag.Name = new SelectList(context.Roles.ToList(), "Name", "Name");
@@ -162,7 +162,7 @@ namespace MacapSoftCAPUAN.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        //[Authorize]
+        [Authorize(Roles = "Coordinador")]
         //[AllowAnonymous]
         //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
@@ -566,6 +566,7 @@ namespace MacapSoftCAPUAN.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Coordinador")]
         public JsonResult ListarUsuarios()
         {
             //var UsersContext = new ApplicationDbContext();
@@ -587,7 +588,7 @@ namespace MacapSoftCAPUAN.Controllers
             return Json(listaUsuarios, JsonRequestBehavior.AllowGet);
         }
 
-
+        [Authorize(Roles = "Coordinador")]
         [HttpPost]
         public JsonResult EditRoleUser(string idColumna, string rolEditado , string estadoUsuario)
         {
@@ -618,11 +619,12 @@ namespace MacapSoftCAPUAN.Controllers
             return Json("Ok", JsonRequestBehavior.AllowGet);
         }
 
-
+        [Authorize(Roles = "Coordinador")]
         public ActionResult cambiarContraseña() {
             return View();
         }
 
+        [Authorize(Roles = "Coordinador")]
         [HttpPost]
         public async Task<ActionResult> CambiarContraseña(LoginViewModel model, string nuevaContra)
         {
@@ -662,12 +664,13 @@ namespace MacapSoftCAPUAN.Controllers
             //return Json("Ok",JsonRequestBehavior.AllowGet);
         }
 
-
+        [Authorize(Roles = "Coordinador")]
         public ActionResult RecuperarContraseña()
         {
             return View();
         }
 
+        [Authorize(Roles = "Coordinador")]
         [HttpPost]
         public async Task<ActionResult> RecuperarContraseña(LoginViewModel model, string nuevaContra)
         {
