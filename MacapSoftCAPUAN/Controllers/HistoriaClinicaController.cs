@@ -226,27 +226,36 @@ namespace MacapSoftCAPUAN.Controllers
             Remision remision = new Remision();
             Consecutivo consecutivo = new Consecutivo();
 
+            try
+            {
+                consecutivo = model.consecutivo;
+                model.paciente.idUser = System.Web.HttpContext.Current.User.Identity.GetUserId();
+                paciente = model.paciente;
+                HC.agregarpaciente(paciente);
 
-            consecutivo = model.consecutivo;
-            model.paciente.idUser = System.Web.HttpContext.Current.User.Identity.GetUserId();
-            paciente = model.paciente;
-            HC.agregarpaciente(paciente);
-            
-            HC.agregarConsecutivo(consecutivo);
-            if (model.consultante.cedula != null) {
-                HC.agregarConsultante(model.consultante);
+                HC.agregarConsecutivo(consecutivo);
+                if (model.consultante.cedula != null)
+                {
+                    HC.agregarConsultante(model.consultante);
 
-                consultantePa = new consultantePaciente();
-                //consultantePa = model.consultantePaciente;
-                consultantePa.idPaciente = model.paciente;
-                consultantePa.idPaciente.numeroDocumento = model.paciente.numeroDocumento;
-                consultantePa.idConsultante = model.consultante;
-                consultantePa.idConsultante.cedula = model.consultante.cedula;
-                //model.consultantePaciente.idConsultante = model.consultante.cedula;
-                //model.consultantePaciente.idPaciente = paciente.numeroDocumento;
-                HC.agregarConsultantePaciente(consultantePa);
+                    consultantePa = new consultantePaciente();
+                    //consultantePa = model.consultantePaciente;
+                    consultantePa.idPaciente = model.paciente;
+                    consultantePa.idPaciente.numeroDocumento = model.paciente.numeroDocumento;
+                    consultantePa.idConsultante = model.consultante;
+                    consultantePa.idConsultante.cedula = model.consultante.cedula;
+                    //model.consultantePaciente.idConsultante = model.consultante.cedula;
+                    //model.consultantePaciente.idPaciente = paciente.numeroDocumento;
+                    HC.agregarConsultantePaciente(consultantePa);
+                }
+
             }
-
+            catch (Exception ex)
+            {
+                ViewBag.error = ex.Message;
+                return View();
+            }
+            
             //remision = model.remision;
             //HC.agregarRemision(remision);
             //remitido = model.remitido;

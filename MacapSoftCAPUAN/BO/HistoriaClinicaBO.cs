@@ -46,21 +46,21 @@ namespace MacapSoftCAPUAN.BO
         }
 
 
-        public void agregarpaciente(Paciente paciente)
+        public string agregarpaciente(Paciente paciente)
         {
             hcDALC = new HistoriaClinicaDALC();
-            hcDALC.agregarPaciente(paciente);
+            return hcDALC.agregarPaciente(paciente);
         }
 
-        public void agregarConsultante(Consultante consultante) {
+        public string agregarConsultante(Consultante consultante) {
             hcDALC = new HistoriaClinicaDALC();
-            hcDALC.agregarConsultante(consultante);
+            return hcDALC.agregarConsultante(consultante);
         }
         
-        public void agregarConsultantePaciente(consultantePaciente consultantePa)
+        public string agregarConsultantePaciente(consultantePaciente consultantePa)
         {
             hcDALC = new HistoriaClinicaDALC();
-            hcDALC.agregarConsultantePaciente(consultantePa);
+            return hcDALC.agregarConsultantePaciente(consultantePa);
         }
 
         public void agregarRemision(Remision remision)
