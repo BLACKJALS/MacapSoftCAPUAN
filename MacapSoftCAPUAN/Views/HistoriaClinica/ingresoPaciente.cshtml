@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "Ingreso paciente";
+}
+
+@section Scripts{
+<script>
+    function validarIdentificacion(){
+        var numeroC = $("#cedula").val();
+        $("#identificacion").val(numeroC);
+    }
+
+</script>
+
+}
+
+
+
+<h2>Validación del paciente</h2>
+<br />
+<br />
+<br />
+<div class="container">
+    @using (Html.BeginForm("IngresoPacientes", "HistoriaClinica", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    { 
+    @Html.Hidden("identificacion")
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-2">
+                <label>Ingrese número de cédula:</label>
+            </div>
+            <div class="col-md-3">
+                <input type="text" id="cedula" class="form-control"/>
+            </div>
+        </div>
+        <br />
+        <div class="form-group">
+            <div class="col-md-2">
+                <input type="submit" id="aceptar" class="btn btn-primary" onclick="return validarIdentificacion();" />
+            </div>
+        </div>
+    </div>
+    }
+    
+</div>

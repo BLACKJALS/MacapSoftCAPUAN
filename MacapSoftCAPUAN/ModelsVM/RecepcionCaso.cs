@@ -14,6 +14,7 @@ namespace MacapSoftCAPUAN.ModelsVM
         public Remision remision { get; set; }
         public consultantePaciente consultantePaciente { get; set; }
         public IngresoClinica ingresoClinica { get; set; }
+        public Consecutivo consecutivo { get; set; }
         //public Eps epsObj { get; set; }
 
 
@@ -24,8 +25,7 @@ namespace MacapSoftCAPUAN.ModelsVM
             remision = new Remision();
             consultante = new Consultante();
             ingresoClinica = new IngresoClinica();
-            //epsObj = new Eps();
-
+            consecutivo = new Consecutivo();
         }
     }
 }

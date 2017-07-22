@@ -1,0 +1,186 @@
+﻿@model MacapSoftCAPUAN.ModelsVM.RemisionPaciente
+@{
+    ViewBag.Title = "Paciente Remitido";
+}
+
+
+<meta charset="utf-8">
+@section scripts{
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/locales/bootstrap-datepicker.es.min.js"></script>
+    @*<script src="http://momentjs.com/downloads/moment.min.js"></script>*@
+    <script>
+        $(document).ready(function () {
+            var idPaciente = '@ViewBag.Pac';
+            $("#pacienteNumero").val(idPaciente);
+            $("#guardarRemitir").prop("disabled", true);
+            $('#nombreEntidadRemitido').prop("disabled", true);
+            $('#nombreRemitenteRemitido').prop("disabled", true);
+            //var hoy = new Date();
+            //var fechaHoy = hoy.getFullYear() + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + ("0" + hoy.getDate()).slice(-2);
+            //var fechaHoy = ("0" + hoy.getDate()).slice(-2) + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + hoy.getFullYear();
+            //$("#ingresoClinica").val(fechaHoy).prop("disabled", true);
+            //$("#fechaRemision").val(fechaHoy);
+        });
+
+
+        function fechaHoy() {
+            var hoy = new Date();
+            var fechaHoy = hoy.getFullYear() + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + ("0" + hoy.getDate()).slice(-2);
+            //var fechaHoy = ("0" + hoy.getDate()).slice(-2) + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + hoy.getFullYear();
+            //$("#ingresoClinica").val(fechaHoy).prop("disabled", true);
+            $("#fechaRemision").val(fechaHoy);
+            $("#fechaRem").val(fechaHoy);
+        }
+
+        function regresar(){
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: '@Url.Action("Index", "HistoriaClinica")',
+                failure: function (response) {
+                    //$('#result').html(response);
+                }
+            });
+        }
+
+
+        $('#checkBoxSendRemision').click(function () {
+            disbledButtonRemisions();
+        });
+
+
+        function disbledButton() {
+            //set initial state.
+            var intentoSuicida = $('#IntentoSuicida').is(':checked');
+            var abuso = $('#Abuso').is(':checked');
+            var psicosis = $('#psicosis').is(':checked');
+            var consumo = $('#consumo').is(':checked');
+            var violencia = $('#violencia').is(':checked');
+            var concat    = "";
+
+            if(intentoSuicida == true){
+                concat += $('#IntentoSuicida').val()+";";
+            }
+            if(abuso == true){
+                concat += $('#Abuso').val()+";";
+            }
+            if(psicosis == true){
+                concat += $('#psicosis').val()+";";
+            }
+            if(consumo == true){
+                concat += $('#consumo').val()+";";
+            }
+            if(violencia == true){
+                concat += $('#violencia').val()+";";
+            }
+
+            if (intentoSuicida == true || abuso == true || psicosis == true || consumo == true || violencia == true) {
+                $("#guardarHistoria").prop("disabled", true);
+            }else{
+                $("#guardarHistoria").prop("disabled", false);
+            }
+            if (intentoSuicida == false && abuso == false && psicosis == false && consumo == false && violencia == false ) {
+                $("#guardarRemitir").prop("disabled", true);
+            } else {
+                $("#guardarRemitir").prop("disabled", false);
+            }
+
+            $("#concMremison").val(concat);
+        };
+
+        $('#IntentoSuicida').click(function () {
+            disbledButton();
+        });
+
+        $('#Abuso').click(function () {
+            disbledButton();
+        });
+
+        $('#psicosis').click(function () {
+            disbledButton();
+        });
+
+        $('#consumo').click(function () {
+            disbledButton();
+        });
+
+        $('#violencia').click(function () {
+            disbledButton();
+        });
+
+    </script>
+}
+
+<h2>Remitir paciente </h2>
+
+
+<div class="container">
+    @using (Html.BeginForm("RemitirPaciente", "HistoriaClinica", FormMethod.Post))
+    {
+        @Html.Hidden("concMremison");
+        @Html.Hidden("fechaRemision");
+        <input type="text"  name="paciente.numeroDocumento" id="pacienteNumero" style="visibility:hidden">
+        <h3 style="text-align:center; background-color:#9BC2E6">Factores de riesgo</h3>
+        <div class="row">
+            <div class="col-md-2">
+                <label>Fecha remision (Hoy)</label>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" id="fechaRem" placeholder="fecha de remisión" onclick="return fechaHoy();" required />
+                @*<input type="text" class="form-control" id="fechaRemision" onclick="return fechaHoy();"/>*@
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label style="font-size:medium">Intento o ideación suicida:</label>
+            </div>
+            <div class="col-md-1">
+                <input type="checkbox" id="IntentoSuicida" value="5" name="remision.motivoRemision.idMotivoRemision">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label style="font-size:medium">Abuso sexual:</label>
+            </div>
+            <div class="col-md-1">
+                <input type="checkbox" id="Abuso" value="2" name="remision.motivoRemision.idMotivoRemision"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label style="font-size:medium">Psicosis y/o trastorno de personalidad:</label>
+            </div>
+            <div class="col-md-1">
+                <input type="checkbox" id="psicosis" value="1" name="remision.motivoRemision.idMotivoRemision"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label style="font-size:medium">Consumo de estupefacientes:</label>
+            </div>
+            <div class="col-md-1">
+                <input type="checkbox" id="consumo" value="3" name="remision.motivoRemision.idMotivoRemision"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label style="font-size:medium">Violencia domestica no denunciada:</label>
+            </div>
+            <div class="col-md-1">
+                <input type="checkbox" id="violencia" value="4" name="remision.motivoRemision.idMotivoRemision"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <input type="submit" class="form-control btn btn-primary" id="guardarRemitir" value="Remitir" />
+            </div>
+            <div class="col-md-4">
+                <input type="button" class="form-control" id="Cancelar" onclick="location.href='@Url.Action("Index", "HistoriaClinica")'" value="Cancelar" />
+            </div>
+        </div>
+    }
+</div>

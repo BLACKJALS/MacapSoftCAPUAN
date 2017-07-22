@@ -7,11 +7,12 @@ using System.Web;
 
 namespace MacapSoftCAPUAN.Models
 {
-    [Table("dbo.tipos_documentos")]
-    public class TiposDocumentos
+    [Table("dbo.consecutivo")]
+    public class Consecutivo
     {
         [Key]
-        public string idDocumento { get; set; }
-        public string tipo { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int idConsecutivo { get; set; }
+        public int numeroConsecutivo { get; set; }
     }
 }

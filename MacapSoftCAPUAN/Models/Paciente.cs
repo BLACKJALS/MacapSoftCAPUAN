@@ -20,6 +20,7 @@ namespace MacapSoftCAPUAN.Models
         public string lugarNacimiento { get; set; }
         public int edad { get; set; }
         public string direccion { get; set; }
+        public Paises paises { get; set; }
         public Barrios barrio { get; set; } //Virtual
         public Localidades localidad { get; set; } //Virtual
         public Estrato estrato { get; set; }

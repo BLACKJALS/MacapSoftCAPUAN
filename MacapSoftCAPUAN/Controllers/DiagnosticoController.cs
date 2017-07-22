@@ -31,14 +31,14 @@ namespace MacapSoftCAPUAN.Controllers
             return Json(lista, JsonRequestBehavior.AllowGet);
         }
 
-        [Authorize(Roles = "Coordinador")]
+        [Authorize(Roles = "Administrador")]
         public ActionResult CrearDiagnostico()
         {
             diagnosticosPrincipales();
             return View();
         }
 
-        [Authorize(Roles = "Coordinador")]
+        [Authorize(Roles = "Administrador")]
         public ActionResult CrearDiagnosticoCAP(string Codigo, string Nombre, string Destacado)
         {
             //Maper map = new Maper();
@@ -55,7 +55,7 @@ namespace MacapSoftCAPUAN.Controllers
                 throw;
             }
         }
-        [Authorize(Roles = "Coordinador")]
+        [Authorize(Roles = "Administrador")]
         public ActionResult ModificarDiagnostico()//string Codigo)
         {
 
@@ -69,7 +69,7 @@ namespace MacapSoftCAPUAN.Controllers
             //return View(mapeoDiag);
         }
 
-        [Authorize(Roles = "Coordinador")]
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         public ActionResult ModificarDiagnosticoCAP(string idCodigo, string nombreEditado, string casoEditado)
         {

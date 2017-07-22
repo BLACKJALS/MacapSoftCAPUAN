@@ -22,6 +22,158 @@ namespace MacapSoftCAPUAN.Controllers
             return View();
         }
 
+        public ActionResult ingresoPaciente() {
+            return View();
+        }
+
+
+        public ActionResult IngresoPacientes(string identificacion)
+        {
+            HC = new HistoriaClinicaBO();
+            List<SelectListItem> listaItemsBarrios = new List<SelectListItem>();
+            List<SelectListItem> listaItemsDocumento = new List<SelectListItem>();
+            List<SelectListItem> listaItemsDocumentoConsultante = new List<SelectListItem>();
+            List<SelectListItem> listaItemsLocalidades = new List<SelectListItem>();
+            List<SelectListItem> listaItemsEps = new List<SelectListItem>();
+            List<SelectListItem> listaItemsValidation = new List<SelectListItem>();
+            List<SelectListItem> listaItemsPaises = new List<SelectListItem>();
+            List<SelectListItem> listaItemsEstrato = new List<SelectListItem>();
+            List<SelectListItem> listaItemsCuidades = new List<SelectListItem>();
+            SelectListItem items;
+            SelectListItem documento;
+            SelectListItem validacion;
+
+            documento = new SelectListItem();
+            documento.Text = "Seleccione";
+            documento.Value = "";
+            listaItemsDocumento.Add(documento);
+            listaItemsBarrios.Add(documento);
+            listaItemsLocalidades.Add(documento);
+            listaItemsEps.Add(documento);
+            listaItemsDocumentoConsultante.Add(documento);
+            listaItemsPaises.Add(documento);
+
+            var listaBarrio = HC.listarBarrios();
+            foreach (var item in listaBarrio)
+            {
+                items = new SelectListItem();
+                items.Text = item.nombre;
+                items.Value = item.idBarrio;
+                listaItemsBarrios.Add(items);
+            }
+
+            var listaEstrato = HC.listarEstrato();
+            foreach (var item in listaEstrato)
+            {
+                items = new SelectListItem();
+                items.Text = item.numeroEstrato;
+                items.Value = item.idEstrato.ToString();
+                listaItemsEstrato.Add(items);
+            }
+
+            var listaCiudades = HC.listarCiudades();
+            foreach (var item in listaCiudades)
+            {
+                items = new SelectListItem();
+                items.Text = item.nombre;
+                items.Value = item.idCiudad;
+                listaItemsCuidades.Add(items);
+            }
+
+            
+
+            var listaTipoDocumento = HC.listaTiposDocumento();
+            foreach (var item in listaTipoDocumento) {
+                items = new SelectListItem();
+                items.Text = item.tipo;
+                items.Value = item.idDocumento.ToString();
+                listaItemsDocumento.Add(items);
+            }
+
+            var listaTipoDocumentoAdultos = HC.listaTiposDocumento();
+            foreach (var item in listaTipoDocumentoAdultos)
+            {
+                if (item.tipo!= "RC" && item.tipo!= "TI") {
+                    items = new SelectListItem();
+                    items.Text = item.tipo;
+                    items.Value = item.idDocumento.ToString();
+                    listaItemsDocumentoConsultante.Add(items);
+                }
+            }
+
+            var listaPaises = HC.listarPaises();
+            foreach (var item in listaPaises)
+            {
+                    items = new SelectListItem();
+                    items.Text = item.nombrePais;
+                    items.Value = item.idPais;
+                    listaItemsPaises.Add(items);
+            }
+
+            validacion = new SelectListItem();
+            validacion.Text = "Seleccione";
+            validacion.Value = "";
+            listaItemsValidation.Add(validacion);
+            validacion = new SelectListItem();
+            validacion.Text = "SI";
+            validacion.Value = "SI";
+            listaItemsValidation.Add(validacion);
+            validacion = new SelectListItem();
+            validacion.Text = "NO";
+            validacion.Value = "NO";
+            listaItemsValidation.Add(validacion);
+
+            var listaLocalidades = HC.listarLocalidades();
+            foreach (var item in listaLocalidades)
+            {
+                items = new SelectListItem();
+                items.Text = item.nombre;
+                items.Value = item.idLocalidad;
+                listaItemsLocalidades.Add(items);
+            }
+
+            var listaEps = HC.listarEps();
+            foreach (var item in listaEps)
+            {
+                items = new SelectListItem();
+                items.Text = item.nombre;
+                items.Value = item.IdEPS;
+                listaItemsEps.Add(items);
+            }
+
+            var consectivo = HC.listarConsecutivo().Last();
+            ViewBag.itemConsecutivo = consectivo.numeroConsecutivo;
+
+            ViewBag.ItemLocalidades = listaItemsLocalidades.ToList();
+            ViewBag.ItemBarrios = listaItemsBarrios.ToList();
+            ViewBag.ItemDocumento = listaItemsDocumento.ToList();
+            ViewBag.ItemEps = listaItemsEps.ToList();
+            ViewBag.ItemValidacion = listaItemsValidation.ToList();
+            ViewBag.ItemDocumentoConsultante = listaItemsDocumentoConsultante.ToList();
+            ViewBag.ItemPaises = listaItemsPaises.ToList();
+            ViewBag.ItemEstrato = listaItemsEstrato.ToList();
+            ViewBag.ItemCiudades = listaItemsCuidades.ToList();
+            return View();
+        }
+
+
+        //[HttpPost]
+        //public ActionResult IngresoPaciente(string identificacion)
+        //{
+        //    HC = new HistoriaClinicaBO();
+        //    var listaUserr = HC.listarPaciente();
+
+        //    var a = from b in listaUserr where b.numeroDocumento == identificacion select b;   
+
+        //    return View(a);
+        //}
+
+
+
+
+
+
+
         public ActionResult RecepcionCaso(string bussinesUnit)
         {
             HC = new HistoriaClinicaBO();
@@ -62,129 +214,109 @@ namespace MacapSoftCAPUAN.Controllers
 
 
         
-
-        public ActionResult IngresoPacientes() {
-            HC = new HistoriaClinicaBO();
-            List<SelectListItem> listaItemsBarrios = new List<SelectListItem>();
-            List<SelectListItem> listaItemsDocumento = new List<SelectListItem>();
-            List<SelectListItem> listaItemsLocalidades = new List<SelectListItem>();
-            List<SelectListItem> listaItemsEps = new List<SelectListItem>();
-            List<SelectListItem> listaItemsValidation = new List<SelectListItem>();
-            SelectListItem items;
-            SelectListItem documento;
-            SelectListItem validacion;
-            var listaBarrio = HC.listarBarrios();
-            foreach (var item in listaBarrio)
-            {
-                items = new SelectListItem();
-                items.Text = item.nombre;
-                items.Value = item.idBarrio;
-                listaItemsBarrios.Add(items);
-            }
-
-            documento = new SelectListItem();
-            documento.Text = "Seleccione";
-            documento.Value = "";
-            listaItemsDocumento.Add(documento);
-            documento = new SelectListItem();
-            documento.Text = "CC";
-            documento.Value = "CC";
-            listaItemsDocumento.Add(documento);
-            documento = new SelectListItem();
-            documento.Text = "TI";
-            documento.Value = "TI";
-            listaItemsDocumento.Add(documento);
-            documento = new SelectListItem();
-            documento.Text = "RC";
-            documento.Value = "RC";
-            listaItemsDocumento.Add(documento);
-            documento = new SelectListItem();
-            documento.Text = "CE";
-            documento.Value = "CE";
-            listaItemsDocumento.Add(documento);
-
-            validacion = new SelectListItem();
-            validacion.Text = "Seleccione";
-            validacion.Value = "";
-            listaItemsValidation.Add(validacion);
-            validacion = new SelectListItem();
-            validacion.Text = "SI";
-            validacion.Value = "SI";
-            listaItemsValidation.Add(validacion);
-            validacion = new SelectListItem();
-            validacion.Text = "NO";
-            validacion.Value = "NO";
-            listaItemsValidation.Add(validacion);
-
-            var listaLocalidades = HC.listarLocalidades();
-            foreach (var item in listaLocalidades)
-            {
-                items = new SelectListItem();
-                items.Text = item.nombre;
-                items.Value = item.idLocalidad;
-                listaItemsLocalidades.Add(items);
-            }
-
-            var listaEps = HC.listarEps();
-            foreach (var item in listaEps)
-            {
-                items = new SelectListItem();
-                items.Text = item.nombre;
-                items.Value = item.IdEPS;
-                listaItemsEps.Add(items);
-            }
-            ViewBag.ItemLocalidades = listaItemsLocalidades.ToList();
-            ViewBag.ItemBarrios = listaItemsBarrios.ToList();
-            ViewBag.ItemDocumento = listaItemsDocumento.ToList();
-            ViewBag.ItemEps = listaItemsEps.ToList();
-            ViewBag.ItemValidacion = listaItemsValidation.ToList();
-            return View();
-        }
-
         [HttpPost]
-        public ActionResult IngresoPacientesCreado(RecepcionCaso model)
+        public ActionResult IngresoPacientesCreado(RecepcionCaso model, string Informacion)
         {
             HC = new HistoriaClinicaBO();
             Paciente paciente = new Paciente();
-            consultantePaciente consultantePa = new consultantePaciente();
+            Consultante consultante = new Consultante();
+            consultantePaciente consultantePa;
             IngresoClinica ingresoClinica = new IngresoClinica();
             Remitido remitido = new Remitido();
             Remision remision = new Remision();
-            remision = model.remision;
-            HC.agregarRemision(remision);
-            remitido = model.remitido;
-            HC.agregarRemitido(remitido);
+            Consecutivo consecutivo = new Consecutivo();
+
+
+            consecutivo = model.consecutivo;
+            model.paciente.idUser = System.Web.HttpContext.Current.User.Identity.GetUserId();
             paciente = model.paciente;
-            //AccountController acount = new AccountController();
-            //ApplicationUser user = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(System.Web.HttpContext.Current.User.Identity.GetUserId());
-            //paciente.idUser = user.UserName;
-            var userId = System.Web.HttpContext.Current.User.Identity.GetUserId();
-            paciente.idUser = userId;
-            //var user = acount.retornarUsuario();
-            var a = model.paciente.numeroDocumento;
-            //paciente.remitido.idRemitente = remitido.idRemitente;
-            //paciente = model.paciente;
             HC.agregarpaciente(paciente);
+            
+            HC.agregarConsecutivo(consecutivo);
             if (model.consultante.cedula != null) {
-                //consultantePa.idConsultante.cedula = model.consultante.cedula;
+                HC.agregarConsultante(model.consultante);
+
+                consultantePa = new consultantePaciente();
+                //consultantePa = model.consultantePaciente;
+                consultantePa.idPaciente = model.paciente;
+                consultantePa.idPaciente.numeroDocumento = model.paciente.numeroDocumento;
+                consultantePa.idConsultante = model.consultante;
+                consultantePa.idConsultante.cedula = model.consultante.cedula;
+                //model.consultantePaciente.idConsultante = model.consultante.cedula;
+                //model.consultantePaciente.idPaciente = paciente.numeroDocumento;
+                HC.agregarConsultantePaciente(consultantePa);
             }
-            if (model.paciente.numeroDocumento != null)
-            {
-                //consultantePa.idPaciente.numeroDocumento = model.paciente.numeroDocumento;
-            }
-            ingresoClinica = model.ingresoClinica;
-            remision = model.remision;
-            remitido = model.remitido;
+
+            //remision = model.remision;
+            //HC.agregarRemision(remision);
+            //remitido = model.remitido;
+            //HC.agregarRemitido(remitido);
+            //paciente = model.paciente;
+            
+
+            //var userId = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            //paciente.idUser = userId;
+            
+            //var a = model.paciente.numeroDocumento;
+            
+            //HC.agregarpaciente(paciente);
+            //if (model.consultante.cedula != null) {
+                
+            //}
+            //if (model.paciente.numeroDocumento != null)
+            //{
+                
+            //}
+            //ingresoClinica = model.ingresoClinica;
+            //remision = model.remision;
+            //remitido = model.remitido;
             try
             {
-                return View("IngresoPacienteCreado");
+                if (Informacion == "1")
+                {
+                    ViewBag.Pac = model.paciente.numeroDocumento;
+                    return View("PacienteRemitido");
+                }
+                else {
+                    return View("IngresoPacienteCreado");
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                ViewBag.error = ex.Message;
+                return View();
             }
 
+        }
+
+        [HttpPost]
+        public ActionResult RemitirPaciente(RemisionPaciente modelRemision, string concMremison, DateTime fechaRemision) {
+            HC = new HistoriaClinicaBO();
+            List<Remision> listaResmisionPaciente = new List<Remision>();
+            Remision remisionPaciente;
+            MotivosRemisiones motivoRem;
+            var lstRP = concMremison.Split(';');
+            foreach (var item in lstRP) {
+                if (item != "") {
+                    remisionPaciente = new Remision();
+                    motivoRem = new MotivosRemisiones();
+                    motivoRem.idMotivoRemision = int.Parse(item);
+                    remisionPaciente.motivoRemision = motivoRem;
+                    remisionPaciente.fechaRemitido = fechaRemision; 
+                    remisionPaciente.paciente = modelRemision.paciente;
+                    listaResmisionPaciente.Add(remisionPaciente);
+                }
+            }
+            if (modelRemision.paciente.numeroDocumento != "")
+            {
+                
+                modelRemision.remision = listaResmisionPaciente;
+                modelRemision.paciente = modelRemision.paciente;
+                HC.agregarListaRemision(modelRemision.remision);
+
+            }
+            return View("PacienteRemitidoExitoso");
         }
 
         public ActionResult listaHistoriasClinicas() {

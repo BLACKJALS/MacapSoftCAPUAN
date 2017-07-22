@@ -151,8 +151,8 @@ namespace MacapSoftCAPUAN.Controllers
 
         //
         // GET: /Account/Register
-        //[AllowAnonymous]
-        [Authorize(Roles = "Coordinador")]
+        [AllowAnonymous]
+        //[Authorize(Roles = "Administrador")]
         public ActionResult Register()
         {
             ViewBag.Name = new SelectList(context.Roles.ToList(), "Name", "Name");
@@ -162,8 +162,8 @@ namespace MacapSoftCAPUAN.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        [Authorize(Roles = "Coordinador")]
-        //[AllowAnonymous]
+        //[Authorize(Roles = "Administrador")]
+        [AllowAnonymous]
         //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
@@ -548,6 +548,7 @@ namespace MacapSoftCAPUAN.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrador")]
         public ActionResult ListaUsuarios()
         {
             List<SelectListItem> listaItemsActivo = new List<SelectListItem>();
@@ -566,7 +567,7 @@ namespace MacapSoftCAPUAN.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Coordinador")]
+        [Authorize(Roles = "Administrador")]
         public JsonResult ListarUsuarios()
         {
             //var UsersContext = new ApplicationDbContext();
@@ -588,7 +589,7 @@ namespace MacapSoftCAPUAN.Controllers
             return Json(listaUsuarios, JsonRequestBehavior.AllowGet);
         }
 
-        [Authorize(Roles = "Coordinador")]
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         public JsonResult EditRoleUser(string idColumna, string rolEditado , string estadoUsuario)
         {
@@ -619,12 +620,12 @@ namespace MacapSoftCAPUAN.Controllers
             return Json("Ok", JsonRequestBehavior.AllowGet);
         }
 
-        [Authorize(Roles = "Coordinador")]
+        [Authorize(Roles = "Administrador")]
         public ActionResult cambiarContraseña() {
             return View();
         }
 
-        [Authorize(Roles = "Coordinador")]
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         public async Task<ActionResult> CambiarContraseña(LoginViewModel model, string nuevaContra)
         {
@@ -664,13 +665,13 @@ namespace MacapSoftCAPUAN.Controllers
             //return Json("Ok",JsonRequestBehavior.AllowGet);
         }
 
-        [Authorize(Roles = "Coordinador")]
+        [Authorize(Roles = "Administrador")]
         public ActionResult RecuperarContraseña()
         {
             return View();
         }
 
-        [Authorize(Roles = "Coordinador")]
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         public async Task<ActionResult> RecuperarContraseña(LoginViewModel model, string nuevaContra)
         {

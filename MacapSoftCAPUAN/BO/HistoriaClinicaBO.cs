@@ -9,7 +9,7 @@ namespace MacapSoftCAPUAN.BO
 {
     public class HistoriaClinicaBO
     {
-        public HistoriaClinicaDALC hcDALC;
+        private HistoriaClinicaDALC hcDALC;
 
         public List<Barrios> listarBarrios() {
             hcDALC = new HistoriaClinicaDALC();
@@ -45,9 +45,22 @@ namespace MacapSoftCAPUAN.BO
             return listaEps;
         }
 
-        public void agregarpaciente(Paciente paciente) {
+
+        public void agregarpaciente(Paciente paciente)
+        {
             hcDALC = new HistoriaClinicaDALC();
             hcDALC.agregarPaciente(paciente);
+        }
+
+        public void agregarConsultante(Consultante consultante) {
+            hcDALC = new HistoriaClinicaDALC();
+            hcDALC.agregarConsultante(consultante);
+        }
+        
+        public void agregarConsultantePaciente(consultantePaciente consultantePa)
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            hcDALC.agregarConsultantePaciente(consultantePa);
         }
 
         public void agregarRemision(Remision remision)
@@ -60,6 +73,44 @@ namespace MacapSoftCAPUAN.BO
         {
             hcDALC = new HistoriaClinicaDALC();
             hcDALC.agregarRemitido(remitido);
+        }
+
+        public List<Paciente> listarPaciente() {
+            hcDALC = new HistoriaClinicaDALC();
+            var pacientes = hcDALC.listarPacientes().ToList();
+            return pacientes;
+        }
+
+        public List<TiposDocumentos> listaTiposDocumento()
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            var listaDocumento = hcDALC.listaTipoDocumento();
+            return listaDocumento;
+        }
+
+        public List<Consecutivo> listarConsecutivo() {
+            hcDALC = new HistoriaClinicaDALC();
+            var listaConsecutivo = hcDALC.listarConsecutivo();
+            return listaConsecutivo;
+        }
+
+
+        public List<Estrato> listarEstrato() {
+            hcDALC = new HistoriaClinicaDALC();
+            var listaEstrato = hcDALC.listaEstratos();
+            return listaEstrato;
+        }
+
+
+        public void agregarConsecutivo(Consecutivo consecutivo) {
+            hcDALC = new HistoriaClinicaDALC();
+            hcDALC.agregarConsecutivo(consecutivo);
+        }
+
+        public void agregarListaRemision(List<Remision> remision)
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            hcDALC.agregarRemisionL(remision);
         }
     }
 }

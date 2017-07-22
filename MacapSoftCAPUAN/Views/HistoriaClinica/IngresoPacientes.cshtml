@@ -10,13 +10,21 @@
     <link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap-datepicker.js"></script>
     <script src="~/Scripts/locales/bootstrap-datepicker.es.min.js"></script>
-
+    @*<script src="http://momentjs.com/downloads/moment.min.js"></script>*@
     <script>
         $(document).ready(function () {
             $("#guardarRemitir").prop("disabled", true);
             $('#nombreEntidadRemitido').prop("disabled", true);
             $('#nombreRemitenteRemitido').prop("disabled", true);
             $('#listadosEPS').prop("disabled", true);
+            var consecutivo = '@ViewBag.itemConsecutivo';
+            $("#Consecutivo").val(parseInt(consecutivo) + 1);
+
+            var hoy = new Date();
+            var fechaHoy = hoy.getFullYear() + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + ("0" + hoy.getDate()).slice(-2);
+            //var fechaHoy = ("0" + hoy.getDate()).slice(-2) + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + hoy.getFullYear();
+            //$("#ingresoClinica").val(fechaHoy).prop("disabled", true);
+            $("#ingresoClinica").val(fechaHoy);
         });
 
         function regresar(){
@@ -31,6 +39,14 @@
             });
         }
 
+        function fechaHoy() {
+            var hoy = new Date();
+            var fechaHoy = hoy.getFullYear() + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + ("0" + hoy.getDate()).slice(-2);
+            //var fechaHoy = ("0" + hoy.getDate()).slice(-2) + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + hoy.getFullYear();
+            //$("#ingresoClinica").val(fechaHoy).prop("disabled", true);
+            $("#ingresoClinica").val(fechaHoy);
+        }
+
 
         function dateFormatter(value, row) {
             if (value != "") {
@@ -43,24 +59,24 @@
 
 
         $(function () {
-            $('#ingresoClinica').datepicker({
-                format: 'dd-mm-yyyy',
-                onShow: function (ct) {
-                    this.setOptions({
-                        minDate: jQuery('#ingresoClinica').val() ? jQuery('#ingresoClinica').val() : false
-                        , formatDate: 'd-m-Y'
-                        , language: 'es'
-                    })
-                },
-                timepicker: false
-            });
+            //$('#ingresoClinica').datepicker({
+            //    format: 'yyyy-mm-dd',
+            //    onShow: function (ct) {
+            //        this.setOptions({
+            //            minDate: jQuery('#ingresoClinica').val() ? jQuery('#ingresoClinica').val() : false
+            //            , formatDate: 'Y-m-d'
+            //            , language: 'es'
+            //        })
+            //    },
+            //    timepicker: false
+            //});
 
             $('#fechaNacimientoPaciente').datepicker({
-                format: 'dd-mm-yyyy',
+                format: 'yyyy-mm-dd',
                 onShow: function (ct) {
                     this.setOptions({
                         minDate: jQuery('#fechaNacimientoPaciente').val() ? jQuery('#fechaNacimientoPaciente').val() : false
-                        , formatDate: 'd-m-Y'
+                        , formatDate: 'Y-m-d'
                         , language: 'es'
                     })
                 },
@@ -68,8 +84,55 @@
             });
         });
 
-        
+        $('#checkBoxSendRemision').click(function () {
+            disbledButtonRemisions();
+        });
 
+        function disbledButtonRemisions() {
+            //set initial state.
+            var remision = $('#checkBoxSendRemision').is(':checked');
+
+            if (remision == true ) {
+                $("#guardarRemitir").prop("disabled", false);
+                $("#guardarHistoria").prop("disabled", true);
+            } else {
+                $("#guardarRemitir").prop("disabled", true);
+                $("#guardarHistoria").prop("disabled", false);
+            }
+        };
+
+
+        function prueba() {
+            var hoy = new Date();
+            var fechaHoy = ("0" + hoy.getDate()).slice(-2) + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + hoy.getFullYear();
+            var fecha2 = $("#fechaNacimientoPaciente").val();
+
+            if (fecha2 != "") {
+                var hoy2 = new Date(fecha2);
+                var diferenciasFechas = (hoy - hoy2);
+                //hoy.diff(hoy2, 'hours');
+                var valorDias = Math.round((diferenciasFechas / (1000 * 60 * 60 * 24)));
+                var edad = parseInt(valorDias / 365);
+                $("#edadPaciente").val(edad);
+                //$("#edadPaciente").prop("disabled", true);
+
+                if (edad > 18) {
+                    $("#nombreConsultantePaciente").prop("disabled", true);
+                    $("#apellidosConsultantePaciente").prop("disabled", true);
+                    $("#parentezcoConsultantePaciente").prop("disabled", true);
+                    $("#telefonoConsultantePaciente").prop("disabled", true);
+                    $("#documentoConsultante").prop("disabled", true);
+                    $("#numeroDocumentoConsultante").prop("disabled", true);
+                } else {
+                    $("#nombreConsultantePaciente").prop("disabled", false);
+                    $("#apellidosConsultantePaciente").prop("disabled", false);
+                    $("#parentezcoConsultantePaciente").prop("disabled", false);
+                    $("#telefonoConsultantePaciente").prop("disabled", false);
+                    $("#documentoConsultante").prop("disabled", false);
+                    $("#numeroDocumentoConsultante").prop("disabled", false);
+                }
+            }
+        }
 
         function disbledButton() {
             //set initial state.
@@ -95,50 +158,53 @@
             disbledButton();
         });
 
-            $('#Abuso').click(function () {
-                disbledButton();
-            });
+        $('#Abuso').click(function () {
+            disbledButton();
+        });
 
-            $('#psicosis').click(function () {
-                disbledButton();
-            });
+        $('#psicosis').click(function () {
+            disbledButton();
+        });
 
-            $('#consumo').click(function () {
-                disbledButton();
-            });
+        $('#consumo').click(function () {
+            disbledButton();
+        });
 
-            $('#violencia').click(function () {
-                disbledButton();
-            });
+        $('#violencia').click(function () {
+            disbledButton();
+        });
 
-            function disabledRemitido() {
-                if ($('#pacienteVieneRemitido').val() == "NO" || $('#pacienteVieneRemitido').val() == "") {
-                    $('#nombreEntidadRemitido').prop("disabled", true);
-                    $('#nombreRemitenteRemitido').prop("disabled", true);
-                } else {
-                    $('#nombreEntidadRemitido').prop("disabled", false);
-                    $('#nombreRemitenteRemitido').prop("disabled", false);
-                }
-            };
+        function disabledRemitido() {
+            if ($('#pacienteVieneRemitido').val() == "NO" || $('#pacienteVieneRemitido').val() == "") {
+                $('#nombreEntidadRemitido').prop("disabled", true);
+                $('#nombreRemitenteRemitido').prop("disabled", true);
+            } else {
+                $('#nombreEntidadRemitido').prop("disabled", false);
+                $('#nombreRemitenteRemitido').prop("disabled", false);
+            }
+        };
 
-            $('#pacienteVieneRemitido').click(function () {
-                disabledRemitido();
-            });
+        $('#pacienteVieneRemitido').click(function () {
+            disabledRemitido();
+        });
 
-            function disabledEps() {
-                if ($('#pacienteTenerEPS').val() == "NO" || $('#pacienteTenerEPS').val() == "") {
-                    $('#listadosEPS').prop("disabled", true);
-                    $('#listadosEPS').prop("disabled", true);
-                } else {
-                    $('#listadosEPS').prop("disabled", false);
-                    $('#listadosEPS').prop("disabled", false);
-                }
-            };
+        function disabledEps() {
+            if ($('#pacienteTenerEPS').val() == "NO" || $('#pacienteTenerEPS').val() == "") {
+                $('#listadosEPS').prop("disabled", true);
+                $('#listadosEPS').prop("disabled", true);
+            } else {
+                $('#listadosEPS').prop("disabled", false);
+                $('#listadosEPS').prop("disabled", false);
+            }
+        };
 
-            $('#pacienteTenerEPS').click(function () {
-                disabledEps();
-            });
+        $('#pacienteTenerEPS').click(function () {
+            disabledEps();
+        });
 
+        function remision() {
+            $("#Informacion").val("1");
+        }
     </script>
 }
 <div class="col-lg-12 jumbotron">
@@ -152,111 +218,96 @@
                 <label style="font-size:smaller">Fecha de atencion:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="ingresoClinica" name="ingresoClinica.fechaIngreso" placeholder="fecha de atención"  lang="es-co" required/>
+                <input class="form-control" id="ingresoClinica" name="ingresoClinica.fechaIngreso" placeholder="fecha de atención" onclick="return fechaHoy();" required/>
             </div>
             <div class="col-md-2">
                 <label style="font-size:smaller">Consecutivo No:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="Consecutivo" placeholder="Numero de consecutivo" required/>
+                <input class="form-control" id="Consecutivo" name="consecutivo.numeroConsecutivo" placeholder="Numero de consecutivo" required/>
             </div>
         </div>
-        <h3 style="text-align:center; background-color:#9BC2E6">Datos del consultante</h3>
-        <div class="row">
-            <div class="col-md-1">
-                <label style="font-size:smaller">Nombres:</label>
-            </div>
-            <div class="col-md-4">
-                <input class="form-control" id="nombreConsultantePaciente" name="consultante.nombres" placeholder="Nombres" required/>
-            </div>
-            <div class="col-md-2">
-                <label style="font-size:smaller">Apellidos:</label>
-            </div>
-            <div class="col-md-4">
-                <input class="form-control" id="apellidosConsultantePaciente" name="consultante.apellidos" placeholder="Apellidos" required/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-1">
-                <label style="font-size:smaller">Parentezco:</label>
-            </div>
-            <div class="col-md-4">
-                <input class="form-control" id="parentezcoConsultantePaciente" name="consultante.parentezco" placeholder="Parentezco" required/>
-            </div>
-            <div class="col-md-2">
-                <label style="font-size:smaller">Teléfonos de contacto:</label>
-            </div>
-            <div class="col-md-4">
-                <input class="form-control" id="telefonoConsultantePaciente" name="consultante.telefono" placeholder="Teléfonos de contacto" required/>
-            </div>
-        </div>
+
+
         <h3 style="text-align:center; background-color:#9BC2E6">Datos del paciente</h3>
         <div class="row">
             <div class="col-md-1">
                 <label style="font-size:smaller">Nombres:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="nombrePaciente" name="paciente.nombre" placeholder="Nombres" required/>
+                <input class="form-control" id="nombrePaciente" name="paciente.nombre" placeholder="Nombres" required />
             </div>
-            <div class="col-md-1">
+            <div class="col-md-2">
                 <label style="font-size:smaller">Apellidos:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="apellidoPaciente" name="paciente.apellido" placeholder="Apellidos" required/>
+                <input class="form-control" id="apellidoPaciente" name="paciente.apellido" placeholder="Apellidos" required />
             </div>
         </div>
+        <br />
         <div class="row">
             <label class="col-md-1" style="font-size:smaller">Tipo de documento:</label>
-            <div class="col-md-3">
-                @Html.DropDownList("paciente.tipoDocumento.tipo", (IEnumerable<SelectListItem>)ViewBag.ItemDocumento, new { @class = "form-control"})
+            <div class="col-md-4">
+                @Html.DropDownList("paciente.tipoDocumento.idDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumento, new { @class = "form-control" })
             </div>
-            <div class="col-md-1">
+            <div class="col-md-2">
                 <label style="font-size:smaller">Numero de documento:</label>
             </div>
-            <div class="col-md-3">
-                <input class="form-control" id="numeroDocumentoPaciente" name="paciente.numeroDocumento" placeholder="numero documento" required/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-1">
-                <label style="font-size:smaller">Fecha de nacimiento:</label>
-            </div>
-            <div class="col-md-3">
-                <input class="form-control" id="fechaNacimientoPaciente" name="paciente.fechaNacimiento" placeholder="fecha de nacimiento" required/>
-            </div>
-            <div class="col-md-1">
-                <label style="font-size:smaller">Lugar de nacimiento:</label>
-            </div>
-            <div class="col-md-3">
-                <input class="form-control" id="lugarNacimientoPaciente" name="paciente.lugarNacimiento" placeholder="Lugar de nacimiento" required/>
-            </div>
-            <div class="col-md-1">
-                <label style="font-size:smaller">Edad:</label>
-            </div>
-            <div class="col-md-3">
-                <input class="form-control" id="edadPaciente" name="paciente.edad" placeholder="Edad (años)" required/>
+            <div class="col-md-4">
+                <input class="form-control" id="numeroDocumentoPaciente" name="paciente.numeroDocumento" placeholder="numero documento" required />
             </div>
         </div>
         <br />
         <div class="row">
             <div class="col-md-1">
+                <label style="font-size:smaller">Fecha de nacimiento:</label>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" id="fechaNacimientoPaciente" name="paciente.fechaNacimiento" placeholder="fecha de nacimiento" required />
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Lugar de nacimiento:</label>
+            </div>
+            <div class="col-md-2">
+                @Html.DropDownList("paciente.lugarNacimiento", (IEnumerable<SelectListItem>)ViewBag.ItemCiudades, new { @class = "form-control" })
+                @*<input class="form-control" id="lugarNacimientoPaciente" name="paciente.lugarNacimiento" placeholder="Lugar de nacimiento" required />*@
+            </div>
+            <div class="col-md-2">
+                @Html.DropDownList("paciente.paises.idPais", (IEnumerable<SelectListItem>)ViewBag.ItemPaises, new { @class = "form-control", required ="true" })
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Edad:</label>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" id="edadPaciente" name="paciente.edad" placeholder="Edad (años)" onclick="return prueba();" required />
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-4">
+                <h3>Lugar de residencia</h3>
+            </div>
+            <br />
+        </div>
+        <div class="row">
+            <div class="col-md-1">
                 <label style="font-size:smaller">Dirección:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="direccionPaciente" name="paciente.direccion" placeholder="Direccion" required/>
+                <input class="form-control" id="direccionPaciente" name="paciente.direccion" placeholder="Direccion" required />
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Barrio:</label>
             </div>
             <div class="col-md-3">
-                @Html.DropDownList("paciente.barrio.idBarrio", (IEnumerable<SelectListItem>)ViewBag.ItemBarrios, new { @class = "form-control"})
+                @Html.DropDownList("paciente.barrio.idBarrio", (IEnumerable<SelectListItem>)ViewBag.ItemBarrios, new { @class = "form-control" })
                 @*<input class="form-control" id="Barrio" placeholder="Barrio" />*@
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Localidad:</label>
             </div>
             <div class="col-md-3">
-                @Html.DropDownList("paciente.localidad.idLocalidad", (IEnumerable<SelectListItem>)ViewBag.ItemLocalidades, new { @class = "form-control"})
+                @Html.DropDownList("paciente.localidad.idLocalidad", (IEnumerable<SelectListItem>)ViewBag.ItemLocalidades, new { @class = "form-control" })
             </div>
         </div>
         <br />
@@ -265,13 +316,14 @@
                 <label style="font-size:smaller">Estrato:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="estratoPaciente" name="paciente.estrato" placeholder="Estrato" required/>
+                @Html.DropDownList("paciente.estrato.idEstrato", (IEnumerable<SelectListItem>)ViewBag.ItemEstrato, new { @class = "form-control" })
+                @*<input class="form-control" id="estratoPaciente" name="paciente.estrato" placeholder="Estrato" required />*@
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Telefonos:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="telefonoPaciente" name="paciente.telefono" placeholder="Telefonos" required/>
+                <input class="form-control" id="telefonoPaciente" name="paciente.telefono" placeholder="Telefonos" required />
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Email:</label>
@@ -305,10 +357,14 @@
                 <label style="font-size:smaller">Viene remitido:</label>
             </div>
             <div class="col-md-2">
-                @Html.DropDownList("paciente.remitido.idRemitente", (IEnumerable<SelectListItem>)ViewBag.ItemValidacion, new { @class = "form-control", id= "pacienteVieneRemitido" })
+                @Html.DropDownList("paciente.remitido.idRemitente", (IEnumerable<SelectListItem>)ViewBag.ItemValidacion, new { @class = "form-control", id = "pacienteVieneRemitido" })
             </div>
         </div>
         <br />
+
+
+
+
         <div class="row">
             <div class="col-md-2">
                 <label style="font-size:smaller">Institución que remite:</label>
@@ -323,11 +379,11 @@
                 <label style="font-size:smaller">Profesional que remite:</label>
             </div>
             <div class="col-md-9">
-                <input class="form-control" id="nombreRemitenteRemitido" name="remitido.nombreRemitente" placeholder="Profeisonal que remite" />
+                <input class="form-control" id="nombreRemitenteRemitido" name="remitido.nombreRemitente" placeholder="Profesional que remite" />
             </div>
         </div>
         <br />
-        <div class="row">
+        @*<div class="row">
             <div class="col-md-2">
                 <label style="font-size:smaller">El paciente es nuevo en el CAP :</label>
             </div>
@@ -340,62 +396,73 @@
             <div class="col-md-4">
                 @Html.DropDownList("pacienteAntiguoCAP", (IEnumerable<SelectListItem>)ViewBag.ItemValidacion, new { @class = "form-control" })
             </div>
+        </div>*@
+
+
+        <h3 style="text-align:center; background-color:#9BC2E6">Datos del consultante</h3>
+        <div class="row">
+            <div class="col-md-1">
+                <label style="font-size:smaller">Nombres:</label>
+            </div>
+            <div class="col-md-4">
+                <input class="form-control" id="nombreConsultantePaciente" name="consultante.nombre" placeholder="Nombres" required/>
+            </div>
+            <div class="col-md-2">
+                <label style="font-size:smaller">Apellidos:</label>
+            </div>
+            <div class="col-md-4">
+                <input class="form-control" id="apellidosConsultantePaciente" name="consultante.apellido" placeholder="Apellidos" required/>
+            </div>
         </div>
+        <div class="row">
+            <div class="col-md-1">
+                <label style="font-size:smaller">Parentezco:</label>
+            </div>
+            <div class="col-md-4">
+                <input class="form-control" id="parentezcoConsultantePaciente" name="consultante.parentezco" placeholder="Parentezco" required/>
+            </div>
+            <div class="col-md-2">
+                <label style="font-size:smaller">Teléfonos de contacto:</label>
+            </div>
+            <div class="col-md-4">
+                <input class="form-control" id="telefonoConsultantePaciente" name="consultante.telefono" placeholder="Teléfonos de contacto" required/>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-md-1" style="font-size:smaller">Tipo de documento:</label>
+            <div class="col-md-4">
+                @Html.DropDownList("consultante.tipoDocumento.idDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumentoConsultante, new { @class = "form-control", id="documentoConsultante" })
+            </div>
+            <div class="col-md-2">
+                <label style="font-size:smaller">Número de documento:</label>
+            </div>
+            <div class="col-md-4">
+                <input class="form-control" id="numeroDocumentoConsultante" name="consultante.cedula" placeholder="numero documento" required />
+            </div>
+        </div>
+
     <h3 style="text-align:center; background-color:#9BC2E6">Motivo de consulta</h3>
     <div class="form-group">
         <textarea class="form-control" id="motivoConsultaingresoClinica" name="ingresoClinica.motivoConsulta" style="min-width: 100%" rows="6" required></textarea>
     </div>
-    <h3 style="text-align:center; background-color:#9BC2E6">Factores de riesgo</h3>
-    <div class="row">
-        <div class="col-md-4">
-            <label style="font-size:medium">Intento o ideación suicida:</label>
-        </div>
-        <div class="col-md-1">
-            <input type="checkbox" id="IntentoSuicida">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <label style="font-size:medium">Abuso sexual:</label>
-        </div>
-        <div class="col-md-1">
-            <input type="checkbox" id="Abuso"/>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <label style="font-size:medium">Psicosis y/o trastorno de personalidad:</label>
-        </div>
-        <div class="col-md-1">
-            <input type="checkbox" id="psicosis"/>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <label style="font-size:medium">Consumo de estupefacientes:</label>
-        </div>
-        <div class="col-md-1">
-            <input type="checkbox" id="consumo"/>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <label style="font-size:medium">Violencia domestica no denunciada:</label>
-        </div>
-        <div class="col-md-1">
-            <input type="checkbox" id="violencia"/>
-        </div>
-    </div>
     <br />
     <h3 style="text-align:center; background-color:#9BC2E6">Observaciones</h3>
     <div class="form-group">
-        <textarea class="form-control" style="min-width: 100%" rows="6" id="Observaciones"></textarea>
+        <textarea class="form-control" style="min-width: 100%" rows="6" id="Observaciones"  name="ingresoClinica.observaciones"></textarea>
     </div>
         <br />
     <br />
     <div class="form-group">
+        <div class="col-md-5">
+            <label>Seleccione esta casilla si se va a remitir el paciente:</label>
+        </div>
         <div class="col-md-2">
-            <input type="submit" value="Remitir" class="form-control" id="guardarRemitir" />
+            <input type="checkbox" id="checkBoxSendRemision"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-2">
+            <input type="submit" value="Remitir" class="form-control btn btn-primary" id="guardarRemitir" onclick="return remision();"/>
         </div>
         <div class="col-md-2">
             <input type="submit" value="Guardar" class="form-control" id="guardarHistoria"/>
