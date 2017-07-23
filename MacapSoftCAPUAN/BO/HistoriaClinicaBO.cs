@@ -112,5 +112,18 @@ namespace MacapSoftCAPUAN.BO
             hcDALC = new HistoriaClinicaDALC();
             hcDALC.agregarRemisionL(remision);
         }
+
+        public List<Remision> listarRemisiones() {
+            hcDALC = new HistoriaClinicaDALC();
+            var listaPr = hcDALC.listaPacientesRemitidos();
+            return listaPr;
+        }
+
+        public List<MotivosRemisiones> listarMotivosRemisiones()
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            var listaMotivosR = hcDALC.listaMotivosRemisiones();
+            return listaMotivosR;
+        }
     }
 }

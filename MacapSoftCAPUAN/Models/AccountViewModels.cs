@@ -62,7 +62,21 @@ namespace MacapSoftCAPUAN.Models
         public bool RememberMe { get; set; }
     }
 
-    public class RegisterViewModel
+    public class RecuperarContraseñaViewModel
+    {
+        [Required]
+        [Display(Name = "Email")]
+        [EmailAddress]
+        public string Email { get; set; }
+        //[Required]
+        [DataType(DataType.Password)]
+        //[Display(Name = "Contraseña")]
+        public string Password { get; set; }
+
+    }
+
+
+        public class RegisterViewModel
     {
 
         [Required]

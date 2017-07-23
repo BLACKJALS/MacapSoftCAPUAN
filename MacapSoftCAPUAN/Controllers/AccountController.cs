@@ -183,7 +183,15 @@ namespace MacapSoftCAPUAN.Controllers
                     await this.UserManager.AddToRoleAsync(user.Id, model.UserRoles);
                     return RedirectToAction("Index", "HistoriaClinica");
                 }
-                ModelState.AddModelError("", "Las contraseñas deben tener al menos una letra o un carácter de dígito.Las contraseñas deben tener al menos una minúscula('a' - 'z').Las contraseñas deben tener al menos una mayúscula('A' - 'Z').");
+                if (result.Errors.Contains("Name "+ user.UserName +" is already taken."))
+                {
+                    ModelState.AddModelError("", "El usuario ya existe");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Las contraseñas deben tener al menos una letra o un carácter de dígito.Las contraseñas deben tener al menos una minúscula('a' - 'z').Las contraseñas deben tener al menos una mayúscula('A' - 'Z').");
+                }
+
             }
 
             // If we got this far, something failed, redisplay form
@@ -673,20 +681,48 @@ namespace MacapSoftCAPUAN.Controllers
 
         [Authorize(Roles = "Administrador")]
         [HttpPost]
-        public async Task<ActionResult> RecuperarContraseña(LoginViewModel model, string nuevaContra)
+        public async Task<ActionResult> RecuperarContraseña(RecuperarContraseñaViewModel model, string nuevaContra)
         {
             var user = UserManager.FindByEmailAsync(model.Email).Result;
-            
+            IdentityResult result1;
             if (user != null)
             {
                 user.PasswordHash = null;
-                var result1 = await UserManager.AddPasswordAsync(user.Id, nuevaContra);
+                result1 = await UserManager.AddPasswordAsync(user.Id, nuevaContra);
                 if (result1.Succeeded)
                 {
                     return RedirectToAction("Index", "HistoriaClinica");
                 }
+                if (result1.Errors.Contains("Passwords must have at least one non letter or digit character. Passwords must have at least one digit ('0'-'9'). Passwords must have at least one uppercase ('A'-'Z')."))
+                {
+                    ModelState.AddModelError("", "Las contraseñas deben tener al menos una letra o un carácter de dígito. Al menos una minúscula('a' - 'z'), una mayúscula('A' - 'Z').");
+                    return View(model);
+                }
+                else {
+                    if (result1.Errors.Contains("Passwords must have at least one non letter or digit character."))
+                    {
+                        ModelState.AddModelError("", "La contraseña debe tener al menos un caracter (_-*#).");
+                        return View(model);
+                    }
+                    if (result1.Errors.Contains("Passwords must have at least one digit ('0'-'9')."))
+                    {
+                        ModelState.AddModelError("", "La contraseña debe tener al menos un digito entre 0-9");
+                        return View(model);
+                    }else
+                    {
+                        ModelState.AddModelError("", "Las contraseñas deben tener al menos una minúscula('a' - 'z'), al menos una mayúscula('A' - 'Z') y al menos un caracter (_-*#).");
+                        return View(model);
+                    }
+                }
             }
-            return RedirectToAction("RecuperarContraseña", "Account");
+            if (user == null) {
+                ModelState.AddModelError("", "No existe el correo ingresado.");
+                return View(model);
+            }
+            
+            ModelState.AddModelError("", "Las contraseñas deben tener al menos una letra o un carácter de dígito.Las contraseñas deben tener al menos una minúscula('a' - 'z').Las contraseñas deben tener al menos una mayúscula('A' - 'Z').");
+            return View(model);
+            //return RedirectToAction("RecuperarContraseña", "Account");
         }
 
         #endregion

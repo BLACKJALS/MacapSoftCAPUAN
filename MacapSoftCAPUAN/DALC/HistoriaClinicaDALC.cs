@@ -195,7 +195,7 @@ namespace MacapSoftCAPUAN.DALC
                     //bd.Entry(item.paciente.eps).State = EntityState.Detached;
                     //bd.Entry(item.paciente.paises).State = EntityState.Detached;
                     //bd.Entry(item.paciente.estrato).State = EntityState.Detached;
-                    bd.Entry(item.paciente).State = EntityState.Unchanged;
+                    //--bd.Entry(item.paciente).State = EntityState.Unchanged;
                     //bd.Entry(item.serviSoli).State = EntityState.Unchanged;
                     //bd.Entry(item.diagnostico).State = EntityState.Unchanged;
                     //bd.Entry(item.motivoRemision).State = EntityState.Unchanged;
@@ -209,6 +209,21 @@ namespace MacapSoftCAPUAN.DALC
                 throw argxEx;
             }
             
+        }
+
+        public List<Remision> listaPacientesRemitidos() {
+            bd = new ApplicationDbContext();
+            var listaUsuarios = bd.pacienteContext;
+            var listaRemisiones = bd.remisionContext.ToList();
+            return listaRemisiones;
+        }
+
+
+        public List<MotivosRemisiones> listaMotivosRemisiones()
+        {
+            bd = new ApplicationDbContext();
+            var listaMotivosRemisiones = bd.motivosRemisionesContext.ToList();
+            return listaMotivosRemisiones;
         }
     }
 }

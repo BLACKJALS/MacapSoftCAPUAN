@@ -1,8 +1,12 @@
 ﻿@using MacapSoftCAPUAN.Models
-@model LoginViewModel
+@model RecuperarContraseñaViewModel
 @section scripts{
     <script type="text/javascript">
 
+        $(document).ready(function () {
+            var consecutivo = '@ViewBag.error';
+            $("#error").val(consecutivo);
+        });
 
         function obtenerNuevaContraseña() {
             var nuevaContraseña = $('#ContraseñaNueva').val()
@@ -27,6 +31,7 @@
         @Html.Hidden("nuevaContra")
         <hr />
         @Html.ValidationSummary("La contraseña debe tener al menos 6 caracteres, al menos un carácter, letra y dígito ('0' - '9'), al menos una minúscula ('a' - 'z') y al menos una mayúscula ('A' - 'Z').", new { @class = "formf-control" })
+        <label id="error"></label>
         <div class="form-group">
             <div class="row">
                 <div class="col-md-3">

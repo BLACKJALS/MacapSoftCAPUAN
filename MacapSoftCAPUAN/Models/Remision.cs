@@ -17,14 +17,18 @@ namespace MacapSoftCAPUAN.Models
         public string direccion { get; set; }
         public string telefono { get; set; }
         public string nombreProfesional { get; set; }
-        public ServicioSolicitado serviSoli { get; set; }
+        //public ServicioSolicitado serviSoli { get; set; }
+        public int serviSoli { get; set; }
         public string accionesEmprendidas { get; set; }
         public string expectativasServicio { get; set; }
         public DateTime fechaRemitido { get; set; }
         public string usuario { get; set; }
-        public Diagnostico diagnostico { get; set; }
-        public MotivosRemisiones motivoRemision { get; set; }
-        public Paciente paciente { get; set; }
+        //public Diagnostico diagnostico { get; set; }
+        public string diagnostico { get; set; }
+        //public MotivosRemisiones motivoRemision { get; set; }
+        public int motivoRemision { get; set; }
+        //public Paciente paciente { get; set; }
+        public string paciente { get; set; }
 
         public string programacionPsicologo { get; set; }
         public string anexos { get; set; }

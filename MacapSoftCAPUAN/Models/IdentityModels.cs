@@ -46,5 +46,6 @@ namespace MacapSoftCAPUAN.Models
         public DbSet<TiposDocumentos> tipoDocumentoContext { get; set; }
         public DbSet<Consecutivo> consecutivoContext { get; set; }
         public DbSet<Estrato> estratoContext { get; set; }
+        public DbSet<MotivosRemisiones> motivosRemisionesContext { get; set; }
     }
 }

@@ -224,6 +224,7 @@
     <Compile Include="Mapeo.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelsVM\DiagnosticoVM.cs" />
+    <Compile Include="ModelsVM\MotivoRemisionVM.cs" />
     <Compile Include="ModelsVM\RecepcionCaso.cs" />
     <Compile Include="ModelsVM\RemisionPaciente.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -459,6 +460,7 @@
     <Content Include="Views\HistoriaClinica\PacienteRemitido.cshtml" />
     <Content Include="Views\HistoriaClinica\PacienteRemitidoExitoso.cshtml" />
     <Content Include="Views\HistoriaClinica\IngresoPacientesCreado.cshtml" />
+    <Content Include="Views\HistoriaClinica\listarPacientesRemitidos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

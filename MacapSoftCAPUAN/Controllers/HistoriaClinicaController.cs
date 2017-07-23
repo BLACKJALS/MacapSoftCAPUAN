@@ -157,22 +157,6 @@ namespace MacapSoftCAPUAN.Controllers
         }
 
 
-        //[HttpPost]
-        //public ActionResult IngresoPaciente(string identificacion)
-        //{
-        //    HC = new HistoriaClinicaBO();
-        //    var listaUserr = HC.listarPaciente();
-
-        //    var a = from b in listaUserr where b.numeroDocumento == identificacion select b;   
-
-        //    return View(a);
-        //}
-
-
-
-
-
-
 
         public ActionResult RecepcionCaso(string bussinesUnit)
         {
@@ -239,13 +223,10 @@ namespace MacapSoftCAPUAN.Controllers
                     HC.agregarConsultante(model.consultante);
 
                     consultantePa = new consultantePaciente();
-                    //consultantePa = model.consultantePaciente;
                     consultantePa.idPaciente = model.paciente;
                     consultantePa.idPaciente.numeroDocumento = model.paciente.numeroDocumento;
                     consultantePa.idConsultante = model.consultante;
                     consultantePa.idConsultante.cedula = model.consultante.cedula;
-                    //model.consultantePaciente.idConsultante = model.consultante.cedula;
-                    //model.consultantePaciente.idPaciente = paciente.numeroDocumento;
                     HC.agregarConsultantePaciente(consultantePa);
                 }
 
@@ -256,29 +237,6 @@ namespace MacapSoftCAPUAN.Controllers
                 return View();
             }
             
-            //remision = model.remision;
-            //HC.agregarRemision(remision);
-            //remitido = model.remitido;
-            //HC.agregarRemitido(remitido);
-            //paciente = model.paciente;
-            
-
-            //var userId = System.Web.HttpContext.Current.User.Identity.GetUserId();
-            //paciente.idUser = userId;
-            
-            //var a = model.paciente.numeroDocumento;
-            
-            //HC.agregarpaciente(paciente);
-            //if (model.consultante.cedula != null) {
-                
-            //}
-            //if (model.paciente.numeroDocumento != null)
-            //{
-                
-            //}
-            //ingresoClinica = model.ingresoClinica;
-            //remision = model.remision;
-            //remitido = model.remitido;
             try
             {
                 if (Informacion == "1")
@@ -311,9 +269,9 @@ namespace MacapSoftCAPUAN.Controllers
                     remisionPaciente = new Remision();
                     motivoRem = new MotivosRemisiones();
                     motivoRem.idMotivoRemision = int.Parse(item);
-                    remisionPaciente.motivoRemision = motivoRem;
+                    remisionPaciente.motivoRemision = motivoRem.idMotivoRemision;
                     remisionPaciente.fechaRemitido = fechaRemision; 
-                    remisionPaciente.paciente = modelRemision.paciente;
+                    remisionPaciente.paciente = modelRemision.paciente.numeroDocumento;
                     listaResmisionPaciente.Add(remisionPaciente);
                 }
             }
@@ -327,6 +285,59 @@ namespace MacapSoftCAPUAN.Controllers
             }
             return View("PacienteRemitidoExitoso");
         }
+
+        public ActionResult listarPacientesRemitidos() {
+            return View();
+        }
+
+
+        public JsonResult listarPacientesRemitidosCAP() {
+            HC = new HistoriaClinicaBO();
+            MotivoRemisionVM motivoRemisionVM;
+            List<MotivoRemisionVM> listaMotivoRemision = new List<MotivoRemisionVM>();
+            Dictionary<string, MotivoRemisionVM> mtv = new Dictionary<string, MotivoRemisionVM>();
+
+            var listaRemisiones = HC.listarRemisiones();
+            var listaMotivosRemisiones = HC.listarMotivosRemisiones();
+            var listaPacientes = HC.listarPaciente();
+
+            foreach (var item in listaRemisiones)
+            {
+                motivoRemisionVM = new MotivoRemisionVM();
+                foreach (var itemlmr in listaMotivosRemisiones)
+                {
+                    if (itemlmr.idMotivoRemision == item.motivoRemision) {
+                        motivoRemisionVM.id = item.paciente;
+                        motivoRemisionVM.nombrePaciente = (from pa in listaPacientes where pa.numeroDocumento == item.paciente select pa.nombre).FirstOrDefault() + " ";
+                        motivoRemisionVM.nombrePaciente += (from pa in listaPacientes where pa.numeroDocumento == item.paciente select pa.apellido).FirstOrDefault() + " ";
+                        motivoRemisionVM.nombreMotivoRemision = itemlmr.nombre;
+                        motivoRemisionVM.fecha = item.fechaRemitido;
+                        listaMotivoRemision.Add(motivoRemisionVM);
+                    } 
+                }
+            }
+            
+            foreach (var itemPaciente in listaMotivoRemision)
+            {
+                motivoRemisionVM = new MotivoRemisionVM();
+                motivoRemisionVM = itemPaciente;
+                if (!(mtv.ContainsKey(itemPaciente.id)))
+                {
+                    mtv.Add(itemPaciente.id, itemPaciente);
+                }
+                else
+                {
+                    var a = mtv.FirstOrDefault(x => x.Key == itemPaciente.id);
+                    mtv.Remove(itemPaciente.id);
+                    itemPaciente.nombreMotivoRemision += " "+ a.Value.nombreMotivoRemision;
+                    mtv.Add(itemPaciente.id, itemPaciente);
+                }
+            }
+
+            return Json(mtv.Values, JsonRequestBehavior.AllowGet);
+        }
+
+
 
         public ActionResult listaHistoriasClinicas() {
             return View();
