@@ -193,10 +193,15 @@ namespace MacapSoftCAPUAN.Controllers
                 ViewBag.fechaNacimiento = fecha;
                 ViewBag.numeroDocumento = recepcion.paciente.numeroDocumento;
                 ViewBag.telefono = recepcion.paciente.telefono;
-                ViewBag.entidadRemitido = recepcion.remitido.nombreEntidad;
-                ViewBag.profesionalRemitido = recepcion.remitido.nombreRemitente;
-                ViewBag.motivoConsulta = recepcion.ingresoClinica.motivoConsulta;
-                ViewBag.Observaciones = recepcion.ingresoClinica.observaciones;
+                if (recepcion.remitido != null) {
+                    ViewBag.entidadRemitido = recepcion.remitido.nombreEntidad;
+                    ViewBag.profesionalRemitido = recepcion.remitido.nombreRemitente;
+                }
+                if (recepcion.ingresoClinica != null)
+                {
+                    ViewBag.motivoConsulta = recepcion.ingresoClinica.motivoConsulta;
+                    ViewBag.Observaciones = recepcion.ingresoClinica.observaciones;
+                }
                 return View(recepcion);
             }
             return View(recepcion);
