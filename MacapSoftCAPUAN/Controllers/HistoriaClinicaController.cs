@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -29,8 +30,25 @@ namespace MacapSoftCAPUAN.Controllers
 
         public ActionResult IngresoPacientes(string identificacion)
         {
+            
             HC = new HistoriaClinicaBO();
-            List<SelectListItem> listaItemsBarrios = new List<SelectListItem>();
+            Paciente paciente = new Paciente();
+            RecepcionCaso recepcion = new RecepcionCaso();
+            IngresoClinica ingresoCli = new IngresoClinica();
+            Remitido remitido = new Remitido();
+            var listaPaciente = from item in HC.listarPaciente() where item.numeroDocumento == identificacion select item;
+            paciente = listaPaciente.FirstOrDefault();
+            recepcion.paciente = paciente;
+            if (paciente != null) {
+                var pacienteIngreso = from item in HC.listarIngresoClinica() where item.id_paciente == paciente.numeroDocumento select item;
+                ingresoCli = pacienteIngreso.FirstOrDefault();
+                recepcion.ingresoClinica = ingresoCli;
+
+                var remitidoP = from item in HC.listarRemitido() where item.id_paciente == paciente.numeroDocumento select item;
+                remitido = remitidoP.FirstOrDefault();
+                recepcion.remitido = remitido;
+            }
+            List < SelectListItem > listaItemsBarrios = new List<SelectListItem>();
             List<SelectListItem> listaItemsDocumento = new List<SelectListItem>();
             List<SelectListItem> listaItemsDocumentoConsultante = new List<SelectListItem>();
             List<SelectListItem> listaItemsLocalidades = new List<SelectListItem>();
@@ -141,9 +159,16 @@ namespace MacapSoftCAPUAN.Controllers
                 listaItemsEps.Add(items);
             }
 
-            var consectivo = HC.listarConsecutivo().Last();
-            ViewBag.itemConsecutivo = consectivo.numeroConsecutivo;
+            if (paciente == null)
+            {
+                var consecutivo = HC.listarConsecutivo().Last();
+                ViewBag.itemConsecutivo = consecutivo.numeroConsecutivo;
 
+            }
+            else {
+                ViewBag.itemConsecutivo = paciente.consecutivo;
+            }
+            ViewBag.nPc = identificacion;
             ViewBag.ItemLocalidades = listaItemsLocalidades.ToList();
             ViewBag.ItemBarrios = listaItemsBarrios.ToList();
             ViewBag.ItemDocumento = listaItemsDocumento.ToList();
@@ -153,7 +178,28 @@ namespace MacapSoftCAPUAN.Controllers
             ViewBag.ItemPaises = listaItemsPaises.ToList();
             ViewBag.ItemEstrato = listaItemsEstrato.ToList();
             ViewBag.ItemCiudades = listaItemsCuidades.ToList();
-            return View();
+            if (recepcion.paciente != null)
+            {
+                ViewBag.existente = "Si";
+                ViewBag.nombre = recepcion.paciente.nombre;
+                ViewBag.apellido = recepcion.paciente.apellido;
+                ViewBag.direccion = recepcion.paciente.direccion;
+                //ViewBag.edad = recepcion.paciente.edad;
+                ViewBag.email = recepcion.paciente.email;
+                var fechN = (recepcion.paciente.fechaNacimiento).ToString();
+                var fechnStr = DateTime.Parse(fechN);
+                string format = "yyyy-MM-dd";
+                var fecha = fechnStr.ToString(format);
+                ViewBag.fechaNacimiento = fecha;
+                ViewBag.numeroDocumento = recepcion.paciente.numeroDocumento;
+                ViewBag.telefono = recepcion.paciente.telefono;
+                ViewBag.entidadRemitido = recepcion.remitido.nombreEntidad;
+                ViewBag.profesionalRemitido = recepcion.remitido.nombreRemitente;
+                ViewBag.motivoConsulta = recepcion.ingresoClinica.motivoConsulta;
+                ViewBag.Observaciones = recepcion.ingresoClinica.observaciones;
+                return View(recepcion);
+            }
+            return View(recepcion);
         }
 
 
@@ -209,24 +255,52 @@ namespace MacapSoftCAPUAN.Controllers
             Remitido remitido = new Remitido();
             Remision remision = new Remision();
             Consecutivo consecutivo = new Consecutivo();
+            var listaPacientes = HC.listarPaciente();
+            var pacienteExistente = from p in listaPacientes where p.numeroDocumento == model.paciente.numeroDocumento select p;
+            Paciente pacienteEx = new Paciente();
+            pacienteEx = pacienteExistente.FirstOrDefault();
+            if (model.paciente.tieneEps == "NO") {
+                model.paciente.id_Eps = "No tiene";
+            }
+            if (pacienteEx != null)
+            {
+                model.paciente.idUser = System.Web.HttpContext.Current.User.Identity.GetUserId();
+                HC.modificarPaciente(model.paciente);
+            }
+            else {
 
             try
             {
                 consecutivo = model.consecutivo;
                 model.paciente.idUser = System.Web.HttpContext.Current.User.Identity.GetUserId();
                 paciente = model.paciente;
+                paciente.consecutivo = consecutivo.numeroConsecutivo;
+                paciente.id_profesion = 1;
+                paciente.id_NivelEscolaridad = 1;
                 HC.agregarpaciente(paciente);
-
                 HC.agregarConsecutivo(consecutivo);
+                ingresoClinica = model.ingresoClinica;
+                model.ingresoClinica.id_paciente = model.paciente.numeroDocumento;
+                    
+                //ingresoClinica.fechaIngreso = model.ingresoClinica.fechaIngreso;
+                //ingresoClinica.id_paciente = model.ingresoClinica.id_paciente;
+                //ingresoClinica.id_paciente = model.paciente.numeroDocumento;
+                HC.ingresoClinica(ingresoClinica);
+                if (model.remitido.nombreEntidad != null) {
+                        remitido = model.remitido;
+                        remitido.id_paciente = model.paciente.numeroDocumento;
+                        HC.agregarRemitido(remitido);
+                }
+
                 if (model.consultante.cedula != null)
                 {
                     HC.agregarConsultante(model.consultante);
 
                     consultantePa = new consultantePaciente();
-                    consultantePa.idPaciente = model.paciente;
-                    consultantePa.idPaciente.numeroDocumento = model.paciente.numeroDocumento;
-                    consultantePa.idConsultante = model.consultante;
-                    consultantePa.idConsultante.cedula = model.consultante.cedula;
+                    consultantePa.IdPaciente = model.paciente;
+                    consultantePa.id_Paciente = model.paciente.numeroDocumento;
+                    consultantePa.IdConsultante = model.consultante;
+                    consultantePa.id_Consultante = model.consultante.cedula;
                     HC.agregarConsultantePaciente(consultantePa);
                 }
 
@@ -236,7 +310,7 @@ namespace MacapSoftCAPUAN.Controllers
                 ViewBag.error = ex.Message;
                 return View();
             }
-            
+            }
             try
             {
                 if (Informacion == "1")
@@ -271,7 +345,7 @@ namespace MacapSoftCAPUAN.Controllers
                     motivoRem.idMotivoRemision = int.Parse(item);
                     remisionPaciente.motivoRemision = motivoRem.idMotivoRemision;
                     remisionPaciente.fechaRemitido = fechaRemision; 
-                    remisionPaciente.paciente = modelRemision.paciente.numeroDocumento;
+                    remisionPaciente.id_paciente = modelRemision.paciente.numeroDocumento;
                     listaResmisionPaciente.Add(remisionPaciente);
                 }
             }
@@ -307,9 +381,9 @@ namespace MacapSoftCAPUAN.Controllers
                 foreach (var itemlmr in listaMotivosRemisiones)
                 {
                     if (itemlmr.idMotivoRemision == item.motivoRemision) {
-                        motivoRemisionVM.id = item.paciente;
-                        motivoRemisionVM.nombrePaciente = (from pa in listaPacientes where pa.numeroDocumento == item.paciente select pa.nombre).FirstOrDefault() + " ";
-                        motivoRemisionVM.nombrePaciente += (from pa in listaPacientes where pa.numeroDocumento == item.paciente select pa.apellido).FirstOrDefault() + " ";
+                        motivoRemisionVM.id = item.id_paciente;
+                        motivoRemisionVM.nombrePaciente = (from pa in listaPacientes where pa.numeroDocumento == item.id_paciente select pa.nombre).FirstOrDefault() + " ";
+                        motivoRemisionVM.nombrePaciente += (from pa in listaPacientes where pa.numeroDocumento == item.id_paciente select pa.apellido).FirstOrDefault() + " ";
                         motivoRemisionVM.nombreMotivoRemision = itemlmr.nombre;
                         motivoRemisionVM.fecha = item.fechaRemitido;
                         listaMotivoRemision.Add(motivoRemisionVM);

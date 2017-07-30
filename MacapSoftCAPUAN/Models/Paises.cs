@@ -24,42 +24,36 @@ namespace MacapSoftCAPUAN.Models
     {
         [Key]
         public string idCiudad { get; set; }
-        public string nombre { get; set; }
-        public Paises pais { get; set; }
-        //public Paises pais { get; set; }
-        ////public virtual Paises paises { get; set; }
-        //public virtual ICollection<Localidades> localidades { get; set; }
+        [ForeignKey("Pais")]
+        public string id_pais { get; set; }
 
-        //public Ciudades()
-        //{
-        //    this.localidades = new HashSet<Localidades>();
-        //}
+        public string nombre { get; set; }
+        public Paises Pais { get; set; }
     }
+
+
 
     [Table("dbo.Localidades")]
     public class Localidades
     {
         [Key]
         public string idLocalidad { get; set; }
+        [ForeignKey("Ciudad")]
+        public string id_ciudad { get; set; }
+
         public string nombre { get; set; }
-        public Ciudades ciudad { get; set; }
-        ////public long idCiudad { get; set; }
-        //public virtual Ciudades ciudades { get; set; }
-        //public virtual ICollection<Barrios> barrios { get; set; }
-        //public Localidades()
-        //{
-        //    this.barrios = new HashSet<Barrios>();
-        //}
+        public Ciudades Ciudad { get; set; }
     }
 
     [Table("dbo.Barrios")]
     public class Barrios{
         [Key]
         public string idBarrio { get; set; }
+        [ForeignKey("Localidades")]
+        public string id_localidad { get; set; }
+
         public string nombre { get; set; }
-        public Localidades localidades { get; set; }
-        ////public long idLocalidad { get; set; }
-        //public virtual Localidades localidades { get; set; }
+        public Localidades Localidades { get; set; }
     }
 
     

@@ -95,6 +95,31 @@ namespace MacapSoftCAPUAN.DALC
             bd.SaveChanges();
         }
 
+        public void agregarIngresoClinica(IngresoClinica ingresoClinica)
+        {
+            try
+            {
+                bd = new ApplicationDbContext();
+                bd.ingresoClinicaContext.Add(ingresoClinica);
+                //bd.Entry(ingresoClinica.EntidadRemitente).State = EntityState.Detached;
+                bd.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+        }
+
+        public List<IngresoClinica> listarIngresoClinica()
+        {
+            bd = new ApplicationDbContext();
+            List<IngresoClinica> listaIngresoClinica = new List<IngresoClinica>();
+            listaIngresoClinica = bd.ingresoClinicaContext.ToList();
+            return listaIngresoClinica;
+        }
+
         public string agregarPaciente(Paciente paciente)
         {
 
@@ -102,12 +127,12 @@ namespace MacapSoftCAPUAN.DALC
             {
                 bd = new ApplicationDbContext();
                 bd.pacienteContext.Add(paciente);
-                bd.Entry(paciente.barrio).State = EntityState.Unchanged;//Esto permite que en la tabla barrio no se agregue otro registro que viene del formulario
-                bd.Entry(paciente.eps).State = EntityState.Unchanged;
-                bd.Entry(paciente.localidad).State = EntityState.Unchanged;
-                bd.Entry(paciente.tipoDocumento).State = EntityState.Unchanged;
-                bd.Entry(paciente.paises).State = EntityState.Unchanged;
-                bd.Entry(paciente.estrato).State = EntityState.Unchanged;
+                //bd.Entry(paciente.barrio).State = EntityState.Unchanged;//Esto permite que en la tabla barrio no se agregue otro registro que viene del formulario
+                //bd.Entry(paciente.eps).State = EntityState.Unchanged;
+                //bd.Entry(paciente.localidad).State = EntityState.Unchanged;
+                //bd.Entry(paciente.tipoDocumento).State = EntityState.Unchanged;
+                //bd.Entry(paciente.paises).State = EntityState.Unchanged;
+                //bd.Entry(paciente.id_estrato).State = EntityState.Unchanged;
                 bd.SaveChanges();
                 return "paciente creado existosamente";
             }
@@ -127,7 +152,7 @@ namespace MacapSoftCAPUAN.DALC
             {
                 bd = new ApplicationDbContext();
                 bd.consultanteContext.Add(consultante);
-                bd.Entry(consultante.tipoDocumento).State = EntityState.Unchanged;//Esto permite que en la tabla barrio no se agregue otro registro que viene del formulario
+                //bd.Entry(consultante.tipoDocumento).State = EntityState.Unchanged;//Esto permite que en la tabla barrio no se agregue otro registro que viene del formulario
                 bd.SaveChanges();
                 return "Consultante creado existosamente";
             }
@@ -150,15 +175,10 @@ namespace MacapSoftCAPUAN.DALC
             {
                 bd = new ApplicationDbContext();
                 bd.consultantePacienteContext.Add(consultantePa);
-                bd.Entry(consultantePa.idConsultante.tipoDocumento).State = EntityState.Detached;
-                bd.Entry(consultantePa.idPaciente.barrio).State = EntityState.Detached;
-                bd.Entry(consultantePa.idPaciente.localidad).State = EntityState.Detached;
-                bd.Entry(consultantePa.idPaciente.tipoDocumento).State = EntityState.Detached;
-                bd.Entry(consultantePa.idPaciente.eps).State = EntityState.Detached;
-                bd.Entry(consultantePa.idPaciente.paises).State = EntityState.Detached;
-                bd.Entry(consultantePa.idPaciente.estrato).State = EntityState.Detached;
-                bd.Entry(consultantePa.idConsultante).State = EntityState.Unchanged;
-                bd.Entry(consultantePa.idPaciente).State = EntityState.Unchanged;
+                //bd.Entry(consultantePa.idConsultante.tipoDocumento).State = EntityState.Detached;
+                //bd.Entry(consultantePa.idConsultante).State = EntityState.Unchanged;
+                bd.Entry(consultantePa.IdConsultante).State = EntityState.Unchanged;
+                bd.Entry(consultantePa.IdPaciente).State = EntityState.Unchanged;
                 bd.SaveChanges();
                 return "ConsultantePaciente creado existosamente";
             }
@@ -189,16 +209,6 @@ namespace MacapSoftCAPUAN.DALC
                 foreach (var item in remision)
                 {
                     bd.remisionContext.Add(item);
-                    //bd.Entry(item.paciente.barrio).State = EntityState.Detached;
-                    //bd.Entry(item.paciente.localidad).State = EntityState.Detached;
-                    //bd.Entry(item.paciente.tipoDocumento).State = EntityState.Detached;
-                    //bd.Entry(item.paciente.eps).State = EntityState.Detached;
-                    //bd.Entry(item.paciente.paises).State = EntityState.Detached;
-                    //bd.Entry(item.paciente.estrato).State = EntityState.Detached;
-                    //--bd.Entry(item.paciente).State = EntityState.Unchanged;
-                    //bd.Entry(item.serviSoli).State = EntityState.Unchanged;
-                    //bd.Entry(item.diagnostico).State = EntityState.Unchanged;
-                    //bd.Entry(item.motivoRemision).State = EntityState.Unchanged;
                 }
                 bd.SaveChanges();
                 return "Se ha creado correctamente la remisión.";
@@ -224,6 +234,48 @@ namespace MacapSoftCAPUAN.DALC
             bd = new ApplicationDbContext();
             var listaMotivosRemisiones = bd.motivosRemisionesContext.ToList();
             return listaMotivosRemisiones;
+        }
+
+        public string modificarPaciente(Paciente paciente)
+        {
+
+            try
+            {
+                var pacienteMod = new Paciente { numeroDocumento = paciente.numeroDocumento};
+                using (var context = new ApplicationDbContext())
+                {
+                    context.pacienteContext.Attach(pacienteMod);
+                    pacienteMod.nombre = paciente.nombre;
+                    pacienteMod.apellido = paciente.apellido;
+                    pacienteMod.fechaNacimiento = paciente.fechaNacimiento;
+                    pacienteMod.id_estrato = paciente.id_estrato;
+                    pacienteMod.id_localidad = paciente.id_localidad;
+                    pacienteMod.id_barrio = paciente.id_barrio;
+                    pacienteMod.id_Eps = paciente.id_Eps;
+                    pacienteMod.direccion = paciente.direccion;
+                    pacienteMod.edad = paciente.edad;
+                    pacienteMod.email = paciente.email;
+                    pacienteMod.idUser = paciente.idUser;
+                    pacienteMod.id_ciudad = paciente.id_ciudad;
+                    pacienteMod.telefono = paciente.telefono;
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo actualizar el paciente creado.", e.Message);
+                throw argxEx;
+            }
+            return "Exito";
+        }
+
+        public List<Remitido> listarRemitido()
+        {
+            bd = new ApplicationDbContext();
+            List<Remitido> listaRemision = new List<Remitido>();
+            listaRemision = bd.remitidoContext.ToList();
+            return listaRemision;
         }
     }
 }

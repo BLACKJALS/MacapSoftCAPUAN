@@ -69,10 +69,19 @@ namespace MacapSoftCAPUAN.BO
             hcDALC.agregarRemision(remision);
         }
 
-        public void agregarRemitido(Remitido remitido)
+        public string agregarRemitido(Remitido remitido)
         {
-            hcDALC = new HistoriaClinicaDALC();
-            hcDALC.agregarRemitido(remitido);
+            try
+            {
+                hcDALC = new HistoriaClinicaDALC();
+                hcDALC.agregarRemitido(remitido);
+                return "Creado existoso";
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
         }
 
         public List<Paciente> listarPaciente() {
@@ -124,6 +133,51 @@ namespace MacapSoftCAPUAN.BO
             hcDALC = new HistoriaClinicaDALC();
             var listaMotivosR = hcDALC.listaMotivosRemisiones();
             return listaMotivosR;
+        }
+
+        public string modificarPaciente(Paciente paciente)
+        {
+            try
+            {
+                hcDALC = new HistoriaClinicaDALC();
+                hcDALC.modificarPaciente(paciente);
+                return "Se ha actualizado correctamente el paciente";
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+            
+        }
+
+        public string ingresoClinica(IngresoClinica ingresoClinica) {
+            try
+            {
+                hcDALC = new HistoriaClinicaDALC();
+                hcDALC.agregarIngresoClinica(ingresoClinica);
+                return "Se ha creado el ingreso clinica correctamente del paciente";
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+
+        }
+        
+
+        public List<IngresoClinica> listarIngresoClinica()
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            var listaIngrCl = hcDALC.listarIngresoClinica();
+            return listaIngrCl;
+        }
+
+        public List<Remitido> listarRemitido() {
+            hcDALC = new HistoriaClinicaDALC();
+            var listaRem = hcDALC.listarRemitido();
+            return listaRem;
         }
     }
 }

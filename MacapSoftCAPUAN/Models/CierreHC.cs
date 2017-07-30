@@ -14,14 +14,21 @@ namespace MacapSoftCAPUAN.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int idCierreHC { get; set; }
+        [ForeignKey("Paciente")]
+        public string id_paciente { get; set; }
+        [ForeignKey("Consulta")]
+        public int id_consulta { get; set; }
+        [ForeignKey("MotivoCierre")]
+        public int id_motivoCierre { get; set; }
+        public int MyProperty { get; set; }
         public DateTime fechaInicioPsicoterapia { get; set; }
         public DateTime fechaFinalizaionPsicoterapia { get; set; }
         public string numeroCitasAsignadas { get; set; }
         public string numeroSesionesRealizadas { get; set; }
         public string idUsuario { get; set; }
         public Consulta Consulta { get; set; }
-        public Paciente paciente { get; set; }
-        public MotivosCierre motivoCierre { get; set; }
+        public Paciente Paciente { get; set; }
+        public MotivosCierre MotivoCierre { get; set; }
 
     }
 

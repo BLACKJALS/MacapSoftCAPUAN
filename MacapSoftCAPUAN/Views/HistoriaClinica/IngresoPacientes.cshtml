@@ -10,21 +10,52 @@
     <link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap-datepicker.js"></script>
     <script src="~/Scripts/locales/bootstrap-datepicker.es.min.js"></script>
-    @*<script src="http://momentjs.com/downloads/moment.min.js"></script>*@
+
     <script>
         $(document).ready(function () {
             $("#guardarRemitir").prop("disabled", true);
             $('#nombreEntidadRemitido').prop("disabled", true);
             $('#nombreRemitenteRemitido').prop("disabled", true);
             $('#listadosEPS').prop("disabled", true);
+            var motConsul = '@ViewBag.motivoConsulta';
+            var motObs = '@ViewBag.Observaciones';
+            $("#motivoConsultaingresoClinica").val(motConsul);
+            $("#Observaciones").val(motObs);
+            var existente = '@ViewBag.existente';
             var consecutivo = '@ViewBag.itemConsecutivo';
-            $("#Consecutivo").val(parseInt(consecutivo) + 1);
+
+            var npC = '@ViewBag.nPc';
+            $("#numeroDocumentoPaciente").val(npC);
+            if (existente != "Si") {
+                $("#Consecutivo").val(parseInt(consecutivo) + 1);
+            } else {
+                $("#Consecutivo").val(consecutivo);
+            }
+
+            $("#Consecutivo").attr('readonly', 'readonly');
+
+
+            if (existente == "Si") {
+                var fechN = '@ViewBag.fechaNacimiento';
+                $("#fechaNacimientoPaciente").val(fechN);
+                $( "#fechaNacimientoPaciente" ).datepicker( "option", "disabled", true );
+                //$("#fechaNacimientoPaciente").datepicker({minDate:-1,maxDate:-2}).attr('readonly','readonly');
+                $("#fechaNacimientoPaciente").prop('disabled', true);
+                //$('#fechaNacimientoPaciente').attr('readonly', 'readonly');
+                $('#nombrePaciente').attr('readonly', 'readonly');
+                $('#apellidoPaciente').attr('readonly', 'readonly');
+                $('#tipoDocumentoPac').attr('readonly', 'readonly');
+                $('#numeroDocumentoPaciente').attr('readonly', 'readonly');
+                $('#lugarNacimientoPac').attr('readonly', 'readonly');
+                $('#paisPac').attr('readonly', 'readonly');
+
+            }
+            $('#nombrePaciente').val();
 
             var hoy = new Date();
             var fechaHoy = hoy.getFullYear() + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + ("0" + hoy.getDate()).slice(-2);
-            //var fechaHoy = ("0" + hoy.getDate()).slice(-2) + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + hoy.getFullYear();
-            //$("#ingresoClinica").val(fechaHoy).prop("disabled", true);
             $("#ingresoClinica").val(fechaHoy);
+            $("#ingresoClinica").attr('readonly', 'readonly');
         });
 
         function regresar(){
@@ -34,7 +65,6 @@
                 type: 'POST',
                 url: '@Url.Action("Index", "HistoriaClinica")',
                 failure: function (response) {
-                    //$('#result').html(response);
                 }
             });
         }
@@ -42,8 +72,6 @@
         function fechaHoy() {
             var hoy = new Date();
             var fechaHoy = hoy.getFullYear() + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + ("0" + hoy.getDate()).slice(-2);
-            //var fechaHoy = ("0" + hoy.getDate()).slice(-2) + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + hoy.getFullYear();
-            //$("#ingresoClinica").val(fechaHoy).prop("disabled", true);
             $("#ingresoClinica").val(fechaHoy);
         }
 
@@ -59,18 +87,6 @@
 
 
         $(function () {
-            //$('#ingresoClinica').datepicker({
-            //    format: 'yyyy-mm-dd',
-            //    onShow: function (ct) {
-            //        this.setOptions({
-            //            minDate: jQuery('#ingresoClinica').val() ? jQuery('#ingresoClinica').val() : false
-            //            , formatDate: 'Y-m-d'
-            //            , language: 'es'
-            //        })
-            //    },
-            //    timepicker: false
-            //});
-
             $('#fechaNacimientoPaciente').datepicker({
                 format: 'yyyy-mm-dd',
                 onShow: function (ct) {
@@ -84,12 +100,27 @@
             });
         });
 
+
+        $('#paisPac').click(function () {
+            var existente = '@ViewBag.existente';
+            if (existente == "Si") {
+                alert("No se puede modificar el país de nacimiento");
+            }
+        });
+
+        $('#lugarNacimientoPac').click(function () {
+            var existente = '@ViewBag.existente';
+            if (existente == "Si") {
+                alert("No se puede modificar la ciudad de naciemiento");
+            }
+        });
+
+
         $('#checkBoxSendRemision').click(function () {
             disbledButtonRemisions();
         });
 
         function disbledButtonRemisions() {
-            //set initial state.
             var remision = $('#checkBoxSendRemision').is(':checked');
 
             if (remision == true ) {
@@ -110,11 +141,9 @@
             if (fecha2 != "") {
                 var hoy2 = new Date(fecha2);
                 var diferenciasFechas = (hoy - hoy2);
-                //hoy.diff(hoy2, 'hours');
                 var valorDias = Math.round((diferenciasFechas / (1000 * 60 * 60 * 24)));
                 var edad = parseInt(valorDias / 365);
                 $("#edadPaciente").val(edad);
-                //$("#edadPaciente").prop("disabled", true);
 
                 if (edad > 18) {
                     $("#nombreConsultantePaciente").prop("disabled", true);
@@ -135,7 +164,6 @@
         }
 
         function disbledButton() {
-            //set initial state.
             var intentoSuicida = $('#IntentoSuicida').is(':checked');
             var abuso = $('#Abuso').is(':checked');
             var psicosis = $('#psicosis').is(':checked');
@@ -235,26 +263,26 @@
                 <label style="font-size:smaller">Nombres:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="nombrePaciente" name="paciente.nombre" placeholder="Nombres" required />
+                <input class="form-control" id="nombrePaciente" name="paciente.nombre" placeholder="Nombres" value="@ViewBag.nombre" required />
             </div>
             <div class="col-md-2">
                 <label style="font-size:smaller">Apellidos:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="apellidoPaciente" name="paciente.apellido" placeholder="Apellidos" required />
+                <input class="form-control" id="apellidoPaciente" name="paciente.apellido" placeholder="Apellidos" value="@ViewBag.apellido" required />
             </div>
         </div>
         <br />
         <div class="row">
             <label class="col-md-1" style="font-size:smaller">Tipo de documento:</label>
             <div class="col-md-4">
-                @Html.DropDownList("paciente.tipoDocumento.idDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumento, new { @class = "form-control" })
+                @Html.DropDownList("paciente.id_tipoDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumento, new { @class = "form-control", id="tipoDocumentoPac" })
             </div>
             <div class="col-md-2">
                 <label style="font-size:smaller">Numero de documento:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="numeroDocumentoPaciente" name="paciente.numeroDocumento" placeholder="numero documento" required />
+                <input class="form-control" id="numeroDocumentoPaciente" name="paciente.numeroDocumento" placeholder="numero documento" value="@ViewBag.numeroDocumento" required />
             </div>
         </div>
         <br />
@@ -263,23 +291,23 @@
                 <label style="font-size:smaller">Fecha de nacimiento:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="fechaNacimientoPaciente" name="paciente.fechaNacimiento" placeholder="fecha de nacimiento" required />
-            </div>
-            <div class="col-md-1">
-                <label style="font-size:smaller">Lugar de nacimiento:</label>
+                <input class="form-control" id="fechaNacimientoPaciente" name="paciente.fechaNacimiento" placeholder="fecha de nacimiento"  required />
             </div>
             <div class="col-md-2">
-                @Html.DropDownList("paciente.lugarNacimiento", (IEnumerable<SelectListItem>)ViewBag.ItemCiudades, new { @class = "form-control" })
+                <label style="font-size:smaller">Lugar de nacimiento (País, Ciudad):</label>
+            </div>
+            <div class="col-md-2">
+                @Html.DropDownList("paciente.id_paises", (IEnumerable<SelectListItem>)ViewBag.ItemPaises, new { @class = "form-control", required = "true", id = "paisPac" })
+            </div>
+            <div class="col-md-2">
+                @Html.DropDownList("paciente.id_ciudad", (IEnumerable<SelectListItem>)ViewBag.ItemCiudades, new { @class = "form-control", id="lugarNacimientoPac", required = "true" })
                 @*<input class="form-control" id="lugarNacimientoPaciente" name="paciente.lugarNacimiento" placeholder="Lugar de nacimiento" required />*@
-            </div>
-            <div class="col-md-2">
-                @Html.DropDownList("paciente.paises.idPais", (IEnumerable<SelectListItem>)ViewBag.ItemPaises, new { @class = "form-control", required ="true" })
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Edad:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="edadPaciente" name="paciente.edad" placeholder="Edad (años)" onclick="return prueba();" required />
+                <input class="form-control" id="edadPaciente" name="paciente.edad" placeholder="Edad (años)" onclick="return prueba();" value="@ViewBag.edad" required />
             </div>
         </div>
         <br />
@@ -291,23 +319,23 @@
         </div>
         <div class="row">
             <div class="col-md-1">
-                <label style="font-size:smaller">Dirección:</label>
+                <label style="font-size:smaller">Localidad:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="direccionPaciente" name="paciente.direccion" placeholder="Direccion" required />
+                @Html.DropDownList("paciente.id_localidad", (IEnumerable<SelectListItem>)ViewBag.ItemLocalidades, new { @class = "form-control", required = "true" })
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Barrio:</label>
             </div>
             <div class="col-md-3">
-                @Html.DropDownList("paciente.barrio.idBarrio", (IEnumerable<SelectListItem>)ViewBag.ItemBarrios, new { @class = "form-control" })
+                @Html.DropDownList("paciente.id_barrio", (IEnumerable<SelectListItem>)ViewBag.ItemBarrios, new { @class = "form-control", required = "true" })
                 @*<input class="form-control" id="Barrio" placeholder="Barrio" />*@
             </div>
             <div class="col-md-1">
-                <label style="font-size:smaller">Localidad:</label>
+                <label style="font-size:smaller">Dirección:</label>
             </div>
             <div class="col-md-3">
-                @Html.DropDownList("paciente.localidad.idLocalidad", (IEnumerable<SelectListItem>)ViewBag.ItemLocalidades, new { @class = "form-control" })
+                <input class="form-control" id="direccionPaciente" name="paciente.direccion" placeholder="Direccion" value="@ViewBag.direccion" required />
             </div>
         </div>
         <br />
@@ -316,20 +344,20 @@
                 <label style="font-size:smaller">Estrato:</label>
             </div>
             <div class="col-md-3">
-                @Html.DropDownList("paciente.estrato.idEstrato", (IEnumerable<SelectListItem>)ViewBag.ItemEstrato, new { @class = "form-control" })
+                @Html.DropDownList("paciente.id_estrato", (IEnumerable<SelectListItem>)ViewBag.ItemEstrato, new { @class = "form-control", required = "true" })
                 @*<input class="form-control" id="estratoPaciente" name="paciente.estrato" placeholder="Estrato" required />*@
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Telefonos:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="telefonoPaciente" name="paciente.telefono" placeholder="Telefonos" required />
+                <input class="form-control" id="telefonoPaciente" name="paciente.telefono" placeholder="Telefonos" value="@ViewBag.telefono" required />
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Email:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="emailPaciente" name="paciente.email" placeholder="Email" />
+                <input class="form-control" id="emailPaciente" name="paciente.email" placeholder="Email" value="@ViewBag.email"/>
             </div>
         </div>
         <br />
@@ -338,26 +366,26 @@
                 <label style="font-size:smaller">EPSS:</label>
             </div>
             <div class="col-md-2">
-                @Html.DropDownList("TieneEPS", (IEnumerable<SelectListItem>)ViewBag.ItemValidacion, new { @class = "form-control", id = "pacienteTenerEPS" })
+                @Html.DropDownList("paciente.tieneEps", (IEnumerable<SelectListItem>)ViewBag.ItemValidacion, new { @class = "form-control", id = "pacienteTenerEPS", required = "true" })
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">EPSC:</label>
             </div>
             <div class="col-md-2">
-                @Html.DropDownList("TieneEPSC", (IEnumerable<SelectListItem>)ViewBag.ItemValidacion, new { @class = "form-control" })
+                @Html.DropDownList("paciente.tieneEpc", (IEnumerable<SelectListItem>)ViewBag.ItemValidacion, new { @class = "form-control", required = "true" })
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Institución:</label>
             </div>
             <div class="col-md-2">
                 @*<input class="form-control" id="epsPaciente" name="paciente.eps.IdEPS" placeholder="EPSS" />*@
-                @Html.DropDownList("paciente.eps.IdEPS", (IEnumerable<SelectListItem>)ViewBag.ItemEps, new { @class = "form-control", id = "listadosEPS" })
+                @Html.DropDownList("paciente.id_Eps", (IEnumerable<SelectListItem>)ViewBag.ItemEps, new { @class = "form-control", id = "listadosEPS", required = "true" })
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Viene remitido:</label>
             </div>
             <div class="col-md-2">
-                @Html.DropDownList("paciente.remitido.idRemitente", (IEnumerable<SelectListItem>)ViewBag.ItemValidacion, new { @class = "form-control", id = "pacienteVieneRemitido" })
+                @Html.DropDownList("remitido.idRemitente", (IEnumerable<SelectListItem>)ViewBag.ItemValidacion, new { @class = "form-control", id = "pacienteVieneRemitido", required = "true" })
             </div>
         </div>
         <br />
@@ -370,7 +398,7 @@
                 <label style="font-size:smaller">Institución que remite:</label>
             </div>
             <div class="col-md-10">
-                <input class="form-control" id="nombreEntidadRemitido" name="remitido.nombreEntidad" placeholder="IRemite" />
+                <input class="form-control" id="nombreEntidadRemitido" name="remitido.nombreEntidad" placeholder="IRemite" value="@ViewBag.entidadRemitido" required/>
             </div>
         </div>
         <br />
@@ -379,26 +407,10 @@
                 <label style="font-size:smaller">Profesional que remite:</label>
             </div>
             <div class="col-md-9">
-                <input class="form-control" id="nombreRemitenteRemitido" name="remitido.nombreRemitente" placeholder="Profesional que remite" />
+                <input class="form-control" id="nombreRemitenteRemitido" name="remitido.nombreRemitente" placeholder="Profesional que remite" value="@ViewBag.profesionalRemitido" required/>
             </div>
         </div>
         <br />
-        @*<div class="row">
-            <div class="col-md-2">
-                <label style="font-size:smaller">El paciente es nuevo en el CAP :</label>
-            </div>
-            <div class="col-md-4">
-                @Html.DropDownList("pacienteNuevoCAP", (IEnumerable<SelectListItem>)ViewBag.ItemValidacion, new { @class = "form-control" })
-            </div>
-            <div class="col-md-2">
-                <label style="font-size:smaller">El paciente ya ha asistido a terapia en el CAP:</label>
-            </div>
-            <div class="col-md-4">
-                @Html.DropDownList("pacienteAntiguoCAP", (IEnumerable<SelectListItem>)ViewBag.ItemValidacion, new { @class = "form-control" })
-            </div>
-        </div>*@
-
-
         <h3 style="text-align:center; background-color:#9BC2E6">Datos del consultante</h3>
         <div class="row">
             <div class="col-md-1">
@@ -431,7 +443,7 @@
         <div class="row">
             <label class="col-md-1" style="font-size:smaller">Tipo de documento:</label>
             <div class="col-md-4">
-                @Html.DropDownList("consultante.tipoDocumento.idDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumentoConsultante, new { @class = "form-control", id="documentoConsultante" })
+                @Html.DropDownList("consultante.id_tipoDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumentoConsultante, new { @class = "form-control", id="documentoConsultante", required = "true" })
             </div>
             <div class="col-md-2">
                 <label style="font-size:smaller">Número de documento:</label>
@@ -443,12 +455,12 @@
 
     <h3 style="text-align:center; background-color:#9BC2E6">Motivo de consulta</h3>
     <div class="form-group">
-        <textarea class="form-control" id="motivoConsultaingresoClinica" name="ingresoClinica.motivoConsulta" style="min-width: 100%" rows="6" required></textarea>
+        <textarea class="form-control" id="motivoConsultaingresoClinica" name="ingresoClinica.motivoConsulta" style="min-width: 100%" rows="6" value="@ViewBag.motivoConsulta " required></textarea>
     </div>
     <br />
     <h3 style="text-align:center; background-color:#9BC2E6">Observaciones</h3>
     <div class="form-group">
-        <textarea class="form-control" style="min-width: 100%" rows="6" id="Observaciones"  name="ingresoClinica.observaciones"></textarea>
+        <textarea class="form-control" style="min-width: 100%" rows="6" id="Observaciones"  name="ingresoClinica.observaciones" value="'@ViewBag.Observaciones" required></textarea>
     </div>
         <br />
     <br />

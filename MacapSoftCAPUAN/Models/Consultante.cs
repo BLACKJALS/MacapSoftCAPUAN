@@ -12,9 +12,11 @@ namespace MacapSoftCAPUAN.Models
     {
         [Key]
         public string cedula { get; set; }
+        [ForeignKey("TipoDocumento")]
+        public string id_tipoDocumento { get; set; }
         public string nombre { get; set; }
         public string apellido { get; set; }
-        public TiposDocumentos tipoDocumento { get; set; }
+        public TiposDocumentos TipoDocumento { get; set; }
         public string telefono { get; set; }
         public string parentezco { get; set; }
         //public virtual ICollection<TiposDocumentos> documentos { get; set; }
@@ -31,8 +33,13 @@ namespace MacapSoftCAPUAN.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int idConsultantePaciente { get; set; }
-        public Consultante idConsultante { get; set; }
-        public Paciente idPaciente { get; set; }
+        [ForeignKey("IdConsultante")]
+        public string id_Consultante { get; set; }
+        [ForeignKey("IdPaciente")]
+        public string id_Paciente { get; set; }
+
+        public Consultante IdConsultante { get; set; }
+        public Paciente IdPaciente { get; set; }
     }
 
     [Table("dbo.parentezco")]

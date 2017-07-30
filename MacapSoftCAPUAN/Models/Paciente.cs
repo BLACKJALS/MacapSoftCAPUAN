@@ -12,24 +12,44 @@ namespace MacapSoftCAPUAN.Models
     {
         [Key]
         public string numeroDocumento { get; set; }
+        [ForeignKey("TipoDocumento")]
+        public string id_tipoDocumento { get; set; }
+        [ForeignKey("Paises")]
+        public string id_paises { get; set; }
+        [ForeignKey("Barrio")]
+        public string id_barrio { get; set; }
+        [ForeignKey("Localidad")]
+        public string id_localidad { get; set; }
+        [ForeignKey("Ciudad")]
+        public string id_ciudad { get; set; }
+        [ForeignKey("Eps")]
+        public string id_Eps { get; set; }
+        [ForeignKey("Profesion")]
+        public int id_profesion { get; set; }
+        [ForeignKey("NivelEscolaridad")]
+        public int id_NivelEscolaridad { get; set; }
+        [ForeignKey("Estrato")]
+        public int id_estrato { get; set; }
+        //[ForeignKey("Consecutivo")]
+        public int consecutivo { get; set; }
         public string nombre { get; set; }
         public string apellido { get; set; }
         public string sexo { get; set; }
-        public TiposDocumentos tipoDocumento { get; set; }//Virtual
+        public virtual TiposDocumentos TipoDocumento { get; set; }//Se agregó el virtual
         public DateTime? fechaNacimiento { get; set; }
-        public string lugarNacimiento { get; set; }
+        public virtual Ciudades Ciudad { get; set; }
         public int edad { get; set; }
         public string direccion { get; set; }
-        public Paises paises { get; set; }
-        public Barrios barrio { get; set; } //Virtual
-        public Localidades localidad { get; set; } //Virtual
-        public Estrato estrato { get; set; }
+        public virtual Paises Paises { get; set; }//Se agregó el virtual
+        public virtual Barrios Barrio { get; set; } //Se agregó el virtual
+        public virtual Localidades Localidad { get; set; }//Se agregó el virtual
+        //public virtual Consecutivo Consecutivo { get; set; }
         public string telefono { get; set; }
         public string email { get; set; }
-        public Eps eps { get; set; }//
-        public Profesion profesion { get; set; }
-        public string ocupacion { get; set; }
-        public NivelEscolaridad nivelEscolaridad { get; set; }
+        public virtual Eps Eps { get; set; }//Se agregó el virtual 
+        public virtual Profesion Profesion { get; set; }                //Se agregó el virtual
+        public string ocupacion { get; set; }                           
+        public virtual NivelEscolaridad NivelEscolaridad { get; set; } //Se agregó el virtual
         public string activo { get; set; }
         public string antecedentes { get; set; }
         //public Inasistencias inasistencias { get; set; }
@@ -40,7 +60,9 @@ namespace MacapSoftCAPUAN.Models
         public string historiaPersonal { get; set; }
         public string historiaFamiliar { get; set; }
         public string genograma { get; set; }
-
+        public string tieneEps { get; set; }
+        public string tieneEpc { get; set; }
+        public virtual Estrato Estrato { get; set; }//Se agregó el virtual
         //public virtual ICollection<TiposDocumentos> documentos { get; set; }
         //public virtual ICollection<Barrios> barrios { get; set; }
         //public virtual ICollection<Localidades> localidades { get; set; }
