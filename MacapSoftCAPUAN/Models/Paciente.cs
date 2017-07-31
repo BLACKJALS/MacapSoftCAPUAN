@@ -11,7 +11,7 @@ namespace MacapSoftCAPUAN.Models
     public class Paciente
     {
         [Key]
-        public string numeroDocumento { get; set; }
+        public string numeroHistoriaClinica { get; set; }
         [ForeignKey("TipoDocumento")]
         public string id_tipoDocumento { get; set; }
         [ForeignKey("Paises")]
@@ -32,6 +32,7 @@ namespace MacapSoftCAPUAN.Models
         public int id_estrato { get; set; }
         //[ForeignKey("Consecutivo")]
         public int consecutivo { get; set; }
+        public string numeroDocumento { get; set; }
         public string nombre { get; set; }
         public string apellido { get; set; }
         public string sexo { get; set; }

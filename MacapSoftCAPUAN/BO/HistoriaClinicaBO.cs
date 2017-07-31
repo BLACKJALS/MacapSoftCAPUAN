@@ -80,7 +80,8 @@ namespace MacapSoftCAPUAN.BO
             catch (Exception e)
             {
 
-                throw e;
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo agregar la remision.", e.Message);
+                throw argxEx;
             }
         }
 
@@ -146,7 +147,8 @@ namespace MacapSoftCAPUAN.BO
             catch (Exception e)
             {
 
-                throw e;
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo actualizar el paciente creado.", e.Message);
+                throw argxEx;
             }
             
         }
@@ -161,7 +163,8 @@ namespace MacapSoftCAPUAN.BO
             catch (Exception e)
             {
 
-                throw e;
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo guardar la información del ingreso del paciente.", e.Message);
+                throw argxEx;
             }
 
         }
@@ -178,6 +181,21 @@ namespace MacapSoftCAPUAN.BO
             hcDALC = new HistoriaClinicaDALC();
             var listaRem = hcDALC.listarRemitido();
             return listaRem;
+        }
+
+        public string modificarIngresoCl(IngresoClinica ingrCl) {
+
+            try
+            {
+                hcDALC = new HistoriaClinicaDALC();
+                return hcDALC.modificarIngresoCl(ingrCl);
+            }
+            catch (Exception e)
+            {
+                System.ArgumentException argxEx = new System.ArgumentException(e.Message);
+                throw argxEx;
+            }
+            
         }
     }
 }

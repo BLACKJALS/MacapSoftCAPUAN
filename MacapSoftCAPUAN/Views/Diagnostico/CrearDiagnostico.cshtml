@@ -10,14 +10,6 @@
                 $('#Nombre').val(Nombre);
                 $('#Destacado').val(Destacado);
 
-                if (Codigo == "" ){
-                    alert("Por favor ingresar el codigo del diagnóstico.");
-                    return false;
-                }
-                if (Nombre == "" ){
-                    alert("Por favor ingresar el nombre del diagnóstico.");
-                    return false;
-                }
                 if (Destacado == "Seleccione") {
                     alert("Por favor ingresar si el diagnóstico es destacado o no.");
                     return false;
@@ -42,19 +34,19 @@
                 <div class="form-group">
                     <label class="col-md-3">Código del diagnóstico:</label>
                     <div class="col-md-3">
-                        <input id="CodigoDiagnóstico" type="text" class="form-control" placeholder="Código" />
+                        <input id="CodigoDiagnóstico" type="text" class="form-control" placeholder="Código" required/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-3">Nombre del diagnóstico:</label>
                     <div class="col-md-3">
-                        <input id="NombreDiagnóstico" type="text" class="form-control" placeholder="Nombre del diagnóstico" />
+                        <input id="NombreDiagnóstico" type="text" class="form-control" placeholder="Nombre del diagnóstico" required/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-3">Es importante:</label>
                     <div class="col-md-3">
-                        @Html.DropDownList("Lista", (IEnumerable<SelectListItem>)ViewBag.ItemTypes, new { @class = "form-control", title = "Choose one of the following...", value = "asdas" })
+                        @Html.DropDownList("Lista", (IEnumerable<SelectListItem>)ViewBag.ItemTypes, new { @class = "form-control", title = "Choose one of the following...", value = "asdas", required="true" })
                     </div>
                 </div>
                 <div class="form-group">

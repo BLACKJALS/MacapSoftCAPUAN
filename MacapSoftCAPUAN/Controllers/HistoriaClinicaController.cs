@@ -40,11 +40,11 @@ namespace MacapSoftCAPUAN.Controllers
             paciente = listaPaciente.FirstOrDefault();
             recepcion.paciente = paciente;
             if (paciente != null) {
-                var pacienteIngreso = from item in HC.listarIngresoClinica() where item.id_paciente == paciente.numeroDocumento select item;
-                ingresoCli = pacienteIngreso.FirstOrDefault();
+                var pacienteIngreso = from item in HC.listarIngresoClinica() where item.id_paciente == paciente.numeroHistoriaClinica select item;
+                ingresoCli = pacienteIngreso.LastOrDefault();
                 recepcion.ingresoClinica = ingresoCli;
 
-                var remitidoP = from item in HC.listarRemitido() where item.id_paciente == paciente.numeroDocumento select item;
+                var remitidoP = from item in HC.listarRemitido() where item.id_paciente == paciente.numeroHistoriaClinica select item;
                 remitido = remitidoP.FirstOrDefault();
                 recepcion.remitido = remitido;
             }
@@ -181,6 +181,7 @@ namespace MacapSoftCAPUAN.Controllers
             if (recepcion.paciente != null)
             {
                 ViewBag.existente = "Si";
+                ViewBag.numeroHC = recepcion.paciente.numeroHistoriaClinica;
                 ViewBag.nombre = recepcion.paciente.nombre;
                 ViewBag.apellido = recepcion.paciente.apellido;
                 ViewBag.direccion = recepcion.paciente.direccion;
@@ -250,8 +251,9 @@ namespace MacapSoftCAPUAN.Controllers
 
         
         [HttpPost]
-        public ActionResult IngresoPacientesCreado(RecepcionCaso model, string Informacion)
+        public ActionResult IngresoPacientesCreado(RecepcionCaso model, string Informacion, string Documento)
         {
+            model.paciente.numeroHistoriaClinica = String.IsNullOrEmpty(Documento) ? null: Documento;
             HC = new HistoriaClinicaBO();
             Paciente paciente = new Paciente();
             Consultante consultante = new Consultante();
@@ -261,7 +263,7 @@ namespace MacapSoftCAPUAN.Controllers
             Remision remision = new Remision();
             Consecutivo consecutivo = new Consecutivo();
             var listaPacientes = HC.listarPaciente();
-            var pacienteExistente = from p in listaPacientes where p.numeroDocumento == model.paciente.numeroDocumento select p;
+            var pacienteExistente = from p in listaPacientes where p.numeroHistoriaClinica == model.paciente.numeroHistoriaClinica select p;
             Paciente pacienteEx = new Paciente();
             pacienteEx = pacienteExistente.FirstOrDefault();
             if (model.paciente.tieneEps == "NO") {
@@ -271,6 +273,12 @@ namespace MacapSoftCAPUAN.Controllers
             {
                 model.paciente.idUser = System.Web.HttpContext.Current.User.Identity.GetUserId();
                 HC.modificarPaciente(model.paciente);
+                var listaIngCl = HC.listarIngresoClinica();
+                var ingresoCl = (from p in listaIngCl where p.id_paciente == model.paciente.numeroHistoriaClinica select p).LastOrDefault();
+                model.ingresoClinica.idIngresoClinica = ingresoCl.idIngresoClinica;
+                model.ingresoClinica.id_paciente = model.paciente.numeroHistoriaClinica;
+                model.ingresoClinica.IdPaciente = model.ingresoClinica.IdPaciente;
+                HC.modificarIngresoCl(model.ingresoClinica);
             }
             else {
 
@@ -305,7 +313,7 @@ namespace MacapSoftCAPUAN.Controllers
                     consultantePa.IdPaciente = model.paciente;
                     consultantePa.id_Paciente = model.paciente.numeroDocumento;
                     consultantePa.IdConsultante = model.consultante;
-                    consultantePa.id_Consultante = model.consultante.cedula;
+                    consultantePa.id_Consultante = model.consultante.id_Consultante;
                     HC.agregarConsultantePaciente(consultantePa);
                 }
 

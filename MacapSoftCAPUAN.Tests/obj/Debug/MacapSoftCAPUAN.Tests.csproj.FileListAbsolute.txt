@@ -20,7 +20,6 @@ C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSo
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN.Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN.Tests\bin\Debug\Microsoft.Web.Infrastructure.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN.Tests\bin\Debug\MySql.Data.dll
-C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN.Tests\bin\Debug\mysql.data.entity.EF6.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN.Tests\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN.Tests\bin\Debug\System.Web.Helpers.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN.Tests\bin\Debug\System.Web.Mvc.dll
@@ -36,6 +35,7 @@ C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSo
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN.Tests\bin\Debug\Owin.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN.Tests\bin\Debug\Microsoft.Owin.Security.Cookies.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN.Tests\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll
+C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN.Tests\bin\Debug\MySql.Data.Entity.EF6.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN.Tests\bin\Debug\Microsoft.Owin.Host.SystemWeb.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN.Tests\bin\Debug\MacapSoftCAPUAN.pdb
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN.Tests\bin\Debug\EntityFramework.xml

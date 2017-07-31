@@ -104,10 +104,11 @@ namespace MacapSoftCAPUAN.DALC
                 //bd.Entry(ingresoClinica.EntidadRemitente).State = EntityState.Detached;
                 bd.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
-                throw;
+                System.ArgumentException argxEx = new System.ArgumentException("Error al guardar los datos de ingreso.", e.Message);
+                throw argxEx;
             }
             
         }
@@ -138,7 +139,7 @@ namespace MacapSoftCAPUAN.DALC
             }
             catch (Exception e)
             {
-                System.ArgumentException argxEx = new System.ArgumentException("No se pudo crear el paciente ya existe un paciente con ese documento registrado.",e);
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo crear el paciente es posible que el numero de historica clínica ya exista.",e);
                 throw argxEx;
 
             }
@@ -241,12 +242,14 @@ namespace MacapSoftCAPUAN.DALC
 
             try
             {
-                var pacienteMod = new Paciente { numeroDocumento = paciente.numeroDocumento};
+                var pacienteMod = new Paciente { numeroHistoriaClinica = paciente.numeroHistoriaClinica};
                 using (var context = new ApplicationDbContext())
                 {
                     context.pacienteContext.Attach(pacienteMod);
                     pacienteMod.nombre = paciente.nombre;
                     pacienteMod.apellido = paciente.apellido;
+                    pacienteMod.numeroDocumento = paciente.numeroDocumento;
+                    pacienteMod.id_tipoDocumento = paciente.id_tipoDocumento;
                     pacienteMod.fechaNacimiento = paciente.fechaNacimiento;
                     pacienteMod.id_estrato = paciente.id_estrato;
                     pacienteMod.id_localidad = paciente.id_localidad;
@@ -276,6 +279,31 @@ namespace MacapSoftCAPUAN.DALC
             List<Remitido> listaRemision = new List<Remitido>();
             listaRemision = bd.remitidoContext.ToList();
             return listaRemision;
+        }
+
+        public string modificarIngresoCl(IngresoClinica ingresoCl)
+        {
+
+            try
+            {
+                var ingresoClMod = new IngresoClinica { idIngresoClinica = ingresoCl.idIngresoClinica };
+                using (var context = new ApplicationDbContext())
+                {
+                    context.ingresoClinicaContext.Attach(ingresoClMod);
+                    ingresoClMod.fechaIngreso = ingresoCl.fechaIngreso;
+                    ingresoCl.id_paciente = ingresoCl.id_paciente;
+                    ingresoClMod.observaciones = ingresoCl.observaciones;
+                    ingresoClMod.motivoConsulta = ingresoCl.motivoConsulta;
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo actualizar la informacion de ingreso nueva.", e.Message);
+                throw argxEx;
+            }
+            return "Exito";
         }
     }
 }

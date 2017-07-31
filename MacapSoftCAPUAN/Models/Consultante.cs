@@ -11,6 +11,8 @@ namespace MacapSoftCAPUAN.Models
     public class Consultante
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long id_Consultante { get; set; }
         public string cedula { get; set; }
         [ForeignKey("TipoDocumento")]
         public string id_tipoDocumento { get; set; }
@@ -34,7 +36,7 @@ namespace MacapSoftCAPUAN.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int idConsultantePaciente { get; set; }
         [ForeignKey("IdConsultante")]
-        public string id_Consultante { get; set; }
+        public long id_Consultante { get; set; }
         [ForeignKey("IdPaciente")]
         public string id_Paciente { get; set; }
 

@@ -23,9 +23,10 @@
             $("#Observaciones").val(motObs);
             var existente = '@ViewBag.existente';
             var consecutivo = '@ViewBag.itemConsecutivo';
-
             var npC = '@ViewBag.nPc';
+            var hcP = '@ViewBag.numeroHC';
             $("#numeroDocumentoPaciente").val(npC);
+            
             if (existente != "Si") {
                 $("#Consecutivo").val(parseInt(consecutivo) + 1);
             } else {
@@ -37,18 +38,21 @@
 
             if (existente == "Si") {
                 var fechN = '@ViewBag.fechaNacimiento';
+                $("#Documento").val(hcP);
                 $("#fechaNacimientoPaciente").val(fechN);
-                $( "#fechaNacimientoPaciente" ).datepicker( "option", "disabled", true );
+                $("#fechaNacimientoPaciente").datepicker("option", "disabled", true);
                 //$("#fechaNacimientoPaciente").datepicker({minDate:-1,maxDate:-2}).attr('readonly','readonly');
                 $("#fechaNacimientoPaciente").prop('disabled', true);
                 //$('#fechaNacimientoPaciente').attr('readonly', 'readonly');
                 $('#nombrePaciente').attr('readonly', 'readonly');
                 $('#apellidoPaciente').attr('readonly', 'readonly');
-                $('#tipoDocumentoPac').attr('readonly', 'readonly');
-                $('#numeroDocumentoPaciente').attr('readonly', 'readonly');
+                //$('#tipoDocumentoPac').attr('readonly', 'readonly');
+                //$('#numeroDocumentoPaciente').attr('readonly', 'readonly');
                 $('#lugarNacimientoPac').attr('readonly', 'readonly');
                 $('#paisPac').attr('readonly', 'readonly');
 
+            } else {
+                $("#Documento").val(npC);
             }
             $('#nombrePaciente').val();
 
@@ -240,6 +244,7 @@
     @using (@Html.BeginForm("IngresoPacientesCreado", "HistoriaClinica", FormMethod.Post, new { @class = "form-horizontal", id="FormularioRecepcion" }))
     {
     @Html.Hidden("Informacion");
+    @Html.Hidden("Documento");
         <h3 style="text-align:center; background-color:#9BC2E6">Recepción de caso</h3>
         <div class="row">
             <div class="col-md-1">
