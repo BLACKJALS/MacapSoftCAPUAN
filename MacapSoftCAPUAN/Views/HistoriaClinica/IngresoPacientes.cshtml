@@ -115,7 +115,7 @@
         $('#lugarNacimientoPac').click(function () {
             var existente = '@ViewBag.existente';
             if (existente == "Si") {
-                alert("No se puede modificar la ciudad de naciemiento");
+                alert("No se puede modificar la ciudad de nacimiento");
             }
         });
 
@@ -137,7 +137,7 @@
         };
 
 
-        function prueba() {
+        function validarEdad() {
             var hoy = new Date();
             var fechaHoy = ("0" + hoy.getDate()).slice(-2) + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + hoy.getFullYear();
             var fecha2 = $("#fechaNacimientoPaciente").val();
@@ -312,7 +312,7 @@
                 <label style="font-size:smaller">Edad:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="edadPaciente" name="paciente.edad" placeholder="Edad (años)" onclick="return prueba();" value="@ViewBag.edad" required />
+                <input class="form-control" id="edadPaciente" name="paciente.edad" placeholder="Edad (años)" onclick="return validarEdad();" value="@ViewBag.edad" required />
             </div>
         </div>
         <br />

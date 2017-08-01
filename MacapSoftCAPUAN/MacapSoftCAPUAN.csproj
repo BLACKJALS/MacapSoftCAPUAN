@@ -461,6 +461,7 @@
     <Content Include="Views\HistoriaClinica\PacienteRemitidoExitoso.cshtml" />
     <Content Include="Views\HistoriaClinica\IngresoPacientesCreado.cshtml" />
     <Content Include="Views\HistoriaClinica\listarPacientesRemitidos.cshtml" />
+    <Content Include="Views\HistoriaClinica\buscarPacientes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
