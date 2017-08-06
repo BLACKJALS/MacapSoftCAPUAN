@@ -1,0 +1,173 @@
+﻿
+@{
+    ViewBag.Title = "Lista historias clínicas inactivas";
+}
+
+
+
+<meta charset="utf-8">
+
+@section scripts{
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <link href="~/Content/bootstrap-table.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-table.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-table/bootstrap-table.js"></script>
+    <script src="~/Scripts/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="~/Scripts/bootstrap-table/locale/bootstrap-table-es-CR.min.js"></script>
+    <script>
+
+
+        var $table = $('#table'),
+            $buttonBack = $('#buttonBack'),
+            $button = $('#button');
+
+        function formatoOperaciones(value, row, index) {
+            return [
+                '<a class="edit" href="javascript:void(0)" title="Editar">',
+                '<input type="radio" name="radioGroup" checked>',
+            ].join('');
+        }
+
+        window.eventosOperaciones = {
+            'click .edit': function (e, value, row, index) {
+                $("#buttonAssing").click(function (e) {
+                    alert(row);
+                });
+            }
+        };
+
+
+        function regresar() {
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'POST',
+                    url: '@Url.Action("Index", "HistoriaClinica")',
+                    failure: function (response) {
+                    }
+                });
+        }
+
+
+        function btnAbrirUsuarioCampo_Click() {
+            var parametrosFuncion = JSON.stringify({ 'usr': $("#hdnIdColumna").val("Hola") });
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: '@Url.Action("ElementosConsultarPost", "HistoriaClinica")',
+                data: parametrosFuncion,
+                success: function (data) {
+                    limpiarFormularioEditarCampo();
+                    $table.bootstrapTable('refresh');
+                },
+                failure: function (response) {
+
+                }
+            });
+            location.reload();
+        }
+    </script>
+
+
+}
+
+<body>
+    <div class="container">
+        <h3 align="center"><font size="16">Lista historias clínicas inactivas</font></h3>
+        <table id="table"
+               data-toggle="table"
+               data-search="true"
+               data-height="460"
+               data-detail-formatter="detailFormatter"
+               data-pagination="true"
+               data-page-size="20"
+               data-page-list="[20,50,100]"
+               data-pagination-first-text="Inicio"
+               data-pagination-pre-text="Anterior"
+               data-pagination-next-text="Siguiente"
+               data-pagination-last-text="Ultimo"
+               data-url='@Url.Action("ListarDiagnosticosCAP", "Diagnostico")'>
+            <thead>
+                <tr>
+                    <th data-field="Codigo" class="clickable-row">Numero de historia clínica</th>
+                    <th data-field="Nombre">Nombre del paciente</th>
+                    <th data-field="Destacado">Usuario (s) asignado(s)</th>
+                    @*<th data-field="state" data-radio="true" title="Seleccione" data-event="eventosOperaciones"></th>*@
+                    <th data-field="Operaciones" data-align="center" data-events="eventosOperaciones" data-formatter="formatoOperaciones">Seleccione</th>
+                    @*<th data-field="Operaciones" data-align="center" data-radio="true" data-events="eventosOperaciones" data-formatter="formatoOperaciones">Operación modificar</th>*@
+                </tr>
+            </thead>
+        </table>
+        <div id="buttonPreRemove">
+            <button type="submit" id="btnEditar" style="visibility:hidden;"></button>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-10"></div>
+            <div id="toolbar">
+                <input type="button" class="btn btn-primary" value="Abrir" data-toggle="modal" data-target="#modalAbrirUsuario" />
+                <input type="button" class="btn btn-primary" value="Regresar" onclick="location.href='@Url.Action("Index", "HistoriaClinica" )'" />
+            </div>
+        </div>
+
+
+
+        <div id="modalAbrirUsuario" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Elementos a consultar</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <label style="font-size:medium">Documento general:</label>
+                                </div>
+                                <div class="col-md-1">
+                                    <input type="checkbox" id="IntentoSuicida" value="5" name="remision.motivoRemision.idMotivoRemision">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <label style="font-size:medium">Informe sesion:</label>
+                                </div>
+                                <div class="col-md-1">
+                                    <input type="checkbox" id="IntentoSuicida" value="5" name="remision.motivoRemision.idMotivoRemision">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <label style="font-size:medium">Inasitencias:</label>
+                                </div>
+                                <div class="col-md-1">
+                                    <input type="checkbox" id="IntentoSuicida" value="5" name="remision.motivoRemision.idMotivoRemision">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <label style="font-size:medium">Recepción de caso:</label>
+                                </div>
+                                <div class="col-md-1">
+                                    <input type="checkbox" id="IntentoSuicida" value="5" name="remision.motivoRemision.idMotivoRemision">
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" id="buttonEdit" class="btn btn-default" data-dismiss="modal" onclick="return btnAbrirUsuarioCampo_Click();">
+                                    Consultar
+                                </button>
+                                <button id="buttonSalir" type="button" class="btn btn-default" data-dismiss="modal">Regresar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>

@@ -22,9 +22,33 @@
         function formatoOperaciones(value, row, index) {
             return [
                 '<a class="edit" href="javascript:void(0)" title="Editar">',
-                '<i class="glyphicon glyphicon-user"></i>',
+                '<input type="radio" name="radioGroup" checked>',
+                //'<i class="glyphicon glyphicon-user"></i>',
             ].join('');
         }
+
+        window.eventosOperaciones = {
+            'click .edit': function (e, value, row, index) {
+                //$("#txtRoleEditado").val(row.Role);
+                //$("#hdnIdColumna").val(row.Codigo);
+                $("#buttonAssing").click(function (e) {
+                    alert(row);
+                });
+            }
+        };
+
+        //$(function () {
+        //    // save the selected index
+        //    var index = $('[id="radioGroup"]:checked').parents('tr').index();
+
+        //    // init table and check the index row
+        //    $('#table').bootstrapTable().bootstrapTable('check', index);
+
+        //    // click button to get selected row.
+        //    $('#buttonAssing').click(function () {
+        //        console.log($('#table').bootstrapTable('getSelections')[0]);
+        //    });
+        //});
 
         function regresar() {
                 $.ajax({
@@ -38,46 +62,118 @@
                 });
         }
 
-        window.eventosOperaciones = {
-            'click .edit': function (e, value, row, index) {
-                $("#txtRoleEditado").val(row.Role);
-                $("#hdnIdColumna").val(row.Codigo);
-                $("#btnEditar").click();
-            }
-        };
 
-        @*function btnAceptarEdicionCampo_Click() {
-            var parametrosFuncion = JSON.stringify({ 'idCodigo': $("#hdnIdColumna").val(), 'nombreEditado': $("#Nombre").val(), 'casoEditado': $("#casoEspecial").val() });
+        function btnAsignarUsuarioCampo_Click() {
+            var parametrosFuncion = JSON.stringify({ 'usr': $("#hdnIdColumna").val("Hola") });
             $.ajax({
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 type: 'POST',
-                url: '@Url.Action("ingresoHistoriaClinica", "HistoriaClinica")',
+                url: '@Url.Action("AsignarUsuarioPost", "HistoriaClinica")',
                 data: parametrosFuncion,
                 success: function (data) {
-                    location.window.href = "http://www.google.com";
+                    limpiarFormularioEditarCampo();
+                    $table.bootstrapTable('refresh');
                 },
                 failure: function (response) {
                     //$('#result').html(response);
                 }
             });
             location.reload();
+        }
+
+
+        function btnAbrirUsuarioCampo_Click() {
+            var parametrosFuncion = JSON.stringify({ 'usr': $("#hdnIdColumna").val("Hola") });
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: '@Url.Action("ElementosConsultarPost", "HistoriaClinica")',
+                data: parametrosFuncion,
+                success: function (data) {
+                    limpiarFormularioEditarCampo();
+                    $table.bootstrapTable('refresh');
+                },
+                failure: function (response) {
+                    //$('#result').html(response);
+                }
+            });
+            location.reload();
+        }
+
+        @*function asignar() {
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: '@Url.Action("Index", "HistoriaClinica")',
+                failure: function (response) {
+                    //$('#result').html(response);
+                }
+            });
         }*@
 
+        @*$("#buttonAssing").click(function () {
+            var tipoFiltro = $("#ddlListaFiltros").val();
+            var campoFiltro = $("#ddlCampoFiltro").val();
+            var mesesRango = $("#txtRangoMeses").val();
+            var idCache = $("#hdnIDCache").val();
+
+
+            var filtro = {
+                IdCampo: campoFiltro
+                , IdFiltro: tipoFiltro
+                , RangoMeses: mesesRango
+                , NombreCampo: $("#ddlCampoFiltro option:selected").text()
+                , EsRequerido: $("#chkEsRequerido").is(':checked')
+                , ListaTexto: txtListaTexto.value
+                , ListaValores: txtListaValores.value
+            };
+            var filtroModal = JSON.stringify({ 'filtroModal': filtro, 'idCache': idCache });
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: '@Url.Action("GuardarFiltroTemporal", "ServicioReporte")',
+                data: filtroModal,
+                success: function (data) {
+                    $("#chkEsRequerido").prop("checked", false)
+                    $("#tblFiltros").bootstrapTable('refresh');
+                },
+                failure: function (response) {
+                    //$('#result').html(response);
+                    alert(reponse);
+                }
+            });
+            //alert(filtros);
+        });*@
+
+        @*$("#buttonAssing").click(function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("asignarUsuario", "HistoriaClinica")',
+                data: {
+                    pacienteRemitido: $(this).val() // < note use of 'this' here
+                    //access_token: $("#access_token").val()
+                },
+                success: function (result) {
+                    alert('ok');
+                },
+                error: function (result) {
+                    alert('error');
+                }
+            });
+        });*@
     </script>
+
+
 }
 
 <body>
     <div class="container">
-        @using (@Html.BeginForm("ingresoHistoriaClinica", "HistoriaClinica", FormMethod.Post, new { @class = "form-horizontal" }))
-        {
-        @*<h2>   </h2>*@
         <h3 align="center"><font size="16">Historias clínicas</font></h3>
-
-        <p></p>
-        @*<div id="toolbar">
-                <button id="button" class="btn btn-default">Paginación</button>
-            </div>*@
         <table id="table"
                data-toggle="table"
                data-search="true"
@@ -93,22 +189,91 @@
                data-url='@Url.Action("ListarDiagnosticosCAP", "Diagnostico")'>
             <thead>
                 <tr>
-                    <th data-field="Codigo" class="clickable-row">Numero de cédula</th>
-                    <th data-field="Nombre">Nombre paciente </th>
-                    <th data-field="Destacado">Usuario asignado</th>
-                    <th data-field="Operaciones" data-align="center" data-events="eventosOperaciones" data-formatter="formatoOperaciones">Operación modificar</th>
+                    <th data-field="Codigo" class="clickable-row">Numero de historia clínica</th>
+                    <th data-field="Nombre">Nombre del paciente</th>
+                    <th data-field="Destacado">Usuario (s) asignado(s)</th>
+                    @*<th data-field="state" data-radio="true" title="Seleccione" data-event="eventosOperaciones"></th>*@           
+                    <th data-field="Operaciones" data-align="center" data-events="eventosOperaciones" data-formatter="formatoOperaciones">Seleccione</th>     
+                    @*<th data-field="Operaciones" data-align="center" data-radio="true" data-events="eventosOperaciones" data-formatter="formatoOperaciones">Operación modificar</th>*@
                 </tr>
             </thead>
         </table>
         <div id="buttonPreRemove">
             <button type="submit" id="btnEditar" style="visibility:hidden;"></button>
         </div>
-        }
+
+
+        <div class="row">
+            <div class="col-md-9"></div>
+                <div id="toolbar">
+                    <input type="button" class="btn btn-primary" value="Regresar" onclick="location.href='@Url.Action("Index", "HistoriaClinica" )'" />
+                    <input type="button" class="btn btn-primary" value="Asignar" data-toggle="modal" data-target="#modalAsignarUsuario"/>
+                    <input type="button" class="btn btn-primary" value="Abrir" onclick="location.href='@Url.Action("historiaClinica", "HistoriaClinica" )'" />                
+    @*<input type="button" class="btn btn-primary" value="Abrir" data-toggle="modal" data-target="#modalAbrirUsuario" />*@
+                </div>
+        </div>
+
+
+
+        <div id="modalAsignarUsuario" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Asignar usuario</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="form-horizontal">
+                                <section>
+                                    <div class="form-group">
+                                        <label class="col-md-3">Administrador: </label>
+                                        <div class="col-md-3">
+                                            <select class="form-control">
+                                                <option>admin 1</option>
+                                                <option>admin 2</option>
+                                                <option>admin 3</option>
+                                            </select>
+                                            @*@Html.DropDownList("Lista", (IEnumerable<SelectListItem>)ViewBag.ItemTypes, new { @class = "form-control", title = "Choose one of the following...", value = "asdas", required = "true" })*@
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3">Psicologo:</label>
+                                        <div class="col-md-3">
+                                            <select class="form-control">
+                                                <option>Psicologo 1</option>
+                                                <option>Psicologo 2</option>
+                                                <option>Psicologo 3</option>
+                                            </select>
+                                            @*@Html.DropDownList("Lista", (IEnumerable<SelectListItem>)ViewBag.ItemTypes, new { @class = "form-control", title = "Choose one of the following...", value = "asdas", required = "true" })*@
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3">Estudiante:</label>
+                                        <div class="col-md-3">
+                                            <select class="form-control">
+                                                <option>Estudiante 1</option>
+                                                <option>Estudiante 2</option>
+                                                <option>Estudiante 3</option>
+                                            </select>
+                                            @*@Html.DropDownList("Lista", (IEnumerable<SelectListItem>)ViewBag.ItemTypes, new { @class = "form-control", title = "Choose one of the following...", value = "asdas", required = "true" })*@
+                                        </div>
+                                    </div>
+
+                                </section>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="buttonEdit" class="btn btn-default" data-dismiss="modal" onclick="return btnAsignarUsuarioCampo_Click();">
+                                    Asignar
+                                </button>
+                                <button id="buttonSalir" type="button" class="btn btn-default" data-dismiss="modal">Regresar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
-    <div id="toolbar">
-        @*<button type="submit" id="buttonBack" class="btn btn-default" onclick="return regresar();">Atrás</button>*@
-        <input type="button" class="btn btn-primary" value="Regresar" onclick="location.href='@Url.Action("Index", "HistoriaClinica" )'" />
-    </div>
-    
 </body>
 

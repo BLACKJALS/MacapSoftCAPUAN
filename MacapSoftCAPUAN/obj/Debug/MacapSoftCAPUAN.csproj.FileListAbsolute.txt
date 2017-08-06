@@ -18,6 +18,8 @@ C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSo
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\BootstrapTable.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\EntityFramework.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\EntityFramework.SqlServer.dll
+C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\itextsharp.dll
+C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\itextsharp.xmlworker.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\Microsoft.AI.Agent.Intercept.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\Microsoft.AI.DependencyCollector.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\Microsoft.AI.PerfCounterCollector.dll
@@ -52,6 +54,7 @@ C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSo
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\System.Web.WebPages.Razor.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\WebGrease.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\BootstrapTable.xml
+C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\itextsharp.xml
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\Microsoft.AI.DependencyCollector.xml
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\Microsoft.AI.ServerTelemetryChannel.xml
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\Microsoft.AI.Web.xml

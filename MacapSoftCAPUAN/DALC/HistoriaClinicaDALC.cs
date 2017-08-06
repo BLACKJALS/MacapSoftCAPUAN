@@ -66,6 +66,15 @@ namespace MacapSoftCAPUAN.DALC
 
         }
 
+        public List<Profesion> listarProfesion()
+        {
+            bd = new ApplicationDbContext();
+            List<Profesion> listaProfesion = new List<Profesion>();
+            listaProfesion = bd.profesionContext.ToList();
+            return listaProfesion;
+
+        }
+
         public List<Eps> listarEps()
         {
             bd = new ApplicationDbContext();

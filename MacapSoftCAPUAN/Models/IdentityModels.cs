@@ -48,5 +48,6 @@ namespace MacapSoftCAPUAN.Models
         public DbSet<Estrato> estratoContext { get; set; }
         public DbSet<MotivosRemisiones> motivosRemisionesContext { get; set; }
         public DbSet<IngresoClinica> ingresoClinicaContext { get; set; }
+        public DbSet<Profesion> profesionContext { get; set; }
     }
 }

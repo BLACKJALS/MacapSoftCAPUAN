@@ -197,5 +197,11 @@ namespace MacapSoftCAPUAN.BO
             }
             
         }
+
+        public List<Profesion> listarProfesion() {
+            hcDALC = new HistoriaClinicaDALC();
+            var listaProfesion = hcDALC.listarProfesion();
+            return listaProfesion;
+        }
     }
 }

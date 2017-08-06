@@ -1,4 +1,7 @@
-﻿using MacapSoftCAPUAN.BO;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.tool.xml;
+using MacapSoftCAPUAN.BO;
 using MacapSoftCAPUAN.Models;
 using MacapSoftCAPUAN.ModelsVM;
 using Microsoft.AspNet.Identity;
@@ -6,6 +9,7 @@ using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -53,6 +57,7 @@ namespace MacapSoftCAPUAN.Controllers
             List<SelectListItem> listaItemsDocumentoConsultante = new List<SelectListItem>();
             List<SelectListItem> listaItemsLocalidades = new List<SelectListItem>();
             List<SelectListItem> listaItemsEps = new List<SelectListItem>();
+            List<SelectListItem> listaItemsProfesion = new List<SelectListItem>();
             List<SelectListItem> listaItemsValidation = new List<SelectListItem>();
             List<SelectListItem> listaItemsPaises = new List<SelectListItem>();
             List<SelectListItem> listaItemsEstrato = new List<SelectListItem>();
@@ -159,6 +164,16 @@ namespace MacapSoftCAPUAN.Controllers
                 listaItemsEps.Add(items);
             }
 
+            var listaProfesion = HC.listarProfesion();
+            foreach (var item in listaProfesion)
+            {
+                items = new SelectListItem();
+                items.Text = item.nombre;
+                items.Value = item.idProfesion.ToString();
+                listaItemsProfesion.Add(items);
+            }
+
+
             if (paciente == null)
             {
                 var consecutivo = HC.listarConsecutivo().Last();
@@ -178,6 +193,7 @@ namespace MacapSoftCAPUAN.Controllers
             ViewBag.ItemPaises = listaItemsPaises.ToList();
             ViewBag.ItemEstrato = listaItemsEstrato.ToList();
             ViewBag.ItemCiudades = listaItemsCuidades.ToList();
+            ViewBag.Profesion = listaProfesion.ToList();
             if (recepcion.paciente != null)
             {
                 ViewBag.existente = "Si";
@@ -348,6 +364,18 @@ namespace MacapSoftCAPUAN.Controllers
             {
                 if (Informacion == "1")
                 {
+                    List<SelectListItem> listaItemsDocumento = new List<SelectListItem>();
+                    SelectListItem items;
+
+                    var listaTipoDocumento = HC.listaTiposDocumento();
+                    foreach (var item in listaTipoDocumento)
+                    {
+                        items = new SelectListItem();
+                        items.Text = item.tipo;
+                        items.Value = item.idDocumento.ToString();
+                        listaItemsDocumento.Add(items);
+                    }
+                    ViewBag.ItemDocumento = listaItemsDocumento.ToList();
                     ViewBag.Pac = model.paciente.numeroDocumento;
                     return View("PacienteRemitido");
                 }
@@ -468,9 +496,71 @@ namespace MacapSoftCAPUAN.Controllers
             return View();
         }
 
-        public ActionResult ingresoHistoriaClinica() {
 
+        public ActionResult listaHistoriasClinicasInactivas()
+        {
             return View();
         }
+
+        [HttpPost]
+        public ActionResult AsignarUsuarioPost(string usr)
+        {
+            return View("AsignarUsuarioPost");
+        }
+
+        [HttpPost]
+        public ActionResult ElementosConsultarPost()
+        {
+
+            using (MemoryStream stream = new System.IO.MemoryStream())
+            {
+                string GridHtml = "Prueba"; 
+                StringReader sr = new StringReader(GridHtml);
+                Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 100f, 0f);
+                PdfWriter writer = PdfWriter.GetInstance(pdfDoc, stream);
+                pdfDoc.Open();
+                pdfDoc.Add(new Paragraph("Hola"));
+                XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, sr);
+                pdfDoc.Close();
+                return File(stream.ToArray(), "application/pdf", "Grid.pdf");
+            }
+            
+        }
+
+
+        public ActionResult historiaClinica() {
+            return View();
+        }
+
+        public ActionResult documentoGeneral() {
+            return View();
+        }
+
+        public ActionResult remitirPaciente() {
+            List<SelectListItem> listaItemsDocumento = new List<SelectListItem>();
+            SelectListItem items;
+            HC = new HistoriaClinicaBO();
+            var listaTipoDocumento = HC.listaTiposDocumento();
+            foreach (var item in listaTipoDocumento)
+            {
+                items = new SelectListItem();
+                items.Text = item.tipo;
+                items.Value = item.idDocumento.ToString();
+                listaItemsDocumento.Add(items);
+            }
+            ViewBag.ItemDocumento = listaItemsDocumento.ToList();
+            return View("PacienteRemitido");
+        }
+
+
+        public ActionResult cierreCasoHC()
+        {
+            return View();
+        }
+
+        //public ActionResult ingresoHistoriaClinica() {
+
+        //    return View();
+        //}
     }
 }

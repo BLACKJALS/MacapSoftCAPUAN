@@ -48,6 +48,14 @@
       <HintPath>..\packages\bootstrap-table.mvc.1.1.1\lib\net452\BootstrapTable.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="itextsharp, Version=5.5.11.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.11\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="itextsharp.xmlworker, Version=5.5.11.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itextsharp.xmlworker.5.5.11\lib\itextsharp.xmlworker.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.6\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -447,7 +455,7 @@
     <Content Include="Views\Diagnostico\ErrorModificarDiagnostico.cshtml" />
     <Content Include="Views\Account\ListaUsuarios.cshtml" />
     <Content Include="Views\HistoriaClinica\RecepcionCaso.cshtml" />
-    <Content Include="Views\HistoriaClinica\HistoriaClinica.cshtml" />
+    <Content Include="Views\HistoriaClinica\HistoriaClinica1.cshtml" />
     <Content Include="Views\HistoriaClinica\IngresoPacientes.cshtml" />
     <Content Include="Views\HistoriaClinica\IngresoPacienteCreado.cshtml" />
     <Content Include="Views\HistoriaClinica\listaHistoriasClinicas.cshtml" />
@@ -462,6 +470,11 @@
     <Content Include="Views\HistoriaClinica\IngresoPacientesCreado.cshtml" />
     <Content Include="Views\HistoriaClinica\listarPacientesRemitidos.cshtml" />
     <Content Include="Views\HistoriaClinica\buscarPacientes.cshtml" />
+    <Content Include="Views\HistoriaClinica\AsignarUsuarioPost.cshtml" />
+    <Content Include="Views\HistoriaClinica\historiaClinica.cshtml" />
+    <Content Include="Views\HistoriaClinica\documentoGeneral.cshtml" />
+    <Content Include="Views\HistoriaClinica\listaHistoriasClinicasInactivas.cshtml" />
+    <Content Include="Views\HistoriaClinica\cierreCasoHC.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

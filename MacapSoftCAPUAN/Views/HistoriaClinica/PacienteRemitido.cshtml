@@ -115,25 +115,138 @@
     </script>
 }
 
-<h2>Remitir paciente </h2>
-
-
+<h2 style="text-align:center;">Remitir paciente</h2>
 <div class="container">
     @using (Html.BeginForm("RemitirPaciente", "HistoriaClinica", FormMethod.Post))
     {
         @Html.Hidden("concMremison");
         @Html.Hidden("fechaRemision");
         <input type="text"  name="paciente.numeroDocumento" id="pacienteNumero" style="visibility:hidden">
-        <h3 style="text-align:center; background-color:#9BC2E6">Factores de riesgo</h3>
+        <h3 style="text-align:center; background-color:#9BC2E6">Datos del paciente</h3>
         <div class="row">
-            <div class="col-md-2">
-                <label>Fecha remision (Hoy)</label>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Nombres:</label>
+            </div>
+            <div class="col-md-4">
+                <input class="form-control" id="nombrePaciente" name="paciente.nombre" placeholder="Nombres" value="@ViewBag.nombre" required />
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="fechaRem" placeholder="fecha de remisión" onclick="return fechaHoy();" required />
+                <label style="font-size:smaller">Apellidos:</label>
+            </div>
+            <div class="col-md-4">
+                <input class="form-control" id="apellidoPaciente" name="paciente.apellido" placeholder="Apellidos" value="@ViewBag.apellido" required />
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <label class="col-md-1" style="font-size:smaller">Tipo de documento:</label>
+            <div class="col-md-4">
+                @Html.DropDownList("paciente.id_tipoDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumento, new { @class = "form-control", id = "tipoDocumentoPac" })
+            </div>
+            <div class="col-md-2">
+                <label style="font-size:smaller">Numero de documento:</label>
+            </div>
+            <div class="col-md-4">
+                <input class="form-control" id="numeroDocumentoPaciente" name="paciente.numeroDocumento" placeholder="numero documento" value="@ViewBag.numeroDocumento" required />
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-1">
+                <label style="font-size:smaller">Edad:</label>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" id="edadPaciente" name="paciente.edad" placeholder="Edad (años)" value="@ViewBag.edad" required />
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Profesión:</label>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" id="Profesión" name="paciente.profesion" placeholder="Profesión" required />
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Ocupación:</label>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" id="edadPaciente" name="paciente.edad" placeholder="Ocupación"  value="@ViewBag.edad" required />
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Escolaridad:</label>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" id="Profesión" name="paciente.profesion" placeholder="Escolaridad" required />
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-1">
+                <label style="font-size:smaller">Remitido a:</label>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" id="remitidoA" name="paciente.profesion" placeholder="Remitido a" required />
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Remitido por:</label>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" id="RemitidoPor" name="paciente.profesion" placeholder="Remitido por" required />
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-2">
+                <label style="font-size:smaller">Fecha remision (Hoy)</label>
+            </div>
+            <div class="col-md-2">
+                <input type="text" class="form-control" id="fechaRemision" onclick="return fechaHoy();"/>
+            </div>
+            <div class="col-md-2">
+                <label style="font-size:smaller">Fecha de inicio de la psicoterapia</label>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" id="fechaIniPsico" placeholder="Fecha inicio psicoterapia" required />
+                @*<input type="text" class="form-control" id="fechaRemision" onclick="return fechaHoy();"/>*@
+            </div>
+            <div class="col-md-2">
+                <label style="font-size:smaller">Fecha de final de la psicoterapia</label>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" id="fechaFinPsico" placeholder="Fecha final psicoterapia" required />
                 @*<input type="text" class="form-control" id="fechaRemision" onclick="return fechaHoy();"/>*@
             </div>
         </div>
+        <br />
+        <div class="row">
+            <div class="col-md-2">
+                <label style="font-size:smaller">Servicio al que se remite:</label>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" id="servicioRemite" name="paciente.edad" placeholder="Servicio al que se remite" value="@ViewBag.edad" required />
+            </div>
+        </div>
+        <br />
+        <div class="col-md-10">
+            <label style="font-size:smaller">Evolución del paciente durante la intervención psicológica:</label>
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" id="evolucionPacienIntervenPsico" name="ingresoClinica.motivoConsulta" style="min-width: 100%" rows="6" value="@ViewBag.motivoConsulta " required></textarea>
+        </div>
+        <br />
+        <div class="col-md-10">
+            <label style="font-size:smaller">Aspectos positivos:</label>
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="aspectosPositivos" name="ingresoClinica.observaciones" value="'@ViewBag.Observaciones" required></textarea>
+        </div>
+        <br />
+        <div class="col-md-10">
+            <label style="font-size:smaller">Recomendaciones:</label>
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="recomendaciones" name="ingresoClinica.observaciones" value="'@ViewBag.Observaciones" required></textarea>
+        </div>
+        <br />
+        <h3 style="text-align:center; background-color:#9BC2E6">Factores de riesgo</h3>
         <div class="row">
             <div class="col-md-4">
                 <label style="font-size:medium">Intento o ideación suicida:</label>
