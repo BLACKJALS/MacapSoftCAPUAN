@@ -475,6 +475,7 @@
     <Content Include="Views\HistoriaClinica\documentoGeneral.cshtml" />
     <Content Include="Views\HistoriaClinica\listaHistoriasClinicasInactivas.cshtml" />
     <Content Include="Views\HistoriaClinica\cierreCasoHC.cshtml" />
+    <Content Include="Views\HistoriaClinica\InformeSesion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

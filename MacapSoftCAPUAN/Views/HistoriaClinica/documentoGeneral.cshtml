@@ -8,7 +8,7 @@
 <div class="col-lg-12 jumbotron">
     @*style="border:dashed"*@
     <div class="container">
-        <h4 style="text-align:center; background-color:#9BC2E6">Historia Clínica</h4>
+        <h3 style="text-align:center; background-color:#9BC2E6">Historia Clínica</h3>
         <div class="row">
             <div class="col-md-3">
                 <label style="font-size:smaller">Fecha de recepción de caso:</label>
@@ -37,6 +37,14 @@
                 <input class="form-control" id="CIE10" placeholder="CIE10" />
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label style="font-size:smaller">Categorización CAP:</label>
+            </div>
+            <div class="col-md-3">
+                <input class="form-control" id="NumeroHC" placeholder="Categorización CAP" />
+            </div>
+        </div>
         <br />
         <h3 style="text-align:center; background-color:#9BC2E6">Datos del paciente</h3>
         <div class="row">
@@ -53,30 +61,83 @@
                 <input class="form-control" id="apellidoPaciente" name="paciente.apellido" placeholder="Apellidos" value="@ViewBag.apellido" required />
             </div>
         </div>
+        <br />
         <div class="row">
-            <label class="col-md-3" style="font-size:smaller">Tipo de documento:</label>
-            <div class="col-md-3">
-                @*@Html.DropDownList("Lista", (IEnumerable<SelectListItem>)ViewBag.ItemTypes, new { @class = "form-control", title = "Choose one of the following...", value = "asdas" })*@
+            <div class="col-md-1">
+                <label style="font-size:smaller">Sexo:</label>
+            </div>
+            <div class="col-md-4">
+                <input class="form-control" id="nombrePaciente" name="paciente.sexo" placeholder="Nombres" value="@ViewBag.sexo" required />
             </div>
         </div>
+        <br />
+        <div class="row">
+            <label class="col-md-1" style="font-size:smaller">Tipo de documento:</label>
+            <div class="col-md-4">
+                @*@Html.DropDownList("paciente.id_tipoDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumento, new { @class = "form-control", id = "tipoDocumentoPac" })*@
+            </div>
+            <div class="col-md-2">
+                <label style="font-size:smaller">Numero de documento:</label>
+            </div>
+            <div class="col-md-4">
+                <input class="form-control" id="numeroDocumentoPaciente" name="paciente.numeroDocumento" placeholder="numero documento" value="@ViewBag.numeroDocumento" required />
+            </div>
+        </div>
+        <br />
         <div class="row">
             <div class="col-md-1">
                 <label style="font-size:smaller">Fecha de nacimiento:</label>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <input class="form-control" id="FechaNacimiento" placeholder="fecha de nacimiento" />
             </div>
+            <div class="col-md-3">
+                <label style="font-size:smaller">Lugar de nacimiento (País, Ciudad):</label>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" id="lugarNacimientoPaciente" name="paciente.lugarNacimiento" placeholder="País" required />
+                @*@Html.DropDownList("paciente.id_paises", (IEnumerable<SelectListItem>)ViewBag.ItemPaises, new { @class = "form-control", required = "true", id = "paisPac" })*@
+            </div>
+            <div class="col-md-2">
+                @*@Html.DropDownList("paciente.id_ciudad", (IEnumerable<SelectListItem>)ViewBag.ItemCiudades, new { @class = "form-control", id = "lugarNacimientoPac", required = "true" })*@
+                <input class="form-control" id="lugarNacimientoPaciente" name="paciente.lugarNacimiento" placeholder="Ciudad" required />
+            </div>
+        </div>
+        <br />
+        <div class="row">
             <div class="col-md-1">
-                <label style="font-size:smaller">Lugar de nacimiento:</label>
+                <label style="font-size:smaller">Estado civil:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="LugarNacimiento" placeholder="Lugar de nacimiento" />
+                <input class="form-control" id="EstadoCivil" placeholder="Estado civil" />
             </div>
             <div class="col-md-1">
-                <label style="font-size:smaller">Edad:</label>
+                <label style="font-size:smaller">Religión:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="Edad" placeholder="Edad (años)" />
+                @*@Html.DropDownList("lista", (IEnumerable<SelectListItem>)ViewBag.ItemBarrios, new { @class = "form-control", title = "Seleccione uno de los siguientes barrios", placeholder = "asdas" })*@
+                <input class="form-control" id="Religion" placeholder="Religión" />
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Escolaridad:</label>
+            </div>
+            <div class="col-md-3">
+                <input class="form-control" id="Escolaridad" name="paciente.id_nivelEscolaridad" placeholder="Escolaridad" value="@ViewBag.escolaridad" required />
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-1">
+                <label style="font-size:smaller">Profesión:</label>
+            </div>
+            <div class="col-md-3">
+                <input class="form-control" id="pacienteProfesion" name="paciente.id_profesion" placeholder="Profesión" value="" required />
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Ocupación:</label>
+            </div>
+            <div class="col-md-3">
+                <input class="form-control" id="ocupacion" name="paciente.sexo" placeholder="Ocupación" value="@ViewBag.ocupación" required />
             </div>
         </div>
         <br />
@@ -149,38 +210,6 @@
                 <input class="form-control" id="VRemitido:" placeholder="VRemitido" />
             </div>
         </div>
-        <h4 style="text-align:center; background-color:#9BC2E6">Datos del consultante</h4>
-        <div class="row">
-            <div class="col-md-1">
-                <label style="font-size:smaller">Nombres:</label>
-            </div>
-            <div class="col-md-4">
-                <input class="form-control" placeholder="Nombre" />
-            </div>
-            <div class="col-md-2">
-                <label style="font-size:smaller">Apellidos:</label>
-            </div>
-            <div class="col-md-4">
-                <input class="form-control" placeholder="Apellidos" />
-            </div>
-        </div>
-        <div class="row">
-
-        </div>
-        <div class="row">
-            <div class="col-md-1">
-                <label style="font-size:smaller">Parentezco:</label>
-            </div>
-            <div class="col-md-4">
-                <input class="form-control" id="Parentezco" placeholder="Parentezco" />
-            </div>
-            <div class="col-md-2">
-                <label style="font-size:smaller">Teléfonos de contacto:</label>
-            </div>
-            <div class="col-md-4">
-                <input class="form-control" id="Consecutivo" placeholder="Teléfonos de contacto" />
-            </div>
-        </div>
         <br />
         <div class="row">
             <div class="col-md-2">
@@ -200,25 +229,165 @@
             </div>
         </div>
         <br />
+        <h4 style="text-align:center; background-color:#9BC2E6">Datos del consultante</h4>
         <div class="row">
-            <div class="col-md-2">
-                <label style="font-size:smaller">El paciente es nuevo en el CAP :</label>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Nombres:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="PaNuevoCAP" placeholder="fecha de atención" />
+                <input class="form-control" placeholder="Nombre" />
             </div>
             <div class="col-md-2">
-                <label style="font-size:smaller">El paciente ya ha asistido a terapia en el CAP:</label>
+                <label style="font-size:smaller">Apellidos:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="PaExisteCAP" placeholder="El paciente ya ha asistido a terapia en el CAP" />
+                <input class="form-control" placeholder="Apellidos" />
             </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-1">
+                <label style="font-size:smaller">Sexo:</label>
+            </div>
+            <div class="col-md-4">
+                <input class="form-control" id="nombrePaciente" name="paciente.sexo" placeholder="Nombres" value="@ViewBag.sexo" required />
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-1">
+                <label style="font-size:smaller">Parentezco:</label>
+            </div>
+            <div class="col-md-4">
+                <input class="form-control" id="Parentezco" placeholder="Parentezco" />
+            </div>
+            <div class="col-md-2">
+                <label style="font-size:smaller">Teléfonos de contacto:</label>
+            </div>
+            <div class="col-md-4">
+                <input class="form-control" id="Consecutivo" placeholder="Teléfonos de contacto" />
+            </div>
+        </div>
+        <br />
+        <div class="row">
+        <label class="col-md-1" style="font-size:smaller">Tipo de documento:</label>
+        <div class="col-md-4">
+            @*@Html.DropDownList("consultante.id_tipoDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumentoConsultante, new { @class = "form-control", id = "documentoConsultante", required = "true" })*@
+        </div>
+        <div class="col-md-2">
+            <label style="font-size:smaller">Número de documento:</label>
+        </div>
+        <div class="col-md-4">
+            <input class="form-control" id="numeroDocumentoConsultante" name="consultante.cedula" placeholder="numero documento" required />
+        </div>
         </div>
         <h4 style="text-align:center; background-color:#9BC2E6">Motivo de consulta</h4>
         <div class="form-group">
             <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
         </div>
-        <h4 style="text-align:center; background-color:#9BC2E6">RUTA DE ATENCIÓN</h4>
+        <h4 style="text-align:center; background-color:#9BC2E6">Problemática actual</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Historia personal</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Antecedentes (Médicos, psicológicos, psiquiátricos y otros relacionados)</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Estrategias de evaluación</h4>
+        <div style="border:double">
+            <div class="row">
+                <div class="col-md-2">
+                    <label style="font-size:smaller">Pruebas psicométricas:</label>
+                </div>
+                <div class="col-md-10">
+                    <input class="form-control" placeholder="Diligencie" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <label style="font-size:smaller">Cuestionarios:</label>
+                </div>
+                <div class="col-md-10">
+                    <input class="form-control" placeholder="Diligencie" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <label style="font-size:smaller">Pruebas proyectivas:</label>
+                </div>
+                <div class="col-md-10">
+                    <input class="form-control" placeholder="Diligencie" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <label style="font-size:smaller">Exámen mental:</label>
+                </div>
+                <div class="col-md-10">
+                    <input class="form-control" placeholder="Diligencie" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <label style="font-size:smaller">Entrevistas:</label>
+                </div>
+                <div class="col-md-10">
+                    <input class="form-control" placeholder="Diligencie" />
+                </div>
+            </div>
+        </div>
+        @*<div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
+        </div>*@
+        <h4 style="text-align:center; background-color:#9BC2E6">Resultados de evaluación</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Historia Familiar (Relaciones familiares y Eventos significativos)</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Genograma</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Hipótesis Psicológicas</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Objetivos terapéuticos</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Estrategias y Tecnicas Terapéuticas</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Logros alcanzados con base en los objetivos terapéuticos</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Logros alcanzados según el consultante</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Resumen</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Remisiones</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Observaciones y Recomendaciones</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
+        </div>
+        @*<h4 style="text-align:center; background-color:#9BC2E6">RUTA DE ATENCIÓN</h4>
         <div class="row">
             <div class="col-md-1">
                 <label style="font-size:smaller">Lista de espera:</label>
@@ -366,10 +535,10 @@
             <div class="col-md-3">
                 <input type="text" class="form-control" />
             </div>
-        </div>
+        </div>*@
         <div class="form-group">
             <div class="col-md-2">
-                <input type="submit" value="Guardar" class="form-control" />
+                <input type="submit" value="Guardar" class="form-control btn btn-primary" />
             </div>
             <div class="col-md-2">
                 <input type="submit" value="Cancelar" class="form-control" onclick="location.href='@Url.Action("Index", "HistoriaClinica" )'" />

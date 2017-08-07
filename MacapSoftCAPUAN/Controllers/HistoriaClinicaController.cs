@@ -558,6 +558,11 @@ namespace MacapSoftCAPUAN.Controllers
             return View();
         }
 
+
+        public ActionResult InformeSesion() {
+            return View();
+        }
+
         //public ActionResult ingresoHistoriaClinica() {
 
         //    return View();
