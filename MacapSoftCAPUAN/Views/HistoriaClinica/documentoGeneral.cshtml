@@ -14,13 +14,13 @@
                 <label style="font-size:smaller">Fecha de recepción de caso:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="FechaRecepcion" placeholder="Fecha de recepción" />
+                <input class="form-control" placeholder="Fecha de recepción" />
             </div>
             <div class="col-md-2">
                 <label style="font-size:smaller">Fecha atención:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="FechaAtencion" placeholder="Fecha atención" />
+                <input class="form-control" placeholder="Fecha atención" />
             </div>
         </div>
         <div class="row">
@@ -42,7 +42,7 @@
                 <label style="font-size:smaller">Categorización CAP:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="NumeroHC" placeholder="Categorización CAP" />
+                <input class="form-control" placeholder="Categorización CAP" />
             </div>
         </div>
         <br />
@@ -52,13 +52,13 @@
                 <label style="font-size:smaller">Nombres:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="nombrePaciente" name="paciente.nombre" placeholder="Nombres" value="@ViewBag.nombre" required />
+                <input class="form-control"  placeholder="Nombres" value="@ViewBag.nombre" required />
             </div>
             <div class="col-md-2">
                 <label style="font-size:smaller">Apellidos:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="apellidoPaciente" name="paciente.apellido" placeholder="Apellidos" value="@ViewBag.apellido" required />
+                <input class="form-control"  placeholder="Apellidos" value="@ViewBag.apellido" required />
             </div>
         </div>
         <br />
@@ -67,7 +67,7 @@
                 <label style="font-size:smaller">Sexo:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="nombrePaciente" name="paciente.sexo" placeholder="Nombres" value="@ViewBag.sexo" required />
+                <input class="form-control" placeholder="Nombres" value="@ViewBag.sexo" required />
             </div>
         </div>
         <br />
@@ -80,7 +80,7 @@
                 <label style="font-size:smaller">Numero de documento:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="numeroDocumentoPaciente" name="paciente.numeroDocumento" placeholder="numero documento" value="@ViewBag.numeroDocumento" required />
+                <input class="form-control" placeholder="numero documento" value="@ViewBag.numeroDocumento" required />
             </div>
         </div>
         <br />
@@ -89,18 +89,18 @@
                 <label style="font-size:smaller">Fecha de nacimiento:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="FechaNacimiento" placeholder="fecha de nacimiento" />
+                <input class="form-control" placeholder="fecha de nacimiento" />
             </div>
             <div class="col-md-3">
                 <label style="font-size:smaller">Lugar de nacimiento (País, Ciudad):</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="lugarNacimientoPaciente" name="paciente.lugarNacimiento" placeholder="País" required />
+                <input class="form-control" placeholder="País" required />
                 @*@Html.DropDownList("paciente.id_paises", (IEnumerable<SelectListItem>)ViewBag.ItemPaises, new { @class = "form-control", required = "true", id = "paisPac" })*@
             </div>
             <div class="col-md-2">
                 @*@Html.DropDownList("paciente.id_ciudad", (IEnumerable<SelectListItem>)ViewBag.ItemCiudades, new { @class = "form-control", id = "lugarNacimientoPac", required = "true" })*@
-                <input class="form-control" id="lugarNacimientoPaciente" name="paciente.lugarNacimiento" placeholder="Ciudad" required />
+                <input class="form-control" placeholder="Ciudad" required />
             </div>
         </div>
         <br />
@@ -109,20 +109,20 @@
                 <label style="font-size:smaller">Estado civil:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="EstadoCivil" placeholder="Estado civil" />
+                <input class="form-control" placeholder="Estado civil" />
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Religión:</label>
             </div>
             <div class="col-md-3">
                 @*@Html.DropDownList("lista", (IEnumerable<SelectListItem>)ViewBag.ItemBarrios, new { @class = "form-control", title = "Seleccione uno de los siguientes barrios", placeholder = "asdas" })*@
-                <input class="form-control" id="Religion" placeholder="Religión" />
+                <input class="form-control" placeholder="Religión" />
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Escolaridad:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="Escolaridad" name="paciente.id_nivelEscolaridad" placeholder="Escolaridad" value="@ViewBag.escolaridad" required />
+                <input class="form-control" value="@ViewBag.escolaridad" required />
             </div>
         </div>
         <br />
@@ -131,13 +131,13 @@
                 <label style="font-size:smaller">Profesión:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="pacienteProfesion" name="paciente.id_profesion" placeholder="Profesión" value="" required />
+                <input class="form-control" placeholder="Profesión" value="" required />
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Ocupación:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="ocupacion" name="paciente.sexo" placeholder="Ocupación" value="@ViewBag.ocupación" required />
+                <input class="form-control" placeholder="Ocupación" value="@ViewBag.ocupación" required />
             </div>
         </div>
         <br />
@@ -146,14 +146,14 @@
                 <label style="font-size:smaller">Dirección:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="Direccion" placeholder="Direccion" />
+                <input class="form-control" placeholder="Direccion" />
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Barrio:</label>
             </div>
             <div class="col-md-3">
                 @*@Html.DropDownList("lista", (IEnumerable<SelectListItem>)ViewBag.ItemBarrios, new { @class = "form-control", title = "Seleccione uno de los siguientes barrios", placeholder = "asdas" })*@
-                <input class="form-control" id="Barrio" placeholder="Barrio" />
+                <input class="form-control" placeholder="Barrio" />
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Localidad:</label>
@@ -168,19 +168,19 @@
                 <label style="font-size:smaller">Estrato:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="Estrato" placeholder="Estrato" />
+                <input class="form-control" placeholder="Estrato" />
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Telefonos:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="Telefonos" placeholder="Telefonos" />
+                <input class="form-control" placeholder="Telefonos" />
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Email:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="Email" placeholder="Email" />
+                <input class="form-control" placeholder="Email" />
             </div>
         </div>
         <br />
@@ -189,25 +189,25 @@
                 <label style="font-size:smaller">EPSS:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="EPSS" placeholder="EPSS" />
+                <input class="form-control" placeholder="EPSS" />
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">EPSC:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="EPSC" placeholder="EPSC" />
+                <input class="form-control" placeholder="EPSC" />
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Institución:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="Institución" placeholder="Institución" />
+                <input class="form-control" placeholder="Institución" />
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Viene remitido:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="VRemitido:" placeholder="VRemitido" />
+                <input class="form-control" placeholder="VRemitido" />
             </div>
         </div>
         <br />
@@ -216,7 +216,7 @@
                 <label style="font-size:smaller">Institución que remite:</label>
             </div>
             <div class="col-md-10">
-                <input class="form-control" id="IRemite:" placeholder="IRemite" />
+                <input class="form-control" placeholder="IRemite" />
             </div>
         </div>
         <br />
@@ -225,7 +225,7 @@
                 <label style="font-size:smaller">Profesional que remite:</label>
             </div>
             <div class="col-md-9">
-                <input class="form-control" id="ProfRemite:" placeholder="Profeisonal que remite" />
+                <input class="form-control" placeholder="Profeisonal que remite" />
             </div>
         </div>
         <br />
@@ -250,7 +250,7 @@
                 <label style="font-size:smaller">Sexo:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="nombrePaciente" name="paciente.sexo" placeholder="Nombres" value="@ViewBag.sexo" required />
+                <input class="form-control" placeholder="Nombres" value="@ViewBag.sexo" required />
             </div>
         </div>
         <br />
@@ -259,13 +259,13 @@
                 <label style="font-size:smaller">Parentezco:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="Parentezco" placeholder="Parentezco" />
+                <input class="form-control" placeholder="Parentezco" />
             </div>
             <div class="col-md-2">
                 <label style="font-size:smaller">Teléfonos de contacto:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="Consecutivo" placeholder="Teléfonos de contacto" />
+                <input class="form-control" placeholder="Teléfonos de contacto" />
             </div>
         </div>
         <br />
@@ -278,7 +278,7 @@
             <label style="font-size:smaller">Número de documento:</label>
         </div>
         <div class="col-md-4">
-            <input class="form-control" id="numeroDocumentoConsultante" name="consultante.cedula" placeholder="numero documento" required />
+            <input class="form-control" placeholder="numero documento" required />
         </div>
         </div>
         <h4 style="text-align:center; background-color:#9BC2E6">Motivo de consulta</h4>

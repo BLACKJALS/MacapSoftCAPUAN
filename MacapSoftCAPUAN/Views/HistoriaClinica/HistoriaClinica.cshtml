@@ -13,13 +13,13 @@
                 <label style="font-size:smaller">Nombres:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="nombrePaciente" name="paciente.nombre" placeholder="Nombres" value="@ViewBag.nombre" required />
+                <input class="form-control" placeholder="Nombres" value="@ViewBag.nombre" required />
             </div>
             <div class="col-md-2">
                 <label style="font-size:smaller">Apellidos:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="apellidoPaciente" name="paciente.apellido" placeholder="Apellidos" value="@ViewBag.apellido" required />
+                <input class="form-control" placeholder="Apellidos" value="@ViewBag.apellido" required />
             </div>
         </div>
         <br />
@@ -28,13 +28,13 @@
                 <label style="font-size:smaller">Numero de documento:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="numeroDocumentoPaciente" name="paciente.numeroDocumento" placeholder="numero documento" value="@ViewBag.numeroDocumento" required />
+                <input class="form-control" placeholder="numero documento" value="@ViewBag.numeroDocumento" required />
             </div>
             <div class="col-md-2">
                 <label style="font-size:smaller">Número de historia clínica:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="numeroHC" name="paciente.apellido" placeholder="Número de historia clínica" value="@ViewBag.apellido" required />
+                <input class="form-control" placeholder="Número de historia clínica" value="@ViewBag.apellido" required />
             </div>
         </div>
         <br/>
@@ -43,20 +43,20 @@
                 <label style="font-size:smaller">Eps:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="epsPaciente" name="paciente.eps.IdEPS" placeholder="EPSS" />
+                <input class="form-control" placeholder="EPSS" />
                 @*@Html.DropDownList("paciente.id_Eps", (IEnumerable<SelectListItem>)ViewBag.ItemEps, new { @class = "form-control", id = "listadosEPS", required = "true" })*@
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Dirección:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="direccionPaciente" name="paciente.direccion" placeholder="Direccion" value="@ViewBag.direccion" required />
+                <input class="form-control" placeholder="Direccion" value="@ViewBag.direccion" required />
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Telefono:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="telefono" name="paciente.direccion" placeholder="Telefono" value="@ViewBag.direccion" required />
+                <input class="form-control" placeholder="Telefono" value="@ViewBag.direccion" required />
             </div>
         </div>
         <br />

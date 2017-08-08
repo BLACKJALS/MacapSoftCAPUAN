@@ -39,6 +39,7 @@ namespace MacapSoftCAPUAN.DALC
             var listaDocumento = bd.tipoDocumentoContext.ToList();
             return listaDocumento;
         }
+        
 
         public List<Localidades> listarLocalidades()
         {
@@ -66,14 +67,14 @@ namespace MacapSoftCAPUAN.DALC
 
         }
 
-        public List<Profesion> listarProfesion()
-        {
-            bd = new ApplicationDbContext();
-            List<Profesion> listaProfesion = new List<Profesion>();
-            listaProfesion = bd.profesionContext.ToList();
-            return listaProfesion;
+        //public List<Profesion> listarProfesion()
+        //{
+        //    bd = new ApplicationDbContext();
+        //    List<Profesion> listaProfesion = new List<Profesion>();
+        //    listaProfesion = bd.profesionContext.ToList();
+        //    return listaProfesion;
 
-        }
+        //}
 
         public List<Eps> listarEps()
         {
@@ -178,29 +179,29 @@ namespace MacapSoftCAPUAN.DALC
 
 
 
-        public string agregarConsultantePaciente(consultantePaciente consultantePa)
-        {
+        //public string agregarConsultantePaciente(consultantePaciente consultantePa)
+        //{
 
-            try
-            {
-                bd = new ApplicationDbContext();
-                bd.consultantePacienteContext.Add(consultantePa);
-                //bd.Entry(consultantePa.idConsultante.tipoDocumento).State = EntityState.Detached;
-                //bd.Entry(consultantePa.idConsultante).State = EntityState.Unchanged;
-                bd.Entry(consultantePa.IdConsultante).State = EntityState.Unchanged;
-                bd.Entry(consultantePa.IdPaciente).State = EntityState.Unchanged;
-                bd.SaveChanges();
-                return "ConsultantePaciente creado existosamente";
-            }
-            catch (Exception e)
-            {
+        //    try
+        //    {
+        //        bd = new ApplicationDbContext();
+        //        bd.consultantePacienteContext.Add(consultantePa);
+        //        //bd.Entry(consultantePa.idConsultante.tipoDocumento).State = EntityState.Detached;
+        //        //bd.Entry(consultantePa.idConsultante).State = EntityState.Unchanged;
+        //        bd.Entry(consultantePa.IdConsultante).State = EntityState.Unchanged;
+        //        bd.Entry(consultantePa.IdPaciente).State = EntityState.Unchanged;
+        //        bd.SaveChanges();
+        //        return "ConsultantePaciente creado existosamente";
+        //    }
+        //    catch (Exception e)
+        //    {
 
-                System.ArgumentException argxEx = new System.ArgumentException("No se pudo crear el paciente ya existe la información del consultante paciente con ese documentos de identidad registrado.", e);
-                throw argxEx;
+        //        System.ArgumentException argxEx = new System.ArgumentException("No se pudo crear el paciente ya existe la información del consultante paciente con ese documentos de identidad registrado.", e);
+        //        throw argxEx;
 
-            }
+        //    }
 
-        }
+        //}
 
 
         public void agregarConsecutivo(Consecutivo consecutivo)
@@ -313,6 +314,32 @@ namespace MacapSoftCAPUAN.DALC
                 throw argxEx;
             }
             return "Exito";
+        }
+
+
+        public List<Sexo> listarSexoPac()
+        {
+            bd = new ApplicationDbContext();
+            List<Sexo> listaSexo = new List<Sexo>();
+            listaSexo = bd.sexoContext.ToList();
+            return listaSexo;
+        }
+
+        public List<NivelEscolaridad> listarlistaNivelEscolaridad()
+        {
+            bd = new ApplicationDbContext();
+            List<NivelEscolaridad> listaNivelEscolaridad = new List<NivelEscolaridad>();
+            listaNivelEscolaridad = bd.nivelEscolaridadContext.ToList();
+            return listaNivelEscolaridad;
+        }
+
+
+        public List<Ocupacion> listarOcupacion()
+        {
+            bd = new ApplicationDbContext();
+            List<Ocupacion> listaOcupacion = new List<Ocupacion>();
+            listaOcupacion = bd.ocupacionCAPContext.ToList();
+            return listaOcupacion;
         }
     }
 }

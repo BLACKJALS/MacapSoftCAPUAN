@@ -62,6 +62,9 @@ namespace MacapSoftCAPUAN.Controllers
             List<SelectListItem> listaItemsPaises = new List<SelectListItem>();
             List<SelectListItem> listaItemsEstrato = new List<SelectListItem>();
             List<SelectListItem> listaItemsCuidades = new List<SelectListItem>();
+            List<SelectListItem> listaItemsSexo = new List<SelectListItem>();
+            List<SelectListItem> listaItemsNivelEscolaridad = new List<SelectListItem>();
+            List<SelectListItem> listaItemsOcupacion = new List<SelectListItem>();
             SelectListItem items;
             SelectListItem documento;
             SelectListItem validacion;
@@ -164,13 +167,31 @@ namespace MacapSoftCAPUAN.Controllers
                 listaItemsEps.Add(items);
             }
 
-            var listaProfesion = HC.listarProfesion();
-            foreach (var item in listaProfesion)
+            var listaSexo = HC.listarSexo();
+            foreach (var item in listaSexo)
+            {
+                items = new SelectListItem();
+                items.Text = item.sexo;
+                items.Value = item.id_Sexo.ToString();
+                listaItemsSexo.Add(items);
+            }
+
+            var listaNivelEscolaridad = HC.listarNivelEscolaridad();
+            foreach (var item in listaNivelEscolaridad)
             {
                 items = new SelectListItem();
                 items.Text = item.nombre;
-                items.Value = item.idProfesion.ToString();
-                listaItemsProfesion.Add(items);
+                items.Value = item.idNivelEscolaridad.ToString();
+                listaItemsNivelEscolaridad.Add(items);
+            }
+
+            var listaOcupacion = HC.listarOcupacion();
+            foreach (var item in listaOcupacion)
+            {
+                items = new SelectListItem();
+                items.Text = item.nombre;
+                items.Value = item.id_Ocupacion.ToString();
+                listaItemsOcupacion.Add(items);
             }
 
 
@@ -193,7 +214,9 @@ namespace MacapSoftCAPUAN.Controllers
             ViewBag.ItemPaises = listaItemsPaises.ToList();
             ViewBag.ItemEstrato = listaItemsEstrato.ToList();
             ViewBag.ItemCiudades = listaItemsCuidades.ToList();
-            ViewBag.Profesion = listaProfesion.ToList();
+            ViewBag.Sexo = listaItemsSexo.ToList();
+            ViewBag.NivelEscolaridad = listaItemsNivelEscolaridad.ToList();
+            ViewBag.Ocupacion = listaItemsOcupacion.ToList();
             if (recepcion.paciente != null)
             {
                 ViewBag.existente = "Si";
@@ -224,47 +247,6 @@ namespace MacapSoftCAPUAN.Controllers
             return View(recepcion);
         }
 
-
-
-        public ActionResult RecepcionCaso(string bussinesUnit)
-        {
-            HC = new HistoriaClinicaBO();
-            List<SelectListItem> listaItemsBarrios = new List<SelectListItem>();
-            List<SelectListItem> listaItemsLocalidades = new List<SelectListItem>();
-            List<SelectListItem> listaItemsEps = new List<SelectListItem>();
-            SelectListItem items;
-            var listaBarrio = HC.listarBarrios();
-            foreach (var item in listaBarrio) {
-                items = new SelectListItem();
-                items.Text = item.nombre;
-                items.Value = item.nombre;
-                listaItemsBarrios.Add(items);
-            }
-
-            var listaLocalidades = HC.listarLocalidades();
-            foreach (var item in listaLocalidades)
-            {
-                items = new SelectListItem();
-                items.Text = item.nombre;
-                items.Value = item.nombre;
-                listaItemsLocalidades.Add(items);
-            }
-
-            var listaEps = HC.listarEps();
-            foreach (var item in listaEps)
-            {
-                items = new SelectListItem();
-                items.Text = item.nombre;
-                items.Value = item.nombre;
-                listaItemsEps.Add(items);
-            }
-            ViewBag.ItemLocalidades = listaItemsLocalidades.ToList();
-            ViewBag.ItemBarrios = listaItemsBarrios.ToList();
-            ViewBag.ItemEps = listaItemsEps.ToList();
-            return View();
-        }
-
-
         
         [HttpPost]
         public ActionResult IngresoPacientesCreado(RecepcionCaso model, string Informacion, string Documento)
@@ -272,7 +254,7 @@ namespace MacapSoftCAPUAN.Controllers
             HC = new HistoriaClinicaBO();
             Paciente paciente = new Paciente();
             Consultante consultante = new Consultante();
-            consultantePaciente consultantePa;
+            //consultantePaciente consultantePa;
             IngresoClinica ingresoClinica = new IngresoClinica();
             Remitido remitido = new Remitido();
             Remision remision = new Remision();
@@ -324,8 +306,8 @@ namespace MacapSoftCAPUAN.Controllers
                 model.paciente.idUser = System.Web.HttpContext.Current.User.Identity.GetUserId();
                 paciente = model.paciente;
                 paciente.consecutivo = consecutivo.numeroConsecutivo;
-                paciente.id_profesion = 1;
-                paciente.id_NivelEscolaridad = 1;
+                //paciente.id_profesion = 1;
+                //paciente.id_NivelEscolaridad = 1;
                 HC.agregarpaciente(paciente);
                 HC.agregarConsecutivo(consecutivo);
                 ingresoClinica = model.ingresoClinica;
@@ -345,12 +327,12 @@ namespace MacapSoftCAPUAN.Controllers
                 {
                     HC.agregarConsultante(model.consultante);
 
-                    consultantePa = new consultantePaciente();
-                    consultantePa.IdPaciente = model.paciente;
-                    consultantePa.id_Paciente = model.paciente.numeroDocumento;
-                    consultantePa.IdConsultante = model.consultante;
-                    consultantePa.id_Consultante = model.consultante.id_Consultante;
-                    HC.agregarConsultantePaciente(consultantePa);
+                    //consultantePa = new consultantePaciente();
+                    //consultantePa.IdPaciente = model.paciente;
+                    //consultantePa.id_Paciente = model.paciente.numeroDocumento;
+                    //consultantePa.IdConsultante = model.consultante;
+                    //consultantePa.id_Consultante = model.consultante.id_Consultante;
+                    //HC.agregarConsultantePaciente(consultantePa);
                 }
 
             }
@@ -406,7 +388,7 @@ namespace MacapSoftCAPUAN.Controllers
                     motivoRem.idMotivoRemision = int.Parse(item);
                     remisionPaciente.motivoRemision = motivoRem.idMotivoRemision;
                     remisionPaciente.fechaRemitido = fechaRemision; 
-                    remisionPaciente.id_paciente = modelRemision.paciente.numeroDocumento;
+                    //remisionPaciente.id_paciente = modelRemision.paciente.numeroDocumento;
                     listaResmisionPaciente.Add(remisionPaciente);
                 }
             }
@@ -434,7 +416,7 @@ namespace MacapSoftCAPUAN.Controllers
 
             var listaRemisiones = HC.listarRemisiones();
             var listaMotivosRemisiones = HC.listarMotivosRemisiones();
-            var listaPacientes = HC.listarPaciente();
+            var listaPacientes = HC.listarIngresoClinica();
 
             foreach (var item in listaRemisiones)
             {
@@ -442,9 +424,9 @@ namespace MacapSoftCAPUAN.Controllers
                 foreach (var itemlmr in listaMotivosRemisiones)
                 {
                     if (itemlmr.idMotivoRemision == item.motivoRemision) {
-                        motivoRemisionVM.id = item.id_paciente;
-                        motivoRemisionVM.nombrePaciente = (from pa in listaPacientes where pa.numeroDocumento == item.id_paciente select pa.nombre).FirstOrDefault() + " ";
-                        motivoRemisionVM.nombrePaciente += (from pa in listaPacientes where pa.numeroDocumento == item.id_paciente select pa.apellido).FirstOrDefault() + " ";
+                        motivoRemisionVM.id = item.id_ingresoClinica;
+                        //motivoRemisionVM.nombrePaciente = (from pa in listaPacientes where pa.numeroDocumento == item. select pa.nombre).FirstOrDefault() + " ";
+                        //motivoRemisionVM.nombrePaciente += (from pa in listaPacientes where pa.numeroDocumento == item.id_paciente select pa.apellido).FirstOrDefault() + " ";
                         motivoRemisionVM.nombreMotivoRemision = itemlmr.nombre;
                         motivoRemisionVM.fecha = item.fechaRemitido;
                         listaMotivoRemision.Add(motivoRemisionVM);
@@ -452,22 +434,22 @@ namespace MacapSoftCAPUAN.Controllers
                 }
             }
             
-            foreach (var itemPaciente in listaMotivoRemision)
-            {
-                motivoRemisionVM = new MotivoRemisionVM();
-                motivoRemisionVM = itemPaciente;
-                if (!(mtv.ContainsKey(itemPaciente.id)))
-                {
-                    mtv.Add(itemPaciente.id, itemPaciente);
-                }
-                else
-                {
-                    var a = mtv.FirstOrDefault(x => x.Key == itemPaciente.id);
-                    mtv.Remove(itemPaciente.id);
-                    itemPaciente.nombreMotivoRemision += " "+ a.Value.nombreMotivoRemision;
-                    mtv.Add(itemPaciente.id, itemPaciente);
-                }
-            }
+            //foreach (var itemPaciente in listaMotivoRemision)
+            //{
+            //    motivoRemisionVM = new MotivoRemisionVM();
+            //    motivoRemisionVM = itemPaciente;
+            //    if (!(mtv.ContainsKey(itemPaciente.id)))
+            //    {
+            //        mtv.Add(itemPaciente.id, itemPaciente);
+            //    }
+            //    else
+            //    {
+            //        var a = mtv.FirstOrDefault(x => x.Key == itemPaciente.id);
+            //        mtv.Remove(itemPaciente.id);
+            //        itemPaciente.nombreMotivoRemision += " "+ a.Value.nombreMotivoRemision;
+            //        mtv.Add(itemPaciente.id, itemPaciente);
+            //    }
+            //}
 
             return Json(mtv.Values, JsonRequestBehavior.AllowGet);
         }

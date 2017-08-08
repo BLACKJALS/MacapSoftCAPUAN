@@ -236,6 +236,7 @@
     <Compile Include="ModelsVM\RecepcionCaso.cs" />
     <Compile Include="ModelsVM\RemisionPaciente.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CategorizacionCAP.cs" />
     <Compile Include="Models\CierreHC.cs" />
     <Compile Include="Models\Consecutivo.cs" />
     <Compile Include="Models\Consultante.cs" />
@@ -251,6 +252,7 @@
     <Compile Include="Models\Paises.cs" />
     <Compile Include="Models\Remision.cs" />
     <Compile Include="Models\Remitido.cs" />
+    <Compile Include="Models\Sexo.cs" />
     <Compile Include="Models\TiposDocumentos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -454,8 +456,6 @@
     <Content Include="Views\Diagnostico\ModificarDiagnostico.cshtml" />
     <Content Include="Views\Diagnostico\ErrorModificarDiagnostico.cshtml" />
     <Content Include="Views\Account\ListaUsuarios.cshtml" />
-    <Content Include="Views\HistoriaClinica\RecepcionCaso.cshtml" />
-    <Content Include="Views\HistoriaClinica\HistoriaClinica1.cshtml" />
     <Content Include="Views\HistoriaClinica\IngresoPacientes.cshtml" />
     <Content Include="Views\HistoriaClinica\IngresoPacienteCreado.cshtml" />
     <Content Include="Views\HistoriaClinica\listaHistoriasClinicas.cshtml" />

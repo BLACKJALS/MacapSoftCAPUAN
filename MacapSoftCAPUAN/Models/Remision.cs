@@ -13,25 +13,21 @@ namespace MacapSoftCAPUAN.Models
         [Key]
         [DatabaseGenerated (DatabaseGeneratedOption.Identity)]
         public int idRemision { get; set; }
-        [ForeignKey("Paciente")]
-        public string id_paciente { get; set; }
+        [ForeignKey("IngresoClinica")]
+        public int id_ingresoClinica { get; set; }
 
         public string nombreInsitucionRemitida { get; set; }
         public string direccion { get; set; }
         public string telefono { get; set; }
         public string nombreProfesional { get; set; }
-        //public ServicioSolicitado serviSoli { get; set; }
         public int serviSoli { get; set; }
         public string accionesEmprendidas { get; set; }
         public string expectativasServicio { get; set; }
         public DateTime fechaRemitido { get; set; }
         public string usuario { get; set; }
-        //public Diagnostico diagnostico { get; set; }
         public string diagnostico { get; set; }
-        //public MotivosRemisiones motivoRemision { get; set; }
         public int motivoRemision { get; set; }
-        public virtual Paciente Paciente { get; set; }
-        //public string paciente { get; set; }
+        public virtual IngresoClinica IngresoClinica { get; set; }
 
         public string programacionPsicologo { get; set; }
         public string anexos { get; set; }

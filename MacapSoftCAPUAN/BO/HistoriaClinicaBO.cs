@@ -57,11 +57,11 @@ namespace MacapSoftCAPUAN.BO
             return hcDALC.agregarConsultante(consultante);
         }
         
-        public string agregarConsultantePaciente(consultantePaciente consultantePa)
-        {
-            hcDALC = new HistoriaClinicaDALC();
-            return hcDALC.agregarConsultantePaciente(consultantePa);
-        }
+        //public string agregarConsultantePaciente(consultantePaciente consultantePa)
+        //{
+        //    hcDALC = new HistoriaClinicaDALC();
+        //    return hcDALC.agregarConsultantePaciente(consultantePa);
+        //}
 
         public void agregarRemision(Remision remision)
         {
@@ -198,10 +198,26 @@ namespace MacapSoftCAPUAN.BO
             
         }
 
-        public List<Profesion> listarProfesion() {
+        public List<Sexo> listarSexo()
+        {
             hcDALC = new HistoriaClinicaDALC();
-            var listaProfesion = hcDALC.listarProfesion();
-            return listaProfesion;
+            var listaSexo = hcDALC.listarSexoPac();
+            return listaSexo;
+        }
+
+
+        public List<NivelEscolaridad> listarNivelEscolaridad()
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            var listaNivelEscolaridad = hcDALC.listarlistaNivelEscolaridad();
+            return listaNivelEscolaridad;
+        }
+
+        public List<Ocupacion> listarOcupacion()
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            var listaOcupacion = hcDALC.listarOcupacion();
+            return listaOcupacion;
         }
     }
 }

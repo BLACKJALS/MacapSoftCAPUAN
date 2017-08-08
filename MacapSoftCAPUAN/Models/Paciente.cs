@@ -24,18 +24,21 @@ namespace MacapSoftCAPUAN.Models
         public string id_ciudad { get; set; }
         [ForeignKey("Eps")]
         public string id_Eps { get; set; }
-        [ForeignKey("Profesion")]
-        public int id_profesion { get; set; }
+        //[ForeignKey("Profesion")]
+        //public int id_profesion { get; set; }
         [ForeignKey("NivelEscolaridad")]
         public int id_NivelEscolaridad { get; set; }
         [ForeignKey("Estrato")]
         public int id_estrato { get; set; }
+        [ForeignKey("Sexo")]
+        public int id_sexo { get; set; }
+        [ForeignKey("Ocupacion")]
+        public long id_ocupacion { get; set; }
         //[ForeignKey("Consecutivo")]
         public int consecutivo { get; set; }
         public string numeroDocumento { get; set; }
         public string nombre { get; set; }
         public string apellido { get; set; }
-        public string sexo { get; set; }
         public virtual TiposDocumentos TipoDocumento { get; set; }//Se agregó el virtual
         public DateTime? fechaNacimiento { get; set; }
         public virtual Ciudades Ciudad { get; set; }
@@ -48,8 +51,9 @@ namespace MacapSoftCAPUAN.Models
         public string telefono { get; set; }
         public string email { get; set; }
         public virtual Eps Eps { get; set; }//Se agregó el virtual 
-        public virtual Profesion Profesion { get; set; }                //Se agregó el virtual
-        public string ocupacion { get; set; }                           
+        //public virtual Profesion Profesion { get; set; }                //Se agregó el virtual
+        public string profesion { get; set; }
+        public virtual Ocupacion Ocupacion { get; set; }                           
         public virtual NivelEscolaridad NivelEscolaridad { get; set; } //Se agregó el virtual
         public string activo { get; set; }
         public string antecedentes { get; set; }
@@ -64,10 +68,7 @@ namespace MacapSoftCAPUAN.Models
         public string tieneEps { get; set; }
         public string tieneEpc { get; set; }
         public virtual Estrato Estrato { get; set; }//Se agregó el virtual
-        //public virtual ICollection<TiposDocumentos> documentos { get; set; }
-        //public virtual ICollection<Barrios> barrios { get; set; }
-        //public virtual ICollection<Localidades> localidades { get; set; }
-        //public virtual ICollection<Remitido> remitido { get; set; }
+        public virtual Sexo Sexo { get; set; }
 
         public Paciente()
         {

@@ -296,13 +296,13 @@
                 <label style="font-size:smaller">Sexo:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="nombrePaciente" name="paciente.sexo" placeholder="Nombres" value="@ViewBag.sexo" required />
+                @Html.DropDownList("paciente.id_sexo", (IEnumerable<SelectListItem>)ViewBag.Sexo, new { @class = "form-control", id = "sexo" })
             </div>
             <div class="col-md-2">
                 <label style="font-size:smaller">Escolaridad:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="apellidoPaciente" name="paciente.id_nivelEscolaridad" placeholder="Apellidos" value="@ViewBag.escolaridad" required />
+                @Html.DropDownList("paciente.id_NivelEscolaridad", (IEnumerable<SelectListItem>)ViewBag.NivelEscolaridad, new { @class = "form-control", id = "nivelEscolaridad" })
             </div>
         </div>
         <br />
@@ -386,13 +386,13 @@
                 <label style="font-size:smaller">Ocupación:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="ocupacion" name="paciente.sexo" placeholder="Ocupación" value="@ViewBag.ocupación" required />
+                @Html.DropDownList("paciente.id_ocupacion", (IEnumerable<SelectListItem>)ViewBag.Ocupacion, new { @class = "form-control", id = "ocupacion" })
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Profesión:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="pacienteProfesion" name="paciente.id_profesion" placeholder="Profesión" value="" required />
+                <input class="form-control" id="pacienteProfesion" name="paciente.profesion" placeholder="Profesión" value="" required />
             </div>
         </div>
         <br/>

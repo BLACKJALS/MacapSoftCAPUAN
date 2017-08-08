@@ -12,7 +12,7 @@ namespace MacapSoftCAPUAN.ModelsVM
         public Consultante consultante { get; set; }
         public Remitido remitido { get; set; }
         public Remision remision { get; set; }
-        public consultantePaciente consultantePaciente { get; set; }
+        //public consultantePaciente consultantePaciente { get; set; }
         public IngresoClinica ingresoClinica { get; set; }
         public Consecutivo consecutivo { get; set; }
         //public Eps epsObj { get; set; }
@@ -20,7 +20,7 @@ namespace MacapSoftCAPUAN.ModelsVM
 
         public RecepcionCaso() {
             paciente = new Paciente();
-            consultantePaciente = new consultantePaciente();
+            //consultantePaciente = new consultantePaciente();
             remitido = new Remitido();
             remision = new Remision();
             consultante = new Consultante();

@@ -24,11 +24,11 @@ namespace MacapSoftCAPUAN.Models
         [DatabaseGenerated (DatabaseGeneratedOption.Identity)]
         public int idConsulta { get; set; }
         [ForeignKey("EstrategiasE")]
-        public int id_estrategiasE { get; set; }
-        [ForeignKey("Paciente")]
-        public string id_paciente { get; set; }
+        public int? id_estrategiasE { get; set; }
+        [ForeignKey("IngresoClinica")]
+        public int? id_ingresoClinica { get; set; }
         [ForeignKey("Consultante")]
-        public long id_consultante { get; set; }
+        public string id_consultante { get; set; }
 
         public DateTime? fecha { get; set; }
         public string objetivoSesion { get; set; }
@@ -45,7 +45,7 @@ namespace MacapSoftCAPUAN.Models
         public string resumen { get; set; }
         public string observacionesRecomendaciones { get; set; }
         public EstrategiasEvaluacion EstrategiasE { get; set; }
-        public Paciente Paciente { get; set; }
+        public IngresoClinica IngresoClinica { get; set; }
         public string usuario { get; set; }
         public Consultante Consultante { get; set; }
     }

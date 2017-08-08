@@ -14,12 +14,12 @@ namespace MacapSoftCAPUAN.Models
         [Key]
         [DatabaseGenerated (DatabaseGeneratedOption.Identity)]
         public int idInasistencias { get; set; }
-        [ForeignKey("Paciente")]
-        public string id_paciente { get; set; }
+        [ForeignKey("IngresoClinica")]
+        public int id_ingresoClinica { get; set; }
 
         public string motivo { get; set; }
         public DateTime? fechaInasistencia { get; set; }
-        public Paciente Paciente { get; set; }
+        public IngresoClinica IngresoClinica { get; set; }
         public string usuario { get; set; }
     }
 }

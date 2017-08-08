@@ -14,8 +14,8 @@ namespace MacapSoftCAPUAN.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int idCierreHC { get; set; }
-        [ForeignKey("Paciente")]
-        public string id_paciente { get; set; }
+        [ForeignKey("IngresoClinica")]
+        public int id_ingresoClinica { get; set; }
         [ForeignKey("Consulta")]
         public int id_consulta { get; set; }
         [ForeignKey("MotivoCierre")]
@@ -27,7 +27,7 @@ namespace MacapSoftCAPUAN.Models
         public string numeroSesionesRealizadas { get; set; }
         public string idUsuario { get; set; }
         public Consulta Consulta { get; set; }
-        public Paciente Paciente { get; set; }
+        public IngresoClinica IngresoClinica { get; set; }
         public MotivosCierre MotivoCierre { get; set; }
 
     }

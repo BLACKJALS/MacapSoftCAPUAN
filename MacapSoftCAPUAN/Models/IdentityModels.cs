@@ -38,7 +38,7 @@ namespace MacapSoftCAPUAN.Models
         public DbSet<Barrios> barriosContext { get; set; }
         public DbSet<Paciente> pacienteContext { get; set; }
         public DbSet<Consultante> consultanteContext { get; set; }
-        public DbSet<consultantePaciente> consultantePacienteContext { get; set; }
+        //public DbSet<consultantePaciente> consultantePacienteContext { get; set; }
         public DbSet<Remision> remisionContext { get; set; }
         public DbSet<Remitido> remitidoContext { get; set; }
         public DbSet<Eps> epsConext { get; set; }
@@ -48,6 +48,11 @@ namespace MacapSoftCAPUAN.Models
         public DbSet<Estrato> estratoContext { get; set; }
         public DbSet<MotivosRemisiones> motivosRemisionesContext { get; set; }
         public DbSet<IngresoClinica> ingresoClinicaContext { get; set; }
-        public DbSet<Profesion> profesionContext { get; set; }
+        //public DbSet<Profesion> profesionContext { get; set; }
+        public DbSet<CierreHC> cierreHcContext { get; set; }
+        public DbSet<CategorizacionCAP> categorizacionCAPContext { get; set; }
+        public DbSet<Ocupacion> ocupacionCAPContext { get; set; }
+        public DbSet<Sexo> sexoContext { get; set; }
+        public DbSet<NivelEscolaridad> nivelEscolaridadContext { get; set; }
     }
 }

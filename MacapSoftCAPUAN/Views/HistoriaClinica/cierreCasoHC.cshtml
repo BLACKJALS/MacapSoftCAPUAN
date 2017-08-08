@@ -12,13 +12,13 @@
             <label style="font-size:smaller">Fecha de cierre:</label>
         </div>
         <div class="col-md-4">
-            <input class="form-control" id="fechaCierre" name="ingresoClinica.fechaIngreso" placeholder="fecha de cierre" onclick="return fechaHoy();" required />
+            <input class="form-control"   placeholder="fecha de cierre" onclick="return fechaHoy();" required />
         </div>
         <div class="col-md-2">
             <label style="font-size:smaller">Numero de HC:</label>
         </div>
         <div class="col-md-4">
-            <input class="form-control" id="Consecutivo" name="consecutivo.numeroConsecutivo" placeholder="Numero de HC" required />
+            <input class="form-control"   placeholder="Numero de HC" required />
         </div>
     </div>
     <br />
@@ -27,13 +27,13 @@
             <label style="font-size:smaller">Nombres:</label>
         </div>
         <div class="col-md-4">
-            <input class="form-control" id="nombrePaciente" name="paciente.nombre" placeholder="Nombres" value="@ViewBag.nombre" required />
+            <input class="form-control"   placeholder="Nombres" value="@ViewBag.nombre" required />
         </div>
         <div class="col-md-2">
             <label style="font-size:smaller">Apellidos:</label>
         </div>
         <div class="col-md-4">
-            <input class="form-control" id="apellidoPaciente" name="paciente.apellido" placeholder="Apellidos" value="@ViewBag.apellido" required />
+            <input class="form-control"   placeholder="Apellidos" value="@ViewBag.apellido" required />
         </div>
     </div>
     <br />
@@ -42,7 +42,7 @@
             <label style="font-size:smaller">Numero de documento:</label>
         </div>
         <div class="col-md-4">
-            <input class="form-control" id="numeroDocumentoPaciente" name="paciente.numeroDocumento" placeholder="numero documento" value="@ViewBag.numeroDocumento" required />
+            <input class="form-control"  placeholder="numero documento" value="@ViewBag.numeroDocumento" required />
         </div>
     </div>
     <br />
@@ -51,25 +51,25 @@
             <label style="font-size:smaller">Fecha de nacimiento:</label>
         </div>
         <div class="col-md-2">
-            <input class="form-control" id="fechaNacimientoPaciente" name="paciente.fechaNacimiento" placeholder="fecha de nacimiento" required />
+            <input class="form-control"   placeholder="fecha de nacimiento" required />
         </div>
         <div class="col-md-1">
             <label style="font-size:smaller">Edad:</label>
         </div>
         <div class="col-md-2">
-            <input class="form-control" id="edadPaciente" name="paciente.edad" placeholder="Edad (años)" onclick="return validarEdad();" value="@ViewBag.edad" required />
+            <input class="form-control"  placeholder="Edad (años)" onclick="return validarEdad();" value="@ViewBag.edad" required />
         </div>
         <div class="col-md-1">
             <label style="font-size:smaller">Profesión:</label>
         </div>
         <div class="col-md-2">
-            <input class="form-control" id="pacienteProfesion" name="paciente.id_profesion" placeholder="Profesión" value="" required />
+            <input class="form-control" placeholder="Profesión" value="" required />
         </div>
         <div class="col-md-1">
             <label style="font-size:smaller">Ocupación:</label>
         </div>
         <div class="col-md-2">
-            <input class="form-control" id="ocupacion" name="paciente.sexo" placeholder="Ocupación" value="@ViewBag.ocupación" required />
+            <input class="form-control"  placeholder="Ocupación" value="@ViewBag.ocupación" required />
         </div>
     </div>
     <br />
@@ -78,13 +78,13 @@
             <label style="font-size:smaller">Escolaridad:</label>
         </div>
         <div class="col-md-2">
-            <input class="form-control" id="pacienteProfesion" name="paciente.id_profesion" placeholder="Escolaridad" value="" required />
+            <input class="form-control"  placeholder="Escolaridad" value="" required />
         </div>
         <div class="col-md-1">
             <label style="font-size:smaller">Remitido por:</label>
         </div>
         <div class="col-md-2">
-            <input class="form-control" id="ocupacion" name="paciente.sexo" placeholder="Remitido por" value="@ViewBag.ocupación" required />
+            <input class="form-control" placeholder="Remitido por" value="@ViewBag.ocupación" required />
         </div>
     </div>
     <br />
@@ -93,13 +93,13 @@
             <label style="font-size:smaller">Escolaridad:</label>
         </div>
         <div class="col-md-3">
-            <input class="form-control" id="pacienteProfesion" name="paciente.id_profesion" placeholder="Escolaridad" value="" required />
+            <input class="form-control" placeholder="Escolaridad" value="" required />
         </div>
         <div class="col-md-1">
             <label style="font-size:smaller">Remitido por:</label>
         </div>
         <div class="col-md-3">
-            <input class="form-control" id="ocupacion" name="paciente.sexo" placeholder="Remitido por" value="@ViewBag.ocupación" required />
+            <input class="form-control" placeholder="Remitido por" value="@ViewBag.ocupación" required />
         </div>
     </div>
     <br />
@@ -108,13 +108,13 @@
             <label style="font-size:smaller">Fecha inicio psicoterapia:</label>
         </div>
         <div class="col-md-2">
-            <input type="text" class="form-control" id="fechaRemision" onclick="return fechaHoy();" />
+            <input type="text" class="form-control"  onclick="return fechaHoy();" />
         </div>
         <div class="col-md-2">
             <label style="font-size:smaller">Fecha fin de la psicoterapia:</label>
         </div>
         <div class="col-md-2">
-            <input class="form-control" id="fechaIniPsico" placeholder="Fecha inicio psicoterapia" required />
+            <input class="form-control" placeholder="Fecha inicio psicoterapia" required />
             @*<input type="text" class="form-control" id="fechaRemision" onclick="return fechaHoy();"/>*@
         </div>
     </div>
@@ -124,19 +124,19 @@
             <label style="font-size:smaller">Número de citas asignadas:</label>
         </div>
         <div class="col-md-2">
-            <input class="form-control" id="pacienteProfesion" name="paciente.id_profesion" placeholder="Número de citas asignadas" value="" required />
+            <input class="form-control" placeholder="Número de citas asignadas" value="" required />
         </div>
         <div class="col-md-2">
             <label style="font-size:smaller">Sesiones realizadas:</label>
         </div>
         <div class="col-md-2">
-            <input class="form-control" id="ocupacion" name="paciente.sexo" placeholder="Sesiones realizadas" value="" required />
+            <input class="form-control" placeholder="Sesiones realizadas" value="" required />
         </div>
         <div class="col-md-2">
             <label style="font-size:smaller">Inasistencias:</label>
         </div>
         <div class="col-md-2">
-            <input class="form-control" id="ocupacion" name="paciente.sexo" placeholder="Inasistencias" value="" required />
+            <input class="form-control"  placeholder="Inasistencias" value="" required />
         </div>
     </div>
     <br />
@@ -147,7 +147,7 @@
         <label style="font-size:medium">Acuerdo entre consultante y terapeuta:</label>
     </div>
     <div class="col-md-1">
-        <input type="checkbox" id="IntentoSuicida" value="5" name="remision.motivoRemision.idMotivoRemision">
+        <input type="checkbox"  value="5">
     </div>
 </div>
 <div class="row">
@@ -155,7 +155,7 @@
         <label style="font-size:medium">Logro de objetivos:</label>
     </div>
     <div class="col-md-1">
-        <input type="checkbox" id="Abuso" value="2" name="remision.motivoRemision.idMotivoRemision" />
+        <input type="checkbox" value="2"/>
     </div>
 </div>
 <div class="row">
@@ -163,7 +163,7 @@
         <label style="font-size:medium">Retiro por consideración del consultante:</label>
     </div>
     <div class="col-md-1">
-        <input type="checkbox" id="psicosis" value="1" name="remision.motivoRemision.idMotivoRemision" />
+        <input type="checkbox" />
     </div>
 </div>
 <div class="row">
@@ -171,7 +171,7 @@
         <label style="font-size:medium">Consumo de estupefacientes:</label>
     </div>
     <div class="col-md-1">
-        <input type="checkbox" id="consumo" value="3" name="remision.motivoRemision.idMotivoRemision" />
+        <input type="checkbox"/>
     </div>
 </div>
 <div class="row">
@@ -179,7 +179,7 @@
         <label style="font-size:medium">Abandono de las sesiones por parte del consultante:</label>
     </div>
     <div class="col-md-1">
-        <input type="checkbox" id="violencia" value="4" name="remision.motivoRemision.idMotivoRemision" />
+        <input type="checkbox" />
     </div>
 </div>
 <div class="row">
@@ -187,7 +187,7 @@
         <label style="font-size:medium">Cierre por decisión del terapeuta:</label>
     </div>
     <div class="col-md-1">
-        <input type="checkbox" id="violencia" value="4" name="remision.motivoRemision.idMotivoRemision" />
+        <input type="checkbox"/>
     </div>
 </div>
 <div class="row">
@@ -195,7 +195,7 @@
         <label style="font-size:medium">Por término del semestre:</label>
     </div>
     <div class="col-md-1">
-        <input type="checkbox" id="violencia" value="4" name="remision.motivoRemision.idMotivoRemision" />
+        <input type="checkbox"/>
     </div>
 </div>
 <br />
@@ -203,7 +203,7 @@
     <label style="font-size:medium">Especifique acerca del motivo de cierre:</label>
 </div>
 <div class="form-group">
-    <textarea class="form-control" style="min-width: 100%" rows="6" id="Observaciones" name="ingresoClinica.observaciones" value="'@ViewBag.Observaciones" required></textarea>
+    <textarea class="form-control" style="min-width: 100%" rows="6"  required></textarea>
 </div>
 <br />
 <h3 style="text-align:center; background-color:#9BC2E6">Evolución de la intervención psicológica</h3>
@@ -213,7 +213,7 @@
         <label style="font-size:medium">Logros alcanzados con base en los objetivos terapéuticos:</label>
     </div>
     <div class="form-group">
-        <textarea class="form-control" style="min-width: 100%" rows="6" id="Observaciones" name="ingresoClinica.observaciones" value="'@ViewBag.Observaciones" required></textarea>
+        <textarea class="form-control" style="min-width: 100%" rows="6"  required></textarea>
     </div>
 </div>
 <div class="form-group">
@@ -221,7 +221,7 @@
         <label style="font-size:medium">Logros alcanzados según el consultante:</label>
     </div>
     <div class="form-group">
-        <textarea class="form-control" style="min-width: 100%" rows="6" id="Observaciones" name="ingresoClinica.observaciones" value="'@ViewBag.Observaciones" required></textarea>
+        <textarea class="form-control" style="min-width: 100%" rows="6"  required></textarea>
     </div>
 </div>
 <div class="form-group">
@@ -229,7 +229,7 @@
         <label style="font-size:medium">Observaciones y recomendaciones:</label>
     </div>
     <div class="form-group">
-        <textarea class="form-control" style="min-width: 100%" rows="6" id="Observaciones" name="ingresoClinica.observaciones" value="'@ViewBag.Observaciones" required></textarea>
+        <textarea class="form-control" style="min-width: 100%" rows="6" required></textarea>
     </div>
 </div>
 

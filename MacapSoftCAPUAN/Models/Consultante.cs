@@ -11,14 +11,15 @@ namespace MacapSoftCAPUAN.Models
     public class Consultante
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long id_Consultante { get; set; }
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //public long id_Consultante { get; set; }
         public string cedula { get; set; }
         [ForeignKey("TipoDocumento")]
         public string id_tipoDocumento { get; set; }
         public string nombre { get; set; }
         public string apellido { get; set; }
         public TiposDocumentos TipoDocumento { get; set; }
+        public string numeroDocumentoPaciente { get; set; }
         public string telefono { get; set; }
         public string parentezco { get; set; }
         //public virtual ICollection<TiposDocumentos> documentos { get; set; }
@@ -29,20 +30,20 @@ namespace MacapSoftCAPUAN.Models
         }
     }
 
-    [Table("dbo.consultantePaciente")]
-    public class consultantePaciente
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int idConsultantePaciente { get; set; }
-        [ForeignKey("IdConsultante")]
-        public long id_Consultante { get; set; }
-        [ForeignKey("IdPaciente")]
-        public string id_Paciente { get; set; }
+    //[Table("dbo.consultantePaciente")]
+    //public class consultantePaciente
+    //{
+    //    [Key]
+    //    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    //    public int idConsultantePaciente { get; set; }
+    //    [ForeignKey("IdConsultante")]
+    //    public long id_Consultante { get; set; }
+    //    [ForeignKey("IdPaciente")]
+    //    public string id_Paciente { get; set; }
 
-        public Consultante IdConsultante { get; set; }
-        public Paciente IdPaciente { get; set; }
-    }
+    //    public Consultante IdConsultante { get; set; }
+    //    public Paciente IdPaciente { get; set; }
+    //}
 
     [Table("dbo.parentezco")]
     public class parentezco {
