@@ -131,6 +131,23 @@ namespace MacapSoftCAPUAN.DALC
             return listaIngresoClinica;
         }
 
+
+        public string agregarCierre(CierreHC cierre) {
+            try
+            {
+                bd = new ApplicationDbContext();
+                bd.cierreHcContext.Add(cierre);
+                bd.SaveChanges();
+                return "Cierre creado exitoso";
+            }
+            catch (Exception e)
+            {
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo crear el cierre.", e);
+                return argxEx.ToString();
+            }
+        }
+
+
         public string agregarPaciente(Paciente paciente)
         {
 
@@ -150,8 +167,7 @@ namespace MacapSoftCAPUAN.DALC
             catch (Exception e)
             {
                 System.ArgumentException argxEx = new System.ArgumentException("No se pudo crear el paciente es posible que el numero de historica clínica ya exista.",e);
-                throw argxEx;
-
+                return argxEx.ToString();
             }
         }
 

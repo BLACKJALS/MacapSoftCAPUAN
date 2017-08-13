@@ -12,6 +12,7 @@ namespace MacapSoftCAPUAN.ModelsVM
         public Consultante consultante { get; set; }
         public Remitido remitido { get; set; }
         public Remision remision { get; set; }
+        public CierreHC cierre { get; set; }
         //public consultantePaciente consultantePaciente { get; set; }
         public IngresoClinica ingresoClinica { get; set; }
         public Consecutivo consecutivo { get; set; }
@@ -19,6 +20,7 @@ namespace MacapSoftCAPUAN.ModelsVM
 
 
         public RecepcionCaso() {
+            cierre = new CierreHC();
             paciente = new Paciente();
             //consultantePaciente = new consultantePaciente();
             remitido = new Remitido();

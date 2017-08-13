@@ -272,8 +272,6 @@ namespace MacapSoftCAPUAN.Controllers
                 model.paciente.numeroHistoriaClinica = String.IsNullOrEmpty(Documento) ? null : Documento;
             }
             
-           
-           
             var pacienteExistente = from p in listaPacientes where p.numeroHistoriaClinica == model.paciente.numeroHistoriaClinica select p;
             Paciente pacienteEx = new Paciente();
             pacienteEx = pacienteExistente.FirstOrDefault();
@@ -282,65 +280,17 @@ namespace MacapSoftCAPUAN.Controllers
             }
             if (pacienteEx != null)
             {
-                model.paciente.fechaNacimiento = pacienteEx.fechaNacimiento;
-                model.paciente.idUser = System.Web.HttpContext.Current.User.Identity.GetUserId();
-                HC.modificarPaciente(model.paciente);
-                var listaIngCl = HC.listarIngresoClinica();
-                var ingresoCl = (from p in listaIngCl where p.id_paciente == model.paciente.numeroHistoriaClinica select p).LastOrDefault();
-                model.ingresoClinica.idIngresoClinica = ingresoCl.idIngresoClinica;
-                model.ingresoClinica.id_paciente = model.paciente.numeroHistoriaClinica;
-                model.ingresoClinica.IdPaciente = model.ingresoClinica.IdPaciente;
-                HC.modificarIngresoCl(model.ingresoClinica);
-                if (model.remitido.nombreEntidad != null)
-                {
-                    remitido = model.remitido;
-                    remitido.id_paciente = model.paciente.numeroDocumento;
-                    HC.agregarRemitido(remitido);
-                }
+                HC.modificarRecepcionCasoModel(model, pacienteEx);
             }
             else {
 
-            try
-            {
-                consecutivo = model.consecutivo;
-                model.paciente.idUser = System.Web.HttpContext.Current.User.Identity.GetUserId();
-                paciente = model.paciente;
-                paciente.consecutivo = consecutivo.numeroConsecutivo;
-                //paciente.id_profesion = 1;
-                //paciente.id_NivelEscolaridad = 1;
-                HC.agregarpaciente(paciente);
-                HC.agregarConsecutivo(consecutivo);
-                ingresoClinica = model.ingresoClinica;
-                model.ingresoClinica.id_paciente = model.paciente.numeroDocumento;
-                    
-                //ingresoClinica.fechaIngreso = model.ingresoClinica.fechaIngreso;
-                //ingresoClinica.id_paciente = model.ingresoClinica.id_paciente;
-                //ingresoClinica.id_paciente = model.paciente.numeroDocumento;
-                HC.ingresoClinica(ingresoClinica);
-                if (model.remitido.nombreEntidad != null) {
-                        remitido = model.remitido;
-                        remitido.id_paciente = model.paciente.numeroDocumento;
-                        HC.agregarRemitido(remitido);
+                try{
+                    HC.crearRecepcionCasoModel(model);
                 }
-
-                if (model.consultante.cedula != null)
-                {
-                    HC.agregarConsultante(model.consultante);
-
-                    //consultantePa = new consultantePaciente();
-                    //consultantePa.IdPaciente = model.paciente;
-                    //consultantePa.id_Paciente = model.paciente.numeroDocumento;
-                    //consultantePa.IdConsultante = model.consultante;
-                    //consultantePa.id_Consultante = model.consultante.id_Consultante;
-                    //HC.agregarConsultantePaciente(consultantePa);
+                catch (Exception ex){
+                    ViewBag.error = ex.Message;
+                    return View();
                 }
-
-            }
-            catch (Exception ex)
-            {
-                ViewBag.error = ex.Message;
-                return View();
-            }
             }
             try
             {
@@ -367,7 +317,6 @@ namespace MacapSoftCAPUAN.Controllers
             }
             catch (Exception ex)
             {
-
                 ViewBag.error = ex.Message;
                 return View();
             }

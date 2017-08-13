@@ -189,9 +189,9 @@
                data-url='@Url.Action("ListarDiagnosticosCAP", "Diagnostico")'>
             <thead>
                 <tr>
-                    <th data-field="Codigo" class="clickable-row">Numero de historia clínica</th>
+                    <th data-field="Codigo" class="clickable-row">Número de historia clínica</th>
                     <th data-field="Nombre">Nombre del paciente</th>
-                    <th data-field="Destacado">Usuario (s) asignado(s)</th>
+                    <th data-field="Destacado">Usuario(s) asignado(s)</th>
                     @*<th data-field="state" data-radio="true" title="Seleccione" data-event="eventosOperaciones"></th>*@           
                     <th data-field="Operaciones" data-align="center" data-events="eventosOperaciones" data-formatter="formatoOperaciones">Seleccione</th>     
                     @*<th data-field="Operaciones" data-align="center" data-radio="true" data-events="eventosOperaciones" data-formatter="formatoOperaciones">Operación modificar</th>*@
@@ -227,20 +227,10 @@
                             <div class="form-horizontal">
                                 <section>
                                     <div class="form-group">
-                                        <label class="col-md-3">Administrador: </label>
-                                        <div class="col-md-3">
-                                            <select class="form-control">
-                                                <option>admin 1</option>
-                                                <option>admin 2</option>
-                                                <option>admin 3</option>
-                                            </select>
-                                            @*@Html.DropDownList("Lista", (IEnumerable<SelectListItem>)ViewBag.ItemTypes, new { @class = "form-control", title = "Choose one of the following...", value = "asdas", required = "true" })*@
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
                                         <label class="col-md-3">Psicologo:</label>
                                         <div class="col-md-3">
                                             <select class="form-control">
+                                                <option>Seleccione</option>
                                                 <option>Psicologo 1</option>
                                                 <option>Psicologo 2</option>
                                                 <option>Psicologo 3</option>
@@ -252,6 +242,7 @@
                                         <label class="col-md-3">Estudiante:</label>
                                         <div class="col-md-3">
                                             <select class="form-control">
+                                                <option>Seleccione</option>
                                                 <option>Estudiante 1</option>
                                                 <option>Estudiante 2</option>
                                                 <option>Estudiante 3</option>

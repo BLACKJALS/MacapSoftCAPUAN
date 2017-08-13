@@ -75,7 +75,7 @@
 
 <body>
     <div class="container">
-        <h3 align="center"><font size="16">Lista historias clínicas inactivas</font></h3>
+        <h3 align="center"><font size="16">Lista de historias clínicas inactivas</font></h3>
         <table id="table"
                data-toggle="table"
                data-search="true"
@@ -91,9 +91,8 @@
                data-url='@Url.Action("ListarDiagnosticosCAP", "Diagnostico")'>
             <thead>
                 <tr>
-                    <th data-field="Codigo" class="clickable-row">Numero de historia clínica</th>
+                    <th data-field="Codigo" class="clickable-row">Número de historia clínica</th>
                     <th data-field="Nombre">Nombre del paciente</th>
-                    <th data-field="Destacado">Usuario (s) asignado(s)</th>
                     @*<th data-field="state" data-radio="true" title="Seleccione" data-event="eventosOperaciones"></th>*@
                     <th data-field="Operaciones" data-align="center" data-events="eventosOperaciones" data-formatter="formatoOperaciones">Seleccione</th>
                     @*<th data-field="Operaciones" data-align="center" data-radio="true" data-events="eventosOperaciones" data-formatter="formatoOperaciones">Operación modificar</th>*@
@@ -129,7 +128,7 @@
                                     <label style="font-size:medium">Documento general:</label>
                                 </div>
                                 <div class="col-md-1">
-                                    <input type="checkbox" id="IntentoSuicida" value="5" name="remision.motivoRemision.idMotivoRemision">
+                                    <input type="checkbox" id="DocumentoGeneral" value="5" name="remision.motivoRemision.idMotivoRemision">
                                 </div>
                             </div>
                             <div class="row">
@@ -137,7 +136,7 @@
                                     <label style="font-size:medium">Informe sesion:</label>
                                 </div>
                                 <div class="col-md-1">
-                                    <input type="checkbox" id="IntentoSuicida" value="5" name="remision.motivoRemision.idMotivoRemision">
+                                    <input type="checkbox" id="InformeSesion" value="5" name="remision.motivoRemision.idMotivoRemision">
                                 </div>
                             </div>
                             <div class="row">
@@ -153,7 +152,15 @@
                                     <label style="font-size:medium">Recepción de caso:</label>
                                 </div>
                                 <div class="col-md-1">
-                                    <input type="checkbox" id="IntentoSuicida" value="5" name="remision.motivoRemision.idMotivoRemision">
+                                    <input type="checkbox" id="RecepcionCaso" value="5" name="remision.motivoRemision.idMotivoRemision">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <label style="font-size:medium">Remisiones:</label>
+                                </div>
+                                <div class="col-md-1">
+                                    <input type="checkbox" id="Remisiones" value="5" name="remision.motivoRemision.idMotivoRemision">
                                 </div>
                             </div>
 

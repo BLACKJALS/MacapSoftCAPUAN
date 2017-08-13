@@ -18,21 +18,61 @@
             $("#guardarRemitir").prop("disabled", true);
             $('#nombreEntidadRemitido').prop("disabled", true);
             $('#nombreRemitenteRemitido').prop("disabled", true);
-            //var hoy = new Date();
-            //var fechaHoy = hoy.getFullYear() + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + ("0" + hoy.getDate()).slice(-2);
-            //var fechaHoy = ("0" + hoy.getDate()).slice(-2) + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + hoy.getFullYear();
-            //$("#ingresoClinica").val(fechaHoy).prop("disabled", true);
-            //$("#fechaRemision").val(fechaHoy);
+            var hoy = new Date();
+            var fechaHoy = hoy.getFullYear() + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + ("0" + hoy.getDate()).slice(-2);
+            $("#fechaRemision").val(fechaHoy);
+            $("#fechaRemision").attr('readonly', 'readonly');
+        });
+
+
+        $(function () {
+            $('#fechaIniPsico').datepicker({
+                format: 'yyyy-mm-dd',
+                onShow: function (ct) {
+                    this.setOptions({
+                        minDate: jQuery('#fechaRemision').val() ? jQuery('#fechaRemision').val() : false
+                        , formatDate: 'Y-m-d'
+                        , language: 'es'
+                    })
+                },
+                timepicker: false
+            });
+        });
+
+        $(function () {
+            $('#fechaFinPsico').datepicker({
+                format: 'yyyy-mm-dd',
+                onShow: function (ct) {
+                    this.setOptions({
+                        minDate: jQuery('#fechaRemision').val() ? jQuery('#fechaRemision').val() : false
+                        , formatDate: 'Y-m-d'
+                        , language: 'es'
+                    })
+                },
+                timepicker: false
+            });
+        });
+
+
+        $(function () {
+            $('#fechaRemision').datepicker({
+                format: 'yyyy-mm-dd',
+                onShow: function (ct) {
+                    this.setOptions({
+                        minDate: jQuery('#fechaRemision').val() ? jQuery('#fechaRemision').val() : false
+                        , formatDate: 'Y-m-d'
+                        , language: 'es'
+                    })
+                },
+                timepicker: false
+            });
         });
 
 
         function fechaHoy() {
             var hoy = new Date();
             var fechaHoy = hoy.getFullYear() + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + ("0" + hoy.getDate()).slice(-2);
-            //var fechaHoy = ("0" + hoy.getDate()).slice(-2) + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + hoy.getFullYear();
-            //$("#ingresoClinica").val(fechaHoy).prop("disabled", true);
             $("#fechaRemision").val(fechaHoy);
-            $("#fechaRem").val(fechaHoy);
         }
 
         function regresar(){
@@ -144,48 +184,27 @@
                 @Html.DropDownList("paciente.id_tipoDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumento, new { @class = "form-control", id = "tipoDocumentoPac" })
             </div>
             <div class="col-md-2">
-                <label style="font-size:smaller">Numero de documento:</label>
+                <label style="font-size:smaller">Número de documento:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="numeroDocumentoPaciente" name="paciente.numeroDocumento" placeholder="numero documento" value="@ViewBag.numeroDocumento" required />
+                <input class="form-control" id="numeroDocumentoPaciente" name="paciente.numeroDocumento" placeholder="número documento" value="@ViewBag.numeroDocumento" required />
             </div>
         </div>
         <br />
         <div class="row">
-            <div class="col-md-1">
+            <div class="col-md-2">
                 <label style="font-size:smaller">Edad:</label>
             </div>
             <div class="col-md-2">
                 <input class="form-control" id="edadPaciente" name="paciente.edad" placeholder="Edad (años)" value="@ViewBag.edad" required />
             </div>
-            <div class="col-md-1">
-                <label style="font-size:smaller">Profesión:</label>
-            </div>
             <div class="col-md-2">
-                <input class="form-control" id="Profesión" name="paciente.profesion" placeholder="Profesión" required />
-            </div>
-            <div class="col-md-1">
-                <label style="font-size:smaller">Ocupación:</label>
-            </div>
-            <div class="col-md-2">
-                <input class="form-control" id="edadPaciente" name="paciente.edad" placeholder="Ocupación"  value="@ViewBag.edad" required />
-            </div>
-            <div class="col-md-1">
-                <label style="font-size:smaller">Escolaridad:</label>
-            </div>
-            <div class="col-md-2">
-                <input class="form-control" id="Profesión" name="paciente.profesion" placeholder="Escolaridad" required />
-            </div>
-        </div>
-        <br />
-        <div class="row">
-            <div class="col-md-1">
                 <label style="font-size:smaller">Remitido a:</label>
             </div>
             <div class="col-md-2">
                 <input class="form-control" id="remitidoA" name="paciente.profesion" placeholder="Remitido a" required />
             </div>
-            <div class="col-md-1">
+            <div class="col-md-2">
                 <label style="font-size:smaller">Remitido por:</label>
             </div>
             <div class="col-md-2">
@@ -195,23 +214,23 @@
         <br />
         <div class="row">
             <div class="col-md-2">
-                <label style="font-size:smaller">Fecha remision (Hoy)</label>
+                <label style="font-size:smaller">Fecha remisión (Hoy)</label>
             </div>
             <div class="col-md-2">
                 <input type="text" class="form-control" id="fechaRemision" onclick="return fechaHoy();"/>
             </div>
             <div class="col-md-2">
-                <label style="font-size:smaller">Fecha de inicio de la psicoterapia</label>
+                <label style="font-size:smaller">Fecha de inicio de la psicoterápia:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="fechaIniPsico" placeholder="Fecha inicio psicoterapia" required />
+                <input class="form-control" id="fechaIniPsico" placeholder="Fecha inicio psicoterápia" />
                 @*<input type="text" class="form-control" id="fechaRemision" onclick="return fechaHoy();"/>*@
             </div>
             <div class="col-md-2">
-                <label style="font-size:smaller">Fecha de final de la psicoterapia</label>
+                <label style="font-size:smaller">Fecha de final de la psicoterápia:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="fechaFinPsico" placeholder="Fecha final psicoterapia" required />
+                <input class="form-control" id="fechaFinPsico" placeholder="Fecha final psicoterápia" />
                 @*<input type="text" class="form-control" id="fechaRemision" onclick="return fechaHoy();"/>*@
             </div>
         </div>
@@ -265,7 +284,7 @@
         </div>
         <div class="row">
             <div class="col-md-4">
-                <label style="font-size:medium">Psicosis y/o trastorno de personalidad:</label>
+                <label style="font-size:medium">Psicósis y/o trastorno de personalidad:</label>
             </div>
             <div class="col-md-1">
                 <input type="checkbox" id="psicosis" value="1" name="remision.motivoRemision.idMotivoRemision"/>

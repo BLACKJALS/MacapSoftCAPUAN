@@ -8,22 +8,22 @@
     <h3 style="text-align:center; background-color:#9BC2E6">Datos del paciente</h3>
     <br />
     <div class="row">
-        <div class="col-md-1">
+        <div class="col-md-2">
             <label style="font-size:smaller">Fecha de cierre:</label>
         </div>
         <div class="col-md-4">
-            <input class="form-control"   placeholder="fecha de cierre" onclick="return fechaHoy();" required />
+            <input class="form-control"   placeholder="Fecha de cierre" onclick="return fechaHoy();" required />
         </div>
         <div class="col-md-2">
-            <label style="font-size:smaller">Numero de HC:</label>
+            <label style="font-size:smaller">Número de HC:</label>
         </div>
         <div class="col-md-4">
-            <input class="form-control"   placeholder="Numero de HC" required />
+            <input class="form-control"   placeholder="Número de HC" required />
         </div>
     </div>
     <br />
     <div class="row">
-        <div class="col-md-1">
+        <div class="col-md-2">
             <label style="font-size:smaller">Nombres:</label>
         </div>
         <div class="col-md-4">
@@ -39,66 +39,52 @@
     <br />
     <div class="row">
         <div class="col-md-2">
-            <label style="font-size:smaller">Numero de documento:</label>
+            <label style="font-size:smaller">Número de documento:</label>
         </div>
         <div class="col-md-4">
-            <input class="form-control"  placeholder="numero documento" value="@ViewBag.numeroDocumento" required />
+            <input class="form-control"  placeholder="Número documento" value="@ViewBag.numeroDocumento" required />
         </div>
     </div>
     <br />
     <div class="row">
-        <div class="col-md-1">
+        <div class="col-md-2">
             <label style="font-size:smaller">Fecha de nacimiento:</label>
         </div>
         <div class="col-md-2">
-            <input class="form-control"   placeholder="fecha de nacimiento" required />
+            <input class="form-control"   placeholder="Fecha de nacimiento" required />
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2">
             <label style="font-size:smaller">Edad:</label>
         </div>
         <div class="col-md-2">
             <input class="form-control"  placeholder="Edad (años)" onclick="return validarEdad();" value="@ViewBag.edad" required />
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2">
             <label style="font-size:smaller">Profesión:</label>
         </div>
         <div class="col-md-2">
             <input class="form-control" placeholder="Profesión" value="" required />
         </div>
-        <div class="col-md-1">
-            <label style="font-size:smaller">Ocupación:</label>
-        </div>
-        <div class="col-md-2">
-            <input class="form-control"  placeholder="Ocupación" value="@ViewBag.ocupación" required />
-        </div>
+        
     </div>
     <br />
     <div class="row">
-        <div class="col-md-1">
+        <div class="col-md-2">
+            <label style="font-size:smaller">Ocupación:</label>
+        </div>
+        <div class="col-md-2">
+            <input class="form-control" placeholder="Ocupación" value="@ViewBag.ocupación" required />
+        </div>
+        <div class="col-md-2">
             <label style="font-size:smaller">Escolaridad:</label>
         </div>
         <div class="col-md-2">
             <input class="form-control"  placeholder="Escolaridad" value="" required />
         </div>
-        <div class="col-md-1">
+        <div class="col-md-2">
             <label style="font-size:smaller">Remitido por:</label>
         </div>
         <div class="col-md-2">
-            <input class="form-control" placeholder="Remitido por" value="@ViewBag.ocupación" required />
-        </div>
-    </div>
-    <br />
-    <div class="row">
-        <div class="col-md-1">
-            <label style="font-size:smaller">Escolaridad:</label>
-        </div>
-        <div class="col-md-3">
-            <input class="form-control" placeholder="Escolaridad" value="" required />
-        </div>
-        <div class="col-md-1">
-            <label style="font-size:smaller">Remitido por:</label>
-        </div>
-        <div class="col-md-3">
             <input class="form-control" placeholder="Remitido por" value="@ViewBag.ocupación" required />
         </div>
     </div>
@@ -117,15 +103,15 @@
             <input class="form-control" placeholder="Fecha inicio psicoterapia" required />
             @*<input type="text" class="form-control" id="fechaRemision" onclick="return fechaHoy();"/>*@
         </div>
-    </div>
-    <br />
-    <div class="row">
         <div class="col-md-2">
             <label style="font-size:smaller">Número de citas asignadas:</label>
         </div>
         <div class="col-md-2">
             <input class="form-control" placeholder="Número de citas asignadas" value="" required />
         </div>
+    </div>
+    <br />
+    <div class="row">
         <div class="col-md-2">
             <label style="font-size:smaller">Sesiones realizadas:</label>
         </div>
@@ -143,7 +129,7 @@
 </div>
 <h3 style="text-align:center; background-color:#9BC2E6">Motivo cierre</h3>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5">
         <label style="font-size:medium">Acuerdo entre consultante y terapeuta:</label>
     </div>
     <div class="col-md-1">
@@ -151,7 +137,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5">
         <label style="font-size:medium">Logro de objetivos:</label>
     </div>
     <div class="col-md-1">
@@ -159,7 +145,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5">
         <label style="font-size:medium">Retiro por consideración del consultante:</label>
     </div>
     <div class="col-md-1">
@@ -167,15 +153,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-4">
-        <label style="font-size:medium">Consumo de estupefacientes:</label>
-    </div>
-    <div class="col-md-1">
-        <input type="checkbox"/>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5">
         <label style="font-size:medium">Abandono de las sesiones por parte del consultante:</label>
     </div>
     <div class="col-md-1">
@@ -183,7 +161,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5">
         <label style="font-size:medium">Cierre por decisión del terapeuta:</label>
     </div>
     <div class="col-md-1">
@@ -191,8 +169,8 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-4">
-        <label style="font-size:medium">Por término del semestre:</label>
+    <div class="col-md-5">
+        <label style="font-size:medium">Por finalización del semestre:</label>
     </div>
     <div class="col-md-1">
         <input type="checkbox"/>
@@ -238,6 +216,6 @@
         <input type="submit" value="Guardar" class="form-control btn-primary" id="guardarHistoria" />
     </div>
     <div class="col-md-2">
-        <input type="button" value="Cancelar" class="form-control" onclick="location.href='@Url.Action("Index", "HistoriaClinica")'" />
+        <input type="button" value="Cancelar" class="form-control" onclick="location.href='@Url.Action("historiaClinica", "HistoriaClinica")'" />
     </div>
 </div>

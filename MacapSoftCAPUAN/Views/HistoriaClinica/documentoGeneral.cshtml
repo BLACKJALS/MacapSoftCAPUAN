@@ -23,20 +23,22 @@
                 <input class="form-control" placeholder="Fecha atención" />
             </div>
         </div>
+        <br />
         <div class="row">
             <div class="col-md-3">
-                <label style="font-size:smaller">Numero de Historia Clínica:</label>
+                <label style="font-size:smaller">Número de Historia Clínica:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="NumeroHC" placeholder="Numero HC" />
+                <input class="form-control" id="NumeroHC" placeholder="Número HC" />
             </div>
             <div class="col-md-2">
-                <label style="font-size:smaller">CIE10:</label>
+                <label style="font-size:smaller">Diagnóstico:</label>
             </div>
             <div class="col-md-4">
                 <input class="form-control" id="CIE10" placeholder="CIE10" />
             </div>
         </div>
+        <br />
         <div class="row">
             <div class="col-md-3">
                 <label style="font-size:smaller">Categorización CAP:</label>
@@ -67,7 +69,7 @@
                 <label style="font-size:smaller">Sexo:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" placeholder="Nombres" value="@ViewBag.sexo" required />
+                <input class="form-control" placeholder="Sexo" value="@ViewBag.sexo" required />
             </div>
         </div>
         <br />
@@ -77,7 +79,7 @@
                 @*@Html.DropDownList("paciente.id_tipoDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumento, new { @class = "form-control", id = "tipoDocumentoPac" })*@
             </div>
             <div class="col-md-2">
-                <label style="font-size:smaller">Numero de documento:</label>
+                <label style="font-size:smaller">Número de documento:</label>
             </div>
             <div class="col-md-4">
                 <input class="form-control" placeholder="numero documento" value="@ViewBag.numeroDocumento" required />
@@ -122,7 +124,7 @@
                 <label style="font-size:smaller">Escolaridad:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" value="@ViewBag.escolaridad" required />
+                <input class="form-control" value="@ViewBag.escolaridad" placeholder="Escolaridad" required />
             </div>
         </div>
         <br />
@@ -146,7 +148,7 @@
                 <label style="font-size:smaller">Dirección:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" placeholder="Direccion" />
+                <input class="form-control" placeholder="Dirección" />
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Barrio:</label>
@@ -171,10 +173,10 @@
                 <input class="form-control" placeholder="Estrato" />
             </div>
             <div class="col-md-1">
-                <label style="font-size:smaller">Telefonos:</label>
+                <label style="font-size:smaller">Teléfonos:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" placeholder="Telefonos" />
+                <input class="form-control" placeholder="Teléfonos" />
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Email:</label>
@@ -225,7 +227,16 @@
                 <label style="font-size:smaller">Profesional que remite:</label>
             </div>
             <div class="col-md-9">
-                <input class="form-control" placeholder="Profeisonal que remite" />
+                <input class="form-control" placeholder="Profesional que remite" />
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-2">
+                <label style="font-size:smaller">Fecha de remisión:</label>
+            </div>
+            <div class="col-md-9">
+                <input class="form-control" id="fechaRemision" name="remitido.fechaRemision" placeholder="fecha de remisión" required />
             </div>
         </div>
         <br />
@@ -250,16 +261,16 @@
                 <label style="font-size:smaller">Sexo:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" placeholder="Nombres" value="@ViewBag.sexo" required />
+                <input class="form-control" placeholder="Sexo" value="@ViewBag.sexo" required />
             </div>
         </div>
         <br />
         <div class="row">
             <div class="col-md-1">
-                <label style="font-size:smaller">Parentezco:</label>
+                <label style="font-size:smaller">Parentesco:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" placeholder="Parentezco" />
+                <input class="form-control" placeholder="Parentesco" />
             </div>
             <div class="col-md-2">
                 <label style="font-size:smaller">Teléfonos de contacto:</label>
@@ -278,10 +289,10 @@
             <label style="font-size:smaller">Número de documento:</label>
         </div>
         <div class="col-md-4">
-            <input class="form-control" placeholder="numero documento" required />
+            <input class="form-control" placeholder="Número documento" required />
         </div>
         </div>
-        <h4 style="text-align:center; background-color:#9BC2E6">Motivo de consulta</h4>
+        <h4 style="text-align:center; background-color:#9BC2E6">Motivo de cierre</h4>
         <div class="form-group">
             <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
         </div>
@@ -299,46 +310,57 @@
         </div>
         <h4 style="text-align:center; background-color:#9BC2E6">Estrategias de evaluación</h4>
         <div style="border:double">
+            <br />
             <div class="row">
+                <div class="col-md-1"></div>
                 <div class="col-md-2">
                     <label style="font-size:smaller">Pruebas psicométricas:</label>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-9">
                     <input class="form-control" placeholder="Diligencie" />
                 </div>
             </div>
+            <br />
             <div class="row">
+                <div class="col-md-1"></div>
                 <div class="col-md-2">
                     <label style="font-size:smaller">Cuestionarios:</label>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-9">
                     <input class="form-control" placeholder="Diligencie" />
                 </div>
             </div>
+            <br />
             <div class="row">
+                <div class="col-md-1"></div>
                 <div class="col-md-2">
                     <label style="font-size:smaller">Pruebas proyectivas:</label>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-9">
                     <input class="form-control" placeholder="Diligencie" />
                 </div>
             </div>
+            <br />
             <div class="row">
+                <div class="col-md-1"></div>
                 <div class="col-md-2">
                     <label style="font-size:smaller">Exámen mental:</label>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-9">
                     <input class="form-control" placeholder="Diligencie" />
                 </div>
             </div>
+            <br />
             <div class="row">
+                <div class="col-md-1"></div>
                 <div class="col-md-2">
                     <label style="font-size:smaller">Entrevistas:</label>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-9">
                     <input class="form-control" placeholder="Diligencie" />
                 </div>
             </div>
+            <br />
         </div>
         @*<div class="form-group">
             <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
@@ -375,7 +397,7 @@
         <div class="form-group">
             <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
         </div>
-        <h4 style="text-align:center; background-color:#9BC2E6">Resumen</h4>
+        <h4 style="text-align:center; background-color:#9BC2E6">Resúmen</h4>
         <div class="form-group">
             <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
         </div>
@@ -541,7 +563,7 @@
                 <input type="submit" value="Guardar" class="form-control btn btn-primary" />
             </div>
             <div class="col-md-2">
-                <input type="submit" value="Cancelar" class="form-control" onclick="location.href='@Url.Action("Index", "HistoriaClinica" )'" />
+                <input type="submit" value="Cancelar" class="form-control" onclick="location.href='@Url.Action("historiaClinica", "HistoriaClinica" )'" />
             </div>
         </div>
     </div>

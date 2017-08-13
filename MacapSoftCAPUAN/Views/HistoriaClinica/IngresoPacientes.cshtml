@@ -16,6 +16,7 @@
             $("#guardarRemitir").prop("disabled", true);
             $('#nombreEntidadRemitido').prop("disabled", true);
             $('#nombreRemitenteRemitido').prop("disabled", true);
+            $('#fechaRemision').prop("disabled", true);
             $('#listadosEPS').prop("disabled", true);
             var motConsul = '@ViewBag.motivoConsulta';
             var motObs = '@ViewBag.Observaciones';
@@ -88,6 +89,21 @@
             }
             return "";
         }
+
+        
+        $(function () {
+            $('#fechaRemision').datepicker({
+                format: 'yyyy-mm-dd',
+                onShow: function (ct) {
+                    this.setOptions({
+                        minDate: jQuery('#fechaRemision').val() ? jQuery('#fechaRemision').val() : false
+                        , formatDate: 'Y-m-d'
+                        , language: 'es'
+                    })
+                },
+                timepicker: false
+            });
+        });
 
 
         $(function () {
@@ -210,9 +226,11 @@
             if ($('#pacienteVieneRemitido').val() == "NO" || $('#pacienteVieneRemitido').val() == "") {
                 $('#nombreEntidadRemitido').prop("disabled", true);
                 $('#nombreRemitenteRemitido').prop("disabled", true);
+                $('#fechaRemision').prop("disabled", true);
             } else {
                 $('#nombreEntidadRemitido').prop("disabled", false);
                 $('#nombreRemitenteRemitido').prop("disabled", false);
+                $('#fechaRemision').prop("disabled", false);
             }
         };
 
@@ -248,7 +266,7 @@
         <h3 style="text-align:center; background-color:#9BC2E6">Recepción de caso</h3>
         <div class="row">
             <div class="col-md-1">
-                <label style="font-size:smaller">Fecha de atencion:</label>
+                <label style="font-size:smaller">Fecha de atención:</label>
             </div>
             <div class="col-md-4">
                 <input class="form-control" id="ingresoClinica" name="ingresoClinica.fechaIngreso" placeholder="fecha de atención" onclick="return fechaHoy();" required/>
@@ -284,10 +302,10 @@
                 @Html.DropDownList("paciente.id_tipoDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumento, new { @class = "form-control", id="tipoDocumentoPac" })
             </div>
             <div class="col-md-2">
-                <label style="font-size:smaller">Numero de documento:</label>
+                <label style="font-size:smaller">Número de documento:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="numeroDocumentoPaciente" name="paciente.numeroDocumento" placeholder="numero documento" value="@ViewBag.numeroDocumento" required />
+                <input class="form-control" id="numeroDocumentoPaciente" name="paciente.numeroDocumento" placeholder="número documento" value="@ViewBag.numeroDocumento" required />
             </div>
         </div>
         <br />
@@ -333,7 +351,7 @@
         <br />
         <div class="row">
             <div class="col-md-4">
-                <h3>Lugar de residencia</h3>
+                <h3>Datos de contacto</h3>
             </div>
             <br />
         </div>
@@ -446,6 +464,15 @@
             </div>
         </div>
         <br />
+        <div class="row">
+            <div class="col-md-2">
+                <label style="font-size:smaller">Fecha de remisión:</label>
+            </div>
+            <div class="col-md-9">
+                <input class="form-control" id="fechaRemision" name="remitido.fechaRemision" placeholder="fecha de remisión" required />
+            </div>
+        </div>
+        <br />
         <h3 style="text-align:center; background-color:#9BC2E6">Datos del consultante</h3>
         <div class="row">
             <div class="col-md-1">
@@ -461,12 +488,13 @@
                 <input class="form-control" id="apellidosConsultantePaciente" name="consultante.apellido" placeholder="Apellidos" required/>
             </div>
         </div>
+        <br />
         <div class="row">
             <div class="col-md-1">
-                <label style="font-size:smaller">Parentezco:</label>
+                <label style="font-size:smaller">Parentesco:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="parentezcoConsultantePaciente" name="consultante.parentezco" placeholder="Parentezco" required/>
+                <input class="form-control" id="parentezcoConsultantePaciente" name="consultante.parentezco" placeholder="Parentesco" required/>
             </div>
             <div class="col-md-2">
                 <label style="font-size:smaller">Teléfonos de contacto:</label>
@@ -475,6 +503,7 @@
                 <input class="form-control" id="telefonoConsultantePaciente" name="consultante.telefono" placeholder="Teléfonos de contacto" required/>
             </div>
         </div>
+        <br />
         <div class="row">
             <label class="col-md-1" style="font-size:smaller">Tipo de documento:</label>
             <div class="col-md-4">
@@ -484,7 +513,7 @@
                 <label style="font-size:smaller">Número de documento:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="numeroDocumentoConsultante" name="consultante.cedula" placeholder="numero documento" required />
+                <input class="form-control" id="numeroDocumentoConsultante" name="consultante.cedula" placeholder="número documento" required />
             </div>
         </div>
 

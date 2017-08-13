@@ -17,20 +17,27 @@ namespace MacapSoftCAPUAN.Models
         [ForeignKey("IngresoClinica")]
         public int id_ingresoClinica { get; set; }
         [ForeignKey("Consulta")]
-        public int id_consulta { get; set; }
+        public int? id_consulta { get; set; }
         [ForeignKey("MotivoCierre")]
-        public int id_motivoCierre { get; set; }
-        public int MyProperty { get; set; }
+        public int? id_motivoCierre { get; set; }
         public DateTime fechaInicioPsicoterapia { get; set; }
         public DateTime fechaFinalizaionPsicoterapia { get; set; }
         public string numeroCitasAsignadas { get; set; }
         public string numeroSesionesRealizadas { get; set; }
         public string idUsuario { get; set; }
+        public bool estadoHC { get; set; }
         public Consulta Consulta { get; set; }
         public IngresoClinica IngresoClinica { get; set; }
         public MotivosCierre MotivoCierre { get; set; }
 
+
+        public CierreHC()
+        {
+            estadoHC = false;
+        }
     }
+
+    
 
     [Table("dbo.motivosCierre")]
     public class MotivosCierre {

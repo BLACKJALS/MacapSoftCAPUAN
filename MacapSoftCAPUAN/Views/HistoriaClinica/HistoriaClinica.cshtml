@@ -3,7 +3,7 @@
     ViewBag.Title = "Historia clinica";
 }
 
-<h1 style="text-align:center;">Historia clinica</h1>
+<h1 style="text-align:center;">Historia clínica</h1>
 
 <div class="col-lg-12 jumbotron">
     <div class="container">
@@ -25,10 +25,10 @@
         <br />
         <div class="row">
             <div class="col-md-2">
-                <label style="font-size:smaller">Numero de documento:</label>
+                <label style="font-size:smaller">Número de documento:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" placeholder="numero documento" value="@ViewBag.numeroDocumento" required />
+                <input class="form-control" placeholder="Número documento" value="@ViewBag.numeroDocumento" required />
             </div>
             <div class="col-md-2">
                 <label style="font-size:smaller">Número de historia clínica:</label>
@@ -50,13 +50,13 @@
                 <label style="font-size:smaller">Dirección:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" placeholder="Direccion" value="@ViewBag.direccion" required />
+                <input class="form-control" placeholder="Dirección" value="@ViewBag.direccion" required />
             </div>
             <div class="col-md-1">
-                <label style="font-size:smaller">Telefono:</label>
+                <label style="font-size:smaller">Teléfono:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" placeholder="Telefono" value="@ViewBag.direccion" required />
+                <input class="form-control" placeholder="Teléfono" value="@ViewBag.telefono" required />
             </div>
         </div>
         <br />
@@ -141,10 +141,17 @@
                             <input type="checkbox" id="IntentoSuicida" value="5" name="remision.motivoRemision.idMotivoRemision">
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="col-md-5">
+                            <label style="font-size:medium">Remisiones:</label>
+                        </div>
+                        <div class="col-md-1">
+                            <input type="checkbox" id="Remisiones" value="5" name="remision.motivoRemision.idMotivoRemision">
+                        </div>
+                    </div>
                     <div class="modal-footer">
                         <button type="button" id="buttonEdit" class="btn btn-default" data-dismiss="modal" onclick="return btnAbrirUsuarioCampo_Click();">
-                            Asignar
+                            Consultar
                         </button>
                         <button id="buttonSalir" type="button" class="btn btn-default" data-dismiss="modal" onclick="location.href='@Url.Action("listaHistoriasClinicas", "HistoriaClinica")'">Regresar</button>
                     </div>
@@ -165,6 +172,9 @@
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
+                    <div class="row">
+                            <text  style="font-size:medium">Está seguro que desea generar una inasistencia</text>
+                    </div>
                     <div class="modal-footer">
                         <button type="button" id="buttonEdit" class="btn btn-default" data-dismiss="modal" onclick="return btnAbrirUsuarioCampo_Click();">
                             Aceptar
