@@ -463,11 +463,14 @@ namespace MacapSoftCAPUAN.Controllers
         //
         // POST: /Account/LogOff
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "HistoriaClinica");
+            //AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            //return RedirectToAction("Index", "HistoriaClinica");
+            AuthenticationManager.SignOut();
+            Session.Abandon();
+            return RedirectToAction("Login","Account");
         }
 
         //

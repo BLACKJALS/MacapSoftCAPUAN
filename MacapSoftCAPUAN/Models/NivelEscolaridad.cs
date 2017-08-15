@@ -16,14 +16,6 @@ namespace MacapSoftCAPUAN.Models
         public string nombre { get; set; }
     }
 
-    //[Table("dbo.profesion")]
-    //public class Profesion
-    //{
-    //    [Key]
-    //    public int idProfesion { get; set; }
-    //    public string nombre { get; set; }
-    //}
-
     [Table("dbo.estrato")]
     public class Estrato
     {

@@ -22,6 +22,7 @@
             var fechaHoy = hoy.getFullYear() + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + ("0" + hoy.getDate()).slice(-2);
             $("#fechaRemision").val(fechaHoy);
             $("#fechaRemision").attr('readonly', 'readonly');
+            $("#RemitidoPor").attr('readonly', 'readonly');
         });
 
 
@@ -30,7 +31,7 @@
                 format: 'yyyy-mm-dd',
                 onShow: function (ct) {
                     this.setOptions({
-                        minDate: jQuery('#fechaRemision').val() ? jQuery('#fechaRemision').val() : false
+                        minDate: jQuery('#fechaIniPsico').val() ? jQuery('#fechaIniPsico').val() : false
                         , formatDate: 'Y-m-d'
                         , language: 'es'
                     })
@@ -44,7 +45,7 @@
                 format: 'yyyy-mm-dd',
                 onShow: function (ct) {
                     this.setOptions({
-                        minDate: jQuery('#fechaRemision').val() ? jQuery('#fechaRemision').val() : false
+                        minDate: jQuery('#fechaFinPsico').val() ? jQuery('#fechaFinPsico').val() : false
                         , formatDate: 'Y-m-d'
                         , language: 'es'
                     })
@@ -160,7 +161,7 @@
     @using (Html.BeginForm("RemitirPaciente", "HistoriaClinica", FormMethod.Post))
     {
         @Html.Hidden("concMremison");
-        @Html.Hidden("fechaRemision");
+        @*@Html.Hidden("fechaRemision");*@
         <input type="text"  name="paciente.numeroDocumento" id="pacienteNumero" style="visibility:hidden">
         <h3 style="text-align:center; background-color:#9BC2E6">Datos del paciente</h3>
         <div class="row">
@@ -168,69 +169,77 @@
                 <label style="font-size:smaller">Nombres:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="nombrePaciente" name="paciente.nombre" placeholder="Nombres" value="@ViewBag.nombre" required />
+                <label>@Model.paciente.nombre</label>
+                @*<input class="form-control" id="nombrePaciente" name="paciente.nombre" placeholder="Nombres" value="@Model.paciente.nombre" required />*@
             </div>
             <div class="col-md-2">
                 <label style="font-size:smaller">Apellidos:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="apellidoPaciente" name="paciente.apellido" placeholder="Apellidos" value="@ViewBag.apellido" required />
+                <label>@Model.paciente.apellido</label>
+                @*<input class="form-control" id="apellidoPaciente" name="paciente.apellido" placeholder="Apellidos" value="@Model.paciente.apellido" required />*@
             </div>
         </div>
         <br />
         <div class="row">
             <label class="col-md-1" style="font-size:smaller">Tipo de documento:</label>
             <div class="col-md-4">
-                @Html.DropDownList("paciente.id_tipoDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumento, new { @class = "form-control", id = "tipoDocumentoPac" })
+                <label>@Model.paciente.id_tipoDocumento</label>
+                @*@Html.DropDownList("paciente.id_tipoDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumento, new { @class = "form-control", id = "tipoDocumentoPac" })*@
             </div>
             <div class="col-md-2">
                 <label style="font-size:smaller">Número de documento:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="numeroDocumentoPaciente" name="paciente.numeroDocumento" placeholder="número documento" value="@ViewBag.numeroDocumento" required />
+                <label>@Model.paciente.numeroDocumento</label>
+                @*<input class="form-control" id="numeroDocumentoPaciente" name="paciente.numeroDocumento" placeholder="número documento" value="@Model.paciente.numeroDocumento" required />*@
             </div>
         </div>
         <br />
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <label style="font-size:smaller">Edad:</label>
             </div>
-            <div class="col-md-2">
-                <input class="form-control" id="edadPaciente" name="paciente.edad" placeholder="Edad (años)" value="@ViewBag.edad" required />
+            <div class="col-md-1">
+                <label>@Model.paciente.edad</label>
+                @*<input class="form-control" id="edadPaciente" name="paciente.edad" placeholder="Edad (años)" value="@Model.paciente.edad" required />*@
             </div>
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <label style="font-size:smaller">Remitido a:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="remitidoA" name="paciente.profesion" placeholder="Remitido a" required />
+                <input class="form-control" id="remitidoA" name="remisionP.nombreInsitucionRemitida" placeholder="Remitido a" required />
             </div>
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <label style="font-size:smaller">Remitido por:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="RemitidoPor" name="paciente.profesion" placeholder="Remitido por" required />
+                <input class="form-control" id="RemitidoPor" name="remisionP.nombreProfesional" placeholder="Remitido por" value="@ViewBag.usr" required />
             </div>
-        </div>
-        <br />
-        <div class="row">
             <div class="col-md-2">
                 <label style="font-size:smaller">Fecha remisión (Hoy)</label>
             </div>
             <div class="col-md-2">
-                <input type="text" class="form-control" id="fechaRemision" onclick="return fechaHoy();"/>
+                <input class="form-control" id="fechaRemision" name="remisionP.fechaRemitido" placeholder="fecha de remisión" onclick="return fechaHoy();" required/>
             </div>
+        </div>
+        <br />
+        <div class="row">
             <div class="col-md-2">
                 <label style="font-size:smaller">Fecha de inicio de la psicoterápia:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="fechaIniPsico" placeholder="Fecha inicio psicoterápia" />
+                <input class="form-control" id="fechaIniPsico" placeholder="Fecha inicio psicoterápia" name="cierre.fechaInicioPsicoterapia" />
                 @*<input type="text" class="form-control" id="fechaRemision" onclick="return fechaHoy();"/>*@
             </div>
+        </div>
+        <br />
+        <div class="row">
             <div class="col-md-2">
                 <label style="font-size:smaller">Fecha de final de la psicoterápia:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="fechaFinPsico" placeholder="Fecha final psicoterápia" />
+                <input class="form-control" id="fechaFinPsico" name="cierre.fechaFinalizaionPsicoterapia" placeholder="Fecha final psicoterápia" />
                 @*<input type="text" class="form-control" id="fechaRemision" onclick="return fechaHoy();"/>*@
             </div>
         </div>

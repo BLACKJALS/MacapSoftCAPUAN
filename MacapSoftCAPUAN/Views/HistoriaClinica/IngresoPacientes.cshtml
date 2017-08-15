@@ -395,7 +395,7 @@
                 <label style="font-size:smaller">Email:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="emailPaciente" name="paciente.email" placeholder="Email" value="@ViewBag.email"/>
+                <input class="form-control" id="emailPaciente" pattern="[a-z0-9._%+-]+@("@")[a-z0-9.-]+\.[a-z]{2,3}$" name="paciente.email" placeholder="Email" value="@ViewBag.email"/>
             </div>
         </div>
         <br />

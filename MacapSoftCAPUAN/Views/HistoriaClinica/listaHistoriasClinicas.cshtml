@@ -186,12 +186,13 @@
                data-pagination-pre-text="Anterior"
                data-pagination-next-text="Siguiente"
                data-pagination-last-text="Ultimo"
-               data-url='@Url.Action("ListarDiagnosticosCAP", "Diagnostico")'>
+               data-url='@Url.Action("listarHistoriasClinicasSegunUsuario", "HistoriaClinica")'>
             <thead>
                 <tr>
-                    <th data-field="Codigo" class="clickable-row">Número de historia clínica</th>
-                    <th data-field="Nombre">Nombre del paciente</th>
-                    <th data-field="Destacado">Usuario(s) asignado(s)</th>
+                    <th data-field="numeroHistoriaClinica" class="clickable-row">Número de historia clínica</th>
+                    <th data-field="nombre">Nombre del paciente</th>
+                    <th data-field="apellido">Apellido del paciente</th>
+                    <th data-field="idUser">Usuario(s) asignado(s)</th>
                     @*<th data-field="state" data-radio="true" title="Seleccione" data-event="eventosOperaciones"></th>*@           
                     <th data-field="Operaciones" data-align="center" data-events="eventosOperaciones" data-formatter="formatoOperaciones">Seleccione</th>     
                     @*<th data-field="Operaciones" data-align="center" data-radio="true" data-events="eventosOperaciones" data-formatter="formatoOperaciones">Operación modificar</th>*@

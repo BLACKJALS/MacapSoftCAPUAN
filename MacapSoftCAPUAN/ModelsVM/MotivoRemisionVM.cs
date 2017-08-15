@@ -10,6 +10,7 @@ namespace MacapSoftCAPUAN.ModelsVM
         public int id { get; set; }
         public string nombreMotivoRemision { get; set; }
         public string nombrePaciente { get; set; }
+        public string lugarRemitido { get; set; }
         public DateTime fecha { get; set; }
     }
 }

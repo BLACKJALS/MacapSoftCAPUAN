@@ -10,12 +10,15 @@ namespace MacapSoftCAPUAN.ModelsVM
     {
         public Paciente paciente { get; set; }
         public List<Remision> remision { get; set; }
-
+        public Remision remisionP { get; set; }
+        public CierreHC cierre { get; set; }
 
         public RemisionPaciente()
         {
             paciente = new Paciente();
             remision = new List<Remision>();
+            remisionP = new Remision();
+            cierre = new CierreHC();
         }
     }
 }

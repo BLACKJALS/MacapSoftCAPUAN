@@ -12,7 +12,7 @@ namespace MacapSoftCAPUAN.DALC
     public class HistoriaClinicaDALC
     {
         public ApplicationDbContext bd;
-
+        public ApplicationDbContext context;
         public List<Barrios> listarBarrios()
         {
             bd = new ApplicationDbContext();
@@ -57,6 +57,11 @@ namespace MacapSoftCAPUAN.DALC
             return listaCiudades;
         }
 
+        public List<ApplicationUser> listarUsuario() {
+            context = new ApplicationDbContext();
+            var listaUsuarios = context.Users.ToList();
+            return listaUsuarios;
+        }
 
         public List<Paises> listarPaises()
         {
@@ -105,7 +110,7 @@ namespace MacapSoftCAPUAN.DALC
             bd.SaveChanges();
         }
 
-        public void agregarIngresoClinica(IngresoClinica ingresoClinica)
+        public string agregarIngresoClinica(IngresoClinica ingresoClinica)
         {
             try
             {
@@ -113,12 +118,13 @@ namespace MacapSoftCAPUAN.DALC
                 bd.ingresoClinicaContext.Add(ingresoClinica);
                 //bd.Entry(ingresoClinica.EntidadRemitente).State = EntityState.Detached;
                 bd.SaveChanges();
+                return "Éxito";
             }
             catch (Exception e)
             {
 
                 System.ArgumentException argxEx = new System.ArgumentException("Error al guardar los datos de ingreso.", e.Message);
-                throw argxEx;
+                return argxEx.ToString();
             }
             
         }
@@ -131,6 +137,14 @@ namespace MacapSoftCAPUAN.DALC
             return listaIngresoClinica;
         }
 
+
+        public List<Consultante> listarConsultante()
+        {
+            bd = new ApplicationDbContext();
+            List<Consultante> listaConsultante = new List<Consultante>();
+            listaConsultante = bd.consultanteContext.ToList();
+            return listaConsultante;
+        }
 
         public string agregarCierre(CierreHC cierre) {
             try
@@ -187,7 +201,7 @@ namespace MacapSoftCAPUAN.DALC
             {
 
                 System.ArgumentException argxEx = new System.ArgumentException("No se pudo crear el paciente ya existe un consultante con ese documento registrado.", e);
-                throw argxEx;
+                return argxEx.ToString();
 
             }
 
@@ -243,7 +257,7 @@ namespace MacapSoftCAPUAN.DALC
             catch (Exception ex)
             {
                 System.ArgumentException argxEx = new System.ArgumentException("No se pudo crear la remisión.", ex.Message);
-                throw argxEx;
+                return argxEx.ToString();
             }
             
         }
@@ -268,33 +282,36 @@ namespace MacapSoftCAPUAN.DALC
 
             try
             {
-                var pacienteMod = new Paciente { numeroHistoriaClinica = paciente.numeroHistoriaClinica};
-                using (var context = new ApplicationDbContext())
-                {
-                    context.pacienteContext.Attach(pacienteMod);
-                    pacienteMod.nombre = paciente.nombre;
-                    pacienteMod.apellido = paciente.apellido;
-                    pacienteMod.numeroDocumento = paciente.numeroDocumento;
-                    pacienteMod.id_tipoDocumento = paciente.id_tipoDocumento;
-                    pacienteMod.fechaNacimiento = paciente.fechaNacimiento;
-                    pacienteMod.id_estrato = paciente.id_estrato;
-                    pacienteMod.id_localidad = paciente.id_localidad;
-                    pacienteMod.id_barrio = paciente.id_barrio;
-                    pacienteMod.id_Eps = paciente.id_Eps;
-                    pacienteMod.direccion = paciente.direccion;
-                    pacienteMod.edad = paciente.edad;
-                    pacienteMod.email = paciente.email;
-                    pacienteMod.idUser = paciente.idUser;
-                    pacienteMod.id_ciudad = paciente.id_ciudad;
-                    pacienteMod.telefono = paciente.telefono;
-                    context.SaveChanges();
-                }
+                bd = new ApplicationDbContext();
+                bd.pacienteContext.Add(paciente);
+                bd.SaveChanges();
+                //var pacienteMod = new Paciente { numeroHistoriaClinica = paciente.numeroHistoriaClinica};
+                //using (var context = new ApplicationDbContext())
+                //{
+                //    context.pacienteContext.Attach(pacienteMod);
+                //    pacienteMod.nombre = paciente.nombre;
+                //    pacienteMod.apellido = paciente.apellido;
+                //    pacienteMod.numeroDocumento = paciente.numeroDocumento;
+                //    pacienteMod.id_tipoDocumento = paciente.id_tipoDocumento;
+                //    pacienteMod.fechaNacimiento = paciente.fechaNacimiento;
+                //    pacienteMod.id_estrato = paciente.id_estrato;
+                //    pacienteMod.id_localidad = paciente.id_localidad;
+                //    pacienteMod.id_barrio = paciente.id_barrio;
+                //    pacienteMod.id_Eps = paciente.id_Eps;
+                //    pacienteMod.direccion = paciente.direccion;
+                //    pacienteMod.edad = paciente.edad;
+                //    pacienteMod.email = paciente.email;
+                //    pacienteMod.idUser = paciente.idUser;
+                //    pacienteMod.id_ciudad = paciente.id_ciudad;
+                //    pacienteMod.telefono = paciente.telefono;
+                //    context.SaveChanges();
+                //}
             }
             catch (Exception e)
             {
 
                 System.ArgumentException argxEx = new System.ArgumentException("No se pudo actualizar el paciente creado.", e.Message);
-                throw argxEx;
+                return argxEx.ToString();
             }
             return "Exito";
         }
@@ -317,7 +334,7 @@ namespace MacapSoftCAPUAN.DALC
                 {
                     context.ingresoClinicaContext.Attach(ingresoClMod);
                     ingresoClMod.fechaIngreso = ingresoCl.fechaIngreso;
-                    ingresoCl.id_paciente = ingresoCl.id_paciente;
+                    ingresoClMod.id_paciente = ingresoCl.id_paciente;
                     ingresoClMod.observaciones = ingresoCl.observaciones;
                     ingresoClMod.motivoConsulta = ingresoCl.motivoConsulta;
                     context.SaveChanges();
@@ -327,7 +344,7 @@ namespace MacapSoftCAPUAN.DALC
             {
 
                 System.ArgumentException argxEx = new System.ArgumentException("No se pudo actualizar la informacion de ingreso nueva.", e.Message);
-                throw argxEx;
+                return argxEx.ToString();
             }
             return "Exito";
         }
@@ -356,6 +373,38 @@ namespace MacapSoftCAPUAN.DALC
             List<Ocupacion> listaOcupacion = new List<Ocupacion>();
             listaOcupacion = bd.ocupacionCAPContext.ToList();
             return listaOcupacion;
+        }
+
+
+        public List<CierreHC> listarCierres()
+        {
+            bd = new ApplicationDbContext();
+            List<CierreHC> listaCierres = new List<CierreHC>();
+            listaCierres = bd.cierreHcContext.ToList();
+            return listaCierres;
+        }
+
+        public string modificarCierreHC(CierreHC cierre) {
+            try
+            {
+                var cierreHC = new CierreHC { idCierreHC = cierre.idCierreHC };
+                using (var context = new ApplicationDbContext())
+                {
+                    context.cierreHcContext.Attach(cierreHC);
+                    cierreHC.id_ingresoClinica = cierre.id_ingresoClinica;
+                    cierreHC.estadoHC = true;
+                    cierreHC.idUsuario = cierre.idUsuario;
+                    context.SaveChanges();
+                }
+
+                return "Exito";
+            }
+            catch (Exception e)
+            {
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo modificar el cierre.", e.Message);
+                return argxEx.ToString();
+            }
+
         }
     }
 }

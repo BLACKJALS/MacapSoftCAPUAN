@@ -11,6 +11,8 @@ namespace MacapSoftCAPUAN.Models
     public class Paciente
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long id_Paciente { get; set; }
         public string numeroHistoriaClinica { get; set; }
         [ForeignKey("TipoDocumento")]
         public string id_tipoDocumento { get; set; }

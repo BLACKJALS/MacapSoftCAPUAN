@@ -14,7 +14,7 @@ namespace MacapSoftCAPUAN.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int idIngresoClinica { get; set; }
         [ForeignKey("IdPaciente")]
-        public string id_paciente { get; set; }
+        public long id_paciente { get; set; }
         [ForeignKey("EntidadRemitente")]
         public int? id_entidadRemit { get; set; }
         //[ForeignKey("Consulta")]
