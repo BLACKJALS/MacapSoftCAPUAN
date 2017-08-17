@@ -14,27 +14,37 @@ namespace MacapSoftCAPUAN.Models
         [DatabaseGenerated (DatabaseGeneratedOption.Identity)]
         public int idRemision { get; set; }
         [ForeignKey("IngresoClinica")]
-        public int id_ingresoClinica { get; set; }
-
+        public long id_ingresoClinica { get; set; }
+        [ForeignKey("Motivo_Remision")]
+        public int? id_motivoRemision { get; set; }
+        [ForeignKey("Diagnostico_tab")]
+        public string id_diagnostico { get; set; }
         public string nombreInsitucionRemitida { get; set; }
-        public string direccion { get; set; }
-        public string telefono { get; set; }
-        public string nombreProfesional { get; set; }
-        public int serviSoli { get; set; }
-        public string accionesEmprendidas { get; set; }
-        public string expectativasServicio { get; set; }
+        public string servicioRemitido { get; set; }
+        public string evolucionPaciente { get; set; }
+        public string aspectosPositivos { get; set; }
+        public string recomendaciones { get; set; }
         public DateTime fechaRemitido { get; set; }
         public string usuario { get; set; }
+        public string nombreProfesional { get; set; }
         public string diagnostico { get; set; }
         public int motivoRemision { get; set; }
-        public virtual IngresoClinica IngresoClinica { get; set; }
 
-        public string programacionPsicologo { get; set; }
-        public string anexos { get; set; }
-        public string listaEspera { get; set; }
-        public string remitido { get; set; }
-        public string personalizado { get; set; }
-        //public string psicologoAgendado { get; set; }        
+        public virtual IngresoClinica IngresoClinica { get; set; }
+        public virtual MotivosRemisiones Motivo_Remision { get; set; }
+        public virtual Diagnostico Diagnostico_tab { get; set; }
+        //public string direccion { get; set; }
+        //public string telefono { get; set; }
+
+        //public int serviSoli { get; set; }
+        //public string accionesEmprendidas { get; set; }
+        //public string expectativasServicio { get; set; }
+        //public string programacionPsicologo { get; set; }
+        //public string anexos { get; set; }
+        //public string listaEspera { get; set; }
+        //public string remitido { get; set; }
+        //public string personalizado { get; set; }
+        ////public string psicologoAgendado { get; set; }        
     }
 
 

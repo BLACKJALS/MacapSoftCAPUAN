@@ -26,7 +26,7 @@ namespace MacapSoftCAPUAN.Models
         [ForeignKey("EstrategiasE")]
         public int? id_estrategiasE { get; set; }
         [ForeignKey("IngresoClinica")]
-        public int? id_ingresoClinica { get; set; }
+        public long? id_ingresoClinica { get; set; }
         [ForeignKey("Consultante")]
         public string id_consultante { get; set; }
 

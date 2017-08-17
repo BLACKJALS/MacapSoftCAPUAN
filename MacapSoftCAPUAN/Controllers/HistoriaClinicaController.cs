@@ -45,30 +45,28 @@ namespace MacapSoftCAPUAN.Controllers
             var cierreHC = new CierreHC();
             
 
-            var listaPaciente = from item in HC.listarPaciente() where item.numeroDocumento == identificacion select item;
+            var listaPaciente = from item in HC.listarPaciente() where item.numeroHistoriaClinica == identificacion select item;
             paciente = listaPaciente.LastOrDefault();
 
             if (paciente != null) {
-                var listaIngresoClinica = from item in HC.listarIngresoClinica() where paciente.id_Paciente == item.id_paciente select item;
-                ingresoClVal = listaIngresoClinica.LastOrDefault();
-
+                ingresoClVal = (from item in HC.listarIngresoClinica() where paciente.numeroHistoriaClinica == item.id_paciente select item).LastOrDefault();
+                //ingresoClVal = listaIngresoClinica.LastOrDefault();
                 var listaCierreHC = from item in HC.listarCierres() where ingresoClVal.idIngresoClinica == item.id_ingresoClinica select item;
                 cierreHC = listaCierreHC.LastOrDefault();
             }
-            
+
 
             if (cierreHC.id_ingresoClinica != 0)
             {
-                if (cierreHC.estadoHC == true) {
+                if (ingresoClVal.estadoHC == true)
+                {
                     recepcion.paciente = paciente;
+                    if (ingresoClVal != null) {
+                        recepcion.ingresoClinica = ingresoClVal;                       
+                    }
                     if (paciente != null)
                     {
-                        //var pacienteIngreso = from item in HC.listarIngresoClinica() where item.id_paciente == paciente.numeroHistoriaClinica select item;
-                        //ingresoCli = pacienteIngreso.LastOrDefault();
-                        recepcion.ingresoClinica = ingresoCli;
-
-                        //var remitidoP = from item in HC.listarRemitido() where item.id_paciente == paciente.numeroHistoriaClinica select item;
-                        //remitido = remitidoP.LastOrDefault();
+                        recepcion.ingresoClinica = ingresoClVal;
                         recepcion.remitido = remitido;
                     }
                     List<SelectListItem> listaItemsBarrios = new List<SelectListItem>();
@@ -245,16 +243,15 @@ namespace MacapSoftCAPUAN.Controllers
                         ViewBag.numeroHC = recepcion.paciente.numeroHistoriaClinica;
                         ViewBag.nombre = recepcion.paciente.nombre;
                         ViewBag.apellido = recepcion.paciente.apellido;
-                        ViewBag.direccion = recepcion.paciente.direccion;
-                        //ViewBag.edad = recepcion.paciente.edad;
-                        ViewBag.email = recepcion.paciente.email;
+                        ViewBag.direccion = recepcion.ingresoClinica.direccion;
+                        ViewBag.email = recepcion.ingresoClinica.email;
                         var fechN = (recepcion.paciente.fechaNacimiento).ToString();
                         var fechnStr = DateTime.Parse(fechN);
                         string format = "yyyy-MM-dd";
                         var fecha = fechnStr.ToString(format);
                         ViewBag.fechaNacimiento = fecha;
-                        ViewBag.numeroDocumento = recepcion.paciente.numeroDocumento;
-                        ViewBag.telefono = recepcion.paciente.telefono;
+                        ViewBag.numeroDocumento = recepcion.ingresoClinica.numeroDocumento;
+                        ViewBag.telefono = recepcion.ingresoClinica.telefono;
                         if (recepcion.remitido != null)
                         {
                             ViewBag.entidadRemitido = recepcion.remitido.nombreEntidad;
@@ -273,18 +270,14 @@ namespace MacapSoftCAPUAN.Controllers
                 {
                     return View("RecepcionCasoDenegada");
                 }
-                
+
             }
-            else {
+            else
+            {
                 recepcion.paciente = paciente;
                 if (paciente != null)
                 {
-                    //var pacienteIngreso = from item in HC.listarIngresoClinica() where item.id_paciente == paciente.numeroHistoriaClinica select item;
-                    //ingresoCli = pacienteIngreso.LastOrDefault();
                     recepcion.ingresoClinica = ingresoCli;
-
-                    //var remitidoP = from item in HC.listarRemitido() where item.id_paciente == paciente.numeroHistoriaClinica select item;
-                    //remitido = remitidoP.LastOrDefault();
                     recepcion.remitido = remitido;
                 }
                 List<SelectListItem> listaItemsBarrios = new List<SelectListItem>();
@@ -461,16 +454,15 @@ namespace MacapSoftCAPUAN.Controllers
                     ViewBag.numeroHC = recepcion.paciente.numeroHistoriaClinica;
                     ViewBag.nombre = recepcion.paciente.nombre;
                     ViewBag.apellido = recepcion.paciente.apellido;
-                    ViewBag.direccion = recepcion.paciente.direccion;
-                    //ViewBag.edad = recepcion.paciente.edad;
-                    ViewBag.email = recepcion.paciente.email;
+                    ViewBag.direccion = recepcion.ingresoClinica.direccion;
+                    ViewBag.email = recepcion.ingresoClinica.email;
                     var fechN = (recepcion.paciente.fechaNacimiento).ToString();
                     var fechnStr = DateTime.Parse(fechN);
                     string format = "yyyy-MM-dd";
                     var fecha = fechnStr.ToString(format);
                     ViewBag.fechaNacimiento = fecha;
-                    ViewBag.numeroDocumento = recepcion.paciente.numeroDocumento;
-                    ViewBag.telefono = recepcion.paciente.telefono;
+                    ViewBag.numeroDocumento = recepcion.ingresoClinica.numeroDocumento;
+                    ViewBag.telefono = recepcion.ingresoClinica.telefono;
                     if (recepcion.remitido != null)
                     {
                         ViewBag.entidadRemitido = recepcion.remitido.nombreEntidad;
@@ -494,33 +486,38 @@ namespace MacapSoftCAPUAN.Controllers
             HC = new HistoriaClinicaBO();
             Paciente paciente = new Paciente();
             Consultante consultante = new Consultante();
-            //consultantePaciente consultantePa;
             IngresoClinica ingresoClinica = new IngresoClinica();
             Remitido remitido = new Remitido();
             Remision remision = new Remision();
             Consecutivo consecutivo = new Consecutivo();
-
+            Paciente pacienteEx = new Paciente();
             var listaPacientes = HC.listarPaciente();
-            if (model.paciente.numeroDocumento != Documento)
+            if (model.paciente.numeroHistoriaClinica != Documento)
             {
                 var listaP = (from item in listaPacientes where item.numeroHistoriaClinica == Documento select item).FirstOrDefault();
-                model.paciente.fechaNacimiento = listaP.fechaNacimiento;
-                model.paciente.numeroHistoriaClinica = listaP.numeroHistoriaClinica;
-                //model.consecutivo.numeroConsecutivo = model.consecutivo.numeroConsecutivo + 1;
+                if (!(listaP == null))
+                {
+                    model.paciente.fechaNacimiento = listaP.fechaNacimiento;
+                    model.paciente.numeroHistoriaClinica = listaP.numeroHistoriaClinica;
+                }
+                else{
+                    model.paciente.numeroHistoriaClinica = String.IsNullOrEmpty(Documento) ? null : Documento;
+                }
             }
-            else {
+            else
+            {
                 model.paciente.numeroHistoriaClinica = String.IsNullOrEmpty(Documento) ? null : Documento;
             }
-            
+
             var pacienteExistente = from p in listaPacientes where p.numeroHistoriaClinica == model.paciente.numeroHistoriaClinica select p;
-            Paciente pacienteEx = new Paciente();
             pacienteEx = pacienteExistente.LastOrDefault();
-            if (model.paciente.tieneEps == "NO") {
-                model.paciente.id_Eps = "No tiene";
+            if (model.ingresoClinica.tieneEps == "NO")
+            {
+                model.ingresoClinica.id_Eps = "No tiene";
             }
             if (pacienteEx != null)
             {
-                HC.modificarRecepcionCasoModel(model, pacienteEx);
+                HC.modificarRecepcionCasoModel(model);
             }
             else {
 
@@ -548,9 +545,10 @@ namespace MacapSoftCAPUAN.Controllers
                         listaItemsDocumento.Add(items);
                     }
                     ViewBag.ItemDocumento = listaItemsDocumento.ToList();
-                    ViewBag.Pac = model.paciente.numeroDocumento;
+                    ViewBag.Pac = model.paciente.numeroHistoriaClinica;
                     var remPaciente = new RemisionPaciente();
                     remPaciente.paciente = model.paciente;
+                    remPaciente.ingresoClinica = model.ingresoClinica;
                     var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
                     var usuario = (from item in HC.listarUsuario() where item.Id == user select item.Email).FirstOrDefault();
                     ViewBag.usr = usuario;
@@ -575,10 +573,10 @@ namespace MacapSoftCAPUAN.Controllers
             Remision remisionPaciente;
             MotivosRemisiones motivoRem;
             var lstRP = concMremison.Split(';');
-            var listaP = (from item in HC.listarPaciente() where item.numeroDocumento == modelRemision.paciente.numeroDocumento select item).LastOrDefault();
-            var ingresoPaciente = (from item in HC.listarIngresoClinica() where item.id_paciente == listaP.id_Paciente select item).LastOrDefault();
-            var cierreHC = (from item in HC.listarCierres() where item.id_ingresoClinica == ingresoPaciente.idIngresoClinica select item).LastOrDefault();
-            HC.modificarCierre(cierreHC);
+            var listaP = (from item in HC.listarPaciente() where item.numeroHistoriaClinica == modelRemision.paciente.numeroHistoriaClinica select item).LastOrDefault();
+            var ingresoPaciente = (from item in HC.listarIngresoClinica() where item.id_paciente == listaP.numeroHistoriaClinica select item).LastOrDefault();
+            //var cierreHC = (from item in HC.listarCierres() where item.id_ingresoClinica == ingresoPaciente.idIngresoClinica select item).LastOrDefault();
+            HC.modificarCierre(ingresoPaciente);
             foreach (var item in lstRP) {
                 if (item != "") {
                     remisionPaciente = new Remision();
@@ -593,9 +591,9 @@ namespace MacapSoftCAPUAN.Controllers
                     listaResmisionPaciente.Add(remisionPaciente);
                 }
             }
-            if (modelRemision.paciente.numeroDocumento != "")
+            if (modelRemision.paciente.numeroHistoriaClinica != "")
             {
-                
+
                 modelRemision.remision = listaResmisionPaciente;
                 modelRemision.paciente = modelRemision.paciente;
                 HC.agregarListaRemision(modelRemision.remision);
@@ -625,11 +623,11 @@ namespace MacapSoftCAPUAN.Controllers
                 foreach (var itemlmr in listaMotivosRemisiones)
                 {
                     if (itemlmr.idMotivoRemision == item.motivoRemision) {
-                        motivoRemisionVM.id = item.id_ingresoClinica;
+                        //motivoRemisionVM.id = item.id_ingresoClinica;
                         var ingreClinicaMotivoRem = (from pa in ingresoClinica where pa.idIngresoClinica == item.id_ingresoClinica select pa).FirstOrDefault();
                         if (ingreClinicaMotivoRem != null) {
-                            motivoRemisionVM.nombrePaciente = (from pa in listaPaciente where pa.id_Paciente == ingreClinicaMotivoRem.id_paciente select pa.nombre).FirstOrDefault() + " ";
-                            motivoRemisionVM.nombrePaciente += (from pa in listaPaciente where pa.id_Paciente == ingreClinicaMotivoRem.id_paciente select pa.apellido).FirstOrDefault() + " ";
+                           //motivoRemisionVM.nombrePaciente = (from pa in listaPaciente where pa.id_Paciente == ingreClinicaMotivoRem.id_paciente select pa.nombre).FirstOrDefault() + " ";
+                           // motivoRemisionVM.nombrePaciente += (from pa in listaPaciente where pa.id_Paciente == ingreClinicaMotivoRem.id_paciente select pa.apellido).FirstOrDefault() + " ";
                             motivoRemisionVM.nombreMotivoRemision = itemlmr.nombre;
                             motivoRemisionVM.lugarRemitido = item.nombreInsitucionRemitida;
                             motivoRemisionVM.fecha = item.fechaRemitido;

@@ -12,6 +12,7 @@ namespace MacapSoftCAPUAN.ModelsVM
         public List<Remision> remision { get; set; }
         public Remision remisionP { get; set; }
         public CierreHC cierre { get; set; }
+        public IngresoClinica ingresoClinica { get; set; }
 
         public RemisionPaciente()
         {
@@ -19,6 +20,7 @@ namespace MacapSoftCAPUAN.ModelsVM
             remision = new List<Remision>();
             remisionP = new Remision();
             cierre = new CierreHC();
+            ingresoClinica = new IngresoClinica();
         }
     }
 }

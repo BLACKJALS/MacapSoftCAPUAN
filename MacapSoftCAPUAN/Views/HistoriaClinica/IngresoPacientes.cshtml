@@ -299,13 +299,13 @@
         <div class="row">
             <label class="col-md-1" style="font-size:smaller">Tipo de documento:</label>
             <div class="col-md-4">
-                @Html.DropDownList("paciente.id_tipoDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumento, new { @class = "form-control", id="tipoDocumentoPac" })
+                @Html.DropDownList("ingresoClinica.id_tipoDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumento, new { @class = "form-control", id="tipoDocumentoPac" })
             </div>
             <div class="col-md-2">
                 <label style="font-size:smaller">Número de documento:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="numeroDocumentoPaciente" name="paciente.numeroDocumento" placeholder="número documento" value="@ViewBag.numeroDocumento" required />
+                <input class="form-control" id="numeroDocumentoPaciente" name="ingresoClinica.numeroDocumento" placeholder="número documento" value="@ViewBag.numeroDocumento" required />
             </div>
         </div>
         <br />
@@ -320,7 +320,7 @@
                 <label style="font-size:smaller">Escolaridad:</label>
             </div>
             <div class="col-md-4">
-                @Html.DropDownList("paciente.id_NivelEscolaridad", (IEnumerable<SelectListItem>)ViewBag.NivelEscolaridad, new { @class = "form-control", id = "nivelEscolaridad" })
+                @Html.DropDownList("ingresoClinica.id_NivelEscolaridad", (IEnumerable<SelectListItem>)ViewBag.NivelEscolaridad, new { @class = "form-control", id = "nivelEscolaridad" })
             </div>
         </div>
         <br />
@@ -345,7 +345,7 @@
                 <label style="font-size:smaller">Edad:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="edadPaciente" name="paciente.edad" placeholder="Edad (años)" onclick="return validarEdad();" value="@ViewBag.edad" required />
+                <input class="form-control" id="edadPaciente" name="ingresoClinica.edad" placeholder="Edad (años)" onclick="return validarEdad();" value="@ViewBag.edad" required />
             </div>
         </div>
         <br />
@@ -360,20 +360,20 @@
                 <label style="font-size:smaller">Localidad:</label>
             </div>
             <div class="col-md-3">
-                @Html.DropDownList("paciente.id_localidad", (IEnumerable<SelectListItem>)ViewBag.ItemLocalidades, new { @class = "form-control", required = "true" })
+                @Html.DropDownList("ingresoClinica.id_localidad", (IEnumerable<SelectListItem>)ViewBag.ItemLocalidades, new { @class = "form-control", required = "true" })
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Barrio:</label>
             </div>
             <div class="col-md-3">
-                @Html.DropDownList("paciente.id_barrio", (IEnumerable<SelectListItem>)ViewBag.ItemBarrios, new { @class = "form-control", required = "true" })
+                @Html.DropDownList("ingresoClinica.id_barrio", (IEnumerable<SelectListItem>)ViewBag.ItemBarrios, new { @class = "form-control", required = "true" })
                 @*<input class="form-control" id="Barrio" placeholder="Barrio" />*@
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Dirección:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="direccionPaciente" name="paciente.direccion" placeholder="Direccion" value="@ViewBag.direccion" required />
+                <input class="form-control" id="direccionPaciente" name="ingresoClinica.direccion" placeholder="Direccion" value="@ViewBag.direccion" required />
             </div>
         </div>
         <br />
@@ -382,20 +382,20 @@
                 <label style="font-size:smaller">Estrato:</label>
             </div>
             <div class="col-md-3">
-                @Html.DropDownList("paciente.id_estrato", (IEnumerable<SelectListItem>)ViewBag.ItemEstrato, new { @class = "form-control", required = "true" })
+                @Html.DropDownList("ingresoClinica.id_estrato", (IEnumerable<SelectListItem>)ViewBag.ItemEstrato, new { @class = "form-control", required = "true" })
                 @*<input class="form-control" id="estratoPaciente" name="paciente.estrato" placeholder="Estrato" required />*@
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Telefonos:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="telefonoPaciente" name="paciente.telefono" placeholder="Telefonos" value="@ViewBag.telefono" required />
+                <input class="form-control" id="telefonoPaciente" name="ingresoClinica.telefono" placeholder="Telefonos" value="@ViewBag.telefono" required />
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Email:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="emailPaciente" pattern="[a-z0-9._%+-]+@("@")[a-z0-9.-]+\.[a-z]{2,3}$" name="paciente.email" placeholder="Email" value="@ViewBag.email"/>
+                <input class="form-control" id="emailPaciente" pattern="[a-z0-9._%+-]+@("@")[a-z0-9.-]+\.[a-z]{2,3}$" name="ingresoClinica.email" placeholder="Email" value="@ViewBag.email"/>
             </div>
         </div>
         <br />
@@ -404,13 +404,13 @@
                 <label style="font-size:smaller">Ocupación:</label>
             </div>
             <div class="col-md-3">
-                @Html.DropDownList("paciente.id_ocupacion", (IEnumerable<SelectListItem>)ViewBag.Ocupacion, new { @class = "form-control", id = "ocupacion" })
+                @Html.DropDownList("ingresoClinica.id_ocupacion", (IEnumerable<SelectListItem>)ViewBag.Ocupacion, new { @class = "form-control", id = "ocupacion" })
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Profesión:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="pacienteProfesion" name="paciente.profesion" placeholder="Profesión" value="" required />
+                <input class="form-control" id="pacienteProfesion" name="ingresoClinica.profesion" placeholder="Profesión" value="" required />
             </div>
         </div>
         <br/>
@@ -419,20 +419,20 @@
                 <label style="font-size:smaller">EPSS:</label>
             </div>
             <div class="col-md-2">
-                @Html.DropDownList("paciente.tieneEps", (IEnumerable<SelectListItem>)ViewBag.ItemValidacion, new { @class = "form-control", id = "pacienteTenerEPS", required = "true" })
+                @Html.DropDownList("ingresoClinica.tieneEps", (IEnumerable<SelectListItem>)ViewBag.ItemValidacion, new { @class = "form-control", id = "pacienteTenerEPS", required = "true" })
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">EPSC:</label>
             </div>
             <div class="col-md-2">
-                @Html.DropDownList("paciente.tieneEpc", (IEnumerable<SelectListItem>)ViewBag.ItemValidacion, new { @class = "form-control", required = "true" })
+                @Html.DropDownList("ingresoClinica.tieneEpc", (IEnumerable<SelectListItem>)ViewBag.ItemValidacion, new { @class = "form-control", required = "true" })
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Institución:</label>
             </div>
             <div class="col-md-2">
                 @*<input class="form-control" id="epsPaciente" name="paciente.eps.IdEPS" placeholder="EPSS" />*@
-                @Html.DropDownList("paciente.id_Eps", (IEnumerable<SelectListItem>)ViewBag.ItemEps, new { @class = "form-control", id = "listadosEPS", required = "true" })
+                @Html.DropDownList("ingresoClinica.id_Eps", (IEnumerable<SelectListItem>)ViewBag.ItemEps, new { @class = "form-control", id = "listadosEPS", required = "true" })
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Viene remitido:</label>

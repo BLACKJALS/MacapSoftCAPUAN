@@ -324,30 +324,30 @@ namespace MacapSoftCAPUAN.DALC
             return listaRemision;
         }
 
-        public string modificarIngresoCl(IngresoClinica ingresoCl)
-        {
+        //public string modificarIngresoCl(IngresoClinica ingresoCl)
+        //{
 
-            try
-            {
-                var ingresoClMod = new IngresoClinica { idIngresoClinica = ingresoCl.idIngresoClinica };
-                using (var context = new ApplicationDbContext())
-                {
-                    context.ingresoClinicaContext.Attach(ingresoClMod);
-                    ingresoClMod.fechaIngreso = ingresoCl.fechaIngreso;
-                    ingresoClMod.id_paciente = ingresoCl.id_paciente;
-                    ingresoClMod.observaciones = ingresoCl.observaciones;
-                    ingresoClMod.motivoConsulta = ingresoCl.motivoConsulta;
-                    context.SaveChanges();
-                }
-            }
-            catch (Exception e)
-            {
+        //    try
+        //    {
+        //        var ingresoClMod = new IngresoClinica { idIngresoClinica = ingresoCl.idIngresoClinica };
+        //        using (var context = new ApplicationDbContext())
+        //        {
+        //            context.ingresoClinicaContext.Attach(ingresoClMod);
+        //            ingresoClMod.fechaIngreso = ingresoCl.fechaIngreso;
+        //            ingresoClMod.id_paciente = ingresoCl.id_paciente;
+        //            ingresoClMod.observaciones = ingresoCl.observaciones;
+        //            ingresoClMod.motivoConsulta = ingresoCl.motivoConsulta;
+        //            context.SaveChanges();
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
 
-                System.ArgumentException argxEx = new System.ArgumentException("No se pudo actualizar la informacion de ingreso nueva.", e.Message);
-                return argxEx.ToString();
-            }
-            return "Exito";
-        }
+        //        System.ArgumentException argxEx = new System.ArgumentException("No se pudo actualizar la informacion de ingreso nueva.", e.Message);
+        //        return argxEx.ToString();
+        //    }
+        //    return "Exito";
+        //}
 
 
         public List<Sexo> listarSexoPac()
@@ -384,16 +384,16 @@ namespace MacapSoftCAPUAN.DALC
             return listaCierres;
         }
 
-        public string modificarCierreHC(CierreHC cierre) {
+        public string modificarCierreHC(IngresoClinica ingresoClinica) {
             try
             {
-                var cierreHC = new CierreHC { idCierreHC = cierre.idCierreHC };
+                var cierreHC = new IngresoClinica { idIngresoClinica = ingresoClinica.idIngresoClinica };
                 using (var context = new ApplicationDbContext())
                 {
-                    context.cierreHcContext.Attach(cierreHC);
-                    cierreHC.id_ingresoClinica = cierre.id_ingresoClinica;
+                    context.ingresoClinicaContext.Attach(cierreHC);
+                    cierreHC.idIngresoClinica = ingresoClinica.idIngresoClinica;
                     cierreHC.estadoHC = true;
-                    cierreHC.idUsuario = cierre.idUsuario;
+                    cierreHC.idUsuario = ingresoClinica.idUsuario;
                     context.SaveChanges();
                 }
 

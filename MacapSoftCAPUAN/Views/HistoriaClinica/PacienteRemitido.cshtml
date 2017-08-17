@@ -184,15 +184,15 @@
         <div class="row">
             <label class="col-md-1" style="font-size:smaller">Tipo de documento:</label>
             <div class="col-md-4">
-                <label>@Model.paciente.id_tipoDocumento</label>
+                <label>@Model.ingresoClinica.id_tipoDocumento</label>
                 @*@Html.DropDownList("paciente.id_tipoDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumento, new { @class = "form-control", id = "tipoDocumentoPac" })*@
             </div>
             <div class="col-md-2">
-                <label style="font-size:smaller">Número de documento:</label>
+                <label style="font-size:smaller">Número de historia clínica:</label>
             </div>
             <div class="col-md-4">
-                <label>@Model.paciente.numeroDocumento</label>
-                @*<input class="form-control" id="numeroDocumentoPaciente" name="paciente.numeroDocumento" placeholder="número documento" value="@Model.paciente.numeroDocumento" required />*@
+                @*<label>@Model.paciente.numeroHistoriaClinica</label>*@
+                <input class="form-control" id="numeroDocumentoPaciente" name="paciente.numeroHistoriaClinica" placeholder="número documento" value="@Model.paciente.numeroHistoriaClinica" required />
             </div>
         </div>
         <br />
@@ -201,7 +201,7 @@
                 <label style="font-size:smaller">Edad:</label>
             </div>
             <div class="col-md-1">
-                <label>@Model.paciente.edad</label>
+                <label>@Model.ingresoClinica.edad</label>
                 @*<input class="form-control" id="edadPaciente" name="paciente.edad" placeholder="Edad (años)" value="@Model.paciente.edad" required />*@
             </div>
             <div class="col-md-1">
@@ -249,7 +249,7 @@
                 <label style="font-size:smaller">Servicio al que se remite:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="servicioRemite" name="paciente.edad" placeholder="Servicio al que se remite" value="@ViewBag.edad" required />
+                <input class="form-control" id="servicioRemite" name="ingresoClinica.edad" placeholder="Servicio al que se remite" value="@ViewBag.edad" required />
             </div>
         </div>
         <br />
@@ -257,21 +257,21 @@
             <label style="font-size:smaller">Evolución del paciente durante la intervención psicológica:</label>
         </div>
         <div class="form-group">
-            <textarea class="form-control" id="evolucionPacienIntervenPsico" name="ingresoClinica.motivoConsulta" style="min-width: 100%" rows="6" value="@ViewBag.motivoConsulta " required></textarea>
+            <textarea class="form-control" id="evolucionPacienIntervenPsico" name="remisionP.evolucionPaciente" style="min-width: 100%" rows="6" value="@ViewBag.motivoConsulta " required></textarea>
         </div>
         <br />
         <div class="col-md-10">
             <label style="font-size:smaller">Aspectos positivos:</label>
         </div>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="aspectosPositivos" name="ingresoClinica.observaciones" value="'@ViewBag.Observaciones" required></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="aspectosPositivos" name="remisionP.aspectosPositivos" value="'@ViewBag.Observaciones" required></textarea>
         </div>
         <br />
         <div class="col-md-10">
             <label style="font-size:smaller">Recomendaciones:</label>
         </div>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="recomendaciones" name="ingresoClinica.observaciones" value="'@ViewBag.Observaciones" required></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="recomendaciones" name="remisionP.recomendaciones" value="'@ViewBag.Observaciones" required></textarea>
         </div>
         <br />
         <h3 style="text-align:center; background-color:#9BC2E6">Factores de riesgo</h3>

@@ -670,7 +670,7 @@ namespace MacapSoftCAPUAN.Controllers
                 }
             }
 
-            TempData["mensajeError"] = "Error de validación, no ingreso una contraseña valida o digito la misma contraseña.";
+            TempData["mensajeError"] = "Error de validación, no ingreso una contraseña válida o digitó la misma contraseña.";
             ViewBag.ErrorMessage = "Email not found or matched";
             return RedirectToAction("CambiarContraseña", "Account");
             //return Json("Ok",JsonRequestBehavior.AllowGet);

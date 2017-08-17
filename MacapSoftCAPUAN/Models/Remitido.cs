@@ -17,7 +17,7 @@ namespace MacapSoftCAPUAN.Models
         public DateTime fechaRemision { get; set; }
         public string nombreRemitente { get; set; }
         [ForeignKey("Paciente")]
-        public long id_paciente { get; set; }
+        public string id_paciente { get; set; }
         public Paciente Paciente { get; set; }
     }
 }
