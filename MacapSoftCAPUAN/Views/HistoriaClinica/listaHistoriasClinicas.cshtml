@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Listar historias clínicas";
 }
 <meta charset="utf-8">
@@ -173,7 +172,7 @@
 
 <body>
     <div class="container">
-        <h3 align="center"><font size="16">Historias clínicas</font></h3>
+        <h3 align="center"><font size="16">Lista de historias clínicas activas</font></h3>
         <table id="table"
                data-toggle="table"
                data-search="true"
@@ -189,9 +188,9 @@
                data-url='@Url.Action("listarHistoriasClinicasSegunUsuario", "HistoriaClinica")'>
             <thead>
                 <tr>
-                    <th data-field="numeroHistoriaClinica" class="clickable-row">Número de historia clínica</th>
-                    <th data-field="nombre">Nombre del paciente</th>
-                    <th data-field="apellido">Apellido del paciente</th>
+                    <th data-field="numeroHC" class="clickable-row">Número de historia clínica</th>
+                    <th data-field="nombrePaciente">Nombre del paciente</th>
+                    <th data-field="apellidoPaciente">Apellido del paciente</th>
                     <th data-field="idUser">Usuario(s) asignado(s)</th>
                     @*<th data-field="state" data-radio="true" title="Seleccione" data-event="eventosOperaciones"></th>*@           
                     <th data-field="Operaciones" data-align="center" data-events="eventosOperaciones" data-formatter="formatoOperaciones">Seleccione</th>     

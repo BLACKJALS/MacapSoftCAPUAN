@@ -7,7 +7,7 @@ namespace MacapSoftCAPUAN.ModelsVM
 {
     public class MotivoRemisionVM
     {
-        public int id { get; set; }
+        public long id_historiaClinica { get; set; }
         public string nombreMotivoRemision { get; set; }
         public string nombrePaciente { get; set; }
         public string lugarRemitido { get; set; }

@@ -22,14 +22,20 @@ namespace MacapSoftCAPUAN.Controllers
         // GET: HistoriaClinica
         public HistoriaClinicaBO HC;
 
+        
         public ActionResult Index()
         {
             return View();
         }
 
+
+
+
         public ActionResult ingresoPaciente() {
             return View();
         }
+
+
 
 
         public ActionResult IngresoPacientes(string identificacion)
@@ -480,6 +486,8 @@ namespace MacapSoftCAPUAN.Controllers
         }
 
         
+
+
         [HttpPost]
         public ActionResult IngresoPacientesCreado(RecepcionCaso model, string Informacion, string Documento)
         {
@@ -566,6 +574,9 @@ namespace MacapSoftCAPUAN.Controllers
 
         }
 
+
+
+
         [HttpPost]
         public ActionResult RemitirPaciente(RemisionPaciente modelRemision, string concMremison) {
             HC = new HistoriaClinicaBO();
@@ -602,16 +613,21 @@ namespace MacapSoftCAPUAN.Controllers
             return View("PacienteRemitidoExitoso");
         }
 
+
+
+
         public ActionResult listarPacientesRemitidos() {
             return View();
         }
+
+
 
 
         public JsonResult listarPacientesRemitidosCAP() {
             HC = new HistoriaClinicaBO();
             MotivoRemisionVM motivoRemisionVM;
             List<MotivoRemisionVM> listaMotivoRemision = new List<MotivoRemisionVM>();
-            Dictionary<int, MotivoRemisionVM> mtv = new Dictionary<int, MotivoRemisionVM>();
+            Dictionary<long, MotivoRemisionVM> mtv = new Dictionary<long, MotivoRemisionVM>();
 
             var listaRemisiones = HC.listarRemisiones();
             var listaMotivosRemisiones = HC.listarMotivosRemisiones();
@@ -623,11 +639,11 @@ namespace MacapSoftCAPUAN.Controllers
                 foreach (var itemlmr in listaMotivosRemisiones)
                 {
                     if (itemlmr.idMotivoRemision == item.motivoRemision) {
-                        //motivoRemisionVM.id = item.id_ingresoClinica;
-                        var ingreClinicaMotivoRem = (from pa in ingresoClinica where pa.idIngresoClinica == item.id_ingresoClinica select pa).FirstOrDefault();
+                        motivoRemisionVM.id_historiaClinica = item.id_ingresoClinica;
+                        var ingreClinicaMotivoRem = (from pa in ingresoClinica where pa.idIngresoClinica == item.id_ingresoClinica select pa).LastOrDefault();
                         if (ingreClinicaMotivoRem != null) {
-                           //motivoRemisionVM.nombrePaciente = (from pa in listaPaciente where pa.id_Paciente == ingreClinicaMotivoRem.id_paciente select pa.nombre).FirstOrDefault() + " ";
-                           // motivoRemisionVM.nombrePaciente += (from pa in listaPaciente where pa.id_Paciente == ingreClinicaMotivoRem.id_paciente select pa.apellido).FirstOrDefault() + " ";
+                            motivoRemisionVM.nombrePaciente = (from pa in listaPaciente where pa.numeroHistoriaClinica == ingreClinicaMotivoRem.id_paciente select pa.nombre).FirstOrDefault() + " ";
+                            motivoRemisionVM.nombrePaciente += (from pa in listaPaciente where pa.numeroHistoriaClinica == ingreClinicaMotivoRem.id_paciente select pa.apellido).FirstOrDefault() + " ";
                             motivoRemisionVM.nombreMotivoRemision = itemlmr.nombre;
                             motivoRemisionVM.lugarRemitido = item.nombreInsitucionRemitida;
                             motivoRemisionVM.fecha = item.fechaRemitido;
@@ -641,25 +657,30 @@ namespace MacapSoftCAPUAN.Controllers
             {
                 motivoRemisionVM = new MotivoRemisionVM();
                 motivoRemisionVM = itemPaciente;
-                if (!(mtv.ContainsKey(itemPaciente.id)))
+                if (!(mtv.ContainsKey(itemPaciente.id_historiaClinica)))
                 {
-                   mtv.Add(itemPaciente.id, itemPaciente);
+                   mtv.Add(itemPaciente.id_historiaClinica, itemPaciente);
                 }
                 else
                 {
-                    var a = mtv.FirstOrDefault(x => x.Key == itemPaciente.id);
-                    mtv.Remove(itemPaciente.id);
+                    var a = mtv.FirstOrDefault(x => x.Key == itemPaciente.id_historiaClinica);
+                    mtv.Remove(itemPaciente.id_historiaClinica);
                     itemPaciente.nombreMotivoRemision += " " + a.Value.nombreMotivoRemision;
-                    mtv.Add(itemPaciente.id, itemPaciente);
+                    mtv.Add(itemPaciente.id_historiaClinica, itemPaciente);
                 }
             }
 
             return Json(mtv.Values, JsonRequestBehavior.AllowGet);
         }
 
+
+
+
         public ActionResult buscarPacientes() {
             return View();
         }
+
+
 
 
         public JsonResult listarPacientesBusquedaCAP()
@@ -677,15 +698,18 @@ namespace MacapSoftCAPUAN.Controllers
 
 
 
+
         public ActionResult listaHistoriasClinicas() {
             return View();
         }
 
 
+
+
         public JsonResult listarHistoriasClinicasSegunUsuario()
         {
             HC = new HistoriaClinicaBO();
-            List<Paciente> listPc = new List<Paciente>();
+            List<ListadoHistoriasClinicas> listPc = new List<ListadoHistoriasClinicas>();
             if (User.IsInRole("Administrador"))
             {
                 listPc = HC.listarHCAdmin();
@@ -702,53 +726,24 @@ namespace MacapSoftCAPUAN.Controllers
             }
 
             return Json(listPc, JsonRequestBehavior.AllowGet);
-            //List<IngresoClinica> listaIngresoClinica = new List<IngresoClinica>();
-            //List<Paciente> listaPaciente = new List<Paciente>();
-            //HC = new HistoriaClinicaBO();
-            //var ingresoClinica = HC.listarIngresoClinica();
-            //var cierresHC = (from item in HC.listarCierres() where item.estadoHC == false select item).ToList();
-            //var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
-
-            //var usuario = (from item in HC.listarUsuario() where item.Id == user select item.Email).FirstOrDefault();
-            //var pacienteUser = (from item in HC.listarPaciente() where item.idUser == user select item).ToList();
-
-
-            //foreach (var itemIngr in ingresoClinica)
-            //{
-            //    foreach (var item in cierresHC)
-            //    {
-            //        if (item.id_ingresoClinica == itemIngr.idIngresoClinica) {
-            //            listaIngresoClinica.Add(itemIngr);
-            //            break;
-            //        }
-            //    }
-            //}
-
-            //foreach (var itemPAC in HC.listarPaciente()) {
-            //    foreach (var itemIngre in listaIngresoClinica) {
-            //        if (itemPAC.id_Paciente == itemIngre.id_paciente) {
-            //            if(itemPAC.idUser == user)
-            //            {
-            //                itemPAC.idUser = usuario;
-            //                listaPaciente.Add(itemPAC);
-            //                break;
-            //            }
-            //        }
-            //    }
-            //}
-
         }
+
+
+
 
         public ActionResult listaHistoriasClinicasInactivas()
         {
             return View();
         }
 
+
+
+
         public JsonResult listarHistoriasClinicasInactivasSegunUsuario()
         {
 
             HC = new HistoriaClinicaBO();
-            List<Paciente> listPc = new List<Paciente>();
+            List<ListadoHistoriasClinicas> listPc = new List<ListadoHistoriasClinicas>();
             if (User.IsInRole("Administrador"))
             {
                 listPc = HC.listarHCInactivasAdmin();
@@ -761,17 +756,22 @@ namespace MacapSoftCAPUAN.Controllers
 
             if (User.IsInRole("Estudiante psicologo"))
             {
-                listPc = HC.listarHCEstudiante();
+                listPc = HC.listarHCInactivasEstudiante();
             }
-
             return Json(listPc, JsonRequestBehavior.AllowGet);
         }
+
+
+
 
         [HttpPost]
         public ActionResult AsignarUsuarioPost(string usr)
         {
             return View("AsignarUsuarioPost");
         }
+
+
+
 
         [HttpPost]
         public ActionResult ElementosConsultarPost()
