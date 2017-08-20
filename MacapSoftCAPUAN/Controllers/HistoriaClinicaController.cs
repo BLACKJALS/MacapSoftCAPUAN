@@ -526,6 +526,14 @@ namespace MacapSoftCAPUAN.Controllers
             if (pacienteEx != null)
             {
                 HC.modificarRecepcionCasoModel(model);
+                //var ingrClRem = model.ingresoClinica;
+                //var ingresoPaciente = (from item in HC.listarIngresoClinica() where item.id_paciente == ingrClRem.numeroDocumento select item).LastOrDefault();
+
+                //if (ingresoPaciente != null)
+                //{
+                //    var listaIngresoClinica = (from item in HC.listarIngresoClinica() where item.id_paciente == ingresoPaciente.id_paciente select item).ToList();
+                //    HC.modificarRemision(listaIngresoClinica);
+                //}
             }
             else {
 
@@ -627,27 +635,53 @@ namespace MacapSoftCAPUAN.Controllers
             HC = new HistoriaClinicaBO();
             MotivoRemisionVM motivoRemisionVM;
             List<MotivoRemisionVM> listaMotivoRemision = new List<MotivoRemisionVM>();
-            Dictionary<long, MotivoRemisionVM> mtv = new Dictionary<long, MotivoRemisionVM>();
-
-            var listaRemisiones = HC.listarRemisiones();
+            Dictionary<string, MotivoRemisionVM> mtv = new Dictionary<string, MotivoRemisionVM>();
+            List<IngresoClinica> listaIngresoCl = new List<IngresoClinica>();
+            var listaRemisiones = (from item in HC.listarRemisiones() select item).ToList();
             var listaMotivosRemisiones = HC.listarMotivosRemisiones();
-            var ingresoClinica = HC.listarIngresoClinica();
+            var ingresoClinica = (from item in HC.listarIngresoClinica() where item.estadoRemision == true select item).ToList();
             var listaPaciente = HC.listarPaciente();
+            var listaRemitidos1 = (from ingreCl in ingresoClinica where ingreCl.estadoRemision == true select ingreCl).ToList();
+            var listaAgrupada1 = listaRemitidos1.GroupBy(x => x.id_paciente).ToList();
+
+            foreach (var item in listaAgrupada1) {
+                foreach (var item2 in ingresoClinica) {
+                    if (item.Key == item2.id_paciente) {
+                        if (listaIngresoCl.Exists(x => x.id_paciente == item.Key))
+                        {
+                            var ingrCl = listaIngresoCl.Find(x => x.id_paciente == item.Key);
+                            listaIngresoCl.Remove(ingrCl);
+                            listaIngresoCl.Add(item2);
+                        }
+                        else {
+                            listaIngresoCl.Add(item2);
+                        }
+                    }
+                }
+            }
+
             foreach (var item in listaRemisiones)
             {
                 motivoRemisionVM = new MotivoRemisionVM();
                 foreach (var itemlmr in listaMotivosRemisiones)
                 {
                     if (itemlmr.idMotivoRemision == item.motivoRemision) {
-                        motivoRemisionVM.id_historiaClinica = item.id_ingresoClinica;
-                        var ingreClinicaMotivoRem = (from pa in ingresoClinica where pa.idIngresoClinica == item.id_ingresoClinica select pa).LastOrDefault();
+                        //motivoRemisionVM.id_historiaClinica = item.id_ingresoClinica;
+                        //var listaRemitidos = (from ingreCl in ingresoClinica where ingreCl.estadoRemision == true select ingreCl).ToList();
+                        //var listaAgrupada = listaRemitidos.GroupBy(x => x.idIngresoClinica).ToList();
+                        var ingreClinicaMotivoRem = (from pa in listaIngresoCl where pa.idIngresoClinica == item.id_ingresoClinica && pa.estadoRemision == true select pa).LastOrDefault();
                         if (ingreClinicaMotivoRem != null) {
-                            motivoRemisionVM.nombrePaciente = (from pa in listaPaciente where pa.numeroHistoriaClinica == ingreClinicaMotivoRem.id_paciente select pa.nombre).FirstOrDefault() + " ";
-                            motivoRemisionVM.nombrePaciente += (from pa in listaPaciente where pa.numeroHistoriaClinica == ingreClinicaMotivoRem.id_paciente select pa.apellido).FirstOrDefault() + " ";
-                            motivoRemisionVM.nombreMotivoRemision = itemlmr.nombre;
-                            motivoRemisionVM.lugarRemitido = item.nombreInsitucionRemitida;
-                            motivoRemisionVM.fecha = item.fechaRemitido;
-                            listaMotivoRemision.Add(motivoRemisionVM);
+                            var paciente = (from itemPac in listaPaciente where itemPac.numeroHistoriaClinica == ingreClinicaMotivoRem.id_paciente select itemPac).LastOrDefault();
+                            motivoRemisionVM.id_historiaClinica = paciente.numeroHistoriaClinica;
+                            if (ingreClinicaMotivoRem != null)
+                            {
+                                motivoRemisionVM.nombrePaciente = (from pa in listaPaciente where pa.numeroHistoriaClinica == ingreClinicaMotivoRem.id_paciente select pa.nombre).FirstOrDefault() + " ";
+                                motivoRemisionVM.nombrePaciente += (from pa in listaPaciente where pa.numeroHistoriaClinica == ingreClinicaMotivoRem.id_paciente select pa.apellido).FirstOrDefault() + " ";
+                                motivoRemisionVM.nombreMotivoRemision = itemlmr.nombre;
+                                motivoRemisionVM.lugarRemitido = item.nombreInsitucionRemitida;
+                                motivoRemisionVM.fecha = item.fechaRemitido;
+                                listaMotivoRemision.Add(motivoRemisionVM);
+                            }
                         }
                     } 
                 }
@@ -793,19 +827,33 @@ namespace MacapSoftCAPUAN.Controllers
         }
 
 
-        public ActionResult historiaClinica() {
-            return View();
+        public ActionResult historiaClinica(string numeroHC) {
+            HistoriaClinicaVM historiaCl = new HistoriaClinicaVM();
+            HC = new HistoriaClinicaBO();
+
+            var listaIngresoCl = HC.listarIngresoClinica();
+            var paciente = (from item in HC.listarPaciente() where item.numeroHistoriaClinica == numeroHC select item).LastOrDefault();
+            var ingreso = (from item in listaIngresoCl where item.id_paciente == paciente.numeroHistoriaClinica && item.estadoHC == false select item).LastOrDefault();
+            
+            historiaCl.ingresoClinica = ingreso;
+            historiaCl.paciente = paciente;
+            ViewBag.idPaciente = paciente.numeroHistoriaClinica;
+            return View(historiaCl);
         }
 
         public ActionResult documentoGeneral() {
             return View();
         }
 
-        public ActionResult remitirPaciente() {
+        public ActionResult remitirPaciente(string id) {
+
+            RemisionPaciente remisionPac = new RemisionPaciente();
             List<SelectListItem> listaItemsDocumento = new List<SelectListItem>();
             SelectListItem items;
             HC = new HistoriaClinicaBO();
+
             var listaTipoDocumento = HC.listaTiposDocumento();
+
             foreach (var item in listaTipoDocumento)
             {
                 items = new SelectListItem();
@@ -813,8 +861,16 @@ namespace MacapSoftCAPUAN.Controllers
                 items.Value = item.idDocumento.ToString();
                 listaItemsDocumento.Add(items);
             }
+
+            var paciente = (from item in HC.listarPaciente() where item.numeroHistoriaClinica == id select item).FirstOrDefault();
+            var ingresos = (from item in HC.listarIngresoClinica() where item.id_paciente == paciente.numeroHistoriaClinica select item).LastOrDefault();
+            var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            var usuario = (from item in HC.listarUsuario() where item.Id == user select item.Email).FirstOrDefault();
+            ViewBag.usr = usuario;
+            remisionPac.paciente = paciente;
+            remisionPac.ingresoClinica = ingresos;
             ViewBag.ItemDocumento = listaItemsDocumento.ToList();
-            return View("PacienteRemitido");
+            return View("PacienteRemitido", remisionPac);
         }
 
 

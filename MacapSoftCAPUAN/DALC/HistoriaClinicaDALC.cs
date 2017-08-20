@@ -393,6 +393,7 @@ namespace MacapSoftCAPUAN.DALC
                     context.ingresoClinicaContext.Attach(cierreHC);
                     cierreHC.idIngresoClinica = ingresoClinica.idIngresoClinica;
                     cierreHC.estadoHC = true;
+                    cierreHC.estadoRemision = true;
                     cierreHC.idUsuario = ingresoClinica.idUsuario;
                     context.SaveChanges();
                 }
@@ -402,6 +403,34 @@ namespace MacapSoftCAPUAN.DALC
             catch (Exception e)
             {
                 System.ArgumentException argxEx = new System.ArgumentException("No se pudo modificar el cierre.", e.Message);
+                return argxEx.ToString();
+            }
+
+        }
+
+
+        public string modificarRemision(List<IngresoClinica> ingresoPaciente)
+        {
+            try
+            {
+                foreach (var item in ingresoPaciente) {
+                    var cierreHC = new IngresoClinica { idIngresoClinica = item.idIngresoClinica };
+                    using (var context = new ApplicationDbContext())
+                    {
+                        context.ingresoClinicaContext.Attach(cierreHC);
+                        cierreHC.idIngresoClinica = item.idIngresoClinica;
+                        cierreHC.estadoRemision = false;
+                        cierreHC.id_paciente = item.id_paciente;
+                        cierreHC = item;
+                        context.SaveChanges();
+                    }
+                    context.SaveChanges();
+                }
+                return "Exito";
+            }
+            catch (Exception e)
+            {
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo modificar la remision.", e.Message);
                 return argxEx.ToString();
             }
 

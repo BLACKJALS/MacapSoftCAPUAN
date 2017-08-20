@@ -69,7 +69,7 @@ namespace MacapSoftCAPUAN.Controllers
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
@@ -81,16 +81,12 @@ namespace MacapSoftCAPUAN.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            if(user != null)
+            if (user.Activo != false)
             {
-                if (user.Activo == false)
-                {
-                    result = Microsoft.AspNet.Identity.Owin.SignInStatus.Failure;
-                }
-            }
-            
-            switch (result)
+                var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+
+
+                switch (result)
                 {
                     case SignInStatus.Success:
                         return RedirectToAction("Index", "HistoriaClinica");
@@ -100,10 +96,28 @@ namespace MacapSoftCAPUAN.Controllers
                         return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                     case SignInStatus.Failure:
                     default:
+                        if (user != null)
+                        {
+                            if (user.Activo == false)
+                            {
+                                ModelState.AddModelError("", "El usuario está inactivo, comuníquese con el coordinador del CAP.");
+                                return View(model);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "El usuario y/o contraseña que has introducido son incorrectas, si el error persiste comuníquese con el coordinador del CAP.");
+                        }
                         ModelState.AddModelError("", "El usuario y/o contraseña que has introducido son incorrectas, si el error persiste comuníquese con el coordinador del CAP.");
                         AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-                    return View(model);
+                        return View(model);
                 }
+            }
+            else {
+                        ModelState.AddModelError("", "El usuario está inactivo, comuníquese con el coordinador del CAP.");
+                        return View(model);
+            }
+            
         }
 
         //
@@ -694,7 +708,8 @@ namespace MacapSoftCAPUAN.Controllers
                 result1 = await UserManager.AddPasswordAsync(user.Id, nuevaContra);
                 if (result1.Succeeded)
                 {
-                    return RedirectToAction("Index", "HistoriaClinica");
+                    return View("ExitoRecuperarContrasena");
+                    //return RedirectToAction("Index", "HistoriaClinica");
                 }
                 if (result1.Errors.Contains("Passwords must have at least one non letter or digit character. Passwords must have at least one digit ('0'-'9'). Passwords must have at least one uppercase ('A'-'Z')."))
                 {

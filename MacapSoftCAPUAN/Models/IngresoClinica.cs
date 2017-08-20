@@ -50,6 +50,7 @@ namespace MacapSoftCAPUAN.Models
         public string tieneEpc { get; set; }
         public string numeroDocumento { get; set; }
         public bool estadoHC { get; set; }
+        public bool estadoRemision { get; set; }
 
         public virtual Eps Eps { get; set; }//Se agregó el virtual 
         public virtual Ocupacion Ocupacion { get; set; }
@@ -75,6 +76,7 @@ namespace MacapSoftCAPUAN.Models
 
         public IngresoClinica() {
             estadoHC = false;
+            estadoRemision = false;
         }
 
     }

@@ -232,6 +232,7 @@
     <Compile Include="Mapeo.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelsVM\DiagnosticoVM.cs" />
+    <Compile Include="ModelsVM\HistoriaClinicaVM.cs" />
     <Compile Include="ModelsVM\ListadoHistoriasClinicas.cs" />
     <Compile Include="ModelsVM\MotivoRemisionVM.cs" />
     <Compile Include="ModelsVM\RecepcionCaso.cs" />
@@ -478,6 +479,7 @@
     <Content Include="Views\HistoriaClinica\cierreCasoHC.cshtml" />
     <Content Include="Views\HistoriaClinica\InformeSesion.cshtml" />
     <Content Include="Views\HistoriaClinica\RecepcionCasoDenegada.cshtml" />
+    <Content Include="Views\Account\ExitoRecuperarContrasena.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

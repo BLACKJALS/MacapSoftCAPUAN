@@ -29,6 +29,7 @@ namespace MacapSoftCAPUAN.Models
         public string nombreProfesional { get; set; }
         public string diagnostico { get; set; }
         public int motivoRemision { get; set; }
+        //public bool estadoRemision { get; set; }
 
         public virtual IngresoClinica IngresoClinica { get; set; }
         public virtual MotivosRemisiones Motivo_Remision { get; set; }

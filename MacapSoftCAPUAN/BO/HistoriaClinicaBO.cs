@@ -600,5 +600,11 @@ namespace MacapSoftCAPUAN.BO
             }
             return listadoModeloHistoriasCl.OrderBy(x => x.numeroHC).ToList();
         }
+
+
+        public string modificarRemision(List<IngresoClinica> ingresoPaciente) {
+            hcDALC = new HistoriaClinicaDALC();
+            return hcDALC.modificarRemision(ingresoPaciente);
+        }
     }
 }
