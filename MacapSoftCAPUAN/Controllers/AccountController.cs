@@ -81,43 +81,45 @@ namespace MacapSoftCAPUAN.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            if (user.Activo != false)
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+
+            if (user != null) {
+                if (user.Activo == false) {
+                    ModelState.AddModelError("", "El usuario está inactivo, comuníquese con el coordinador del CAP.");
+                    return View(model);
+                }
+            }
+                
+            switch (result)
             {
-                var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-
-
-                switch (result)
-                {
-                    case SignInStatus.Success:
-                        return RedirectToAction("Index", "HistoriaClinica");
-                    case SignInStatus.LockedOut:
-                        return View("Lockout");
-                    case SignInStatus.RequiresVerification:
-                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                    case SignInStatus.Failure:
-                    default:
-                        if (user != null)
+                case SignInStatus.Success:
+                    return RedirectToAction("Index", "HistoriaClinica");
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.RequiresVerification:
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                case SignInStatus.Failure:
+                default:
+                    if (user != null)
+                    {
+                        if (user.Activo == false)
                         {
-                            if (user.Activo == false)
-                            {
-                                ModelState.AddModelError("", "El usuario está inactivo, comuníquese con el coordinador del CAP.");
-                                return View(model);
-                            }
+                            ModelState.AddModelError("", "El usuario está inactivo, comuníquese con el coordinador del CAP.");
+                            return View(model);
                         }
                         else
                         {
                             ModelState.AddModelError("", "El usuario y/o contraseña que has introducido son incorrectas, si el error persiste comuníquese con el coordinador del CAP.");
                         }
+
+                    }
+                    else
+                    {
                         ModelState.AddModelError("", "El usuario y/o contraseña que has introducido son incorrectas, si el error persiste comuníquese con el coordinador del CAP.");
-                        AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-                        return View(model);
-                }
+                    }
+                    AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                    return View(model);
             }
-            else {
-                        ModelState.AddModelError("", "El usuario está inactivo, comuníquese con el coordinador del CAP.");
-                        return View(model);
-            }
-            
         }
 
         //
@@ -684,7 +686,7 @@ namespace MacapSoftCAPUAN.Controllers
                 }
             }
 
-            TempData["mensajeError"] = "Error de validación, no ingreso una contraseña válida o digitó la misma contraseña.";
+            TempData["mensajeError"] = "Error de validación, esto se presenta por los siguientes aspectos: la constraseña anterior no coincide, no ingreso una contraseña válida o digitó la misma contraseña.";
             ViewBag.ErrorMessage = "Email not found or matched";
             return RedirectToAction("CambiarContraseña", "Account");
             //return Json("Ok",JsonRequestBehavior.AllowGet);
