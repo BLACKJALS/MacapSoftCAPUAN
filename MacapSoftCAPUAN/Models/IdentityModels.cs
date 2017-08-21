@@ -54,5 +54,6 @@ namespace MacapSoftCAPUAN.Models
         public DbSet<Ocupacion> ocupacionCAPContext { get; set; }
         public DbSet<Sexo> sexoContext { get; set; }
         public DbSet<NivelEscolaridad> nivelEscolaridadContext { get; set; }
+        public DbSet<IngresoEstrategiasEvaluacion> ingresoEstrategiasEvaluacionContext { get; set; }
     }
 }

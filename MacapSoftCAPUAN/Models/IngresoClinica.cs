@@ -51,6 +51,7 @@ namespace MacapSoftCAPUAN.Models
         public string numeroDocumento { get; set; }
         public bool estadoHC { get; set; }
         public bool estadoRemision { get; set; }
+        public bool estadoDocumentoGeneral { get; set; }
 
         public virtual Eps Eps { get; set; }//Se agregó el virtual 
         public virtual Ocupacion Ocupacion { get; set; }
@@ -67,7 +68,8 @@ namespace MacapSoftCAPUAN.Models
         public string observaciones { get; set; }
         public string idUsuario { get; set; }
         public string remitido { get; set; }//cambiar la propiedad a foranea
-
+        public string diagnostico { get; set; }
+        public string categorizacionCAP { get; set; }
         //public Consulta Consulta { get; set; }
         //[ForeignKey("Consulta")]
         //public int? id_consulta { get; set; }

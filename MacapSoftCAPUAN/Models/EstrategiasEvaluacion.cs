@@ -17,6 +17,23 @@ namespace MacapSoftCAPUAN.Models
     }
 
 
+    [Table("dbo.ingresoEstrategias")]
+    public class IngresoEstrategiasEvaluacion
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int idEstrategiaEvaluacion { get; set; }
+        [ForeignKey("IngresoClinica")]
+        public long? id_ingreso { get; set; }
+        [ForeignKey("EstrategiaEv")]
+        public int? id_estrategiEv { get; set; }
+        public string nombre { get; set; }
+
+        public IngresoClinica IngresoClinica { get; set; }
+        public EstrategiasEvaluacion EstrategiaEv { get; set; }
+    }
+
+
     [Table("dbo.consultas")]
     public class Consulta {
 
