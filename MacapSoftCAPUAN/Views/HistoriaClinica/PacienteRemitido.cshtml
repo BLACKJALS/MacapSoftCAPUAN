@@ -21,61 +21,71 @@
             var hoy = new Date();
             var fechaHoy = hoy.getFullYear() + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + ("0" + hoy.getDate()).slice(-2);
             $("#fechaRemision").val(fechaHoy);
+
             $("#fechaRemision").attr('readonly', 'readonly');
             $("#RemitidoPor").attr('readonly', 'readonly');
             $("#numeroDocumentoPaciente").attr('readonly', 'readonly');
-        });
 
+            var fechIngr = '@ViewBag.fechaIniciopsicoterapia';
+            $("#fechaIniPsico").val(fechIngr);
+            $("#fechaIniPsico").attr('readonly', 'readonly');
 
-        $(function () {
-            $('#fechaIniPsico').datepicker({
-                format: 'yyyy-mm-dd',
-                onShow: function (ct) {
-                    this.setOptions({
-                        minDate: jQuery('#fechaIniPsico').val() ? jQuery('#fechaIniPsico').val() : false
-                        , formatDate: 'Y-m-d'
-                        , language: 'es'
-                    })
-                },
-                timepicker: false
-            });
-        });
-
-        $(function () {
-            $('#fechaFinPsico').datepicker({
-                format: 'yyyy-mm-dd',
-                onShow: function (ct) {
-                    this.setOptions({
-                        minDate: jQuery('#fechaFinPsico').val() ? jQuery('#fechaFinPsico').val() : false
-                        , formatDate: 'Y-m-d'
-                        , language: 'es'
-                    })
-                },
-                timepicker: false
-            });
-        });
-
-
-        $(function () {
-            $('#fechaRemision').datepicker({
-                format: 'yyyy-mm-dd',
-                onShow: function (ct) {
-                    this.setOptions({
-                        minDate: jQuery('#fechaRemision').val() ? jQuery('#fechaRemision').val() : false
-                        , formatDate: 'Y-m-d'
-                        , language: 'es'
-                    })
-                },
-                timepicker: false
-            });
-        });
-
-
-        function fechaHoy() {
             var hoy = new Date();
             var fechaHoy = hoy.getFullYear() + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + ("0" + hoy.getDate()).slice(-2);
-            $("#fechaRemision").val(fechaHoy);
-        }
+            $("#fechaFinPsico").val(fechaHoy);
+            $("#fechaFinPsico").attr('readonly', 'readonly');
+        });
+
+
+        //$(function () {
+        //    $('#fechaIniPsico').datepicker({
+        //        format: 'yyyy-mm-dd',
+        //        onShow: function (ct) {
+        //            this.setOptions({
+        //                minDate: jQuery('#fechaIniPsico').val() ? jQuery('#fechaIniPsico').val() : false
+        //                , formatDate: 'Y-m-d'
+        //                , language: 'es'
+        //            })
+        //        },
+        //        timepicker: false
+        //    });
+        //});
+
+        //$(function () {
+        //    $('#fechaFinPsico').datepicker({
+        //        format: 'yyyy-mm-dd',
+        //        onShow: function (ct) {
+        //            this.setOptions({
+        //                minDate: jQuery('#fechaFinPsico').val() ? jQuery('#fechaFinPsico').val() : false
+        //                , formatDate: 'Y-m-d'
+        //                , language: 'es'
+        //            })
+        //        },
+        //        timepicker: false
+        //    });
+        //});
+
+
+        //$(function () {
+        //    $('#fechaRemision').datepicker({
+        //        format: 'yyyy-mm-dd',
+        //        onShow: function (ct) {
+        //            this.setOptions({
+        //                minDate: jQuery('#fechaRemision').val() ? jQuery('#fechaRemision').val() : false
+        //                , formatDate: 'Y-m-d'
+        //                , language: 'es'
+        //            })
+        //        },
+        //        timepicker: false
+        //    });
+        //});
+
+
+        //function fechaHoy() {
+        //    var hoy = new Date();
+        //    var fechaHoy = hoy.getFullYear() + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + ("0" + hoy.getDate()).slice(-2);
+        //    $("#fechaRemision").val(fechaHoy);
+        //}
 
         function regresar(){
             $.ajax({
@@ -230,7 +240,7 @@
                 <label style="font-size:smaller">Fecha de inicio de la psicoterápia:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="fechaIniPsico" placeholder="Fecha inicio psicoterápia" name="cierre.fechaInicioPsicoterapia" />
+                <input class="form-control" id="fechaIniPsico" placeholder="Fecha inicio psicoterápia" name="cierre.fechaInicioPsicoterapia" required/>
                 @*<input type="text" class="form-control" id="fechaRemision" onclick="return fechaHoy();"/>*@
             </div>
         </div>
@@ -240,7 +250,7 @@
                 <label style="font-size:smaller">Fecha de final de la psicoterápia:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="fechaFinPsico" name="cierre.fechaFinalizaionPsicoterapia" placeholder="Fecha final psicoterápia" />
+                <input class="form-control" id="fechaFinPsico" name="cierre.fechaFinalizaionPsicoterapia" placeholder="Fecha final psicoterápia" required/>
                 @*<input type="text" class="form-control" id="fechaRemision" onclick="return fechaHoy();"/>*@
             </div>
         </div>
@@ -250,7 +260,7 @@
                 <label style="font-size:smaller">Servicio al que se remite:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="servicioRemite" name="ingresoClinica.edad" placeholder="Servicio al que se remite" value="@ViewBag.edad" required />
+                <input class="form-control" id="servicioRemite" name="remisionP.servicioRemitido" placeholder="Servicio al que se remite" value="@ViewBag.edad" required />
             </div>
         </div>
         <br />

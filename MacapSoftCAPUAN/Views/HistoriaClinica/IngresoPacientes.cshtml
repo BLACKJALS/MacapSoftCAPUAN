@@ -165,13 +165,19 @@
                 var edad = parseInt(valorDias / 365);
                 $("#edadPaciente").val(edad);
 
-                if (edad > 18) {
+                if (edad >= 18) {
                     $("#nombreConsultantePaciente").prop("disabled", true);
                     $("#apellidosConsultantePaciente").prop("disabled", true);
                     $("#parentezcoConsultantePaciente").prop("disabled", true);
                     $("#telefonoConsultantePaciente").prop("disabled", true);
                     $("#documentoConsultante").prop("disabled", true);
                     $("#numeroDocumentoConsultante").prop("disabled", true);
+                    var x = $("#tipoDocumentoPac option:selected").text();
+                    if (x == "TI" || x == "RC" || x == "Seleccione") {
+                        alert("Esta ingresando el tipo de documento de un mayor de edad no correspondiente, validar nuevamente el tipo de documento asociado.");
+                        document.getElementById("tipoDocumentoPac").options[3].disabled = true;
+                        document.getElementById("tipoDocumentoPac").options[4].disabled = true;
+                    }
                 } else {
                     $("#nombreConsultantePaciente").prop("disabled", false);
                     $("#apellidosConsultantePaciente").prop("disabled", false);
@@ -179,6 +185,12 @@
                     $("#telefonoConsultantePaciente").prop("disabled", false);
                     $("#documentoConsultante").prop("disabled", false);
                     $("#numeroDocumentoConsultante").prop("disabled", false);
+                    var x = $("#tipoDocumentoPac option:selected").text();
+                    if (x == "CC" || x == "CE" || x == "Seleccione") {
+                        alert("Esta ingresando el tipo de documento de un menor de edad no correspondiente, validar nuevamente el tipo de documento asociado.");
+                        document.getElementById("tipoDocumentoPac").options[1].disabled = true;
+                        document.getElementById("tipoDocumentoPac").options[2].disabled = true;
+                    }
                 }
             }
         }
@@ -242,14 +254,29 @@
             if ($('#pacienteTenerEPS').val() == "NO" || $('#pacienteTenerEPS').val() == "") {
                 $('#listadosEPS').prop("disabled", true);
                 $('#listadosEPS').prop("disabled", true);
+                $('#pacienteTenerEPSC').prop("disabled", false);
             } else {
                 $('#listadosEPS').prop("disabled", false);
                 $('#listadosEPS').prop("disabled", false);
+                $('#pacienteTenerEPSC').prop("disabled", true);
+            }
+        };
+
+        function disabledEpsc() {
+            if ($('#pacienteTenerEPSC').val() == "NO" || $('#pacienteTenerEPSC').val() == "") {
+                $('#pacienteTenerEPS').prop("disabled", false);
+                //$('#pacienteTenerEPSC').prop("disabled", true);
+            } else {
+                $('#pacienteTenerEPS').prop("disabled", true);
             }
         };
 
         $('#pacienteTenerEPS').click(function () {
             disabledEps();
+        });
+
+        $('#pacienteTenerEPSC').click(function () {
+            disabledEpsc();
         });
 
         function remision() {
@@ -386,7 +413,7 @@
                 @*<input class="form-control" id="estratoPaciente" name="paciente.estrato" placeholder="Estrato" required />*@
             </div>
             <div class="col-md-1">
-                <label style="font-size:smaller">Telefonos:</label>
+                <label style="font-size:smaller">Teléfonos:</label>
             </div>
             <div class="col-md-3">
                 <input class="form-control" id="telefonoPaciente" name="ingresoClinica.telefono" placeholder="Telefonos" value="@ViewBag.telefono" required />
@@ -425,7 +452,7 @@
                 <label style="font-size:smaller">EPSC:</label>
             </div>
             <div class="col-md-2">
-                @Html.DropDownList("ingresoClinica.tieneEpc", (IEnumerable<SelectListItem>)ViewBag.ItemValidacion, new { @class = "form-control", required = "true" })
+                @Html.DropDownList("ingresoClinica.tieneEpc", (IEnumerable<SelectListItem>)ViewBag.ItemValidacion, new { @class = "form-control", id="pacienteTenerEPSC" ,required = "true" })
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Institución:</label>

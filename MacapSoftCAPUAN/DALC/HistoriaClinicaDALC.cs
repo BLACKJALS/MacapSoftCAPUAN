@@ -146,6 +146,15 @@ namespace MacapSoftCAPUAN.DALC
             return listaConsultante;
         }
 
+        public List<CategorizacionCAP> listarCategorizacion()
+        {
+            bd = new ApplicationDbContext();
+            List<CategorizacionCAP> listaCategorizacionCAP = new List<CategorizacionCAP>();
+            listaCategorizacionCAP = bd.categorizacionCAPContext.ToList();
+            return listaCategorizacionCAP;
+        }
+
+
         public string agregarCierre(CierreHC cierre) {
             try
             {

@@ -21,8 +21,8 @@ namespace MacapSoftCAPUAN.Controllers
     {
         // GET: HistoriaClinica
         public HistoriaClinicaBO HC;
+        public DiagnosticoBO diagBo;
 
-        
         public ActionResult Index()
         {
             return View();
@@ -485,7 +485,196 @@ namespace MacapSoftCAPUAN.Controllers
             }
         }
 
-        
+
+
+        public ActionResult documentoGeneral(string id)
+        {
+            HC = new HistoriaClinicaBO();
+            diagBo = new DiagnosticoBO();
+            DocumentoGeneralVM documentoGeneralVM = new DocumentoGeneralVM();
+            List<SelectListItem> listaItemsSexo = new List<SelectListItem>();
+            List<SelectListItem> listaItemsPaises = new List<SelectListItem>();
+            List<SelectListItem> listaItemsCuidades = new List<SelectListItem>();
+            List<SelectListItem> listaItemsOcupacion = new List<SelectListItem>();
+            List<SelectListItem> listaItemsBarrios = new List<SelectListItem>();
+            List<SelectListItem> listaItemsEps = new List<SelectListItem>();
+            List<SelectListItem> listaItemsLocalidades = new List<SelectListItem>();
+            List<SelectListItem> listaItemsNivelEscolaridad = new List<SelectListItem>();
+            List<SelectListItem> listaItemsValidation = new List<SelectListItem>();
+            List<SelectListItem> listaItemsDiagnostico = new List<SelectListItem>();
+            List<SelectListItem> listaItemsCategorizacion = new List<SelectListItem>();
+            SelectListItem validacion;
+            SelectListItem items;
+
+            var ingreso = (from item in HC.listarIngresoClinica() where item.id_paciente == id select item).LastOrDefault();
+            var paciente = (from item in HC.listarPaciente() where item.numeroHistoriaClinica == ingreso.id_paciente select item).LastOrDefault();
+            var remitido = (from item in HC.listarRemitido() where item.id_paciente == paciente.numeroHistoriaClinica select item).LastOrDefault();
+            var consultante = (from item in HC.listarConsultante() where item.numeroDocumentoPaciente == paciente.numeroHistoriaClinica select item).LastOrDefault();
+
+            documentoGeneralVM.ingresoClinica = ingreso;
+            documentoGeneralVM.paciente = paciente;
+
+            var fechIngresoCl = (ingreso.fechaIngreso).ToString();
+            var fechInStr = DateTime.Parse(fechIngresoCl);
+            string format1 = "yyyy-MM-dd";
+            var fechaIngreso = fechInStr.ToString(format1);
+
+            var fechN = (paciente.fechaNacimiento).ToString();
+            var fechnStr = DateTime.Parse(fechN);
+            string format = "yyyy-MM-dd";
+            var fecha = fechnStr.ToString(format);
+
+            
+
+            var listaBarrio = HC.listarBarrios();
+            foreach (var item in listaBarrio)
+            {
+                items = new SelectListItem();
+                items.Text = item.nombre;
+                items.Value = item.idBarrio;
+                listaItemsBarrios.Add(items);
+            }
+
+
+            var listaCiudades = HC.listarCiudades();
+            foreach (var item in listaCiudades)
+            {
+                items = new SelectListItem();
+                items.Text = item.nombre;
+                items.Value = item.idCiudad;
+                listaItemsCuidades.Add(items);
+            }
+
+
+            var listaPaises = HC.listarPaises();
+            foreach (var item in listaPaises)
+            {
+                items = new SelectListItem();
+                items.Text = item.nombrePais;
+                items.Value = item.idPais;
+                listaItemsPaises.Add(items);
+            }
+
+
+            validacion = new SelectListItem();
+            validacion.Text = "Seleccione";
+            validacion.Value = "";
+            listaItemsValidation.Add(validacion);
+            validacion = new SelectListItem();
+            validacion.Text = "SI";
+            validacion.Value = "SI";
+            listaItemsValidation.Add(validacion);
+            validacion = new SelectListItem();
+            validacion.Text = "NO";
+            validacion.Value = "NO";
+            listaItemsValidation.Add(validacion);
+
+
+            var listaSexo = HC.listarSexo();
+            foreach (var item in listaSexo)
+            {
+                items = new SelectListItem();
+                items.Text = item.sexo;
+                items.Value = item.id_Sexo.ToString();
+                listaItemsSexo.Add(items);
+            }
+
+
+            var listaLocalidades = HC.listarLocalidades();
+            foreach (var item in listaLocalidades)
+            {
+                items = new SelectListItem();
+                items.Text = item.nombre;
+                items.Value = item.idLocalidad;
+                listaItemsLocalidades.Add(items);
+            }
+
+
+            var listaEps = HC.listarEps();
+            foreach (var item in listaEps)
+            {
+                items = new SelectListItem();
+                items.Text = item.nombre;
+                items.Value = item.IdEPS;
+                listaItemsEps.Add(items);
+            }
+
+
+            var listaOcupacion = HC.listarOcupacion();
+            foreach (var item in listaOcupacion)
+            {
+                items = new SelectListItem();
+                items.Text = item.nombre;
+                items.Value = item.id_Ocupacion.ToString();
+                listaItemsOcupacion.Add(items);
+            }
+
+            var listaNivelEscolaridad = HC.listarNivelEscolaridad();
+            foreach (var item in listaNivelEscolaridad)
+            {
+                items = new SelectListItem();
+                items.Text = item.nombre;
+                items.Value = item.idNivelEscolaridad.ToString();
+                listaItemsNivelEscolaridad.Add(items);
+            }
+
+
+            var listaCategorizacion = HC.listarCategorizacion();
+            foreach (var item in listaCategorizacion)
+            {
+                items = new SelectListItem();
+                items.Text = item.nombre;
+                items.Value = item.id_CategorizacionCAP.ToString();
+                listaItemsCategorizacion.Add(items);
+            }
+
+
+            var listaDiagnostico = diagBo.listarDiagnostico();
+            foreach (var item in listaDiagnostico)
+            {
+                items = new SelectListItem();
+                items.Text = item.Codigo;
+                items.Value = item.Nombre;
+                listaItemsDiagnostico.Add(items);
+            }
+
+
+            ViewBag.ItemLocalidades = listaItemsLocalidades.ToList();
+            ViewBag.ItemBarrios = listaItemsBarrios.ToList();
+            ViewBag.ItemEps = listaItemsEps.ToList();
+            ViewBag.ItemPaises = listaItemsPaises.ToList();
+            ViewBag.ItemCiudades = listaItemsCuidades.ToList();
+            ViewBag.Sexo = listaItemsSexo.ToList();
+            ViewBag.NivelEscolaridad = listaItemsNivelEscolaridad.ToList();
+            ViewBag.Ocupacion = listaItemsOcupacion.ToList();
+            ViewBag.ItemValidacion = listaItemsValidation.ToList();
+            ViewBag.ItemCategorizacion = listaItemsCategorizacion.ToList();
+            ViewBag.ItemDiagnostico = listaItemsDiagnostico.ToList();
+
+            ViewBag.fechaNacimiento = fecha;
+            ViewBag.fechaIngreso = fechaIngreso;
+
+
+            if (remitido != null)
+            {
+                documentoGeneralVM.remitido = remitido;
+                var fechR = (remitido.fechaRemision).ToString();
+                var fechRStr = DateTime.Parse(fechR);
+                string format2 = "yyyy-MM-dd";
+                var fechaRemision = fechnStr.ToString(format2);
+                ViewBag.fechaRemision = fechaRemision;
+            }
+
+            if (consultante != null)
+            {
+                documentoGeneralVM.consultante = consultante;
+            }
+
+
+
+            return View(documentoGeneralVM);
+        }
+
 
 
         [HttpPost]
@@ -526,14 +715,6 @@ namespace MacapSoftCAPUAN.Controllers
             if (pacienteEx != null)
             {
                 HC.modificarRecepcionCasoModel(model);
-                //var ingrClRem = model.ingresoClinica;
-                //var ingresoPaciente = (from item in HC.listarIngresoClinica() where item.id_paciente == ingrClRem.numeroDocumento select item).LastOrDefault();
-
-                //if (ingresoPaciente != null)
-                //{
-                //    var listaIngresoClinica = (from item in HC.listarIngresoClinica() where item.id_paciente == ingresoPaciente.id_paciente select item).ToList();
-                //    HC.modificarRemision(listaIngresoClinica);
-                //}
             }
             else {
 
@@ -560,6 +741,13 @@ namespace MacapSoftCAPUAN.Controllers
                         items.Value = item.idDocumento.ToString();
                         listaItemsDocumento.Add(items);
                     }
+
+                    var fechN = (model.ingresoClinica.fechaIngreso).ToString();
+                    var fechnStr = DateTime.Parse(fechN);
+                    string format = "yyyy-MM-dd";
+                    var fecha = fechnStr.ToString(format);
+                    ViewBag.fechaIniciopsicoterapia = fecha;
+
                     ViewBag.ItemDocumento = listaItemsDocumento.ToList();
                     ViewBag.Pac = model.paciente.numeroHistoriaClinica;
                     var remPaciente = new RemisionPaciente();
@@ -594,6 +782,7 @@ namespace MacapSoftCAPUAN.Controllers
             var lstRP = concMremison.Split(';');
             var listaP = (from item in HC.listarPaciente() where item.numeroHistoriaClinica == modelRemision.paciente.numeroHistoriaClinica select item).LastOrDefault();
             var ingresoPaciente = (from item in HC.listarIngresoClinica() where item.id_paciente == listaP.numeroHistoriaClinica select item).LastOrDefault();
+            modelRemision.cierre.idUsuario = System.Web.HttpContext.Current.User.Identity.GetUserId();
             //var cierreHC = (from item in HC.listarCierres() where item.id_ingresoClinica == ingresoPaciente.idIngresoClinica select item).LastOrDefault();
             HC.modificarCierre(ingresoPaciente);
             foreach (var item in lstRP) {
@@ -606,7 +795,10 @@ namespace MacapSoftCAPUAN.Controllers
                     remisionPaciente.id_ingresoClinica = ingresoPaciente.idIngresoClinica;
                     remisionPaciente.nombreProfesional = modelRemision.remisionP.nombreProfesional;
                     remisionPaciente.nombreInsitucionRemitida = modelRemision.remisionP.nombreInsitucionRemitida;
-                    //remisionPaciente.id_paciente = modelRemision.paciente.numeroDocumento;
+                    remisionPaciente.servicioRemitido = modelRemision.remisionP.servicioRemitido;
+                    remisionPaciente.evolucionPaciente = modelRemision.remisionP.evolucionPaciente;
+                    remisionPaciente.aspectosPositivos = modelRemision.remisionP.aspectosPositivos;
+                    remisionPaciente.recomendaciones = modelRemision.remisionP.recomendaciones;
                     listaResmisionPaciente.Add(remisionPaciente);
                 }
             }
@@ -841,9 +1033,7 @@ namespace MacapSoftCAPUAN.Controllers
             return View(historiaCl);
         }
 
-        public ActionResult documentoGeneral() {
-            return View();
-        }
+        
 
         public ActionResult remitirPaciente(string id) {
 
@@ -866,7 +1056,14 @@ namespace MacapSoftCAPUAN.Controllers
             var ingresos = (from item in HC.listarIngresoClinica() where item.id_paciente == paciente.numeroHistoriaClinica select item).LastOrDefault();
             var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
             var usuario = (from item in HC.listarUsuario() where item.Id == user select item.Email).FirstOrDefault();
+
+            var fechN = (ingresos.fechaIngreso).ToString();
+            var fechnStr = DateTime.Parse(fechN);
+            string format = "yyyy-MM-dd";
+            var fecha = fechnStr.ToString(format);
+
             ViewBag.usr = usuario;
+            ViewBag.fechaIniciopsicoterapia = fecha;
             remisionPac.paciente = paciente;
             remisionPac.ingresoClinica = ingresos;
             ViewBag.ItemDocumento = listaItemsDocumento.ToList();

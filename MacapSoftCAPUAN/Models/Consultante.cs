@@ -16,9 +16,12 @@ namespace MacapSoftCAPUAN.Models
         public string cedula { get; set; }
         [ForeignKey("TipoDocumento")]
         public string id_tipoDocumento { get; set; }
+        [ForeignKey("Sexo")]
+        public int? id_sexo { get; set; }
         public string nombre { get; set; }
         public string apellido { get; set; }
         public TiposDocumentos TipoDocumento { get; set; }
+        public virtual Sexo Sexo { get; set; }
         public string numeroDocumentoPaciente { get; set; }
         public string telefono { get; set; }
         public string parentezco { get; set; }

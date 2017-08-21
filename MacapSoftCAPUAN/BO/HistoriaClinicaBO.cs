@@ -114,6 +114,13 @@ namespace MacapSoftCAPUAN.BO
         }
 
 
+        public List<CategorizacionCAP> listarCategorizacion()
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            var listaCategorizacion = hcDALC.listarCategorizacion();
+            return listaCategorizacion;
+        }
+
         public void agregarConsecutivo(Consecutivo consecutivo) {
             hcDALC = new HistoriaClinicaDALC();
             hcDALC.agregarConsecutivo(consecutivo);
@@ -197,8 +204,13 @@ namespace MacapSoftCAPUAN.BO
         //        System.ArgumentException argxEx = new System.ArgumentException(e.Message);
         //        throw argxEx;
         //    }
-            
+
         //}
+
+        public List<Consultante> listarConsultante() {
+            hcDALC = new HistoriaClinicaDALC();
+            return hcDALC.listarConsultante();
+        }
 
         public List<Sexo> listarSexo()
         {
