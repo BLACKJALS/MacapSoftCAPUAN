@@ -57,6 +57,14 @@ namespace MacapSoftCAPUAN.DALC
             return listaCiudades;
         }
 
+        public List<Consulta> listarConsultas()
+        {
+            bd = new ApplicationDbContext();
+            List<Consulta> listaConsulta = new List<Consulta>();
+            listaConsulta = bd.consultaContext.ToList();
+            return listaConsulta;
+        }
+
         public List<ApplicationUser> listarUsuario() {
             context = new ApplicationDbContext();
             var listaUsuarios = context.Users.ToList();
@@ -333,30 +341,6 @@ namespace MacapSoftCAPUAN.DALC
             return listaRemision;
         }
 
-        //public string modificarIngresoCl(IngresoClinica ingresoCl)
-        //{
-
-        //    try
-        //    {
-        //        var ingresoClMod = new IngresoClinica { idIngresoClinica = ingresoCl.idIngresoClinica };
-        //        using (var context = new ApplicationDbContext())
-        //        {
-        //            context.ingresoClinicaContext.Attach(ingresoClMod);
-        //            ingresoClMod.fechaIngreso = ingresoCl.fechaIngreso;
-        //            ingresoClMod.id_paciente = ingresoCl.id_paciente;
-        //            ingresoClMod.observaciones = ingresoCl.observaciones;
-        //            ingresoClMod.motivoConsulta = ingresoCl.motivoConsulta;
-        //            context.SaveChanges();
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-
-        //        System.ArgumentException argxEx = new System.ArgumentException("No se pudo actualizar la informacion de ingreso nueva.", e.Message);
-        //        return argxEx.ToString();
-        //    }
-        //    return "Exito";
-        //}
 
 
         public List<Sexo> listarSexoPac()
@@ -391,6 +375,15 @@ namespace MacapSoftCAPUAN.DALC
             List<CierreHC> listaCierres = new List<CierreHC>();
             listaCierres = bd.cierreHcContext.ToList();
             return listaCierres;
+        }
+
+
+        public List<IngresoEstrategiasEvaluacion> listarEstrategiasEvaluacion()
+        {
+            bd = new ApplicationDbContext();
+            List<IngresoEstrategiasEvaluacion> listaEstrategiasEvaluacion = new List<IngresoEstrategiasEvaluacion>();
+            listaEstrategiasEvaluacion = bd.ingresoEstrategiasEvaluacionContext.ToList();
+            return listaEstrategiasEvaluacion;
         }
 
         public string modificarCierreHC(IngresoClinica ingresoClinica) {
@@ -443,6 +436,75 @@ namespace MacapSoftCAPUAN.DALC
                 return argxEx.ToString();
             }
 
+        }
+
+
+        public string modificarIngresoCl(IngresoClinica ingresoCl)
+        {
+
+            try
+            {
+                var ingresoNuevo = new IngresoClinica { idIngresoClinica = ingresoCl.idIngresoClinica};
+                using (var context = new ApplicationDbContext())
+                {
+                    context.ingresoClinicaContext.Attach(ingresoNuevo);
+                    ingresoNuevo.estadoCivil = ingresoCl.estadoCivil;
+                    ingresoNuevo.religion = ingresoCl.religion;
+                    ingresoNuevo.categorizacionCAP = ingresoCl.categorizacionCAP;
+                    ingresoNuevo.diagnostico = ingresoCl.diagnostico;
+                    ingresoNuevo.problematicaActual = ingresoCl.problematicaActual;
+                    ingresoNuevo.historiaPersonal = ingresoCl.historiaPersonal;
+                    ingresoNuevo.antecedentes = ingresoCl.antecedentes;
+                    ingresoNuevo.historiaFamiliar = ingresoCl.historiaFamiliar;
+                    ingresoNuevo.genograma = ingresoCl.genograma;
+                    ingresoNuevo.estadoDocumentoGeneral = ingresoCl.estadoDocumentoGeneral;
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo actualizar la informacion de ingreso nueva.", e.Message);
+                return argxEx.ToString();
+            }
+            return "Exito";
+        }
+
+
+
+        public string agregarConsulta(Consulta consulta) {
+            try
+            {
+                bd = new ApplicationDbContext();
+                bd.consultaContext.Add(consulta);
+                bd.SaveChanges();
+            }
+            catch (Exception e)
+            {
+
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo guardar la consulta creada.", e.Message);
+                return argxEx.ToString();
+            }
+            return "Exito";
+        }
+
+
+
+        public string agregarEstrategiaEva(IngresoEstrategiasEvaluacion ingresoEstrategia)
+        {
+            try
+            {
+                bd = new ApplicationDbContext();
+                bd.ingresoEstrategiasEvaluacionContext.Add(ingresoEstrategia);
+                bd.SaveChanges();
+            }
+            catch (Exception e)
+            {
+
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo guardar la estrategia creada.", e.Message);
+                return argxEx.ToString();
+            }
+            return "Exito";
         }
     }
 }

@@ -175,6 +175,8 @@
                     var x = $("#tipoDocumentoPac option:selected").text();
                     if (x == "TI" || x == "RC" || x == "Seleccione") {
                         alert("Esta ingresando el tipo de documento de un mayor de edad no correspondiente, validar nuevamente el tipo de documento asociado.");
+                        document.getElementById("tipoDocumentoPac").options[1].disabled = false;
+                        document.getElementById("tipoDocumentoPac").options[2].disabled = false;
                         document.getElementById("tipoDocumentoPac").options[3].disabled = true;
                         document.getElementById("tipoDocumentoPac").options[4].disabled = true;
                     }
@@ -190,6 +192,8 @@
                         alert("Esta ingresando el tipo de documento de un menor de edad no correspondiente, validar nuevamente el tipo de documento asociado.");
                         document.getElementById("tipoDocumentoPac").options[1].disabled = true;
                         document.getElementById("tipoDocumentoPac").options[2].disabled = true;
+                        document.getElementById("tipoDocumentoPac").options[3].disabled = false;
+                        document.getElementById("tipoDocumentoPac").options[4].disabled = false;
                     }
                 }
             }
@@ -253,10 +257,8 @@
         function disabledEps() {
             if ($('#pacienteTenerEPS').val() == "NO" || $('#pacienteTenerEPS').val() == "") {
                 $('#listadosEPS').prop("disabled", true);
-                $('#listadosEPS').prop("disabled", true);
                 $('#pacienteTenerEPSC').prop("disabled", false);
             } else {
-                $('#listadosEPS').prop("disabled", false);
                 $('#listadosEPS').prop("disabled", false);
                 $('#pacienteTenerEPSC').prop("disabled", true);
             }
@@ -265,8 +267,9 @@
         function disabledEpsc() {
             if ($('#pacienteTenerEPSC').val() == "NO" || $('#pacienteTenerEPSC').val() == "") {
                 $('#pacienteTenerEPS').prop("disabled", false);
-                //$('#pacienteTenerEPSC').prop("disabled", true);
+                $('#listadosEPS').prop("disabled", true);
             } else {
+                $('#listadosEPS').prop("disabled", false);
                 $('#pacienteTenerEPS').prop("disabled", true);
             }
         };

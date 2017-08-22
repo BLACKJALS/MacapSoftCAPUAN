@@ -13,8 +13,9 @@ namespace MacapSoftCAPUAN.ModelsVM
         public Remision remision { get; set; }
         public Remitido remitido { get; set; }
         public Consultante consultante { get; set; }
-        public EstrategiasEvaluacion estrategiaEva { get; set; }
+        public IngresoEstrategiasEvaluacion estrategiaEva { get; set; }
         public Consulta consulta { get; set; }
+        public List<IngresoEstrategiasEvaluacion> estrategiasIngreso { get; set; }
 
         public DocumentoGeneralVM() {
             ingresoClinica = new IngresoClinica();
@@ -22,8 +23,9 @@ namespace MacapSoftCAPUAN.ModelsVM
             remision = new Remision();
             remitido = new Remitido();
             consultante = new Consultante();
-            estrategiaEva = new EstrategiasEvaluacion();
-            consulta = new Consulta(); 
+            estrategiaEva = new IngresoEstrategiasEvaluacion();
+            consulta = new Consulta();
+            estrategiasIngreso = new List<IngresoEstrategiasEvaluacion>();
         }
 
     }

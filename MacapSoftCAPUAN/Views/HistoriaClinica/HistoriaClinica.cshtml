@@ -13,6 +13,13 @@
     $(document).ready(function () {
         var idPaciente = '@ViewBag.idPaciente';
         $("#idPac").val(idPaciente);
+
+        var estadoDoc = '@ViewBag.estadoDocumentoGen';
+        if (estadoDoc == "True") {
+            $("#informeSesion").prop('disabled', false);
+        } else {
+            $("#informeSesion").prop('disabled', true);
+        }
     });
 </script>
 }
@@ -81,7 +88,7 @@
                 </div>
                 <div class="col-md-1"></div>
                 <div class="col-md-3">
-                    <input type="submit" value="Informe de sesión" class="form-control btn btn-primary" id="guardarHistoria"  onclick="location.href='@Url.Action("InformeSesion", "HistoriaClinica" )'"/>
+                    <input type="submit" value="Informe de sesión" class="form-control btn btn-primary" id="informeSesion"  onclick="location.href='@Url.Action("InformeSesion", "HistoriaClinica" )'"/>
                 </div>
                 <div class="col-md-2"></div>
                 <div class="col-md-3">

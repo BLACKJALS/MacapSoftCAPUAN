@@ -12,7 +12,13 @@
     <script src="~/Scripts/bootstrap-table/bootstrap-table.min.js"></script>
     <script src="~/Scripts/bootstrap-table/locale/bootstrap-table-es-CR.min.js"></script>
     <script>
-
+        $(document).ready(function () {
+            var estadoBoton = $("#numeroHC").val();
+            if (estadoBoton == "") {
+                $("#buttonOpen").prop("disabled", true);
+                alert("Debe seleccionar una historia clínica para ver o agregar la correspondiente información.");
+            }
+        });
 
         var $table = $('#table'),
             $buttonBack = $('#buttonBack'),
@@ -32,6 +38,7 @@
                     if (key == "numeroHC") {
                         //alert(key + " " + value);
                         $("#numeroHC").val(value);
+                        $("#buttonOpen").prop("disabled", false);
                     }
                 });
             }
@@ -135,7 +142,7 @@
                 <div id="toolbar">
                     <input type="button" class="btn btn-primary" value="Regresar" onclick="location.href='@Url.Action("Index", "HistoriaClinica")'" />
                     <input type="button" class="btn btn-primary" value="Asignar" data-toggle="modal" data-target="#modalAsignarUsuario"/>
-                    <input type="submit" class="btn btn-primary" value="Abrir"/>                
+                    <input id="buttonOpen" type="submit" class="btn btn-primary" value="Abrir"/>                
     @*<input type="button" class="btn btn-primary" value="Abrir" data-toggle="modal" data-target="#modalAbrirUsuario" />*@
                 </div>
         </div>

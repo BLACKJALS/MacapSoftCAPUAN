@@ -192,20 +192,21 @@ namespace MacapSoftCAPUAN.BO
             return listaRem;
         }
 
-        //public string modificarIngresoCl(IngresoClinica ingrCl) {
+        public string modificarIngresoCl(IngresoClinica ingrCl)
+        {
 
-        //    try
-        //    {
-        //        hcDALC = new HistoriaClinicaDALC();
-        //        return hcDALC.modificarIngresoCl(ingrCl);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        System.ArgumentException argxEx = new System.ArgumentException(e.Message);
-        //        throw argxEx;
-        //    }
+            try
+            {
+                hcDALC = new HistoriaClinicaDALC();
+                return hcDALC.modificarIngresoCl(ingrCl);
+            }
+            catch (Exception e)
+            {
+                System.ArgumentException argxEx = new System.ArgumentException(e.Message);
+                throw argxEx;
+            }
 
-        //}
+        }
 
         public List<Consultante> listarConsultante() {
             hcDALC = new HistoriaClinicaDALC();
@@ -253,8 +254,8 @@ namespace MacapSoftCAPUAN.BO
 
         public List<CierreHC> listarCierres()
         {
-                hcDALC = new HistoriaClinicaDALC();
-                return hcDALC.listarCierres();
+            hcDALC = new HistoriaClinicaDALC();
+            return hcDALC.listarCierres();
         }
 
         public List<ApplicationUser> listarUsuario()
@@ -263,7 +264,23 @@ namespace MacapSoftCAPUAN.BO
             return hcDALC.listarUsuario();
         }
 
+
+
+        public List<IngresoEstrategiasEvaluacion> listarIngresoEstrategiasEvaluacion()
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            return hcDALC.listarEstrategiasEvaluacion();
+        }
+
+
+
+        public List<Consulta> listarConsultas()
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            return hcDALC.listarConsultas();
+        }
         
+
 
 
         public string modificarRecepcionCasoModel(RecepcionCaso recepcionC) {//, Paciente pacienteEx) {
@@ -614,9 +631,25 @@ namespace MacapSoftCAPUAN.BO
         }
 
 
+
         public string modificarRemision(List<IngresoClinica> ingresoPaciente) {
             hcDALC = new HistoriaClinicaDALC();
             return hcDALC.modificarRemision(ingresoPaciente);
+        }
+
+
+
+        public string agregarConsulta(Consulta consulta) {
+            hcDALC = new HistoriaClinicaDALC();
+            return hcDALC.agregarConsulta(consulta);
+        }
+
+
+
+        public string agregarEstrategiaIngreso(IngresoEstrategiasEvaluacion estrategiaIngreso)
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            return hcDALC.agregarEstrategiaEva(estrategiaIngreso);
         }
     }
 }

@@ -25,12 +25,17 @@ namespace MacapSoftCAPUAN.Models
         public int idEstrategiaEvaluacion { get; set; }
         [ForeignKey("IngresoClinica")]
         public long? id_ingreso { get; set; }
-        [ForeignKey("EstrategiaEv")]
-        public int? id_estrategiEv { get; set; }
-        public string nombre { get; set; }
+        public string pruebasPsico { get; set; }
+        public string cuestionarios { get; set; }
+        public string pruebasProyectivas { get; set; }
+        public string examenMental { get; set; }
+        public string entrevistas { get; set; }
+        //[ForeignKey("EstrategiaEv")]
+        //public int? id_estrategiEv { get; set; }
+        //public string nombre { get; set; }
 
         public IngresoClinica IngresoClinica { get; set; }
-        public EstrategiasEvaluacion EstrategiaEv { get; set; }
+        //public EstrategiasEvaluacion EstrategiaEv { get; set; }
     }
 
 
