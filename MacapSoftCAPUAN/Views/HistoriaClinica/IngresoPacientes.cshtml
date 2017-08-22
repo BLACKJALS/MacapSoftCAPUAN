@@ -20,8 +20,8 @@
             $('#listadosEPS').prop("disabled", true);
             var motConsul = '@ViewBag.motivoConsulta';
             var motObs = '@ViewBag.Observaciones';
-            $("#motivoConsultaingresoClinica").val(motConsul);
-            $("#Observaciones").val(motObs);
+            //$("#motivoConsultaingresoClinica").val(motConsul);
+            //$("#Observaciones").val(motObs);
             var existente = '@ViewBag.existente';
             var consecutivo = '@ViewBag.itemConsecutivo';
             var npC = '@ViewBag.nPc';
@@ -549,12 +549,12 @@
 
     <h3 style="text-align:center; background-color:#9BC2E6">Motivo de consulta</h3>
     <div class="form-group">
-        <textarea class="form-control" id="motivoConsultaingresoClinica" name="ingresoClinica.motivoConsulta" style="min-width: 100%" rows="6" value="@ViewBag.motivoConsulta " required></textarea>
+        <textarea class="form-control" id="motivoConsultaingresoClinica" name="ingresoClinica.motivoConsulta" style="min-width: 100%" rows="6"  required></textarea> @*value="@ViewBag.motivoConsulta"*@
     </div>
     <br />
     <h3 style="text-align:center; background-color:#9BC2E6">Observaciones</h3>
     <div class="form-group">
-        <textarea class="form-control" style="min-width: 100%" rows="6" id="Observaciones"  name="ingresoClinica.observaciones" value="'@ViewBag.Observaciones" required></textarea>
+        <textarea class="form-control" style="min-width: 100%" rows="6" id="Observaciones"  name="ingresoClinica.observaciones"  required></textarea>   @*value="'@ViewBag.Observaciones"*@
     </div>
         <br />
     <br />

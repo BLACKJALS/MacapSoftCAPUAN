@@ -17,8 +17,10 @@
         var estadoDoc = '@ViewBag.estadoDocumentoGen';
         if (estadoDoc == "True") {
             $("#informeSesion").prop('disabled', false);
+            $("#documentoGeneral").prop('disabled', true);
         } else {
             $("#informeSesion").prop('disabled', true);
+            $("#documentoGeneral").prop('disabled', false);
         }
     });
 </script>
@@ -84,7 +86,7 @@
         <div class="form-group">
             <div class="row">
                 <div class="col-md-3">
-                    <input type="submit" value="Documento general" class="form-control btn btn-primary" id="guardarRemitir" onclick="location.href='@Url.Action("documentoGeneral", "HistoriaClinica",new { id = ViewBag.idPaciente})'"/>
+                    <input type="submit" value="Documento general" class="form-control btn btn-primary" id="documentoGeneral" onclick="location.href='@Url.Action("documentoGeneral", "HistoriaClinica",new { id = ViewBag.idPaciente})'"/>
                 </div>
                 <div class="col-md-1"></div>
                 <div class="col-md-3">

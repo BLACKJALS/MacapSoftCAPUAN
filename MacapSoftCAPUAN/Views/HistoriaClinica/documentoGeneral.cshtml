@@ -169,7 +169,7 @@
                 <label style="font-size:smaller">Fecha atención:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" placeholder="Fecha atención" id="ingresoClinica"/>
+                <input class="form-control" placeholder="Fecha atención" id="ingresoClinica" required/>
             </div>
         </div>
         <br />
@@ -284,7 +284,7 @@
             </div>
             <div class="col-md-3">
                 @*@Html.DropDownList("lista", (IEnumerable<SelectListItem>)ViewBag.ItemBarrios, new { @class = "form-control", title = "Seleccione uno de los siguientes barrios", placeholder = "asdas" })*@
-                <input class="form-control" id="religion" name="ingresoClinica.religion" value="@Model.ingresoClinica.religion" placeholder="Religión" />
+                <input class="form-control" id="religion" name="ingresoClinica.religion" value="@Model.ingresoClinica.religion" placeholder="Religión" required/>
             </div>
         </div>
         <br />
@@ -488,7 +488,7 @@
         </div>
         <h4 style="text-align:center; background-color:#9BC2E6">Motivo de consulta</h4>
         <div class="form-group">
-            <textarea id="motivoConsulta" class="form-control" style="min-width: 100%" value="@Model.ingresoClinica.motivoConsulta" rows="6"></textarea>
+            <textarea id="motivoConsulta" class="form-control" style="min-width: 100%" value="@Model.ingresoClinica.motivoConsulta" rows="6" required></textarea>
         </div>
         <h4 style="text-align:center; background-color:#9BC2E6"  required>Problemática actual</h4>
         <div class="form-group">
@@ -561,39 +561,39 @@
         </div>*@
         <h4 style="text-align:center; background-color:#9BC2E6">Resultados de evaluación</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="resultadosEvaluacion" name="consulta.resultadoAutoevaluacion" value="@Model.consulta.resultadoAutoevaluacion"></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="resultadosEvaluacion" name="consulta.resultadoAutoevaluacion" value="@Model.consulta.resultadoAutoevaluacion" required></textarea>
         </div>
         <h4 style="text-align:center; background-color:#9BC2E6">Historia Familiar (Relaciones familiares y Eventos significativos)</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="historiaFamiliar" name="ingresoClinica.historiaFamiliar" value="@Model.ingresoClinica.historiaFamiliar"></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="historiaFamiliar" name="ingresoClinica.historiaFamiliar" value="@Model.ingresoClinica.historiaFamiliar" required></textarea>
         </div>
         <h4 style="text-align:center; background-color:#9BC2E6">Genograma</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="genograma" name="ingresoClinica.genograma" value="@Model.ingresoClinica.genograma"></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="genograma" name="ingresoClinica.genograma" value="@Model.ingresoClinica.genograma" required></textarea>
         </div>
         <h4 style="text-align:center; background-color:#9BC2E6">Hipótesis Psicológicas</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="hipotesisPsicologicas" name="consulta.hipotesisPsicologica" value="@Model.consulta.hipotesisPsicologica"></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="hipotesisPsicologicas" name="consulta.hipotesisPsicologica" value="@Model.consulta.hipotesisPsicologica" required></textarea>
         </div>
         <h4 style="text-align:center; background-color:#9BC2E6">Objetivos terapéuticos</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="objetivosTerapeuticos" name="consulta.objetivosTerapeuticos" value="@Model.consulta.objetivosTerapeuticos"></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="objetivosTerapeuticos" name="consulta.objetivosTerapeuticos" value="@Model.consulta.objetivosTerapeuticos" required></textarea>
         </div>
         <h4 style="text-align:center; background-color:#9BC2E6">Estrategias y Tecnicas Terapéuticas</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="estrategiasTerapeuticas" name="consulta.estrategiasTecnicasTerapeuticas" value="@Model.consulta.estrategiasTecnicasTerapeuticas"></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="estrategiasTerapeuticas" name="consulta.estrategiasTecnicasTerapeuticas" value="@Model.consulta.estrategiasTecnicasTerapeuticas" required></textarea>
         </div>
         <h4 style="text-align:center; background-color:#9BC2E6">Logros alcanzados con base en los objetivos terapéuticos</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="logrosObjetivosTerape" name="consulta.logrosAlcanzadosSegunObjetivosTerapeuticos" value="@Model.consulta.logrosAlcanzadosSegunObjetivosTerapeuticos"></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="logrosObjetivosTerape" name="consulta.logrosAlcanzadosSegunObjetivosTerapeuticos" value="@Model.consulta.logrosAlcanzadosSegunObjetivosTerapeuticos" required></textarea>
         </div>
         <h4 style="text-align:center; background-color:#9BC2E6">Logros alcanzados según el consultante</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="logrosSegunConsultante" name="consulta.logrosAlcanzadosSegunConsultante" value="@Model.consulta.logrosAlcanzadosSegunConsultante"></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="logrosSegunConsultante" name="consulta.logrosAlcanzadosSegunConsultante" value="@Model.consulta.logrosAlcanzadosSegunConsultante" required></textarea>
         </div>
         <h4 style="text-align:center; background-color:#9BC2E6">Resúmen</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="resumen" name="consulta.resumen" value="@Model.consulta.resumen"></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="resumen" name="consulta.resumen" value="@Model.consulta.resumen" required></textarea>
         </div>
         @*<h4 style="text-align:center; background-color:#9BC2E6">Remisiones</h4>
         <div class="form-group">
@@ -601,7 +601,7 @@
         </div>*@
         <h4 style="text-align:center; background-color:#9BC2E6">Observaciones y Recomendaciones</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="observacionesRecomendaciones" name="consulta.observacionesRecomendaciones" value="@Model.consulta.observacionesRecomendaciones"></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="observacionesRecomendaciones" name="consulta.observacionesRecomendaciones" value="@Model.consulta.observacionesRecomendaciones" required></textarea>
         </div>
         <div class="form-group">
             <div class="col-md-2">

@@ -474,11 +474,11 @@ namespace MacapSoftCAPUAN.Controllers
                         ViewBag.entidadRemitido = recepcion.remitido.nombreEntidad;
                         ViewBag.profesionalRemitido = recepcion.remitido.nombreRemitente;
                     }
-                    if (recepcion.ingresoClinica != null)
-                    {
-                        ViewBag.motivoConsulta = recepcion.ingresoClinica.motivoConsulta;
-                        ViewBag.Observaciones = recepcion.ingresoClinica.observaciones;
-                    }
+                    //if (recepcion.ingresoClinica != null)
+                    //{
+                    //    ViewBag.motivoConsulta = recepcion.ingresoClinica.motivoConsulta;
+                    //    ViewBag.Observaciones = recepcion.ingresoClinica.observaciones;
+                    //}
                     return View(recepcion);
                 }
                 return View(recepcion);
