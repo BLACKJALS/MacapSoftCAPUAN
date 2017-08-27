@@ -25,8 +25,8 @@ namespace MacapSoftCAPUAN.Models
         public DateTime? fechaNacimiento { get; set; }
         public virtual Ciudades Ciudad { get; set; }
         public virtual Paises Paises { get; set; }//Se agregó el virtual
-        public virtual Barrios Barrio { get; set; } //Se agregó el virtual
-        public virtual Localidades Localidad { get; set; }//Se agregó el virtual
+        //public virtual Barrios Barrio { get; set; } //Se agregó el virtual
+        //public virtual Localidades Localidad { get; set; }//Se agregó el virtual
         public virtual Sexo Sexo { get; set; }
         //public string numeroHistoriaClinica { get; set; }
         //[ForeignKey("TipoDocumento")]
