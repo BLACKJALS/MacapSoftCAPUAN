@@ -396,7 +396,7 @@ namespace MacapSoftCAPUAN.DALC
                     cierreHC.idIngresoClinica = ingresoClinica.idIngresoClinica;
                     cierreHC.estadoHC = true;
                     cierreHC.estadoRemision = true;
-                    cierreHC.idUsuario = ingresoClinica.idUsuario;
+                    //cierreHC.idUsuario = ingresoClinica.idUsuario;
                     context.SaveChanges();
                 }
 

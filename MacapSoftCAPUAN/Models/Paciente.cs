@@ -21,6 +21,7 @@ namespace MacapSoftCAPUAN.Models
         public int consecutivo { get; set; }
         public string nombre { get; set; }
         public string apellido { get; set; }
+        public bool estadoHC { get; set; }
         public DateTime? fechaNacimiento { get; set; }
         public virtual Ciudades Ciudad { get; set; }
         public virtual Paises Paises { get; set; }//Se agregó el virtual
@@ -77,6 +78,7 @@ namespace MacapSoftCAPUAN.Models
 
         public Paciente()
         {
+            estadoHC = false;
             //barrio = new Barrios();
             //localidad = new Localidades();
             //eps = new Eps();

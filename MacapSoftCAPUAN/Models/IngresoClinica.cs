@@ -31,17 +31,19 @@ namespace MacapSoftCAPUAN.Models
         public long id_ocupacion { get; set; }
         [ForeignKey("Eps")]
         public string id_Eps { get; set; }
+        [ForeignKey("User")]
+        public string idUser { get; set; }
 
         public int edad { get; set; }
         public string direccion { get; set; }
         public string telefono { get; set; }
         public string email { get; set; }
         public string profesion { get; set; }
-        public string activo { get; set; }
+        //public string activo { get; set; }
         public string antecedentes { get; set; }
         public string estadoCivil { get; set; }
         public string religion { get; set; }
-        public string idUser { get; set; }
+        //public string idUser { get; set; }
         public string problematicaActual { get; set; }
         public string historiaPersonal { get; set; }
         public string historiaFamiliar { get; set; }
@@ -62,11 +64,12 @@ namespace MacapSoftCAPUAN.Models
         public virtual Estrato Estrato { get; set; }//Se agregó el virtual
         public virtual Paciente IdPaciente { get; set; }
         public virtual Remitido EntidadRemitente { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         public DateTime fechaIngreso { get; set; }
         public string motivoConsulta { get; set; }
         public string observaciones { get; set; }
-        public string idUsuario { get; set; }
+        //public string idUsuario { get; set; }
         public string remitido { get; set; }//cambiar la propiedad a foranea
         public string diagnostico { get; set; }
         public string categorizacionCAP { get; set; }

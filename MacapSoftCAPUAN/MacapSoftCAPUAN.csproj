@@ -243,6 +243,7 @@
     <Compile Include="Models\CategorizacionCAP.cs" />
     <Compile Include="Models\CierreHC.cs" />
     <Compile Include="Models\Consecutivo.cs" />
+    <Compile Include="Models\ConsultaDiagnostico.cs" />
     <Compile Include="Models\Consultante.cs" />
     <Compile Include="Models\Diagnostico.cs" />
     <Compile Include="Models\Eps.cs" />
@@ -254,6 +255,7 @@
     <Compile Include="Models\NivelEscolaridad.cs" />
     <Compile Include="Models\Paciente.cs" />
     <Compile Include="Models\Paises.cs" />
+    <Compile Include="Models\PermisosUsuariosPaciente.cs" />
     <Compile Include="Models\Remision.cs" />
     <Compile Include="Models\Remitido.cs" />
     <Compile Include="Models\Sexo.cs" />
