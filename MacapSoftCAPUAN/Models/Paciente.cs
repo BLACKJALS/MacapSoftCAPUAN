@@ -79,13 +79,6 @@ namespace MacapSoftCAPUAN.Models
         public Paciente()
         {
             estadoHC = false;
-            //barrio = new Barrios();
-            //localidad = new Localidades();
-            //eps = new Eps();
-            //Paises paises = new Paises();
-            //remitido = new Remitido();
-            //Remision remision = new Remision();
-            //IngresoClinica ingreso = new IngresoClinica();
         }
     }
 }

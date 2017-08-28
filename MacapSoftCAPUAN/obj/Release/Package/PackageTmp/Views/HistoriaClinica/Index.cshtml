@@ -10,30 +10,32 @@
 </div>
 
 <div class="navbar navbar-default navbar-static-top" role="navigation" style="border:groove; text-align:left; background:round">
+@if (Request.IsAuthenticated)
+{
     <div class="container">
         <div class="container-fluid">
             <ul class="nav nav-tabs" role="tablist">
-                <li class="">
+                @*<li class="">
                     <a href="@Url.Action("Index", "HistoriaClinica")" title="">
                         <i class="fa fa-home" style="color:#06052F"></i>
                         <label style="color:#06052F">Inicio</label>
                     </a>
-                </li>
+                </li>*@
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-book" style="color:#06052F"></i>
+                        <i class="fa fa-home" style="color:#06052F"></i>
                         <label style="color:#06052F">Recepción de usuarios</label>
                         <i class="fa fa-caret-down" style="color:#06052F"></i>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="dropdown-submenu">
-                            <a href="@Url.Action("IngresoPacientes", "HistoriaClinica")" title="">
+                            <a href="@Url.Action("ingresoPaciente", "HistoriaClinica")" title="">
                                 <i class="fa fa-user-md" style="color:#06052F"></i>
                                 Ingreso de pacientes
                             </a>
                         </li>
                         <li class="dropdown-submenu">
-                            <a href="@Url.Action("RecepcionCaso", "HistoriaClinica")" title="">
+                            <a href="@Url.Action("listarPacientesRemitidos", "HistoriaClinica")" title="">
                                 <i class="fa fa-user-md" style="color:#06052F"></i>
                                 Casos remitidos
                             </a>
@@ -50,74 +52,109 @@
                         <li class="dropdown-submenu">
                             <a href="@Url.Action("listaHistoriasClinicas", "HistoriaClinica")" title="">
                                 <i class="fa fa-user-md" style="color:#06052F"></i>
-                                Visualizar historias clínicas 
+                                Listar historias clínicas activas
+                            </a>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="@Url.Action("listaHistoriasClinicasInactivas", "HistoriaClinica")" title="">
+                                <i class="fa fa-user-md" style="color:#06052F"></i>
+                                Listar historias clínicas inactivas
+                            </a>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="@Url.Action("buscarPacientes", "HistoriaClinica")" title="">
+                                <i class="fa fa-user-md" style="color:#06052F"></i>
+                                Buscar paciente
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-book" style="color:#06052F"></i>
-                        <label style="color:#06052F">Diagnósticos</label>
-                        <i class="fa fa-caret-down" style="color:#06052F"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-submenu">
-                            <a href="@Url.Action("ListarDiagnosticos", "Diagnostico")" title="">
-                                <i class="fa fa-user-md" style="color:#06052F"></i>
-                                Ver el listado de diagnósticos
-                            </a>
-                        </li>
-                        <li class="dropdown-submenu">
-                            <a href="@Url.Action("CrearDiagnostico", "Diagnostico")" title="">
-                                <i class="fa fa-user-md" style="color:#06052F"></i>
-                                Crear un diagnóstico
-                            </a>
-                        </li>
-                        <li class="dropdown-submenu">
-                            <a href="@Url.Action("ModificarDiagnostico", "Diagnostico")" title="">
-                                <i class="fa fa-user-md" style="color:#06052F"></i>
-                                Modificar un diagnóstico
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-book" style="color:#06052F"></i>
-                        <label style="color:#06052F">Usuarios</label>
-                        <i class="fa fa-caret-down" style="color:#06052F"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-submenu">
-                            <a href="@Url.Action("ListaUsuarios", "Account")" title="">
-                                <i class="fa fa-user" style="color:#06052F"></i>
-                                Ver el listado de usuarios
-                            </a>
-                        </li>
-                        <li class="dropdown-submenu">
-                            <a href="@Url.Action("Register", "Account")" title="">
-                                <i class="fa fa-user" style="color:#06052F"></i>
-                                Crear usuarios
-                            </a>
-                        </li>
-                        <li class="dropdown-submenu">
-                            <a href="@Url.Action("cambiarContraseña", "Account")" title="">
-                                <i class="fa fa-user" style="color:#06052F"></i>
-                                Cambiar contraseña
-                            </a>
-                        </li>
-                        <li class="dropdown-submenu">
-                            <a href="@Url.Action("RecuperarContraseña", "Account")" title="">
-                                <i class="fa fa-user" style="color:#06052F"></i>
-                                Recuperar contraseña
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                @if (User.IsInRole("Administrador"))
+                {
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-book" style="color:#06052F"></i>
+                            <label style="color:#06052F">Diagnósticos</label>
+                            <i class="fa fa-caret-down" style="color:#06052F"></i>
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-submenu">
+                                <a href="@Url.Action("ListarDiagnosticos", "Diagnostico")" title="">
+                                    <i class="fa fa-user-md" style="color:#06052F"></i>
+                                    Ver el listado de diagnósticos
+                                </a>
+                            </li>
+                            <li class="dropdown-submenu">
+                                <a href="@Url.Action("CrearDiagnostico", "Diagnostico")" title="">
+                                    <i class="fa fa-user-md" style="color:#06052F"></i>
+                                    Crear un diagnóstico
+                                </a>
+                            </li>
+                            <li class="dropdown-submenu">
+                                <a href="@Url.Action("ModificarDiagnostico", "Diagnostico")" title="">
+                                    <i class="fa fa-user-md" style="color:#06052F"></i>
+                                    Modificar un diagnóstico
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-book" style="color:#06052F"></i>
+                            <label style="color:#06052F">Usuarios</label>
+                            <i class="fa fa-caret-down" style="color:#06052F"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-submenu">
+                                <a href="@Url.Action("ListaUsuarios", "Account")" title="">
+                                    <i class="fa fa-user" style="color:#06052F"></i>
+                                    Ver el listado de usuarios
+                                </a>
+                            </li>
+                            <li class="dropdown-submenu">
+                                <a href="@Url.Action("Register", "Account")" title="">
+                                    <i class="fa fa-user" style="color:#06052F"></i>
+                                    Crear usuarios
+                                </a>
+                            </li>
+                            <li class="dropdown-submenu">
+                                <a href="@Url.Action("cambiarContraseña", "Account")" title="">
+                                    <i class="fa fa-user" style="color:#06052F"></i>
+                                    Cambiar contraseña
+                                </a>
+                            </li>
+                            <li class="dropdown-submenu">
+                                <a href="@Url.Action("RecuperarContraseña", "Account")" title="">
+                                    <i class="fa fa-user" style="color:#06052F"></i>
+                                    Recuperar contraseña
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                @if (User.IsInRole("Docente") || User.IsInRole("Estudiante psicologo"))
+                {
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-book" style="color:#06052F"></i>
+                            <label style="color:#06052F">Diagnósticos</label>
+                            <i class="fa fa-caret-down" style="color:#06052F"></i>
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-submenu">
+                                <a href="@Url.Action("ListarDiagnosticos", "Diagnostico")" title="">
+                                    <i class="fa fa-user-md" style="color:#06052F"></i>
+                                    Ver el listado de diagnósticos
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
             </ul>
         </div>
     </div>
-
+}
 </div>
 

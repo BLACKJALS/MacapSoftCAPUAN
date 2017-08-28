@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "Ingreso Pacientes Creado";
+}
+
+<h2>Error al crear paciente</h2>
+<br />
+<br />
+@ViewBag.error
+<br />
+<br />
+<div class="container">
+    <div class="row">
+            <div class="col-md-2">
+                <input type="button" value="Regresar" class="form-control btn btn-primary" onclick="location.href='@Url.Action("Index", "HistoriaClinica")'" />
+            </div>
+    </div>
+</div>

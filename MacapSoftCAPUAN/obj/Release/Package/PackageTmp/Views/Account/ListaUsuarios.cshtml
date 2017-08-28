@@ -114,8 +114,18 @@
     </script>
 }
 
-<h2>Eliminar o Editar usuarios.</h2>
-
+<h1 align="center">Listar y modificar usuarios.</h1>
+<div class="form-group">
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-md-11"></div>
+        <div class="col-md-1">
+            <input type="button" class="btn btn-primary" style="align-content:center" value="Regresar" onclick="location.href='@Url.Action("Index", "HistoriaClinica" )'" />
+        </div>
+    </div>
+    
+</div>
 <div class="container">
 
     <table id="tablaCampos"
@@ -134,7 +144,7 @@
         <thead>
             <tr>
                 <th data-field="Id" class="hidden"></th>
-                <th data-field="nombreUsuario">Nombre Usuario</th>
+                @*<th data-field="nombreUsuario">Nombre Usuario</th>*@
                 <th data-field="Email">Email</th>
                 <th data-field="Role">Rol</th>
                 <th data-field="Estado">Estado Usuario</th>
@@ -188,20 +198,20 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Editar Role</h4>
+                    <h4 class="modal-title">Editar usuario</h4>
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-2">@Html.Hidden("hdnIdColumna", "", new { id = "hdnIdColumna" })</div>
                             <div class="col-md-2">
-                                <label>Role: </label>
+                                <label>Rol: </label>
                             </div>
                             <div class="col-md-8">
-                                <select type="text" id="txtRoleEditado" name="txtRoleEditado" class="form-control" required>
-                                    <option value="Admin">Admin</option>
-                                    <option value="Student">Student</option>
-                                    <option value="Teacher">Teacher</option>
+                                <select type="text" id="txtRoleEditado" name="txtRoleEditado" class="form-control" placeholder="Seleccione" required>
+                                    <option value="Administrador">Administrador</option>
+                                    <option value="Estudiante psicologo">Estudiante psicólogo</option>
+                                    <option value="Docente">Docente</option>
                                 </select>
                             </div>
                         </div>
@@ -220,11 +230,6 @@
                     <button id="buttonSalir" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-1">
-            <input type="button" class="btn btn-primary" value="Regresar" onclick="location.href='@Url.Action("Index", "HistoriaClinica" )'" />
         </div>
     </div>
 </div>

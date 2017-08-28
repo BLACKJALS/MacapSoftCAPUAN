@@ -84,3 +84,6 @@ C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSo
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\obj\Release\MacapSoftCAPUAN.csprojResolveAssemblyReference.cache
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\obj\Release\MacapSoftCAPUAN.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\obj\Release\MacapSoftCAPUAN.pdb
+C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\itextsharp.dll
+C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\itextsharp.xmlworker.dll
+C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\itextsharp.xml

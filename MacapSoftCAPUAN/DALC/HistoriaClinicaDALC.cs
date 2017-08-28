@@ -39,7 +39,17 @@ namespace MacapSoftCAPUAN.DALC
             var listaDocumento = bd.tipoDocumentoContext.ToList();
             return listaDocumento;
         }
-        
+
+
+
+        public List<Inasistencias> listaInasistencia()
+        {
+            bd = new ApplicationDbContext();
+            var listaInasistencia = bd.inasistenciasContext.ToList();
+            return listaInasistencia;
+        }
+
+
 
         public List<Localidades> listarLocalidades()
         {
@@ -299,9 +309,16 @@ namespace MacapSoftCAPUAN.DALC
 
             try
             {
-                bd = new ApplicationDbContext();
-                bd.pacienteContext.Add(paciente);
-                bd.SaveChanges();
+                var pacienteModificado = new Paciente { numeroHistoriaClinica = paciente.numeroHistoriaClinica };
+                using (var context = new ApplicationDbContext())
+                {
+                    context.pacienteContext.Attach(pacienteModificado);
+                    pacienteModificado.estadoHC = paciente.estadoHC;
+                    context.SaveChanges();
+                }
+                //bd = new ApplicationDbContext();
+                //bd.pacienteContext.Add(paciente);
+                //bd.SaveChanges();
                 //var pacienteMod = new Paciente { numeroHistoriaClinica = paciente.numeroHistoriaClinica};
                 //using (var context = new ApplicationDbContext())
                 //{
@@ -505,6 +522,24 @@ namespace MacapSoftCAPUAN.DALC
                 return argxEx.ToString();
             }
             return "Exito";
+        }
+
+
+
+        public string agregarInasistencia(Inasistencias inasistencia)
+        {
+            try
+            {
+                bd = new ApplicationDbContext();
+                bd.inasistenciasContext.Add(inasistencia);
+                bd.SaveChanges();
+                return "Inasistencia creado";
+            }
+            catch (Exception e)
+            {
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo crear la inasistencia.", e);
+                return argxEx.ToString();
+            }
         }
     }
 }

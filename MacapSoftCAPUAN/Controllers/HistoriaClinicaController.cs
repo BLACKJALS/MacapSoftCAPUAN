@@ -64,7 +64,7 @@ namespace MacapSoftCAPUAN.Controllers
 
             if (cierreHC.id_ingresoClinica != 0)
             {
-                if (ingresoClVal.estadoHC == true)
+                if (paciente.estadoHC == true)
                 {
                     recepcion.paciente = paciente;
                     if (ingresoClVal != null) {
@@ -488,9 +488,6 @@ namespace MacapSoftCAPUAN.Controllers
 
 
         
-
-
-
         [HttpPost]
         public ActionResult IngresoPacientesCreado(RecepcionCaso model, string Informacion, string Documento)
         {
@@ -596,8 +593,12 @@ namespace MacapSoftCAPUAN.Controllers
             var lstRP = concMremison.Split(';');
             var listaP = (from item in HC.listarPaciente() where item.numeroHistoriaClinica == modelRemision.paciente.numeroHistoriaClinica select item).LastOrDefault();
             var ingresoPaciente = (from item in HC.listarIngresoClinica() where item.id_paciente == listaP.numeroHistoriaClinica select item).LastOrDefault();
-            modelRemision.cierre.idUsuario = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            var usuario = (from item in HC.listarUsuario() where item.Id == user select item).FirstOrDefault();
+            modelRemision.cierre.idUsuario = usuario.Id;//System.Web.HttpContext.Current.User.Identity.GetUserId();
+            modelRemision.paciente.estadoHC = true; 
             //var cierreHC = (from item in HC.listarCierres() where item.id_ingresoClinica == ingresoPaciente.idIngresoClinica select item).LastOrDefault();
+            HC.modificarPaciente(modelRemision.paciente);
             HC.modificarCierre(ingresoPaciente);
             foreach (var item in lstRP) {
                 if (item != "") {
@@ -705,7 +706,7 @@ namespace MacapSoftCAPUAN.Controllers
                 {
                     var a = mtv.FirstOrDefault(x => x.Key == itemPaciente.id_historiaClinica);
                     mtv.Remove(itemPaciente.id_historiaClinica);
-                    itemPaciente.nombreMotivoRemision += " " + a.Value.nombreMotivoRemision;
+                    itemPaciente.nombreMotivoRemision += ", " + a.Value.nombreMotivoRemision;
                     mtv.Add(itemPaciente.id_historiaClinica, itemPaciente);
                 }
             }
@@ -836,16 +837,31 @@ namespace MacapSoftCAPUAN.Controllers
         public ActionResult historiaClinica(string numeroHC) {
             HistoriaClinicaVM historiaCl = new HistoriaClinicaVM();
             HC = new HistoriaClinicaBO();
-
-            var listaIngresoCl = HC.listarIngresoClinica();
-            var paciente = (from item in HC.listarPaciente() where item.numeroHistoriaClinica == numeroHC select item).LastOrDefault();
-            var ingreso = (from item in listaIngresoCl where item.id_paciente == paciente.numeroHistoriaClinica && item.estadoHC == false select item).LastOrDefault();
+            try
+            {
+                var listarInasistencia = HC.listarInasistencias();
+                var listaIngresoCl = HC.listarIngresoClinica();
+                var paciente = (from item in HC.listarPaciente() where item.numeroHistoriaClinica == numeroHC && item.estadoHC == false select item).LastOrDefault();
+                var ingreso = (from item in listaIngresoCl where item.id_paciente == paciente.numeroHistoriaClinica && item.estadoHC == false select item).LastOrDefault();
+                if (listarInasistencia != null) {
+                    var conteoInasistencia = (from item in listarInasistencia where item.id_ingresoClinica == ingreso.idIngresoClinica select item).Count();
+                    if (conteoInasistencia != 0) {
+                        ViewBag.conteo = conteoInasistencia;
+                    }
+                }
+                
+                historiaCl.ingresoClinica = ingreso;
+                historiaCl.paciente = paciente;
+                ViewBag.idPaciente = paciente.numeroHistoriaClinica;
+                ViewBag.estadoDocumentoGen = ingreso.estadoDocumentoGeneral;
+                return View(historiaCl);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View("ErrorValidacionHistoriaClinica");
+            }
             
-            historiaCl.ingresoClinica = ingreso;
-            historiaCl.paciente = paciente;
-            ViewBag.idPaciente = paciente.numeroHistoriaClinica;
-            ViewBag.estadoDocumentoGen = ingreso.estadoDocumentoGeneral;
-            return View(historiaCl);
         }
 
         
@@ -1130,9 +1146,36 @@ namespace MacapSoftCAPUAN.Controllers
             return View();
         }
 
-        //public ActionResult ingresoHistoriaClinica() {
+        public ActionResult generarInasistenciaClinica(string id, string motivoIn, DateTime Fecha)
+        {
+            Inasistencias inasistencia = new Inasistencias();
+            HC = new HistoriaClinicaBO();
+            var listaPaciente = HC.listarPaciente();
+            var listaIngresos = HC.listarIngresoClinica();
+            var listarInasistencia = HC.listarInasistencias();
+            
+            var paciente = (from item in listaPaciente where item.numeroHistoriaClinica == id select item).FirstOrDefault();
+            var ingresoCl = (from item in listaIngresos where paciente.numeroHistoriaClinica == item.id_paciente select item).LastOrDefault();
+            //var conteoInasistencia = (from item in listarInasistencia where item.id_ingresoClinica == ingresoCl.idIngresoClinica select item).Count();
 
-        //    return View();
-        //}
+            //if(conteoInasistencia >= 2) {
+            //    return View();
+            //}
+            //else{
+            var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            var usuario = (from item in HC.listarUsuario() where item.Id == user select item).FirstOrDefault();
+            if (ingresoCl != null)
+            {
+                inasistencia.fechaInasistencia = Fecha;
+                inasistencia.motivo = motivoIn;
+                inasistencia.id_ingresoClinica = ingresoCl.idIngresoClinica;
+                inasistencia.usuario = usuario.Id;
+            }
+            HC.agregarInasistencia(inasistencia);
+            //ViewBag.conteo = conteoInasistencia;
+
+            //}
+            return View();
+        }
     }
 }

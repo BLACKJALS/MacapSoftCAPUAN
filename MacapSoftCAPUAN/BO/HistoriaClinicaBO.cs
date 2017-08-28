@@ -19,6 +19,8 @@ namespace MacapSoftCAPUAN.BO
             return listaBarrios; 
         }
 
+
+
         public List<Localidades> listarLocalidades()
         {
             hcDALC = new HistoriaClinicaDALC();
@@ -26,12 +28,16 @@ namespace MacapSoftCAPUAN.BO
             return listaLicalidades;
         }
 
+
+
         public List<Ciudades> listarCiudades()
         {
             hcDALC = new HistoriaClinicaDALC();
             var listaCiudades = hcDALC.listarCiudades();
             return listaCiudades;
         }
+
+
 
         public List<Paises> listarPaises()
         {
@@ -48,11 +54,14 @@ namespace MacapSoftCAPUAN.BO
         }
 
 
+
         public string agregarpaciente(Paciente paciente)
         {
             hcDALC = new HistoriaClinicaDALC();
             return hcDALC.agregarPaciente(paciente);
         }
+
+
 
         public string agregarConsultante(Consultante consultante) {
             hcDALC = new HistoriaClinicaDALC();
@@ -289,14 +298,20 @@ namespace MacapSoftCAPUAN.BO
                 HC = new HistoriaClinicaBO();
                 Remitido remitido = new Remitido();
                 IngresoClinica ingresoClinica = new IngresoClinica();
+                Paciente paciente = new Paciente();
                 var recepCaso = recepcionC;
                 //recepCaso.paciente.fechaNacimiento = pacienteEx.fechaNacimiento;
                 //recepCaso.paciente.consecutivo = recepcionC.consecutivo.numeroConsecutivo;
-                recepCaso.ingresoClinica.idUser = System.Web.HttpContext.Current.User.Identity.GetUserId();
+                var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
+                var usuario = (from item in HC.listarUsuario() where item.Id == user select item).FirstOrDefault();
+                recepCaso.ingresoClinica.idUser = usuario.Id;//System.Web.HttpContext.Current.User.Identity.GetUserId();
                 //HC.modificarPaciente(recepCaso.paciente);
                 //var pacienteIngr = (from item in HC.listarPaciente() where item.numeroDocumento == recepcionC.paciente.numeroDocumento select item).LastOrDefault();
                 recepcionC.ingresoClinica.id_paciente = recepcionC.paciente.numeroHistoriaClinica;
                 ingresoClinica = recepcionC.ingresoClinica;
+                recepcionC.paciente.estadoHC = false;
+                paciente = recepcionC.paciente;
+                HC.modificarPaciente(recepcionC.paciente);
                 HC.ingresoClinica(ingresoClinica);
                 var listaHCIngreso = HC.listarIngresoClinica().LastOrDefault();
                 recepcionC.cierre.id_ingresoClinica = listaHCIngreso.idIngresoClinica;
@@ -340,19 +355,22 @@ namespace MacapSoftCAPUAN.BO
                 Paciente paciente = new Paciente();
                 consecutivo = recepcionC.consecutivo;
                 paciente = recepcionC.paciente;
+                paciente.estadoHC = false; 
                 paciente.consecutivo = consecutivo.numeroConsecutivo;
                 var pacienteExst = (from item in HC.listarPaciente() where item.numeroHistoriaClinica == recepcionC.paciente.numeroHistoriaClinica select item).LastOrDefault();
                 if (pacienteExst == null) {
                     HC.agregarpaciente(paciente);
                     HC.agregarConsecutivo(consecutivo);
-                    recepcionC.ingresoClinica.idUser = System.Web.HttpContext.Current.User.Identity.GetUserId();
+                    var usuarioId = System.Web.HttpContext.Current.User.Identity.GetUserId();
+                    var usuarioExitente = (from item in HC.listarUsuario() where item.Id == usuarioId select item).FirstOrDefault();
+                    recepcionC.ingresoClinica.idUser = usuarioExitente.Id; //System.Web.HttpContext.Current.User.Identity.GetUserId();
                     var pacienteIngr = (from item in HC.listarPaciente() where item.numeroHistoriaClinica == recepcionC.paciente.numeroHistoriaClinica select item).LastOrDefault();
                     recepcionC.ingresoClinica.id_paciente = recepcionC.paciente.numeroHistoriaClinica;
                     ingresoClinica = recepcionC.ingresoClinica;
                     HC.ingresoClinica(ingresoClinica);
                     var listaHCIngreso = HC.listarIngresoClinica().LastOrDefault();
                     recepcionC.cierre.id_ingresoClinica = listaHCIngreso.idIngresoClinica;
-                    recepcionC.cierre.idUsuario = System.Web.HttpContext.Current.User.Identity.GetUserId();
+                    recepcionC.cierre.idUsuario = usuarioExitente.Id; //System.Web.HttpContext.Current.User.Identity.GetUserId();
                     HC.agregarCierreHC(recepcionC.cierre);
                     if (recepcionC.remitido.nombreEntidad != null)
                     {
@@ -398,95 +416,20 @@ namespace MacapSoftCAPUAN.BO
             ListadoHistoriasClinicas ModeloHistoriasCl;
             HC = new HistoriaClinicaBO();
             var ingresoClinica = HC.listarIngresoClinica();
-            var cierresHC = (from item in ingresoClinica where item.estadoHC == false select item).ToList();
-            var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
-
-
-
-            foreach (var itemPAC in HC.listarPaciente())
+            var pacienteActivo = (from item in HC.listarPaciente() where item.estadoHC == false select item).ToList();
+            if(pacienteActivo != null)
             {
-                foreach (var itemIngre in cierresHC)
+                var cierresHC = (from item in ingresoClinica where item.estadoHC == false select item).ToList();
+                var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
+
+                foreach (var itemPAC in HC.listarPaciente())
                 {
-                    if (itemPAC.numeroHistoriaClinica == itemIngre.id_paciente)
+                    foreach (var itemIngre in cierresHC)
                     {
-                        var usuario = (from item in HC.listarUsuario() where item.Id == itemIngre.idUser select item.Email).FirstOrDefault();
-                        if (usuario != null) {
-                            ModeloHistoriasCl = new ListadoHistoriasClinicas();
-                            itemIngre.idUser = usuario;
-                            ModeloHistoriasCl.numeroHC = itemPAC.numeroHistoriaClinica;
-                            ModeloHistoriasCl.nombrePaciente = itemPAC.nombre;
-                            ModeloHistoriasCl.apellidoPaciente = itemPAC.apellido;
-                            ModeloHistoriasCl.idUser = itemIngre.idUser;
-                            listadoModeloHistoriasCl.Add(ModeloHistoriasCl);
-                        }
-                    }
-                }
-            }
-            return listadoModeloHistoriasCl.OrderBy(x => x.numeroHC).ToList();
-        }
-
-
-
-
-        public List<ListadoHistoriasClinicas> listarHCInactivasAdmin()
-        {
-            List<IngresoClinica> listaIngresoClinica = new List<IngresoClinica>();
-            List<Paciente> listaPaciente = new List<Paciente>();
-            List<ListadoHistoriasClinicas> listadoModeloHistoriasCl = new List<ListadoHistoriasClinicas>();
-            ListadoHistoriasClinicas ModeloHistoriasCl;
-            HC = new HistoriaClinicaBO();
-            var ingresoClinica = HC.listarIngresoClinica();
-            var cierresHC = (from item in ingresoClinica where item.estadoHC == true select item).ToList();
-            var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
-
-            foreach (var itemPAC in HC.listarPaciente())
-            {
-                foreach (var itemIngre in cierresHC)
-                {
-                    if (itemPAC.numeroHistoriaClinica == itemIngre.id_paciente)
-                    {
-                        var usuario = (from item in HC.listarUsuario() where item.Id == itemIngre.idUser select item.Email).FirstOrDefault();
-                        if (usuario != null)
+                        if (itemPAC.numeroHistoriaClinica == itemIngre.id_paciente)
                         {
-                            ModeloHistoriasCl = new ListadoHistoriasClinicas();
-                            itemIngre.idUser = usuario;
-                            ModeloHistoriasCl.numeroHC = itemPAC.numeroHistoriaClinica;
-                            ModeloHistoriasCl.nombrePaciente = itemPAC.nombre;
-                            ModeloHistoriasCl.apellidoPaciente = itemPAC.apellido;
-                            ModeloHistoriasCl.idUser = itemIngre.idUser;
-                            listadoModeloHistoriasCl.Add(ModeloHistoriasCl);
-                        }
-                    }
-                }
-            }
-            return listadoModeloHistoriasCl.OrderBy(x => x.numeroHC).ToList();
-        }
-
-        public List<ListadoHistoriasClinicas> listarHCDocente()
-        {
-            List<ListadoHistoriasClinicas> listadoModeloHistoriasCl = new List<ListadoHistoriasClinicas>();
-            ListadoHistoriasClinicas ModeloHistoriasCl;
-            List<IngresoClinica> listaIngresoClinica = new List<IngresoClinica>();
-            List<Paciente> listaPaciente = new List<Paciente>();
-            HC = new HistoriaClinicaBO();
-
-            var ingresoClinica = HC.listarIngresoClinica();
-            var cierresHC = (from item in ingresoClinica where item.estadoHC == false select item).ToList();
-            var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
-            var usuario = (from item in HC.listarUsuario() where item.Id == user select item.Email).FirstOrDefault();
-            var pacienteUser = (from item in ingresoClinica where item.idUser == user select item).ToList();
-
-
-            foreach (var itemPAC in HC.listarPaciente())
-            {
-                foreach (var itemIngre in cierresHC)
-                {
-                    if (itemPAC.numeroHistoriaClinica == itemIngre.id_paciente)
-                    {
-                        if (itemIngre.idUser == user)
-                        {
-                            var usr = (from item in HC.listarUsuario() where item.Id == itemIngre.idUser select item.Email).FirstOrDefault();
-                            if (usr != null)
+                            var usuario = (from item in HC.listarUsuario() where item.Id == itemIngre.idUser select item.Email).FirstOrDefault();
+                            if (usuario != null)
                             {
                                 ModeloHistoriasCl = new ListadoHistoriasClinicas();
                                 itemIngre.idUser = usuario;
@@ -505,12 +448,115 @@ namespace MacapSoftCAPUAN.BO
 
 
 
+
+        public List<ListadoHistoriasClinicas> listarHCInactivasAdmin()
+        {
+            List<IngresoClinica> listaIngresoClinica = new List<IngresoClinica>();
+            List<IngresoClinica> listaIngresoClinica1 = new List<IngresoClinica>();
+            Dictionary<string, IngresoClinica> listaIngresoClinicaSinRepeticion = new Dictionary<string, IngresoClinica>();
+            List<Paciente> listaPaciente = new List<Paciente>();
+            List<ListadoHistoriasClinicas> listadoModeloHistoriasCl = new List<ListadoHistoriasClinicas>();
+            ListadoHistoriasClinicas ModeloHistoriasCl;
+            HC = new HistoriaClinicaBO();
+            var ingresoClinica = HC.listarIngresoClinica();
+            var cierresHC = (from item in ingresoClinica where item.estadoHC == true select item).ToList();
+            var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            var pacienteInactivo = (from item in HC.listarPaciente() where item.estadoHC == true select item).ToList();
+
+            foreach (var item in cierresHC) {
+                if (!(listaIngresoClinicaSinRepeticion.ContainsKey(item.id_paciente))) {
+                    listaIngresoClinicaSinRepeticion.Add(item.id_paciente, item);
+                }
+            }
+
+            foreach (var item1 in listaIngresoClinicaSinRepeticion) {
+                listaIngresoClinica1.Add(item1.Value);
+            }
+
+            if (pacienteInactivo != null)
+            {
+                foreach (var itemPAC in HC.listarPaciente())
+                {
+                    foreach (var itemIngre in listaIngresoClinica1)
+                    {
+                        if (itemPAC.numeroHistoriaClinica == itemIngre.id_paciente)
+                        {
+                            var usuario = (from item in HC.listarUsuario() where item.Id == itemIngre.idUser select item.Email).FirstOrDefault();
+                            if (usuario != null)
+                            {
+                                //if (listadoModeloHistoriasCl.Contains(itemPAC.numeroHistoriaClinica)) {
+                                    ModeloHistoriasCl = new ListadoHistoriasClinicas();
+                                    itemIngre.idUser = usuario;
+                                    ModeloHistoriasCl.numeroHC = itemPAC.numeroHistoriaClinica;
+                                    ModeloHistoriasCl.nombrePaciente = itemPAC.nombre;
+                                    ModeloHistoriasCl.apellidoPaciente = itemPAC.apellido;
+                                    ModeloHistoriasCl.idUser = itemIngre.idUser;
+                                    listadoModeloHistoriasCl.Add(ModeloHistoriasCl);
+                                //}
+                            }
+                        }
+                    }
+                }
+            }
+            
+            return listadoModeloHistoriasCl.OrderBy(x => x.numeroHC).ToList();
+        }
+
+
+
+        public List<ListadoHistoriasClinicas> listarHCDocente()
+        {
+            List<ListadoHistoriasClinicas> listadoModeloHistoriasCl = new List<ListadoHistoriasClinicas>();
+            ListadoHistoriasClinicas ModeloHistoriasCl;
+            List<IngresoClinica> listaIngresoClinica = new List<IngresoClinica>();
+            List<Paciente> listaPaciente = new List<Paciente>();
+            HC = new HistoriaClinicaBO();
+
+            var ingresoClinica = HC.listarIngresoClinica();
+            var cierresHC = (from item in ingresoClinica where item.estadoHC == false select item).ToList();
+            var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            var usuario = (from item in HC.listarUsuario() where item.Id == user select item.Email).FirstOrDefault();
+            var pacienteUser = (from item in ingresoClinica where item.idUser == user select item).ToList();
+            var pacienteActivo = (from item in HC.listarPaciente() where item.estadoHC == false select item).ToList();
+            if (pacienteActivo != null)
+            {
+                foreach (var itemPAC in HC.listarPaciente())
+                {
+                    foreach (var itemIngre in cierresHC)
+                    {
+                        if (itemPAC.numeroHistoriaClinica == itemIngre.id_paciente)
+                        {
+                            if (itemIngre.idUser == user)
+                            {
+                                var usr = (from item in HC.listarUsuario() where item.Id == itemIngre.idUser select item.Email).FirstOrDefault();
+                                if (usr != null)
+                                {
+                                    ModeloHistoriasCl = new ListadoHistoriasClinicas();
+                                    itemIngre.idUser = usuario;
+                                    ModeloHistoriasCl.numeroHC = itemPAC.numeroHistoriaClinica;
+                                    ModeloHistoriasCl.nombrePaciente = itemPAC.nombre;
+                                    ModeloHistoriasCl.apellidoPaciente = itemPAC.apellido;
+                                    ModeloHistoriasCl.idUser = itemIngre.idUser;
+                                    listadoModeloHistoriasCl.Add(ModeloHistoriasCl);
+                                }
+                            }
+                        }
+                    }
+                }
+            }               
+            return listadoModeloHistoriasCl.OrderBy(x => x.numeroHC).ToList();
+        }
+
+
+
         public List<ListadoHistoriasClinicas> listarHCInactivasDocente()
         {
             List<ListadoHistoriasClinicas> listadoModeloHistoriasCl = new List<ListadoHistoriasClinicas>();
             ListadoHistoriasClinicas ModeloHistoriasCl;
             List<IngresoClinica> listaIngresoClinica = new List<IngresoClinica>();
             List<Paciente> listaPaciente = new List<Paciente>();
+            Dictionary<string, IngresoClinica> listaIngresoClinicaSinRepeticion = new Dictionary<string, IngresoClinica>();
+            List<IngresoClinica> listaIngresoClinica1 = new List<IngresoClinica>();
             HC = new HistoriaClinicaBO();
             var ingresoClinica = HC.listarIngresoClinica();
             var cierresHC = (from item in ingresoClinica where item.estadoHC == true select item).ToList();
@@ -518,25 +564,42 @@ namespace MacapSoftCAPUAN.BO
             var usuario = (from item in HC.listarUsuario() where item.Id == user select item.Email).FirstOrDefault();
             var pacienteUser = (from item in ingresoClinica where item.idUser == user select item).ToList();
 
+            var pacienteInactivo = (from item in HC.listarPaciente() where item.estadoHC == true select item).ToList();
 
-            foreach (var itemPAC in HC.listarPaciente())
+            foreach (var item in cierresHC)
             {
-                foreach (var itemIngre in cierresHC)
+                if (!(listaIngresoClinicaSinRepeticion.ContainsKey(item.id_paciente)))
                 {
-                    if (itemPAC.numeroHistoriaClinica == itemIngre.id_paciente)
+                    listaIngresoClinicaSinRepeticion.Add(item.id_paciente, item);
+                }
+            }
+
+            foreach (var item1 in listaIngresoClinicaSinRepeticion)
+            {
+                listaIngresoClinica1.Add(item1.Value);
+            }
+
+            if (pacienteInactivo != null)
+            {
+                foreach (var itemPAC in HC.listarPaciente())
+                {
+                    foreach (var itemIngre in listaIngresoClinica1)
                     {
-                        if (itemIngre.idUser == user)
+                        if (itemPAC.numeroHistoriaClinica == itemIngre.id_paciente)
                         {
-                            var usr = (from item in HC.listarUsuario() where item.Id == itemIngre.idUser select item.Email).FirstOrDefault();
-                            if (usr != null)
+                            if (itemIngre.idUser == user)
                             {
-                                ModeloHistoriasCl = new ListadoHistoriasClinicas();
-                                itemIngre.idUser = usr;
-                                ModeloHistoriasCl.numeroHC = itemPAC.numeroHistoriaClinica;
-                                ModeloHistoriasCl.nombrePaciente = itemPAC.nombre;
-                                ModeloHistoriasCl.apellidoPaciente = itemPAC.apellido;
-                                ModeloHistoriasCl.idUser = itemIngre.idUser;
-                                listadoModeloHistoriasCl.Add(ModeloHistoriasCl);
+                                var usr = (from item in HC.listarUsuario() where item.Id == itemIngre.idUser select item.Email).FirstOrDefault();
+                                if (usr != null)
+                                {
+                                    ModeloHistoriasCl = new ListadoHistoriasClinicas();
+                                    itemIngre.idUser = usr;
+                                    ModeloHistoriasCl.numeroHC = itemPAC.numeroHistoriaClinica;
+                                    ModeloHistoriasCl.nombrePaciente = itemPAC.nombre;
+                                    ModeloHistoriasCl.apellidoPaciente = itemPAC.apellido;
+                                    ModeloHistoriasCl.idUser = itemIngre.idUser;
+                                    listadoModeloHistoriasCl.Add(ModeloHistoriasCl);
+                                }
                             }
                         }
                     }
@@ -560,26 +623,28 @@ namespace MacapSoftCAPUAN.BO
             var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
             var usuario = (from item in HC.listarUsuario() where item.Id == user select item.Email).FirstOrDefault();
             var pacienteUser = (from item in ingresoClinica where item.idUser == user select item).ToList();
-
-
-            foreach (var itemPAC in HC.listarPaciente())
+            var pacienteActivo = (from item in HC.listarPaciente() where item.estadoHC == false select item).ToList();
+            if (pacienteActivo != null)
             {
-                foreach (var itemIngre in cierresHC)
+                foreach (var itemPAC in HC.listarPaciente())
                 {
-                    if (itemPAC.numeroHistoriaClinica == itemIngre.id_paciente)
+                    foreach (var itemIngre in cierresHC)
                     {
-                        if (itemIngre.idUser == user)
+                        if (itemPAC.numeroHistoriaClinica == itemIngre.id_paciente)
                         {
-                            var usr = (from item in HC.listarUsuario() where item.Id == itemIngre.idUser select item.Email).FirstOrDefault();
-                            if (usr != null)
+                            if (itemIngre.idUser == user)
                             {
-                                ModeloHistoriasCl = new ListadoHistoriasClinicas();
-                                itemIngre.idUser = usuario;
-                                ModeloHistoriasCl.numeroHC = itemPAC.numeroHistoriaClinica;
-                                ModeloHistoriasCl.nombrePaciente = itemPAC.nombre;
-                                ModeloHistoriasCl.apellidoPaciente = itemPAC.apellido;
-                                ModeloHistoriasCl.idUser = itemIngre.idUser;
-                                listadoModeloHistoriasCl.Add(ModeloHistoriasCl);
+                                var usr = (from item in HC.listarUsuario() where item.Id == itemIngre.idUser select item.Email).FirstOrDefault();
+                                if (usr != null)
+                                {
+                                    ModeloHistoriasCl = new ListadoHistoriasClinicas();
+                                    itemIngre.idUser = usuario;
+                                    ModeloHistoriasCl.numeroHC = itemPAC.numeroHistoriaClinica;
+                                    ModeloHistoriasCl.nombrePaciente = itemPAC.nombre;
+                                    ModeloHistoriasCl.apellidoPaciente = itemPAC.apellido;
+                                    ModeloHistoriasCl.idUser = itemIngre.idUser;
+                                    listadoModeloHistoriasCl.Add(ModeloHistoriasCl);
+                                }
                             }
                         }
                     }
@@ -596,6 +661,9 @@ namespace MacapSoftCAPUAN.BO
             ListadoHistoriasClinicas ModeloHistoriasCl;
             List<IngresoClinica> listaIngresoClinica = new List<IngresoClinica>();
             List<Paciente> listaPaciente = new List<Paciente>();
+            Dictionary<string, IngresoClinica> listaIngresoClinicaSinRepeticion = new Dictionary<string, IngresoClinica>();
+            List<IngresoClinica> listaIngresoClinica1 = new List<IngresoClinica>();
+
             HC = new HistoriaClinicaBO();
             var ingresoClinica = HC.listarIngresoClinica();
             var cierresHC = (from item in ingresoClinica where item.estadoHC == true select item).ToList();
@@ -603,25 +671,42 @@ namespace MacapSoftCAPUAN.BO
             var usuario = (from item in HC.listarUsuario() where item.Id == user select item.Email).FirstOrDefault();
             var pacienteUser = (from item in ingresoClinica where item.idUser == user select item).ToList();
 
+            var pacienteInactivo = (from item in HC.listarPaciente() where item.estadoHC == true select item).ToList();
 
-            foreach (var itemPAC in HC.listarPaciente())
+            foreach (var item in cierresHC)
             {
-                foreach (var itemIngre in cierresHC)
+                if (!(listaIngresoClinicaSinRepeticion.ContainsKey(item.id_paciente)))
                 {
-                    if (itemPAC.numeroHistoriaClinica == itemIngre.id_paciente)
+                    listaIngresoClinicaSinRepeticion.Add(item.id_paciente, item);
+                }
+            }
+
+            foreach (var item1 in listaIngresoClinicaSinRepeticion)
+            {
+                listaIngresoClinica1.Add(item1.Value);
+            }
+
+            if (pacienteInactivo != null)
+            {
+                foreach (var itemPAC in HC.listarPaciente())
+                {
+                    foreach (var itemIngre in listaIngresoClinica1)
                     {
-                        if (itemIngre.idUser == user)
+                        if (itemPAC.numeroHistoriaClinica == itemIngre.id_paciente)
                         {
-                            var usr = (from item in HC.listarUsuario() where item.Id == itemIngre.idUser select item.Email).FirstOrDefault();
-                            if (usr != null)
+                            if (itemIngre.idUser == user)
                             {
-                                ModeloHistoriasCl = new ListadoHistoriasClinicas();
-                                itemIngre.idUser = usr;
-                                ModeloHistoriasCl.numeroHC = itemPAC.numeroHistoriaClinica;
-                                ModeloHistoriasCl.nombrePaciente = itemPAC.nombre;
-                                ModeloHistoriasCl.apellidoPaciente = itemPAC.apellido;
-                                ModeloHistoriasCl.idUser = itemIngre.idUser;
-                                listadoModeloHistoriasCl.Add(ModeloHistoriasCl);
+                                var usr = (from item in HC.listarUsuario() where item.Id == itemIngre.idUser select item.Email).FirstOrDefault();
+                                if (usr != null)
+                                {
+                                    ModeloHistoriasCl = new ListadoHistoriasClinicas();
+                                    itemIngre.idUser = usr;
+                                    ModeloHistoriasCl.numeroHC = itemPAC.numeroHistoriaClinica;
+                                    ModeloHistoriasCl.nombrePaciente = itemPAC.nombre;
+                                    ModeloHistoriasCl.apellidoPaciente = itemPAC.apellido;
+                                    ModeloHistoriasCl.idUser = itemIngre.idUser;
+                                    listadoModeloHistoriasCl.Add(ModeloHistoriasCl);
+                                }
                             }
                         }
                     }
@@ -650,6 +735,21 @@ namespace MacapSoftCAPUAN.BO
         {
             hcDALC = new HistoriaClinicaDALC();
             return hcDALC.agregarEstrategiaEva(estrategiaIngreso);
+        }
+
+
+
+        public string agregarInasistencia(Inasistencias inasistencia)
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            return hcDALC.agregarInasistencia(inasistencia);
+        }
+
+
+        public List<Inasistencias> listarInasistencias()
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            return hcDALC.listaInasistencia();
         }
     }
 }

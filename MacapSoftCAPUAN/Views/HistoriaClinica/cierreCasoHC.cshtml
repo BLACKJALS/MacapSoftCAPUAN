@@ -3,6 +3,14 @@
     ViewBag.Title = "cierreCasoHC";
 }
 
+@section scripts{
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>    
+}
+
 <h1 style="text-align:center">Cierre de historia clínica</h1>
 <div class="jumbotron">
     <h3 style="text-align:center; background-color:#9BC2E6">Datos del paciente</h3>
@@ -216,6 +224,6 @@
         <input type="submit" value="Guardar" class="form-control btn-primary" id="guardarHistoria" />
     </div>
     <div class="col-md-2">
-        <input type="button" value="Cancelar" class="form-control" onclick="location.href='@Url.Action("historiaClinica", "HistoriaClinica")'" />
+        <input type="button" value="Cancelar" class="form-control" onclick="return goBack();"/>
     </div>
 </div>

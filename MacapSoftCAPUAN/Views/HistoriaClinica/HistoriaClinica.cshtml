@@ -22,7 +22,28 @@
             $("#informeSesion").prop('disabled', true);
             $("#documentoGeneral").prop('disabled', false);
         }
+
+        var inasistencias = '@ViewBag.conteo';
+        if (inasistencias >= 2) {
+            alert("El usuario ya ha inasistido dos veces, puede proceder a cerrar la HC o generar la inasistencia")
+            $("#buttonCloseCH").prop('disabled', false);
+        } else {
+            $("#buttonCloseCH").prop('disabled', true);
+        }
+
+        var hoy = new Date();
+        var fechaHoy = hoy.getFullYear() + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + ("0" + hoy.getDate()).slice(-2);
+        $("#fechaInasistencia").val(fechaHoy);
+        $("#fechaInasistencia").attr('readonly', 'readonly');
+        $("#Fecha").val(fechaHoy);
+        $("#id").val(idPaciente);
     });
+
+    function motInasistenci() {
+        var motivoIna = $("#motivoInasistencia").val();
+        $("#motivoIn").val(motivoIna);
+        document.getElementById("buttonHidden").click();
+    }
 </script>
 }
 <h1 style="text-align:center;">Historia clínica</h1>
@@ -185,26 +206,52 @@
 
 
 <div id="agregarInasistencia" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Agregar una inasistencia</h4>
-            </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    <div class="row">
-                            <text  style="font-size:medium">Está seguro que desea generar una inasistencia</text>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="buttonEdit" class="btn btn-default" data-dismiss="modal" onclick="return btnAbrirUsuarioCampo_Click();">
-                            Aceptar
-                        </button>
-                        <button id="buttonSalir" type="button" class="btn btn-default" data-dismiss="modal">Regresar</button>
+    <div class="container">
+    @using (@Html.BeginForm("generarInasistenciaClinica", "HistoriaClinica", FormMethod.Post, new { @class = "form-horizontal", id = "FormularioDocumentoGeneral" }))
+    {
+        @Html.Hidden("id");
+        @Html.Hidden("Fecha");
+        @Html.Hidden("motivoIn");
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Agregar una inasistencia</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <text style="font-size:medium">Está seguro que desea generar una inasistencia</text>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label style="font-size:smaller">Fecha de generación de inasistencia</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input class="form-control" placeholder="Fecha atención" id="fechaInasistencia" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label style="font-size:smaller">Motivo de la inasistencia:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input class="form-control" id="motivoInasistencia" placeholder="Motivo inasistencia" required/>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="modal-footer">
+                            <input type="submit" hidden id="buttonHidden"/>
+                            <button id="buttonCloseCH" type="button" class="btn btn-danger" data-dismiss="modal" onclick="location.href='@Url.Action("cierreCasoHC", "HistoriaClinica" )'">Cerrar HC</button>
+                            <button type="button" id="buttonEdit" class="btn btn-primary" onclick="return motInasistenci();">Generar inasistencia</button> @*onclick="location.href='@Url.Action("generarInasistenciaClinica", "HistoriaClinica", new { id = ViewBag.idPaciente, mot = $("#motivoInasistencia") })'">*@    
+                            <button id="buttonSalir" type="button" class="btn btn-warning" data-dismiss="modal">Regresar</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
+        </div>
+    }
     </div>
 </div>

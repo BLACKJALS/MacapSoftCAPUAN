@@ -686,7 +686,7 @@ namespace MacapSoftCAPUAN.Controllers
                 }
             }
 
-            TempData["mensajeError"] = "Error de validación, esto se presenta por los siguientes aspectos: la constraseña anterior no coincide, no ingreso una contraseña válida o digitó la misma contraseña.";
+            TempData["mensajeError"] = "Error de validación, esto se presenta por los siguientes aspectos: la contraseña anterior no coincide, no ingreso una contraseña válida o digitó la misma contraseña.";
             ViewBag.ErrorMessage = "Email not found or matched";
             return RedirectToAction("CambiarContraseña", "Account");
             //return Json("Ok",JsonRequestBehavior.AllowGet);

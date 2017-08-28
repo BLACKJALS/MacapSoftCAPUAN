@@ -563,6 +563,8 @@
     <Content Include="Views\HistoriaClinica\RecepcionCasoDenegada.cshtml" />
     <Content Include="Views\Account\ExitoRecuperarContrasena.cshtml" />
     <Content Include="Views\HistoriaClinica\DocumentoGeneralCreado.cshtml" />
+    <Content Include="Views\HistoriaClinica\generarInasistenciaClinica.cshtml" />
+    <Content Include="Views\HistoriaClinica\ErrorValidacionHistoriaClinica.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
