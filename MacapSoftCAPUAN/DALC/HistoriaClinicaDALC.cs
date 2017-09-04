@@ -21,11 +21,15 @@ namespace MacapSoftCAPUAN.DALC
             return listaBarrios;
         }
 
+
+
         public List<Paciente> listarPacientes() {
             bd = new ApplicationDbContext();
             var listaPacientes = bd.pacienteContext.ToList();
             return listaPacientes;
         }
+
+
 
         public List<Estrato> listaEstratos()
         {
@@ -33,6 +37,8 @@ namespace MacapSoftCAPUAN.DALC
             var listaEstrato = bd.estratoContext.ToList();
             return listaEstrato;
         }
+
+
 
         public List<TiposDocumentos> listaTipoDocumento() {
             bd = new ApplicationDbContext();
@@ -59,6 +65,8 @@ namespace MacapSoftCAPUAN.DALC
             return listaLocalidades;
         }
 
+
+
         public List<Ciudades> listarCiudades()
         {
             bd = new ApplicationDbContext();
@@ -66,6 +74,8 @@ namespace MacapSoftCAPUAN.DALC
             listaCiudades = bd.ciudadesContext.ToList();
             return listaCiudades;
         }
+
+
 
         public List<Consulta> listarConsultas()
         {
@@ -75,11 +85,32 @@ namespace MacapSoftCAPUAN.DALC
             return listaConsulta;
         }
 
+
+
         public List<ApplicationUser> listarUsuario() {
             context = new ApplicationDbContext();
             var listaUsuarios = context.Users.ToList();
             return listaUsuarios;
         }
+
+        public List<ApplicationUser> listaUsuarioRolesEstudiantePsicologo() {
+            context = new ApplicationDbContext();
+            var listRoles = context.Roles.ToList();
+            var role = (from item in listRoles where item.Name == "Estudiante psicologo" select item).LastOrDefault();
+            var users = context.Users.Where(x => x.Roles.Select(y => y.RoleId).Contains(role.Id)).ToList();
+            return users;
+        }
+
+
+        public List<ApplicationUser> listaUsuarioRolesDocente()
+        {
+            context = new ApplicationDbContext();
+            var listRoles = context.Roles.ToList();
+            var role = (from item in listRoles where item.Name == "Docente" select item).LastOrDefault();
+            var users = context.Users.Where(x => x.Roles.Select(y => y.RoleId).Contains(role.Id)).ToList();
+            return users;
+        }
+
 
         public List<Paises> listarPaises()
         {
@@ -107,6 +138,8 @@ namespace MacapSoftCAPUAN.DALC
             return listaEps;
         }
 
+
+
         public List<Consecutivo> listarConsecutivo() {
             bd = new ApplicationDbContext();
             List<Consecutivo> listaConsecutivo = new List<Consecutivo>();
@@ -114,12 +147,16 @@ namespace MacapSoftCAPUAN.DALC
             return listaConsecutivo;
         }
 
+
+
         public void agregarRemision(Remision remision)
         {
                 bd = new ApplicationDbContext();
                 bd.remisionContext.Add(remision);
                 bd.SaveChanges();
         }
+        
+
 
         public void agregarRemitido(Remitido remitido)
         {
@@ -127,6 +164,8 @@ namespace MacapSoftCAPUAN.DALC
             bd.remitidoContext.Add(remitido);
             bd.SaveChanges();
         }
+
+
 
         public string agregarIngresoClinica(IngresoClinica ingresoClinica)
         {
@@ -147,6 +186,8 @@ namespace MacapSoftCAPUAN.DALC
             
         }
 
+
+
         public List<IngresoClinica> listarIngresoClinica()
         {
             bd = new ApplicationDbContext();
@@ -154,6 +195,7 @@ namespace MacapSoftCAPUAN.DALC
             listaIngresoClinica = bd.ingresoClinicaContext.ToList();
             return listaIngresoClinica;
         }
+
 
 
         public List<Consultante> listarConsultante()
@@ -164,6 +206,8 @@ namespace MacapSoftCAPUAN.DALC
             return listaConsultante;
         }
 
+
+
         public List<CategorizacionCAP> listarCategorizacion()
         {
             bd = new ApplicationDbContext();
@@ -171,6 +215,7 @@ namespace MacapSoftCAPUAN.DALC
             listaCategorizacionCAP = bd.categorizacionCAPContext.ToList();
             return listaCategorizacionCAP;
         }
+
 
 
         public string agregarCierre(CierreHC cierre) {
@@ -187,6 +232,7 @@ namespace MacapSoftCAPUAN.DALC
                 return argxEx.ToString();
             }
         }
+
 
 
         public string agregarPaciente(Paciente paciente)
@@ -211,6 +257,7 @@ namespace MacapSoftCAPUAN.DALC
                 return argxEx.ToString();
             }
         }
+
 
 
         public string agregarConsultante(Consultante consultante)
@@ -269,6 +316,7 @@ namespace MacapSoftCAPUAN.DALC
         }
 
 
+
         public string agregarRemisionL(List<Remision> remision)
         {
             try
@@ -289,12 +337,15 @@ namespace MacapSoftCAPUAN.DALC
             
         }
 
+
+
         public List<Remision> listaPacientesRemitidos() {
             bd = new ApplicationDbContext();
             var listaUsuarios = bd.pacienteContext;
             var listaRemisiones = bd.remisionContext.ToList();
             return listaRemisiones;
         }
+
 
 
         public List<MotivosRemisiones> listaMotivosRemisiones()
@@ -304,42 +355,58 @@ namespace MacapSoftCAPUAN.DALC
             return listaMotivosRemisiones;
         }
 
+
+
         public string modificarPaciente(Paciente paciente)
         {
 
             try
             {
-                var pacienteModificado = new Paciente { numeroHistoriaClinica = paciente.numeroHistoriaClinica };
-                using (var context = new ApplicationDbContext())
+                using (var db = new ApplicationDbContext())
                 {
-                    context.pacienteContext.Attach(pacienteModificado);
-                    pacienteModificado.estadoHC = paciente.estadoHC;
-                    context.SaveChanges();
+                    var result = db.pacienteContext.SingleOrDefault(b => b.numeroHistoriaClinica == paciente.numeroHistoriaClinica);
+                    if (result != null)
+                    {
+                        result.estadoHC = false;
+                        db.SaveChanges();
+                    }
                 }
-                //bd = new ApplicationDbContext();
-                //bd.pacienteContext.Add(paciente);
-                //bd.SaveChanges();
-                //var pacienteMod = new Paciente { numeroHistoriaClinica = paciente.numeroHistoriaClinica};
+
+                //var pacienteModificado = new Paciente { numeroHistoriaClinica = paciente.numeroHistoriaClinica, estadoHC = false };
                 //using (var context = new ApplicationDbContext())
                 //{
-                //    context.pacienteContext.Attach(pacienteMod);
-                //    pacienteMod.nombre = paciente.nombre;
-                //    pacienteMod.apellido = paciente.apellido;
-                //    pacienteMod.numeroDocumento = paciente.numeroDocumento;
-                //    pacienteMod.id_tipoDocumento = paciente.id_tipoDocumento;
-                //    pacienteMod.fechaNacimiento = paciente.fechaNacimiento;
-                //    pacienteMod.id_estrato = paciente.id_estrato;
-                //    pacienteMod.id_localidad = paciente.id_localidad;
-                //    pacienteMod.id_barrio = paciente.id_barrio;
-                //    pacienteMod.id_Eps = paciente.id_Eps;
-                //    pacienteMod.direccion = paciente.direccion;
-                //    pacienteMod.edad = paciente.edad;
-                //    pacienteMod.email = paciente.email;
-                //    pacienteMod.idUser = paciente.idUser;
-                //    pacienteMod.id_ciudad = paciente.id_ciudad;
-                //    pacienteMod.telefono = paciente.telefono;
+                //    context.pacienteContext.Attach(pacienteModificado);
+                //    pacienteModificado.nombre = "A";
+                //    //pacienteModificado.estadoHC = false;
+                //    //pacienteModificado.estadoHC = pacienteModificado.estadoHC;
                 //    context.SaveChanges();
                 //}
+            }
+            catch (Exception e)
+            {
+
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo actualizar el paciente creado.", e.Message);
+                return argxEx.ToString();
+            }
+            return "Exito";
+        }
+
+
+
+        public string remitirModificarPaciente(Paciente paciente)
+        {
+
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var result = db.pacienteContext.SingleOrDefault(b => b.numeroHistoriaClinica == paciente.numeroHistoriaClinica);
+                    if (result != null)
+                    {
+                        result.estadoHC = true;
+                        db.SaveChanges();
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -468,7 +535,7 @@ namespace MacapSoftCAPUAN.DALC
                     ingresoNuevo.estadoCivil = ingresoCl.estadoCivil;
                     ingresoNuevo.religion = ingresoCl.religion;
                     ingresoNuevo.categorizacionCAP = ingresoCl.categorizacionCAP;
-                    ingresoNuevo.diagnostico = ingresoCl.diagnostico;
+                    //ingresoNuevo.diagnostico = ingresoCl.diagnostico;
                     ingresoNuevo.problematicaActual = ingresoCl.problematicaActual;
                     ingresoNuevo.historiaPersonal = ingresoCl.historiaPersonal;
                     ingresoNuevo.antecedentes = ingresoCl.antecedentes;
@@ -541,5 +608,50 @@ namespace MacapSoftCAPUAN.DALC
                 return argxEx.ToString();
             }
         }
+
+
+        public string guardarCategorizacionesCAPDiagnosticoConsultas(List<CategorizacionHC> listaCatHC, List<ConsultaDiagnostico> listaConDiag) {
+            try
+            {
+                bd = new ApplicationDbContext();
+                foreach (var item in listaCatHC) {
+                    bd.categorizcionHcContext.Add(item);
+                    bd.SaveChanges();
+                }
+
+                foreach (var item in listaConDiag)
+                {
+                    bd.consultaDiagnosticoContext.Add(item);
+                    bd.SaveChanges();
+                }
+                return "Proceso Exitoso";
+            }
+            catch (Exception e)
+            {
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo crear la categorizacion y consulta.", e);
+                return argxEx.ToString();
+            }
+        }
+
+
+        public void asignarUsuariosHC(List<PermisosUsuariosPaciente> permisosUsr)
+        {
+            bd = new ApplicationDbContext();
+
+            foreach (var item in permisosUsr) {
+                bd.permisosUsuariosPacienteContext.Add(item);
+                bd.SaveChanges();
+            }
+        }
+
+
+        public List<PermisosUsuariosPaciente> listarPermisosUsuariosPac()
+        {
+            bd = new ApplicationDbContext();
+            List<PermisosUsuariosPaciente> listaPermisosUsuariosPac = new List<PermisosUsuariosPaciente>();
+            listaPermisosUsuariosPac = bd.permisosUsuariosPacienteContext.ToList();
+            return listaPermisosUsuariosPac;
+        }
+
     }
 }

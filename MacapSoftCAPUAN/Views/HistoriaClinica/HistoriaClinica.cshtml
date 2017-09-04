@@ -25,7 +25,7 @@
 
         var inasistencias = '@ViewBag.conteo';
         if (inasistencias >= 2) {
-            alert("El usuario ya ha inasistido dos veces, puede proceder a cerrar la HC o generar la inasistencia")
+            alert("El usuario ya ha inasistido dos veces, en caso de que falle nuevamente puede proceder a cerrar la HC, generar la inasistencia o continuar con el proceso.")
             $("#buttonCloseCH").prop('disabled', false);
         } else {
             $("#buttonCloseCH").prop('disabled', true);
@@ -115,7 +115,7 @@
                 </div>
                 <div class="col-md-2"></div>
                 <div class="col-md-3">
-                    <input type="button" value="Inasistencia" class="form-control btn btn-primary" id="btnInasistencia" data-toggle="modal" data-target="#agregarInasistencia"/>
+                    <input type="button" value="Generar inasistencia" class="form-control btn btn-primary" id="btnInasistencia" data-toggle="modal" data-target="#agregarInasistencia"/>
                 </div>
             </div>
             <br />
@@ -130,6 +130,12 @@
                 <div class="col-md-2"></div>
                 <div class="col-md-3">
                     <input type="button" value="Cierre de HC" class="form-control btn btn-primary" id="cierreHC" onclick="location.href='@Url.Action("cierreCasoHC", "HistoriaClinica" )'"/>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-3">
+                    <input type="submit" value="Consultar inasistencia" class="form-control btn btn-primary" id="remitir" onclick="location.href='@Url.Action("consultarInasistencias", "HistoriaClinica",new { id = ViewBag.idPaciente})'" />
                 </div>
             </div>
             <br />

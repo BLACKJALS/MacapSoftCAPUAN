@@ -27,7 +27,7 @@
             var npC = '@ViewBag.nPc';
             var hcP = '@ViewBag.numeroHC';
             $("#numeroDocumentoPaciente").val(npC);
-            
+
             if (existente != "Si") {
                 $("#Consecutivo").val(parseInt(consecutivo) + 1);
             } else {
@@ -39,6 +39,7 @@
 
             if (existente == "Si") {
                 var fechN = '@ViewBag.fechaNacimiento';
+                @*var pais = '@ViewBag.Pais';*@
                 $("#Documento").val(hcP);
                 $("#fechaNacimientoPaciente").val(fechN);
                 $("#fechaNacimientoPaciente").datepicker("option", "disabled", true);
@@ -50,6 +51,7 @@
                 //$('#tipoDocumentoPac').attr('readonly', 'readonly');
                 //$('#numeroDocumentoPaciente').attr('readonly', 'readonly');
                 $('#lugarNacimientoPac').attr('readonly', 'readonly');
+                //$("#paisPac").val(pais);
                 $('#paisPac').attr('readonly', 'readonly');
 
             } else {
@@ -90,7 +92,7 @@
             return "";
         }
 
-        
+
         $(function () {
             $('#fechaRemision').datepicker({
                 format: 'yyyy-mm-dd',
@@ -163,6 +165,7 @@
                 var diferenciasFechas = (hoy - hoy2);
                 var valorDias = Math.round((diferenciasFechas / (1000 * 60 * 60 * 24)));
                 var edad = parseInt(valorDias / 365);
+                var existente = '@ViewBag.existente';
                 $("#edadPaciente").val(edad);
 
                 if (edad >= 18) {
@@ -179,6 +182,18 @@
                         document.getElementById("tipoDocumentoPac").options[2].disabled = false;
                         document.getElementById("tipoDocumentoPac").options[3].disabled = true;
                         document.getElementById("tipoDocumentoPac").options[4].disabled = true;
+                        //document.getElementById("tipoDocumentoPac").tex = "Seleccione";
+                        document.getElementById("tipoDocumentoPac").value = "";
+                        //$("tipoDocumentoPac").val("");
+                    } else {
+                        if (existente == "Si") {
+                            if (x == "CC" || x == "CE") {
+                                document.getElementById("tipoDocumentoPac").options[1].disabled = false;
+                                document.getElementById("tipoDocumentoPac").options[2].disabled = false;
+                                document.getElementById("tipoDocumentoPac").options[3].disabled = true;
+                                document.getElementById("tipoDocumentoPac").options[4].disabled = true;
+                            }
+                        }
                     }
                 } else {
                     $("#nombreConsultantePaciente").prop("disabled", false);
@@ -194,6 +209,18 @@
                         document.getElementById("tipoDocumentoPac").options[2].disabled = true;
                         document.getElementById("tipoDocumentoPac").options[3].disabled = false;
                         document.getElementById("tipoDocumentoPac").options[4].disabled = false;
+                        //document.getElementById("tipoDocumentoPac").tex = "Seleccione";
+                        document.getElementById("tipoDocumentoPac").value = "";
+                        //$("tipoDocumentoPac").val("");
+                    } else {
+                        if (existente == "Si") {
+                            if (x == "TI" || x == "RC") {
+                                document.getElementById("tipoDocumentoPac").options[1].disabled = true;
+                                document.getElementById("tipoDocumentoPac").options[2].disabled = true;
+                                document.getElementById("tipoDocumentoPac").options[3].disabled = false;
+                                document.getElementById("tipoDocumentoPac").options[4].disabled = false;
+                            }
+                        }
                     }
                 }
             }
@@ -329,7 +356,7 @@
         <div class="row">
             <label class="col-md-1" style="font-size:smaller">Tipo de documento:</label>
             <div class="col-md-4">
-                @Html.DropDownList("ingresoClinica.id_tipoDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumento, new { @class = "form-control", id="tipoDocumentoPac" })
+                @Html.DropDownList("ingresoClinica.id_tipoDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumento, new { @class = "form-control", id="tipoDocumentoPac", required = "true" })
             </div>
             <div class="col-md-2">
                 <label style="font-size:smaller">Número de documento:</label>
@@ -365,7 +392,7 @@
                 <label style="font-size:smaller">Lugar de nacimiento (País, Ciudad):</label>
             </div>
             <div class="col-md-2">
-                @Html.DropDownList("paciente.id_paises", (IEnumerable<SelectListItem>)ViewBag.ItemPaises, new { @class = "form-control", required = "true", id = "paisPac" })
+                @Html.DropDownList("pais", (IEnumerable<SelectListItem>)ViewBag.ItemPaises, new { @class = "form-control", required = "true", id = "paisPac" })
             </div>
             <div class="col-md-2">
                 @Html.DropDownList("paciente.id_ciudad", (IEnumerable<SelectListItem>)ViewBag.ItemCiudades, new { @class = "form-control", id="lugarNacimientoPac", required = "true" })
@@ -425,7 +452,7 @@
                 <label style="font-size:smaller">Email:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="emailPaciente" pattern="[A-Za-z0-9._%+-]+@("@")[a-z0-9.-]+\.[a-z]{2,3}$" name="ingresoClinica.email" placeholder="Email" value="@ViewBag.email"/>
+                <input class="form-control" id="emailPaciente" pattern="[A-Za-z0-9._%+-]+@("@")[a-z0-9.-]+\.[a-z]{2,3}$" title="ejemplo: nombreCorreo@uan.edu.co" name="ingresoClinica.email" placeholder="Email" value="@ViewBag.email"/>
             </div>
         </div>
         <br />
@@ -440,7 +467,7 @@
                 <label style="font-size:smaller">Profesión:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="pacienteProfesion" name="ingresoClinica.profesion" placeholder="Profesión" value="" required />
+                <input class="form-control" id="pacienteProfesion" name="ingresoClinica.profesion" placeholder="Profesión" value="@ViewBag.profesion" required />
             </div>
         </div>
         <br/>

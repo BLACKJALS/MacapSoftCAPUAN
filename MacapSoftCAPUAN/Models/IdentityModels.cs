@@ -58,5 +58,7 @@ namespace MacapSoftCAPUAN.Models
         public DbSet<Consulta> consultaContext { get; set; }
         public DbSet<ConsultaDiagnostico> consultaDiagnosticoContext { get; set; }
         public DbSet<PermisosUsuariosPaciente> permisosUsuariosPacienteContext { get; set; }
+        public DbSet<MotivoCierreHistoriaClinica> motivoCierreHcContext { get; set; }
+        public DbSet<CategorizacionHC> categorizcionHcContext { get; set; }
     }
 }

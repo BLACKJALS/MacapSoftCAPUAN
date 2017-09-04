@@ -16,6 +16,8 @@ namespace MacapSoftCAPUAN.ModelsVM
         public IngresoEstrategiasEvaluacion estrategiaEva { get; set; }
         public Consulta consulta { get; set; }
         public List<IngresoEstrategiasEvaluacion> estrategiasIngreso { get; set; }
+        public string diagnosticos { get; set; }
+        public string categorizacionCAP { get; set; }
 
         public DocumentoGeneralVM() {
             ingresoClinica = new IngresoClinica();

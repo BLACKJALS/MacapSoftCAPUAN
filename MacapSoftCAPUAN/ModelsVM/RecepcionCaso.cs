@@ -17,6 +17,7 @@ namespace MacapSoftCAPUAN.ModelsVM
         public IngresoClinica ingresoClinica { get; set; }
         public Consecutivo consecutivo { get; set; }
         //public Eps epsObj { get; set; }
+        public string pais { get; set; }
 
 
         public RecepcionCaso() {

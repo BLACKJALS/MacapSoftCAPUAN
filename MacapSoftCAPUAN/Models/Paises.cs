@@ -38,11 +38,11 @@ namespace MacapSoftCAPUAN.Models
     {
         [Key]
         public string idLocalidad { get; set; }
-        [ForeignKey("Ciudad")]
-        public string id_ciudad { get; set; }
+        //[ForeignKey("Ciudad")]
+        //public string id_ciudad { get; set; }
 
         public string nombre { get; set; }
-        public Ciudades Ciudad { get; set; }
+        //public Ciudades Ciudad { get; set; }
     }
 
     [Table("dbo.Barrios")]

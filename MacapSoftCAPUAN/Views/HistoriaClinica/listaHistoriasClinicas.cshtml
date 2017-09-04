@@ -11,13 +11,23 @@
     <script src="~/Scripts/bootstrap-table/bootstrap-table.js"></script>
     <script src="~/Scripts/bootstrap-table/bootstrap-table.min.js"></script>
     <script src="~/Scripts/bootstrap-table/locale/bootstrap-table-es-CR.min.js"></script>
+    <script src="~/Scripts/bootstrap-select.min.js"></script>
+    <link href="~/Content/bootstrap-select.css" rel="stylesheet" />
+    <script src="~/Scripts/i18n/defaults-es_ES.js"></script>
+    <script src="~/Scripts/i18n/defaults-es_ES.min.js"></script>
     <script>
         $(document).ready(function () {
             var estadoBoton = $("#numeroHC").val();
             if (estadoBoton == "") {
                 $("#buttonOpen").prop("disabled", true);
                 alert("Debe seleccionar una historia clínica para ver o agregar la correspondiente información.");
+                $("#asignarUsuario").prop("disabled", true);
             }
+
+            $('.selectpicker').selectpicker({
+                liveSearch: true,
+                showSubtext: true
+            });
         });
 
         var $table = $('#table'),
@@ -39,6 +49,7 @@
                         //alert(key + " " + value);
                         $("#numeroHC").val(value);
                         $("#buttonOpen").prop("disabled", false);
+                        $("#asignarUsuario").prop("disabled", false);
                     }
                 });
             }
@@ -59,7 +70,7 @@
 
 
         function btnAsignarUsuarioCampo_Click() {
-            var parametrosFuncion = JSON.stringify({ 'usr': $("#hdnIdColumna").val("Hola") });
+            var parametrosFuncion = JSON.stringify({ id: $("#numeroHC").val(), docente: $("#docente").val(), estudiante: $("#estudiante").val() });
             $.ajax({
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
@@ -67,19 +78,19 @@
                 url: '@Url.Action("AsignarUsuarioPost", "HistoriaClinica")',
                 data: parametrosFuncion,
                 success: function (data) {
-                    limpiarFormularioEditarCampo();
-                    $table.bootstrapTable('refresh');
+                   // limpiarFormularioEditarCampo();
+                    //$table.bootstrapTable('refresh');
                 },
                 failure: function (response) {
                     //$('#result').html(response);
                 }
             });
-            location.reload();
+            //location.reload();
         }
 
 
         function btnAbrirUsuarioCampo_Click() {
-            var parametrosFuncion = JSON.stringify({ 'usr': $("#hdnIdColumna").val("Hola") });
+            var parametrosFuncion = JSON.stringify({ 'usr': $("#docente").val() });
             $.ajax({
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
@@ -96,109 +107,115 @@
             });
             location.reload();
         }
+
+
+
+        function validarInformacion() {
+            var valorDoc =  $("#docente").val();
+            var valorEst = $("#estudiante").val();
+
+            if (valorDoc == "" || valorEst == "") {
+                alert("No ha ingresado la información para asignacion del docente, estudiante o ambas, vuelva a intentar.");
+            } else {
+                $("#buttonAceptar").click();
+            }
+        }
+
+
+
     </script>
 
 
 }
-
-<body>
-    <div class="container">
-        @using (Html.BeginForm("historiaClinica", "HistoriaClinica", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-        {
-            @Html.Hidden("numeroHC");
-        <h3 align="center"><font size="16">Lista de historias clínicas activas</font></h3>
-        <table id="table"
-               data-toggle="table"
-               data-search="true"
-               data-height="460"
-               data-detail-formatter="detailFormatter"
-               data-pagination="true"
-               data-page-size="20"
-               data-page-list="[20,50,100]"
-               data-pagination-first-text="Inicio"
-               data-pagination-pre-text="Anterior"
-               data-pagination-next-text="Siguiente"
-               data-pagination-last-text="Ultimo"
-               data-url='@Url.Action("listarHistoriasClinicasSegunUsuario", "HistoriaClinica")'>
-            <thead>
-                <tr class='desmarcado'>
-                    <th data-field="numeroHC" class="clickable-row">Número de historia clínica</th>
-                    <th data-field="nombrePaciente">Nombre del paciente</th>
-                    <th data-field="apellidoPaciente">Apellido del paciente</th>
-                    <th data-field="idUser">Usuario(s) asignado(s)</th>
-                    @*<th data-field="state" data-radio="true" title="Seleccione" data-event="eventosOperaciones"></th>*@           
-                    <th data-field="Operaciones" data-align="center" data-events="eventosOperaciones" data-formatter="formatoOperaciones">Seleccione</th>     
-                    @*<th data-field="Operaciones" data-align="center" data-radio="true" data-events="eventosOperaciones" data-formatter="formatoOperaciones">Operación modificar</th>*@
-                </tr>
-            </thead>
-        </table>
-        <div id="buttonPreRemove">
-            <button type="submit" id="btnEditar" style="visibility:hidden;"></button>
-        </div>
+<div class="container">
+    @using (Html.BeginForm("historiaClinica", "HistoriaClinica", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.Hidden("numeroHC");
+    <h3 align="center"><font size="16">Lista de historias clínicas activas</font></h3>
+    <table id="table"
+           data-toggle="table"
+           data-search="true"
+           data-height="460"
+           data-detail-formatter="detailFormatter"
+           data-pagination="true"
+           data-page-size="20"
+           data-page-list="[20,50,100]"
+           data-pagination-first-text="Inicio"
+           data-pagination-pre-text="Anterior"
+           data-pagination-next-text="Siguiente"
+           data-pagination-last-text="Ultimo"
+           data-url='@Url.Action("listarHistoriasClinicasSegunUsuario", "HistoriaClinica")'>
+        <thead>
+            <tr class='desmarcado'>
+                <th data-field="numeroHC" class="clickable-row">Número de historia clínica</th>
+                <th data-field="nombrePaciente">Nombre del paciente</th>
+                <th data-field="apellidoPaciente">Apellido del paciente</th>
+                @*<th data-field="idUser">Usuario(s) asignado(s)</th>*@
+                @*<th data-field="state" data-radio="true" title="Seleccione" data-event="eventosOperaciones"></th>*@           
+                <th data-field="Operaciones" data-align="center" data-events="eventosOperaciones" data-formatter="formatoOperaciones">Seleccione</th>     
+                @*<th data-field="Operaciones" data-align="center" data-radio="true" data-events="eventosOperaciones" data-formatter="formatoOperaciones">Operación modificar</th>*@
+            </tr>
+        </thead>
+    </table>
+    <div id="buttonPreRemove">
+        <button type="submit" id="btnEditar" style="visibility:hidden;"></button>
+    </div>
 
 
-        <div class="row">
-            <div class="col-md-9"></div>
-                <div id="toolbar">
-                    <input type="button" class="btn btn-primary" value="Regresar" onclick="location.href='@Url.Action("Index", "HistoriaClinica")'" />
-                    <input type="button" class="btn btn-primary" value="Asignar" data-toggle="modal" data-target="#modalAsignarUsuario"/>
-                    <input id="buttonOpen" type="submit" class="btn btn-primary" value="Abrir"/>                
-    @*<input type="button" class="btn btn-primary" value="Abrir" data-toggle="modal" data-target="#modalAbrirUsuario" />*@
-                </div>
-        </div>
-        }
+    <div class="row">
+        <div class="col-md-9"></div>
+            <div id="toolbar">
+                <input type="button" class="btn btn-primary" value="Regresar" onclick="location.href='@Url.Action("Index", "HistoriaClinica")'" />
+                @if (User.IsInRole("Administrador"))
+                {
+                    <input id="asignarUsuario" type="button" class="btn btn-primary" value="Asignar" data-toggle="modal" data-target="#modalAsignarUsuario"/>
+                }
+                <input id="buttonOpen" type="submit" class="btn btn-primary" value="Abrir"/>                
+@*<input type="button" class="btn btn-primary" value="Abrir" data-toggle="modal" data-target="#modalAbrirUsuario" />*@
+            </div>
+    </div>
+    }
+</div>
+<div id="modalAsignarUsuario" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Asignar usuario</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="form-horizontal">
+                        <section>
+                            <div class="form-group">
+                                <label class="col-md-3">Psicologo:</label>
+                                <div class="col-md-3">
+                                    <div class="col-md-4">
+                                        @Html.DropDownList("docente", (IEnumerable<SelectListItem>)ViewBag.docente, new { @class = "selectpicker", id = "docente", required = true})
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3">Estudiante:</label>
+                                <div class="col-md-3">
+                                    <div class="col-md-4">
+                                        @Html.DropDownList("estudiante", (IEnumerable<SelectListItem>)ViewBag.estudiante, new { @class = "selectpicker", id = "estudiante", required = true})
+                                    </div>
+                                </div>
+                            </div>
 
-
-        <div id="modalAsignarUsuario" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Asignar usuario</h4>
+                        </section>
                     </div>
-                    <div class="modal-body">
-                        <div class="container-fluid">
-                            <div class="form-horizontal">
-                                <section>
-                                    <div class="form-group">
-                                        <label class="col-md-3">Psicologo:</label>
-                                        <div class="col-md-3">
-                                            <select class="form-control">
-                                                <option>Seleccione</option>
-                                                <option>Psicologo 1</option>
-                                                <option>Psicologo 2</option>
-                                                <option>Psicologo 3</option>
-                                            </select>
-                                            @*@Html.DropDownList("Lista", (IEnumerable<SelectListItem>)ViewBag.ItemTypes, new { @class = "form-control", title = "Choose one of the following...", value = "asdas", required = "true" })*@
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-3">Estudiante:</label>
-                                        <div class="col-md-3">
-                                            <select class="form-control">
-                                                <option>Seleccione</option>
-                                                <option>Estudiante 1</option>
-                                                <option>Estudiante 2</option>
-                                                <option>Estudiante 3</option>
-                                            </select>
-                                            @*@Html.DropDownList("Lista", (IEnumerable<SelectListItem>)ViewBag.ItemTypes, new { @class = "form-control", title = "Choose one of the following...", value = "asdas", required = "true" })*@
-                                        </div>
-                                    </div>
-
-                                </section>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" id="buttonEdit" class="btn btn-default" data-dismiss="modal" onclick="return btnAsignarUsuarioCampo_Click();">
-                                    Asignar
-                                </button>
-                                <button id="buttonSalir" type="button" class="btn btn-default" data-dismiss="modal">Regresar</button>
-                            </div>
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" id="buttonEdit" class="btn btn-default" data-dismiss="modal" onclick="validarInformacion();">@*onclick="return btnAsignarUsuarioCampo_Click();">*@
+                            Asignar
+                        </button>
+                        <button id="buttonSalir" type="button" class="btn btn-default" data-dismiss="modal">Regresar</button>
                     </div>
                 </div>
-
             </div>
         </div>
+        <button id="buttonAceptar" type="button" hidden onclick="return btnAsignarUsuarioCampo_Click();"></button>
     </div>
-</body>
+</div>
 

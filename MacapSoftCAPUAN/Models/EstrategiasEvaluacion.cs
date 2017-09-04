@@ -7,14 +7,14 @@ using System.Web;
 
 namespace MacapSoftCAPUAN.Models
 {
-    [Table("dbo.estrategiasEvaluacion")]
-    public class EstrategiasEvaluacion
-    {
-        [Key]
-        [DatabaseGenerated (DatabaseGeneratedOption.Identity)]
-        public int idEstrategiaEvaluacion { get; set; }
-        public string nombre { get; set; }
-    }
+    //[Table("dbo.estrategiasEvaluacion")]
+    //public class EstrategiasEvaluacion
+    //{
+    //    [Key]
+    //    [DatabaseGenerated (DatabaseGeneratedOption.Identity)]
+    //    public int idEstrategiaEvaluacion { get; set; }
+    //    public string nombre { get; set; }
+    //}
 
 
     [Table("dbo.ingresoEstrategias")]
@@ -45,8 +45,8 @@ namespace MacapSoftCAPUAN.Models
         [Key]
         [DatabaseGenerated (DatabaseGeneratedOption.Identity)]
         public int idConsulta { get; set; }
-        [ForeignKey("EstrategiasE")]
-        public int? id_estrategiasE { get; set; }
+        //[ForeignKey("EstrategiasE")]
+        //public int? id_estrategiasE { get; set; }
         [ForeignKey("IngresoClinica")]
         public long? id_ingresoClinica { get; set; }
         [ForeignKey("Consultante")]
@@ -68,7 +68,7 @@ namespace MacapSoftCAPUAN.Models
         public string logrosAlcanzadosSegunConsultante { get; set; }
         public string resumen { get; set; }
         public string observacionesRecomendaciones { get; set; }
-        public EstrategiasEvaluacion EstrategiasE { get; set; }
+        //public EstrategiasEvaluacion EstrategiasE { get; set; }
         public IngresoClinica IngresoClinica { get; set; }
         public virtual ApplicationUser User { get; set; }
         //public string usuario { get; set; }

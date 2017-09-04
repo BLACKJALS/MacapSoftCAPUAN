@@ -241,6 +241,7 @@
     <Compile Include="ModelsVM\RemisionPaciente.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CategorizacionCAP.cs" />
+    <Compile Include="Models\CategorizacionHC.cs" />
     <Compile Include="Models\CierreHC.cs" />
     <Compile Include="Models\Consecutivo.cs" />
     <Compile Include="Models\ConsultaDiagnostico.cs" />
@@ -252,6 +253,7 @@
     <Compile Include="Models\Inasistencias.cs" />
     <Compile Include="Models\IngresoClinica.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MotivoCierreHistoriaClinica.cs" />
     <Compile Include="Models\NivelEscolaridad.cs" />
     <Compile Include="Models\Paciente.cs" />
     <Compile Include="Models\Paises.cs" />
@@ -565,6 +567,7 @@
     <Content Include="Views\HistoriaClinica\DocumentoGeneralCreado.cshtml" />
     <Content Include="Views\HistoriaClinica\generarInasistenciaClinica.cshtml" />
     <Content Include="Views\HistoriaClinica\ErrorValidacionHistoriaClinica.cshtml" />
+    <Content Include="Views\HistoriaClinica\consultarInasistencias.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
