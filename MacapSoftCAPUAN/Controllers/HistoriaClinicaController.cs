@@ -254,8 +254,10 @@ namespace MacapSoftCAPUAN.Controllers
                     if (recepcion.paciente != null)
                     {
                         ViewBag.existente = "Si";
-                        //ViewBag.Pais = pais.nombrePais;
-                        recepcion.pais = pais.nombrePais;
+
+                        //recepcion.pais = pais.nombrePais;
+                        var paisSelec = (from item in HC.listarPaises() where item.nombrePais == pais.nombrePais select item.idPais).LastOrDefault();
+                        ViewBag.Pais = paisSelec;//pais.nombrePais;
                         ViewBag.numeroHC = recepcion.paciente.numeroHistoriaClinica;
                         ViewBag.nombre = recepcion.paciente.nombre;
                         ViewBag.apellido = recepcion.paciente.apellido;

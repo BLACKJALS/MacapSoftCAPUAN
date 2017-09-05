@@ -39,7 +39,7 @@
 
             if (existente == "Si") {
                 var fechN = '@ViewBag.fechaNacimiento';
-                @*var pais = '@ViewBag.Pais';*@
+                var pais = '@ViewBag.Pais';
                 $("#Documento").val(hcP);
                 $("#fechaNacimientoPaciente").val(fechN);
                 $("#fechaNacimientoPaciente").datepicker("option", "disabled", true);
@@ -51,7 +51,7 @@
                 //$('#tipoDocumentoPac').attr('readonly', 'readonly');
                 //$('#numeroDocumentoPaciente').attr('readonly', 'readonly');
                 $('#lugarNacimientoPac').attr('readonly', 'readonly');
-                //$("#paisPac").val(pais);
+                $("#paisPac").val(pais);
                 $('#paisPac').attr('readonly', 'readonly');
 
             } else {

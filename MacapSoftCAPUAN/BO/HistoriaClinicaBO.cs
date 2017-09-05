@@ -629,14 +629,31 @@ namespace MacapSoftCAPUAN.BO
             Dictionary<string, IngresoClinica> listaIngresoClinicaSinRepeticion = new Dictionary<string, IngresoClinica>();
             List<IngresoClinica> listaIngresoClinica1 = new List<IngresoClinica>();
             HC = new HistoriaClinicaBO();
-            var ingresoClinica = HC.listarIngresoClinica();
-            var cierresHC = (from item in ingresoClinica where item.estadoHC == true select item).ToList();
-            var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
-            var usuario = (from item in HC.listarUsuario() where item.Id == user select item.Email).FirstOrDefault();
-            var pacienteUser = (from item in ingresoClinica where item.idUser == user select item).ToList();
 
+            var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            var listaPermisosUsuarios = HC.permisosUsuariosPac().Where(x => x.id_aplicationUser == user).GroupBy(x => x.id_paciente).ToList();
+            var ingresoClinica = HC.listarIngresoClinica();
+
+
+            foreach (var item in listaPermisosUsuarios) {
+                foreach (var item2 in ingresoClinica) {
+                    if(long.Parse(item.Key) == item2.idIngresoClinica)
+                    {
+                        if (item2.estadoHC == true)
+                        {
+                            listaIngresoClinica.Add(item2);
+                        }
+                    }
+                }
+            }
+
+
+            var cierresHC = (from item in listaIngresoClinica where item.estadoHC == true select item).ToList();
+            var usuario = (from item in HC.listarUsuario() where item.Id == user select item.Email).FirstOrDefault();
+            var pacienteUser = (from item in listaIngresoClinica where item.idUser == user select item).ToList();
             var pacienteInactivo = (from item in HC.listarPaciente() where item.estadoHC == true select item).ToList();
 
+            
             foreach (var item in cierresHC)
             {
                 if (!(listaIngresoClinicaSinRepeticion.ContainsKey(item.id_paciente)))
@@ -658,9 +675,9 @@ namespace MacapSoftCAPUAN.BO
                     {
                         if (itemPAC.numeroHistoriaClinica == itemIngre.id_paciente)
                         {
-                            if (itemIngre.idUser == user)
-                            {
-                                var usr = (from item in HC.listarUsuario() where item.Id == itemIngre.idUser select item.Email).FirstOrDefault();
+                            //if (itemIngre.idUser == user)
+                            //{
+                                var usr = (from item in HC.listarUsuario() where item.Id == user select item.Email).FirstOrDefault();//itemIngre.idUser select item.Email).FirstOrDefault();
                                 if (usr != null)
                                 {
                                     ModeloHistoriasCl = new ListadoHistoriasClinicas();
@@ -671,7 +688,7 @@ namespace MacapSoftCAPUAN.BO
                                     ModeloHistoriasCl.idUser = itemIngre.idUser;
                                     listadoModeloHistoriasCl.Add(ModeloHistoriasCl);
                                 }
-                            }
+                            //}
                         }
                     }
                 }
@@ -761,10 +778,26 @@ namespace MacapSoftCAPUAN.BO
 
             HC = new HistoriaClinicaBO();
             var ingresoClinica = HC.listarIngresoClinica();
-            var cierresHC = (from item in ingresoClinica where item.estadoHC == true select item).ToList();
             var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            var listaPermisosUsuarios = HC.permisosUsuariosPac().Where(x => x.id_aplicationUser == user).GroupBy(x => x.id_paciente).ToList();
+            //var ingresoClinica = HC.listarIngresoClinica();
+            foreach (var item in listaPermisosUsuarios)
+            {
+                foreach (var item2 in ingresoClinica)
+                {
+                    if (long.Parse(item.Key) == item2.idIngresoClinica)
+                    {
+                        if (item2.estadoHC == true)
+                        {
+                            listaIngresoClinica.Add(item2);
+                        }
+                    }
+                }
+            }
+            var cierresHC = (from item in listaIngresoClinica where item.estadoHC == true select item).ToList();
+            
             var usuario = (from item in HC.listarUsuario() where item.Id == user select item.Email).FirstOrDefault();
-            var pacienteUser = (from item in ingresoClinica where item.idUser == user select item).ToList();
+            var pacienteUser = (from item in listaIngresoClinica where item.idUser == user select item).ToList();
 
             var pacienteInactivo = (from item in HC.listarPaciente() where item.estadoHC == true select item).ToList();
 
@@ -789,10 +822,10 @@ namespace MacapSoftCAPUAN.BO
                     {
                         if (itemPAC.numeroHistoriaClinica == itemIngre.id_paciente)
                         {
-                            if (itemIngre.idUser == user)
-                            {
-                                var usr = (from item in HC.listarUsuario() where item.Id == itemIngre.idUser select item.Email).FirstOrDefault();
-                                if (usr != null)
+                            //if (itemIngre.idUser == user)
+                            //{
+                                var usr = (from item in HC.listarUsuario() where item.Id == user select item.Email).FirstOrDefault(); //itemIngre.idUser select item.Email).FirstOrDefault();
+                            if (usr != null)
                                 {
                                     ModeloHistoriasCl = new ListadoHistoriasClinicas();
                                     itemIngre.idUser = usr;
@@ -802,7 +835,7 @@ namespace MacapSoftCAPUAN.BO
                                     ModeloHistoriasCl.idUser = itemIngre.idUser;
                                     listadoModeloHistoriasCl.Add(ModeloHistoriasCl);
                                 }
-                            }
+                            //}
                         }
                     }
                 }
