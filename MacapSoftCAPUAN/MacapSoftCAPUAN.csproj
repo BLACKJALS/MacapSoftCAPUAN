@@ -568,6 +568,7 @@
     <Content Include="Views\HistoriaClinica\generarInasistenciaClinica.cshtml" />
     <Content Include="Views\HistoriaClinica\ErrorValidacionHistoriaClinica.cshtml" />
     <Content Include="Views\HistoriaClinica\consultarInasistencias.cshtml" />
+    <Content Include="Views\HistoriaClinica\asignacionUsuarioExitoso.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

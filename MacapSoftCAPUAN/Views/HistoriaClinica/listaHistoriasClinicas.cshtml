@@ -15,6 +15,7 @@
     <link href="~/Content/bootstrap-select.css" rel="stylesheet" />
     <script src="~/Scripts/i18n/defaults-es_ES.js"></script>
     <script src="~/Scripts/i18n/defaults-es_ES.min.js"></script>
+    @*<script src="~/Scripts/bootstrap.min.js"></script>*@
     <script>
         $(document).ready(function () {
             var estadoBoton = $("#numeroHC").val();
@@ -73,11 +74,26 @@
             var parametrosFuncion = JSON.stringify({ id: $("#numeroHC").val(), docente: $("#docente").val(), estudiante: $("#estudiante").val() });
             $.ajax({
                 contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
+                //dataType: 'json',
                 type: 'POST',
                 url: '@Url.Action("AsignarUsuarioPost", "HistoriaClinica")',
                 data: parametrosFuncion,
                 success: function (data) {
+                    //alert("Funcionó");
+                    //$('#your-modal').modal('toggle');,
+                    //document.getElementById("myDialog").showModal();
+                    var dialog = document.getElementById("myDialog");
+                    dialog.showModal();
+                    dialog.addEventListener('click', function (event) {
+                        var rect = dialog.getBoundingClientRect();
+                        var isInDialog = (rect.top <= event.clientY && event.clientY <= rect.top + rect.height
+                          && rect.left <= event.clientX && event.clientX <= rect.left + rect.width);
+                        if (!isInDialog) {
+                            dialog.close();
+                        }
+                    });
+                    //$("#modalAsignarUsuarioExitoso").modal();
+                    //$('#modalAsignarUsuarioExitoso').modal('show');
                    // limpiarFormularioEditarCampo();
                     //$table.bootstrapTable('refresh');
                 },
@@ -218,4 +234,5 @@
         <button id="buttonAceptar" type="button" hidden onclick="return btnAsignarUsuarioCampo_Click();"></button>
     </div>
 </div>
+<dialog id="myDialog">La historia clínica ha sido asignada correctamente a los usuarios seleccionados.</dialog>
 

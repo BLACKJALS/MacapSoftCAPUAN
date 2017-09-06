@@ -857,7 +857,7 @@ namespace MacapSoftCAPUAN.Controllers
 
         //Metodo que permite asignar un usuario (estudiante, docente) a una HC.
         [HttpPost]
-        public ActionResult AsignarUsuarioPost(string id, string docente, string estudiante)
+        public JsonResult AsignarUsuarioPost(string id, string docente, string estudiante)
         {
             HC = new HistoriaClinicaBO();
             List<PermisosUsuariosPaciente> lstPermisos = new List<PermisosUsuariosPaciente>();
@@ -874,10 +874,14 @@ namespace MacapSoftCAPUAN.Controllers
             lstPermisos.Add(pac);
 
             HC.agregarEstrategiaIngreso(lstPermisos);
-
-            return View("AsignarUsuarioPost");
+            return Json("Asignación del usuario proceso éxitoso", JsonRequestBehavior.AllowGet);
         }
 
+
+
+        public ActionResult asignacionUsuarioExitoso() {
+            return View();
+        }
 
 
 

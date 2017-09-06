@@ -48,6 +48,7 @@
                 //$('#fechaNacimientoPaciente').attr('readonly', 'readonly');
                 $('#nombrePaciente').attr('readonly', 'readonly');
                 $('#apellidoPaciente').attr('readonly', 'readonly');
+                $('#sexo').attr('readonly', 'readonly');
                 //$('#tipoDocumentoPac').attr('readonly', 'readonly');
                 //$('#numeroDocumentoPaciente').attr('readonly', 'readonly');
                 $('#lugarNacimientoPac').attr('readonly', 'readonly');
@@ -136,6 +137,15 @@
                 alert("No se puede modificar la ciudad de nacimiento");
             }
         });
+
+
+        $('#sexo').click(function () {
+            var existente = '@ViewBag.existente';
+            if (existente == "Si") {
+                alert("No se puede modificar el sexo");
+            }
+        });
+
 
 
         $('#checkBoxSendRemision').click(function () {
