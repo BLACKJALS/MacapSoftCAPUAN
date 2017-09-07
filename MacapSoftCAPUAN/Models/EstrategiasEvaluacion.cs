@@ -49,8 +49,8 @@ namespace MacapSoftCAPUAN.Models
         //public int? id_estrategiasE { get; set; }
         [ForeignKey("IngresoClinica")]
         public long? id_ingresoClinica { get; set; }
-        [ForeignKey("Consultante")]
-        public string id_consultante { get; set; }
+        //[ForeignKey("Consultante")]
+        //public string id_consultante { get; set; }
         [ForeignKey("User")]
         public string id_User { get; set; }
 
@@ -73,6 +73,6 @@ namespace MacapSoftCAPUAN.Models
         public IngresoClinica IngresoClinica { get; set; }
         public virtual ApplicationUser User { get; set; }
         //public string usuario { get; set; }
-        public Consultante Consultante { get; set; }
+        //public Consultante Consultante { get; set; }
     }
 }
