@@ -634,6 +634,25 @@ namespace MacapSoftCAPUAN.DALC
         }
 
 
+        public string guardarDiagnosticoConsultasInformes(List<ConsultaDiagnostico> listaConDiag)
+        {
+            try
+            {
+                foreach (var item in listaConDiag)
+                {
+                    bd.consultaDiagnosticoContext.Add(item);
+                    bd.SaveChanges();
+                }
+                return "Proceso Exitoso";
+            }
+            catch (Exception e)
+            {
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo crear la categorizacion y consulta.", e);
+                return argxEx.ToString();
+            }
+        }
+
+
         public void asignarUsuariosHC(List<PermisosUsuariosPaciente> permisosUsr)
         {
             bd = new ApplicationDbContext();

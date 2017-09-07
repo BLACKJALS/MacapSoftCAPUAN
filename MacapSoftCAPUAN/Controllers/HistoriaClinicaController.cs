@@ -1221,9 +1221,55 @@ namespace MacapSoftCAPUAN.Controllers
         }
 
 
-        public ActionResult InformeSesion() {
+        public ActionResult InformeSesion(string id) {
+            List<SelectListItem> listaItemsDiagnostico = new List<SelectListItem>();
+            Consulta consulta = new Consulta();
+            SelectListItem items;
+
+            HC = new HistoriaClinicaBO();
+            diagBo = new DiagnosticoBO();
+            var ingreso = (from item in HC.listarIngresoClinica() where item.id_paciente == id select item).LastOrDefault();
+            var numeroConsultas = (from item in HC.listarConsultas() where item.id_ingresoClinica == ingreso.idIngresoClinica select item).Count();
+            var paciente = (from item in HC.listarPaciente() where item.numeroHistoriaClinica == ingreso.id_paciente select item).LastOrDefault();
+
+            var listaDiagnostico = diagBo.listarDiagnostico();
+            foreach (var item in listaDiagnostico)
+            {
+                items = new SelectListItem();
+                items.Text = item.Codigo;
+                items.Value = item.Codigo;
+                listaItemsDiagnostico.Add(items);
+            }
+            ViewBag.ItemDiagnostico = listaItemsDiagnostico.ToList();
+            if (numeroConsultas > 0 ) {
+                ViewBag.ItemNumeroSesion = numeroConsultas;
+            }
+
+            ViewBag.ItemNumHC = paciente.numeroHistoriaClinica;
+            consulta.id_ingresoClinica = ingreso.idIngresoClinica;
             return View();
         }
+
+
+
+        [HttpPost]
+        public ActionResult guardarInformeSesion(Consulta consulta, string NumeroHCP, string Diag) {
+            HC = new HistoriaClinicaBO();
+
+            var IngresoCl = (from item in HC.listarIngresoClinica() where item.id_paciente == NumeroHCP select item).LastOrDefault();
+            var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            var usuario = (from item in HC.listarUsuario() where item.Id == user select item.Id).FirstOrDefault();
+
+            var ingresoCl = long.Parse(IngresoCl.idIngresoClinica.ToString());
+            consulta.id_ingresoClinica = IngresoCl.idIngresoClinica;
+            consulta.id_User = usuario;
+            HC.agregarConsulta(consulta);
+            HC.crearDiagnosticosInformeSesion(ingresoCl, Diag);
+            
+            return View();
+        }
+
+
 
         public ActionResult generarInasistenciaClinica(string id, string motivoIn, DateTime Fecha)
         {
@@ -1235,12 +1281,6 @@ namespace MacapSoftCAPUAN.Controllers
             
             var paciente = (from item in listaPaciente where item.numeroHistoriaClinica == id select item).FirstOrDefault();
             var ingresoCl = (from item in listaIngresos where paciente.numeroHistoriaClinica == item.id_paciente select item).LastOrDefault();
-            //var conteoInasistencia = (from item in listarInasistencia where item.id_ingresoClinica == ingresoCl.idIngresoClinica select item).Count();
-
-            //if(conteoInasistencia >= 2) {
-            //    return View();
-            //}
-            //else{
             var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
             var usuario = (from item in HC.listarUsuario() where item.Id == user select item).FirstOrDefault();
             if (ingresoCl != null)
@@ -1251,9 +1291,6 @@ namespace MacapSoftCAPUAN.Controllers
                 inasistencia.usuario = usuario.Id;
             }
             HC.agregarInasistencia(inasistencia);
-            //ViewBag.conteo = conteoInasistencia;
-
-            //}
             return View();
         }
 

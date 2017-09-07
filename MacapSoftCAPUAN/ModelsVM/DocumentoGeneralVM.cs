@@ -27,6 +27,7 @@ namespace MacapSoftCAPUAN.ModelsVM
             consultante = new Consultante();
             estrategiaEva = new IngresoEstrategiasEvaluacion();
             consulta = new Consulta();
+            consulta.numeroSesion = 1;
             estrategiasIngreso = new List<IngresoEstrategiasEvaluacion>();
         }
 

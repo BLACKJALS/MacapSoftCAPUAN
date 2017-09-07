@@ -921,6 +921,30 @@ namespace MacapSoftCAPUAN.BO
 
 
 
+        public string crearDiagnosticosInformeSesion(long idHistoriaClinica, string diagnostico)
+        {
+            hcDALC = new HistoriaClinicaDALC();
+
+            var listaDiagnostico = diagnostico.Split(',');
+            var listaConsultas = hcDALC.listarConsultas();
+            var ultimaConsulta = (from item in listaConsultas where item.id_ingresoClinica == idHistoriaClinica select item).LastOrDefault();
+
+            List<ConsultaDiagnostico> lstConsultaDiagnostico = new List<ConsultaDiagnostico>();
+            ConsultaDiagnostico consultaDiagnostico;
+
+
+            foreach (var itemDiagnostico in listaDiagnostico)
+            {
+                consultaDiagnostico = new ConsultaDiagnostico();
+                consultaDiagnostico.id_diagnostico = itemDiagnostico;
+                consultaDiagnostico.id_consulta = ultimaConsulta.idConsulta;
+                lstConsultaDiagnostico.Add(consultaDiagnostico);
+            }
+            return hcDALC.guardarDiagnosticoConsultasInformes(lstConsultaDiagnostico);
+        }
+
+
+
         public string agregarEstrategiaIngreso(List<PermisosUsuariosPaciente> permisosUsr)
         {
             hcDALC = new HistoriaClinicaDALC();

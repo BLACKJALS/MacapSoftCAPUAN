@@ -235,6 +235,7 @@
     <Compile Include="ModelsVM\DiagnosticoVM.cs" />
     <Compile Include="ModelsVM\DocumentoGeneralVM.cs" />
     <Compile Include="ModelsVM\HistoriaClinicaVM.cs" />
+    <Compile Include="ModelsVM\InformeSesion.cs" />
     <Compile Include="ModelsVM\ListadoHistoriasClinicas.cs" />
     <Compile Include="ModelsVM\MotivoRemisionVM.cs" />
     <Compile Include="ModelsVM\RecepcionCaso.cs" />
@@ -569,6 +570,7 @@
     <Content Include="Views\HistoriaClinica\ErrorValidacionHistoriaClinica.cshtml" />
     <Content Include="Views\HistoriaClinica\consultarInasistencias.cshtml" />
     <Content Include="Views\HistoriaClinica\asignacionUsuarioExitoso.cshtml" />
+    <Content Include="Views\HistoriaClinica\guardarInformeSesion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

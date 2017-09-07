@@ -111,7 +111,7 @@
                 </div>
                 <div class="col-md-1"></div>
                 <div class="col-md-3">
-                    <input type="submit" value="Informe de sesión" class="form-control btn btn-primary" id="informeSesion"  onclick="location.href='@Url.Action("InformeSesion", "HistoriaClinica" )'"/>
+                    <input type="submit" value="Informe de sesión" class="form-control btn btn-primary" id="informeSesion"  onclick="location.href='@Url.Action("InformeSesion", "HistoriaClinica",new { id = ViewBag.idPaciente} )'"/>
                 </div>
                 <div class="col-md-2"></div>
                 <div class="col-md-3">

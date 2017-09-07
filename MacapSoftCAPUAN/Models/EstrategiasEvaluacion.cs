@@ -68,6 +68,7 @@ namespace MacapSoftCAPUAN.Models
         public string logrosAlcanzadosSegunConsultante { get; set; }
         public string resumen { get; set; }
         public string observacionesRecomendaciones { get; set; }
+        public int numeroSesion { get; set; }
         //public EstrategiasEvaluacion EstrategiasE { get; set; }
         public IngresoClinica IngresoClinica { get; set; }
         public virtual ApplicationUser User { get; set; }
