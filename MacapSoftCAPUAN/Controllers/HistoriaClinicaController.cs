@@ -500,7 +500,7 @@ namespace MacapSoftCAPUAN.Controllers
 
 
 
-        
+        //Método en el cual se guarda el ingreso "Recepción de caso de un paciente", sea nuevo o antiguo.
         [HttpPost]
         public ActionResult IngresoPacientesCreado(RecepcionCaso model, string Informacion, string Documento)
         {
@@ -596,7 +596,7 @@ namespace MacapSoftCAPUAN.Controllers
 
 
 
-
+        //Método en el cual se guarda la remisión del paciente.
         [HttpPost]
         public ActionResult RemitirPaciente(RemisionPaciente modelRemision, string concMremison) {
             HC = new HistoriaClinicaBO();
@@ -1224,13 +1224,33 @@ namespace MacapSoftCAPUAN.Controllers
         public ActionResult InformeSesion(string id) {
             List<SelectListItem> listaItemsDiagnostico = new List<SelectListItem>();
             Consulta consulta = new Consulta();
+            List<string> diagnosticos = new List<string>();
             SelectListItem items;
 
             HC = new HistoriaClinicaBO();
             diagBo = new DiagnosticoBO();
             var ingreso = (from item in HC.listarIngresoClinica() where item.id_paciente == id select item).LastOrDefault();
             var numeroConsultas = (from item in HC.listarConsultas() where item.id_ingresoClinica == ingreso.idIngresoClinica select item).Count();
+            var Consultas = (from item in HC.listarConsultas() where item.id_ingresoClinica == ingreso.idIngresoClinica select item).ToList();
             var paciente = (from item in HC.listarPaciente() where item.numeroHistoriaClinica == ingreso.id_paciente select item).LastOrDefault();
+            var informesSesión = (from item in HC.listarConsultas() where item.id_ingresoClinica == ingreso.idIngresoClinica select item).ToList();
+            var consultasDiagnosticos = HC.listarConsultaDiagnosticos();
+
+            if (consultasDiagnosticos != null) {
+                foreach (var item in Consultas) {
+                    var numeroConsulta = "Numero de consulta: "+item.numeroSesion;
+                    diagnosticos.Add(numeroConsulta);
+                    foreach (var item1 in consultasDiagnosticos)
+                    {
+                        if(item.idConsulta == item1.id_consulta)
+                        {
+                            var itemDiagnóstico = item1.id_diagnostico;
+                            diagnosticos.Add(itemDiagnóstico);
+                        }
+                    }
+                }
+            }
+
 
             var listaDiagnostico = diagBo.listarDiagnostico();
             foreach (var item in listaDiagnostico)
@@ -1243,6 +1263,10 @@ namespace MacapSoftCAPUAN.Controllers
             ViewBag.ItemDiagnostico = listaItemsDiagnostico.ToList();
             if (numeroConsultas > 0 ) {
                 ViewBag.ItemNumeroSesion = numeroConsultas;
+            }
+
+            if (informesSesión != null) {
+                ViewBag.Diagnosticos = diagnosticos;
             }
 
             ViewBag.ItemNumHC = paciente.numeroHistoriaClinica;

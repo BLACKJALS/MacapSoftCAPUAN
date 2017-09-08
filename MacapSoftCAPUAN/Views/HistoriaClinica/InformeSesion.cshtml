@@ -14,9 +14,10 @@
     $(document).ready(function () {
 
         var numeroSesion = '@ViewBag.ItemNumeroSesion';
-        //if (numeroSesion != null) {
-            //numeroSesion += 1;
-        //}
+        var diagnosticosAnts = '@ViewBag.Diagnosticos';
+        if (diagnosticosAnts != null) {
+            $("#diagnosticosAnteriores").val(diagnosticosAnts);
+        }
         $("#numeroSesion").val(parseInt(numeroSesion) + 1);
         $("#numeroSesion").attr('readonly', 'readonly');
 
@@ -37,9 +38,14 @@
         $("#Diag").val(diagnosticos);
     });
 
+    function goBack() {
+        window.history.back();
+    }
+
 </script>
 }
 <h1 style="text-align:center">Informe sesión</h1>
+<br />
 <div class="container">
 @using (@Html.BeginForm("guardarInformeSesion", "HistoriaClinica", FormMethod.Post, new { @class = "form-horizontal", id = "FormularioInformeSesion" }))
 {
@@ -69,6 +75,19 @@
         </div>
         <div class="col-md-2">
             <input class="form-control" placeholder="Recibo pago"  name="consulta.reciboPago" required/>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+            <label style="font-size:smaller">Diagnósticos anteriores por consulta:</label>
+        </div>
+        <div class="col-md-4">
+            @foreach (var item in @ViewBag.Diagnosticos)
+            {
+              <label style="font-size:smaller">@item</label>
+              <br />
+            }
         </div>
     </div>
     <br />
@@ -107,7 +126,7 @@
             <input type="submit" value="Guardar" class="form-control btn btn-primary" />
         </div>
         <div class="col-md-2">
-            <input type="submit" value="Cancelar" class="form-control" onclick="location.href='@Url.Action("historiaClinica", "HistoriaClinica")'" />
+            <input type="submit" value="Cancelar" class="form-control" onclick="return goBack();"/> @*onclick="location.href='@Url.Action("historiaClinica", "HistoriaClinica")'" />*@
         </div>
     </div>
 }

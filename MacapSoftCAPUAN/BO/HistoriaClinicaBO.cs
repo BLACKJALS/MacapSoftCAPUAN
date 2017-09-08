@@ -391,6 +391,16 @@ namespace MacapSoftCAPUAN.BO
                 paciente = recepcionC.paciente;
                 paciente.estadoHC = false; 
                 paciente.consecutivo = consecutivo.numeroConsecutivo;
+
+                if (recepcionC.ingresoClinica.tieneEpc == null) {
+                    recepcionC.ingresoClinica.tieneEpc = "NO";
+                }
+
+                if (recepcionC.ingresoClinica.tieneEps == null)
+                {
+                    recepcionC.ingresoClinica.tieneEps = "NO";
+                }
+
                 var pacienteExst = (from item in HC.listarPaciente() where item.numeroHistoriaClinica == recepcionC.paciente.numeroHistoriaClinica select item).LastOrDefault();
                 if (pacienteExst == null) {
                     HC.agregarConsecutivo(consecutivo);
@@ -951,5 +961,14 @@ namespace MacapSoftCAPUAN.BO
             hcDALC.asignarUsuariosHC(permisosUsr);
             return "Proceso Exitoso";
         }
+
+
+
+        public List<ConsultaDiagnostico> listarConsultaDiagnosticos()
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            return hcDALC.listarConsultaDiagnostico();
+        }
+        
     }
 }

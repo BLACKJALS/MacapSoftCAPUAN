@@ -672,5 +672,15 @@ namespace MacapSoftCAPUAN.DALC
             return listaPermisosUsuariosPac;
         }
 
+
+
+        public List<ConsultaDiagnostico> listarConsultaDiagnostico()
+        {
+            bd = new ApplicationDbContext();
+            List<ConsultaDiagnostico> listaConsultaDiagnostico = new List<ConsultaDiagnostico>();
+            listaConsultaDiagnostico = bd.consultaDiagnosticoContext.ToList();
+            return listaConsultaDiagnostico;
+        }
+
     }
 }
