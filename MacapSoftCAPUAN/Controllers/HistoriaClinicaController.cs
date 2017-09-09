@@ -974,6 +974,70 @@ namespace MacapSoftCAPUAN.Controllers
 
 
 
+        public ActionResult cierreCasoHC(string id)
+        {
+            HC = new HistoriaClinicaBO();
+            CierreCasoVM cierreCasoVM = new CierreCasoVM();
+            List<SelectListItem> listaItemsOcupacion = new List<SelectListItem>();
+            SelectListItem items;
+
+            var listaOcupacion = HC.listarOcupacion();
+
+            foreach (var item in listaOcupacion)
+            {
+                items = new SelectListItem();
+                items.Text = item.nombre;
+                items.Value = item.id_Ocupacion.ToString();
+                listaItemsOcupacion.Add(items);
+            }
+
+            var paciente = (from item in HC.listarPaciente() where item.numeroHistoriaClinica == id select item).FirstOrDefault();
+            var ingresoClinica = (from item in HC.listarIngresoClinica() where item.id_paciente == paciente.numeroHistoriaClinica select item).LastOrDefault();
+            var numeroConsultas = (from item in HC.listarConsultas() where item.id_ingresoClinica == ingresoClinica.idIngresoClinica select item).Count();
+            var numeroInasistencias = (from item in HC.listarInasistencias() where item.id_ingresoClinica == ingresoClinica.idIngresoClinica select item).Count();
+            var consultas = (from item in HC.listarConsultas() where item.id_ingresoClinica == ingresoClinica.idIngresoClinica select item).ToList();
+
+            var fechNa = (paciente.fechaNacimiento).ToString();
+            var fechanaStr = DateTime.Parse(fechNa);
+            string formatFNa = "yyyy-MM-dd";
+            var fechaNac = fechanaStr.ToString(formatFNa);
+
+
+            cierreCasoVM.paciente = paciente;
+            cierreCasoVM.ingresoClinica = ingresoClinica;
+
+            var fechN = (ingresoClinica.fechaIngreso).ToString();
+            var fechnStr = DateTime.Parse(fechN);
+            string format = "yyyy-MM-dd";
+            var fecha = fechnStr.ToString(format);
+
+            ViewBag.ItemsOcupacion = listaItemsOcupacion.ToList();
+            ViewBag.fechaIniciopsicoterapia = fecha;
+            ViewBag.fechaNacimiento = fechaNac;
+
+            if (numeroConsultas > 0)
+            {
+                ViewBag.ItemNumeroSesion = numeroConsultas;
+            }
+
+
+            if (numeroInasistencias > 0)
+            {
+                ViewBag.ItemNumeroInasistencias = numeroInasistencias;
+            }
+
+
+            return View(cierreCasoVM);
+        }
+
+
+
+        public ActionResult cierreCaso(CierreCasoVM cierreCaso, string concMremison) {
+            return View();
+        }
+
+
+
         public ActionResult documentoGeneral(string id)
         {
             HC = new HistoriaClinicaBO();
@@ -1215,12 +1279,10 @@ namespace MacapSoftCAPUAN.Controllers
         }
 
 
-        public ActionResult cierreCasoHC()
-        {
-            return View();
-        }
+        
 
 
+        //Metodo con el cual se realzia la validación de parámetros y direccionamiento a la vista de informe de sesión.
         public ActionResult InformeSesion(string id) {
             List<SelectListItem> listaItemsDiagnostico = new List<SelectListItem>();
             Consulta consulta = new Consulta();
@@ -1275,7 +1337,7 @@ namespace MacapSoftCAPUAN.Controllers
         }
 
 
-
+        //Método con el cual se guarda el informe de sesión.
         [HttpPost]
         public ActionResult guardarInformeSesion(Consulta consulta, string NumeroHCP, string Diag) {
             HC = new HistoriaClinicaBO();
@@ -1288,13 +1350,16 @@ namespace MacapSoftCAPUAN.Controllers
             consulta.id_ingresoClinica = IngresoCl.idIngresoClinica;
             consulta.id_User = usuario;
             HC.agregarConsulta(consulta);
-            HC.crearDiagnosticosInformeSesion(ingresoCl, Diag);
+            if (Diag != "") {
+                HC.crearDiagnosticosInformeSesion(ingresoCl, Diag);
+            }
+            
             
             return View();
         }
 
 
-
+        //Método con el cual se genera la inasistencia.
         public ActionResult generarInasistenciaClinica(string id, string motivoIn, DateTime Fecha)
         {
             Inasistencias inasistencia = new Inasistencias();

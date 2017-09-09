@@ -232,6 +232,7 @@
     </Compile>
     <Compile Include="Mapeo.cs" />
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="ModelsVM\CierreCasoVM.cs" />
     <Compile Include="ModelsVM\DiagnosticoVM.cs" />
     <Compile Include="ModelsVM\DocumentoGeneralVM.cs" />
     <Compile Include="ModelsVM\HistoriaClinicaVM.cs" />
