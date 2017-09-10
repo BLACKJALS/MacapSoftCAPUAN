@@ -79,23 +79,25 @@
                 url: '@Url.Action("AsignarUsuarioPost", "HistoriaClinica")',
                 data: parametrosFuncion,
                 success: function (data) {
-                    //alert("Funcionó");
-                    //$('#your-modal').modal('toggle');,
-                    //document.getElementById("myDialog").showModal();
-                    var dialog = document.getElementById("myDialog");
-                    dialog.showModal();
-                    dialog.addEventListener('click', function (event) {
-                        var rect = dialog.getBoundingClientRect();
-                        var isInDialog = (rect.top <= event.clientY && event.clientY <= rect.top + rect.height
-                          && rect.left <= event.clientX && event.clientX <= rect.left + rect.width);
-                        if (!isInDialog) {
-                            dialog.close();
-                        }
-                    });
-                    //$("#modalAsignarUsuarioExitoso").modal();
-                    //$('#modalAsignarUsuarioExitoso').modal('show');
-                   // limpiarFormularioEditarCampo();
-                    //$table.bootstrapTable('refresh');
+                    
+                    window.location = '@Url.Action("asignacionUsuarioExitoso", "HistoriaClinica")';
+                   // //alert("Funcionó");
+                   // //$('#your-modal').modal('toggle');,
+                   // //document.getElementById("myDialog").showModal();
+                   // var dialog = document.getElementById("myDialog");
+                   // dialog.showModal();
+                   // dialog.addEventListener('click', function (event) {
+                   //     var rect = dialog.getBoundingClientRect();
+                   //     var isInDialog = (rect.top <= event.clientY && event.clientY <= rect.top + rect.height
+                   //       && rect.left <= event.clientX && event.clientX <= rect.left + rect.width);
+                   //     if (!isInDialog) {
+                   //         dialog.close();
+                   //     }
+                   // });
+                   // //$("#modalAsignarUsuarioExitoso").modal();
+                   // //$('#modalAsignarUsuarioExitoso').modal('show');
+                   //// limpiarFormularioEditarCampo();
+                   // //$table.bootstrapTable('refresh');
                 },
                 failure: function (response) {
                     //$('#result').html(response);

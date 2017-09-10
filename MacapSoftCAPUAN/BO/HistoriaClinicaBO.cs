@@ -13,7 +13,7 @@ namespace MacapSoftCAPUAN.BO
     {
         private HistoriaClinicaDALC hcDALC;
         HistoriaClinicaBO HC;
-        DiagnosticoBO diagBO;
+
 
         public List<Barrios> listarBarrios() {
             hcDALC = new HistoriaClinicaDALC();
@@ -969,6 +969,44 @@ namespace MacapSoftCAPUAN.BO
             hcDALC = new HistoriaClinicaDALC();
             return hcDALC.listarConsultaDiagnostico();
         }
+
+
+        //Se modifica el ingreso clínica ya que se cierra la HC
+        public string modificarCierreHCIngresoClinica(IngresoClinica ingresoCl)
+        {
+            try
+            {
+                hcDALC = new HistoriaClinicaDALC();
+                hcDALC.modificarCierreHCIngresoCl(ingresoCl);
+                return "Proceso Exitoso";
+            }
+            catch (Exception e)
+            {
+                System.ArgumentException argxEx = new System.ArgumentException(e.Message);
+                return argxEx.ToString();
+            }
+        }
+
+
+        //Método encargado de modificar un cierre
+        public string modificarCierre(CierreHC cierreHistoriaClinica)
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            hcDALC.modificarCierre(cierreHistoriaClinica);
+            return "Proceso Exitoso";
+        }
+
+
+        //Método encargado de agregar los motivos de remision de acuerdo al cierre de una HC
+        public string agregarMotivosRemision(List<MotivoCierreHistoriaClinica> listaMotivosRemisison)
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            hcDALC.agregarMotivosRemision(listaMotivosRemisison);
+            return "Proceso Exitoso";
+        }
         
+
+
+
     }
 }

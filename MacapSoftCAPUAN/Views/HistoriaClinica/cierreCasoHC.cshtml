@@ -24,10 +24,10 @@
         $("#ocupacion").prop("disabled", true);
         //$("#").val(fechNac);
 
-        @*var nHC = '@ViewBag.ItemNumHC';
-        $("#numeroHC").val(nHC);*@
+        var nHC = '@ViewBag.ItemNumHC';
+        $("#numeroHC").val(nHC);
         $("#numeroHC").attr('readonly', 'readonly');
-
+        $("#NumeroHCP").val(nHC);
 
         var fechIngr = '@ViewBag.fechaIniciopsicoterapia';
         $("#fechaIniPsico").val(fechIngr);
@@ -42,6 +42,10 @@
         $("#fechaFinPsico").val(fechaHoy);
         $("#fechaFinPsico").attr('readonly', 'readonly');
 
+
+        var usrCierre = '@ViewBag.UsuarioCierre';
+        $("#usuarioCierra").val(usrCierre);
+        $("#usuarioCierra").attr('readonly', 'readonly');
     });
 
     $('#diagnostico').on('change', function () {
@@ -90,7 +94,7 @@
         //    $("#guardarRemitir").prop("disabled", false);
         //}
 
-        $("#concMremison").val(concat);
+        $("#concMotCierre").val(concat);
     };
 
     $('#MotivoAcuerdo').click(function () {
@@ -130,7 +134,8 @@
     {
     @*@using (@Html.BeginForm("cierreCaso", "HistoriaClinica", FormMethod.Post, new { @class = "form-horizontal", id = "FormularioDocumentoGeneral" }))
     {*@
-    @Html.Hidden("concMremison");
+    @Html.Hidden("NumeroHCP");
+    @Html.Hidden("concMotCierre");
     <div class="jumbotron">
         <h3 style="text-align:center; background-color:#9BC2E6">Datos del paciente</h3>
         <br />
@@ -145,7 +150,7 @@
                 <label style="font-size:smaller">Número de HC:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="NumeroHC" placeholder="Número HC" value="@Model.paciente.numeroHistoriaClinica" />
+                <input class="form-control" placeholder="N° Historia" id="numeroHC"/>
                 @*<input class="form-control"   placeholder="Número de HC" required />*@
             </div>
         </div>
@@ -218,10 +223,10 @@
                 @*<input class="form-control"  placeholder="Escolaridad" value="" required />*@
             </div>
             <div class="col-md-2">
-                <label style="font-size:smaller">Remitido por:</label>
+                <label style="font-size:smaller">Usuario que cierra el caso:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" placeholder="Remitido por" name="@Model.remision.nombreProfesional" required />
+                <input class="form-control" id="usuarioCierra" placeholder="Remitido por" name="cierreHC.id_UsuarioCierraCaso" required />
             </div>
         </div>
         <br />
@@ -230,20 +235,20 @@
                 <label style="font-size:smaller">Fecha inicio psicoterapia:</label>
             </div>
             <div class="col-md-2">
-                <input type="text" id="fechaIniPsico" class="form-control" />
+                <input type="text" id="fechaIniPsico" class="form-control" name="cierreHC.fechaInicioPsicoterapia"/>
             </div>
             <div class="col-md-2">
                 <label style="font-size:smaller">Fecha fin de la psicoterapia:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="fechaFinPsico" placeholder="Fecha fin psicoterapia" required />
+                <input class="form-control" id="fechaFinPsico" placeholder="Fecha fin psicoterapia" name="cierreHC.fechaFinalizaionPsicoterapia" required />
                 @*<input type="text" class="form-control" id="fechaRemision" onclick="return fechaHoy();"/>*@
             </div>
             <div class="col-md-2">
                 <label style="font-size:smaller">Número de citas asignadas:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" placeholder="Número de citas asignadas" required />
+                <input class="form-control" placeholder="Número de citas asignadas" name="cierreHC.numeroCitasAsignadas" required />
             </div>
         </div>
         <br />
@@ -317,7 +322,7 @@
         <label style="font-size:medium">Especifique acerca del motivo de cierre:</label>
     </div>
     <div class="form-group">
-        <textarea class="form-control" style="min-width: 100%" rows="6" required></textarea>
+        <textarea class="form-control" style="min-width: 100%" rows="6" name="cierreHC.especificacionMotivoCierre" required></textarea>
     </div>
     <br />
     <h3 style="text-align:center; background-color:#9BC2E6">Evolución de la intervención psicológica</h3>
@@ -327,7 +332,7 @@
             <label style="font-size:medium">Logros alcanzados con base en los objetivos terapéuticos:</label>
         </div>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" name="@Model.consulta.logrosAlcanzadosSegunObjetivosTerapeuticos" required></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" name="consulta.logrosAlcanzadosSegunObjetivosTerapeuticos" required></textarea>
         </div>
     </div>
     <div class="form-group">
@@ -335,7 +340,7 @@
             <label style="font-size:medium">Logros alcanzados según el consultante:</label>
         </div>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" name="@Model.consulta.logrosAlcanzadosSegunConsultante" required></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" name="consulta.logrosAlcanzadosSegunConsultante" required></textarea>
         </div>
     </div>
     <div class="form-group">
@@ -343,7 +348,7 @@
             <label style="font-size:medium">Observaciones y recomendaciones:</label>
         </div>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" name="@Model.consulta.observacionesRecomendaciones" required></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" name="consulta.observacionesRecomendaciones" required></textarea>
         </div>
     </div>
 

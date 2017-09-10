@@ -40,6 +40,7 @@
             if (existente == "Si") {
                 var fechN = '@ViewBag.fechaNacimiento';
                 var pais = '@ViewBag.Pais';
+                var localidad = '@ViewBag.Localidad';
                 $("#Documento").val(hcP);
                 $("#fechaNacimientoPaciente").val(fechN);
                 $("#fechaNacimientoPaciente").datepicker("option", "disabled", true);
@@ -54,7 +55,7 @@
                 $('#lugarNacimientoPac').attr('readonly', 'readonly');
                 $("#paisPac").val(pais);
                 $('#paisPac').attr('readonly', 'readonly');
-
+                $("#localidad").val(localidad);
             } else {
                 $("#Documento").val(npC);
             }
@@ -427,7 +428,7 @@
                 <label style="font-size:smaller">Localidad:</label>
             </div>
             <div class="col-md-3">
-                @Html.DropDownList("ingresoClinica.id_localidad", (IEnumerable<SelectListItem>)ViewBag.ItemLocalidades, new { @class = "form-control", required = "true" })
+                @Html.DropDownList("ingresoClinica.id_localidad", (IEnumerable<SelectListItem>)ViewBag.ItemLocalidades, new { @class = "form-control", required = "true", id="localidad" })
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Barrio:</label>

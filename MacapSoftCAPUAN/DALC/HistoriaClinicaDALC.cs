@@ -682,5 +682,111 @@ namespace MacapSoftCAPUAN.DALC
             return listaConsultaDiagnostico;
         }
 
+
+        //Sentencia que modifica en base de datos el ingreso clínica
+        public string modificarCierreHCIngresoCl(IngresoClinica ingresoClinica)
+        {
+            try
+            {
+                var cierreHC = new IngresoClinica { idIngresoClinica = ingresoClinica.idIngresoClinica };
+                using (var context = new ApplicationDbContext())
+                {
+                    context.ingresoClinicaContext.Attach(cierreHC);
+                    cierreHC.idIngresoClinica = ingresoClinica.idIngresoClinica;
+                    cierreHC.estadoHC = true;
+                    context.SaveChanges();
+                }
+
+                return "Exito";
+            }
+            catch (Exception e)
+            {
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo modificar el cierre.", e.Message);
+                return argxEx.ToString();
+            }
+
+        }
+
+
+        //Sentencia que modifica en base de datos el cierre de una historia clínica
+        public string modificarCierre(CierreHC cierre)
+        {
+            try
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    var result = db.cierreHcContext.SingleOrDefault(b => b.idCierreHC == cierre.idCierreHC);
+                    if (result != null)
+                    {
+                        result.fechaFinalizaionPsicoterapia = cierre.fechaFinalizaionPsicoterapia;
+                        result.fechaInicioPsicoterapia = cierre.fechaInicioPsicoterapia;
+                        result.id_UsuarioCierraCaso = cierre.id_UsuarioCierraCaso;
+
+                        if (result.numeroCitasAsignadas != null)
+                        {
+                            result.numeroCitasAsignadas = cierre.numeroCitasAsignadas;
+                        }
+
+                        if (result.numeroSesionesRealizadas != null)
+                        {
+                            result.numeroSesionesRealizadas = cierre.numeroSesionesRealizadas;
+                        }
+
+                        if (cierre.especificacionMotivoCierre != null)
+                        {
+                            result.especificacionMotivoCierre = cierre.especificacionMotivoCierre;
+                        }
+                        db.SaveChanges();
+                    }
+                }
+
+
+                //var cierreHC = new CierreHC { idCierreHC = cierre.idCierreHC };
+                //using (var context = new ApplicationDbContext())
+                //{
+                //    context.cierreHcContext.Attach(cierreHC);
+                //    cierreHC.idCierreHC = cierre.idCierreHC;
+                //    cierreHC.fechaFinalizaionPsicoterapia = cierre.fechaFinalizaionPsicoterapia;
+                //    cierreHC.fechaInicioPsicoterapia = cierre.fechaInicioPsicoterapia;
+                //    cierreHC.id_UsuarioCierraCaso = cierre.id_UsuarioCierraCaso;
+
+                //    if (cierreHC.numeroCitasAsignadas != null)
+                //    {
+                //        cierreHC.numeroCitasAsignadas = cierre.numeroCitasAsignadas;
+                //    }
+
+                //    if (cierreHC.numeroSesionesRealizadas != null)
+                //    {
+                //        cierreHC.numeroSesionesRealizadas = cierre.numeroSesionesRealizadas;
+                //    }
+                    
+                //    if (cierre.especificacionMotivoCierre != null) {
+                //        cierreHC.especificacionMotivoCierre = cierre.especificacionMotivoCierre;
+                //    }
+                //    context.SaveChanges();
+                //}
+
+                return "Exito";
+            }
+            catch (Exception e)
+            {
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo modificar el cierre.", e.Message);
+                return argxEx.ToString();
+            }
+        }
+
+
+        //Agregar motivos de cierre de un cierre
+        public void agregarMotivosRemision(List<MotivoCierreHistoriaClinica> listaMotivosRemision)
+        {
+            bd = new ApplicationDbContext();
+
+            foreach (var item in listaMotivosRemision)
+            {
+                bd.motivoCierreHcContext.Add(item);
+                bd.SaveChanges();
+            }
+        }
+
     }
 }

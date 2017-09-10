@@ -20,17 +20,19 @@ namespace MacapSoftCAPUAN.Models
         //public int? id_consulta { get; set; }
         [ForeignKey("MotivoCierre")]
         public int? id_motivoCierre { get; set; }
-        //[ForeignKey("User")]
-        //public string id_User { get; set; }
+        [ForeignKey("User")]
+        public string id_UsuarioCierraCaso { get; set; }
 
         public DateTime fechaInicioPsicoterapia { get; set; }
         public DateTime fechaFinalizaionPsicoterapia { get; set; }
         public string numeroCitasAsignadas { get; set; }
         public string numeroSesionesRealizadas { get; set; }
         public string idUsuario { get; set; }
+        public string especificacionMotivoCierre { get; set; }
         //public Consulta Consulta { get; set; }
         public IngresoClinica IngresoClinica { get; set; }
         public MotivosCierre MotivoCierre { get; set; }
+        public virtual ApplicationUser User { get; set; }
         //public virtual ApplicationUser User { get; set; }
     }
 

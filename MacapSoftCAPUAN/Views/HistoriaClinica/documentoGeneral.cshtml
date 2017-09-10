@@ -21,11 +21,15 @@
             $("#NumeroHCP").val(numeroHcp);
             $("#NumeroHC").attr('readonly', 'readonly');
             $("#sexo").prop("disabled", true);
+            var pais = '@ViewBag.Pais';
+            $("#paisPac").val(pais);
             $("#paisPac").prop("disabled", true);
             $("#lugarNacimientoPac").prop("disabled", true);
             $("#nivelEscolaridad").prop("disabled", true);
             $("#ocupacion").prop("disabled", true);
             $("#barrio").prop("disabled", true);
+            var localidad = '@ViewBag.Localidad';
+            $("#localidades").val(localidad);
             $("#localidades").prop("disabled", true);
 
             var motConsul = '@ViewBag.motivoConsulta';
@@ -129,7 +133,7 @@
                 $("#entrevistas").prop('disabled', true);
                 $("#observacionesRecomendaciones").prop('disabled', true);
                 $("#btnGuardar").prop('disabled', true);
-                
+
             }
         });
 

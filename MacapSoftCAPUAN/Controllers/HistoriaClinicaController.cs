@@ -43,6 +43,7 @@ namespace MacapSoftCAPUAN.Controllers
 
             HC = new HistoriaClinicaBO();
             Paises pais;
+            Localidades localidad;
             Paciente paciente = new Paciente();
             RecepcionCaso recepcion = new RecepcionCaso();
             IngresoClinica ingresoCli = new IngresoClinica();
@@ -75,14 +76,27 @@ namespace MacapSoftCAPUAN.Controllers
                         pais = (from item in paises where item.idPais == ciudad.id_pais select item).FirstOrDefault();
                     }
                     recepcion.paciente = paciente;
+
                     if (ingresoClVal != null) {
                         recepcion.ingresoClinica = ingresoClVal;                       
                     }
+
                     if (paciente != null)
                     {
                         recepcion.ingresoClinica = ingresoClVal;
                         recepcion.remitido = remitido;
                     }
+
+                    localidad = new Localidades();
+                    var localidades = HC.listarLocalidades();
+                    var barrios = HC.listarBarrios();
+                    var barrio = (from item in barrios where item.idBarrio == ingresoClVal.id_barrio select item).FirstOrDefault();
+                    if (barrio != null)
+                    {
+                        localidad = (from item in localidades where item.idLocalidad == barrio.id_localidad select item).FirstOrDefault();
+                    }
+
+
                     List<SelectListItem> listaItemsBarrios = new List<SelectListItem>();
                     List<SelectListItem> listaItemsDocumento = new List<SelectListItem>();
                     List<SelectListItem> listaItemsDocumentoConsultante = new List<SelectListItem>();
@@ -258,6 +272,8 @@ namespace MacapSoftCAPUAN.Controllers
                         //recepcion.pais = pais.nombrePais;
                         var paisSelec = (from item in HC.listarPaises() where item.nombrePais == pais.nombrePais select item.idPais).LastOrDefault();
                         ViewBag.Pais = paisSelec;//pais.nombrePais;
+                        var localidadSelec = (from item in localidades where item.idLocalidad == localidad.idLocalidad select item.idLocalidad).LastOrDefault();
+                        ViewBag.Localidad = localidadSelec;
                         ViewBag.numeroHC = recepcion.paciente.numeroHistoriaClinica;
                         ViewBag.nombre = recepcion.paciente.nombre;
                         ViewBag.apellido = recepcion.paciente.apellido;
@@ -608,9 +624,12 @@ namespace MacapSoftCAPUAN.Controllers
             var ingresoPaciente = (from item in HC.listarIngresoClinica() where item.id_paciente == listaP.numeroHistoriaClinica select item).LastOrDefault();
             var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
             var usuario = (from item in HC.listarUsuario() where item.Id == user select item).FirstOrDefault();
+            var cierreHC = (from item in HC.listarCierres() where item.id_ingresoClinica == ingresoPaciente.idIngresoClinica select item).LastOrDefault();
+            var numeroConsultas = (from item in HC.listarConsultas() where item.id_ingresoClinica == ingresoPaciente.idIngresoClinica select item).Count();
+            var numeroInasistencias = (from item in HC.listarInasistencias() where item.id_ingresoClinica == ingresoPaciente.idIngresoClinica select item).Count();
             modelRemision.cierre.idUsuario = usuario.Id;//System.Web.HttpContext.Current.User.Identity.GetUserId();
             modelRemision.paciente.estadoHC = true;
-            //var cierreHC = (from item in HC.listarCierres() where item.id_ingresoClinica == ingresoPaciente.idIngresoClinica select item).LastOrDefault();
+            
             HC.remitirModificarPaciente(modelRemision.paciente);
             //HC.modificarPaciente(modelRemision.paciente);
             HC.modificarCierre(ingresoPaciente);
@@ -631,6 +650,7 @@ namespace MacapSoftCAPUAN.Controllers
                     listaResmisionPaciente.Add(remisionPaciente);
                 }
             }
+
             if (modelRemision.paciente.numeroHistoriaClinica != "")
             {
 
@@ -639,6 +659,18 @@ namespace MacapSoftCAPUAN.Controllers
                 HC.agregarListaRemision(modelRemision.remision);
 
             }
+
+            if (cierreHC != null) {
+                cierreHC.fechaFinalizaionPsicoterapia = modelRemision.cierre.fechaFinalizaionPsicoterapia;
+                cierreHC.fechaInicioPsicoterapia = modelRemision.cierre.fechaInicioPsicoterapia;
+                cierreHC.id_UsuarioCierraCaso = modelRemision.cierre.idUsuario;
+                cierreHC.idUsuario = modelRemision.cierre.idUsuario;
+                if (numeroConsultas != 0) {
+                    cierreHC.numeroSesionesRealizadas = numeroConsultas.ToString();
+                }
+                HC.modificarCierre(cierreHC);
+            }
+
             return View("PacienteRemitidoExitoso");
         }
 
@@ -996,6 +1028,8 @@ namespace MacapSoftCAPUAN.Controllers
             var numeroConsultas = (from item in HC.listarConsultas() where item.id_ingresoClinica == ingresoClinica.idIngresoClinica select item).Count();
             var numeroInasistencias = (from item in HC.listarInasistencias() where item.id_ingresoClinica == ingresoClinica.idIngresoClinica select item).Count();
             var consultas = (from item in HC.listarConsultas() where item.id_ingresoClinica == ingresoClinica.idIngresoClinica select item).ToList();
+            var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            var usuario = (from item in HC.listarUsuario() where item.Id == user select item.Email).FirstOrDefault();
 
             var fechNa = (paciente.fechaNacimiento).ToString();
             var fechanaStr = DateTime.Parse(fechNa);
@@ -1014,6 +1048,8 @@ namespace MacapSoftCAPUAN.Controllers
             ViewBag.ItemsOcupacion = listaItemsOcupacion.ToList();
             ViewBag.fechaIniciopsicoterapia = fecha;
             ViewBag.fechaNacimiento = fechaNac;
+            ViewBag.ItemNumHC = paciente.numeroHistoriaClinica;
+            ViewBag.UsuarioCierre = usuario;
 
             if (numeroConsultas > 0)
             {
@@ -1032,7 +1068,43 @@ namespace MacapSoftCAPUAN.Controllers
 
 
 
-        public ActionResult cierreCaso(CierreCasoVM cierreCaso, string concMremison) {
+        public ActionResult cierreCaso(CierreCasoVM cierreCaso, string concMotCierre, string NumeroHCP) {
+            //MotivosCierre motivosCierre;
+            MotivoCierreHistoriaClinica motivoCierreHC;
+            List<MotivoCierreHistoriaClinica> listMotivoCierreHC =  new List<MotivoCierreHistoriaClinica>();
+            HC = new HistoriaClinicaBO();
+
+            var paciente = (from item in HC.listarPaciente() where item.numeroHistoriaClinica == NumeroHCP select item).FirstOrDefault();
+            var ingresoClinica = (from item in HC.listarIngresoClinica() where item.id_paciente == paciente.numeroHistoriaClinica && item.estadoHC == false select item).LastOrDefault();
+            var cierresHC = (from item in HC.listarCierres() where item.id_ingresoClinica == ingresoClinica.idIngresoClinica select item).FirstOrDefault();
+            var consultas = (from item in HC.listarConsultas() where item.id_ingresoClinica == ingresoClinica.idIngresoClinica select item).ToList();
+            var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            var usuario = (from item in HC.listarUsuario() where item.Email == cierreCaso.cierreHC.id_UsuarioCierraCaso select item.Id).FirstOrDefault();
+            var lstRP = concMotCierre.Split(';');
+
+            foreach (var item in lstRP)
+            {
+                if (item != "")
+                {
+                    //motivosCierre = new MotivosCierre();
+                    motivoCierreHC = new MotivoCierreHistoriaClinica();
+                    motivoCierreHC.id_MotivoCierre = int.Parse(item);
+                    motivoCierreHC.id_Cierre = cierresHC.idCierreHC;
+                    listMotivoCierreHC.Add(motivoCierreHC);
+                }
+            }
+            
+            paciente.estadoHC = true;
+            cierresHC.id_UsuarioCierraCaso = usuario;
+            cierresHC.fechaInicioPsicoterapia = cierreCaso.cierreHC.fechaInicioPsicoterapia;
+            cierresHC.fechaFinalizaionPsicoterapia = cierreCaso.cierreHC.fechaFinalizaionPsicoterapia;
+            cierresHC.especificacionMotivoCierre = cierreCaso.cierreHC.especificacionMotivoCierre;
+            cierresHC.numeroSesionesRealizadas = cierreCaso.cierreHC.numeroSesionesRealizadas;
+
+            HC.remitirModificarPaciente(paciente);
+            HC.modificarCierreHCIngresoClinica(ingresoClinica);
+            HC.modificarCierre(cierresHC);
+            HC.agregarMotivosRemision(listMotivoCierreHC);
             return View();
         }
 
@@ -1063,6 +1135,25 @@ namespace MacapSoftCAPUAN.Controllers
             var consultante = (from item in HC.listarConsultante() where item.numeroDocumentoPaciente == paciente.numeroHistoriaClinica select item).LastOrDefault();
             var estrategiaIngreso = (from item in HC.listarIngresoEstrategiasEvaluacion() where item.id_ingreso == ingreso.idIngresoClinica select item).FirstOrDefault();
             var consulta = (from item in HC.listarConsultas() where item.id_ingresoClinica == ingreso.idIngresoClinica select item).FirstOrDefault();
+
+            Paises pais = new Paises();
+            var paises = HC.listarPaises();
+            var ciudades = HC.listarCiudades();
+            var ciudad = (from item in ciudades where item.idCiudad == paciente.id_ciudad select item).FirstOrDefault();
+            if (ciudad != null)
+            {
+                pais = (from item in paises where item.idPais == ciudad.id_pais select item).FirstOrDefault();
+            }
+
+            Localidades localidad = new Localidades();
+            var localidades = HC.listarLocalidades();
+            var barrios = HC.listarBarrios();
+            var barrio = (from item in barrios where item.idBarrio == ingreso.id_barrio select item).FirstOrDefault();
+            if (barrio != null)
+            {
+                localidad = (from item in localidades where item.idLocalidad == barrio.id_localidad select item).FirstOrDefault();
+            }
+
 
             documentoGeneralVM.ingresoClinica = ingreso;
             documentoGeneralVM.paciente = paciente;
@@ -1191,7 +1282,11 @@ namespace MacapSoftCAPUAN.Controllers
                 listaItemsDiagnostico.Add(items);
             }
 
-
+            var paisSelec = (from item in HC.listarPaises() where item.nombrePais == pais.nombrePais select item.idPais).LastOrDefault();
+            ViewBag.Pais = paisSelec;//pais.nombrePais;
+            var localidadSelec = (from item in localidades where item.idLocalidad == localidad.idLocalidad select item.idLocalidad).LastOrDefault();
+            ViewBag.Localidad = localidadSelec;
+            
             ViewBag.ItemLocalidades = listaItemsLocalidades.ToList();
             ViewBag.ItemBarrios = listaItemsBarrios.ToList();
             ViewBag.ItemEps = listaItemsEps.ToList();
@@ -1300,7 +1395,7 @@ namespace MacapSoftCAPUAN.Controllers
 
             if (consultasDiagnosticos != null) {
                 foreach (var item in Consultas) {
-                    var numeroConsulta = "Numero de consulta: "+item.numeroSesion;
+                    var numeroConsulta = "Numero de consulta "+item.numeroSesion+": ";
                     diagnosticos.Add(numeroConsulta);
                     foreach (var item1 in consultasDiagnosticos)
                     {
