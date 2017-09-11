@@ -917,23 +917,36 @@ namespace MacapSoftCAPUAN.Controllers
 
 
 
-        [HttpPost]
-        public ActionResult ElementosConsultarPost()
+        
+        public ActionResult ElementosConsultarPost(string gifs, string cnp)
         {
 
-            using (MemoryStream stream = new System.IO.MemoryStream())
-            {
-                string GridHtml = "Prueba"; 
-                StringReader sr = new StringReader(GridHtml);
-                Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 100f, 0f);
-                PdfWriter writer = PdfWriter.GetInstance(pdfDoc, stream);
-                pdfDoc.Open();
-                pdfDoc.Add(new Paragraph("Hola"));
-                XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, sr);
-                pdfDoc.Close();
-                return File(stream.ToArray(), "application/pdf", "Grid.pdf");
-            }
-            
+            MemoryStream workStream = new MemoryStream();
+            Document document = new Document();
+            PdfWriter.GetInstance(document, workStream).CloseStream = false;
+            HC = new HistoriaClinicaBO();
+
+
+            var estadosConsulta = gifs.Split(';');
+
+            var paciente = (from item in HC.listarPaciente() where item.numeroHistoriaClinica == cnp select item).FirstOrDefault();
+            var ingresoClinica = (from item in HC.listarIngresoClinica() where item.id_paciente == paciente.numeroHistoriaClinica && item.estadoHC == false select item).LastOrDefault();
+            var consultas = (from item in HC.listarConsultas() where item.id_ingresoClinica == ingresoClinica.idIngresoClinica select item).ToList();
+            var inasistencias = (from item in HC.listarInasistencias() where item.id_ingresoClinica == ingresoClinica.idIngresoClinica select item).ToList(); 
+
+
+
+
+            document.Open();
+            document.Add(new Paragraph("Hello World"));
+            document.Add(new Paragraph(DateTime.Now.ToString()));
+            document.Close();
+
+            byte[] byteInfo = workStream.ToArray();
+            workStream.Write(byteInfo, 0, byteInfo.Length);
+            workStream.Position = 0;
+
+            return new FileStreamResult(workStream, "application/pdf");
         }
 
 

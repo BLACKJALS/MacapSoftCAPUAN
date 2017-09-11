@@ -21,11 +21,15 @@
             $("#NumeroHCP").val(numeroHcp);
             $("#NumeroHC").attr('readonly', 'readonly');
             $("#sexo").prop("disabled", true);
+            var pais = '@ViewBag.Pais';
+            $("#paisPac").val(pais);
             $("#paisPac").prop("disabled", true);
             $("#lugarNacimientoPac").prop("disabled", true);
             $("#nivelEscolaridad").prop("disabled", true);
             $("#ocupacion").prop("disabled", true);
             $("#barrio").prop("disabled", true);
+            var localidad = '@ViewBag.Localidad';
+            $("#localidades").val(localidad);
             $("#localidades").prop("disabled", true);
 
             var motConsul = '@ViewBag.motivoConsulta';
@@ -42,22 +46,18 @@
 
 
             $('#diagnostico').on('change', function () {
-                //alert($(this).val());
                 var diagnosticos = $(this).val();
-                //console.log($(this).val());
                 $("#Diag").val(diagnosticos);
             });
 
 
             $('#categorizacion').on('change', function () {
-                //alert($(this).val());
                 var catego = $(this).val();
-                //console.log($(this).val());
                 $("#Cat").val(catego);
             });
 
-            var diagn = '@Model.ingresoClinica.diagnostico';
-            $("#diagnostico").val(diagn);
+            @*var diagn = '@Model.ingresoClinica.diagnostico';
+            $("#diagnostico").val(diagn);*@
 
             var cateCA = '@Model.ingresoClinica.categorizacionCAP';
             $("#categorizacion").val(cateCA);
@@ -133,7 +133,7 @@
                 $("#entrevistas").prop('disabled', true);
                 $("#observacionesRecomendaciones").prop('disabled', true);
                 $("#btnGuardar").prop('disabled', true);
-                
+
             }
         });
 
@@ -169,7 +169,7 @@
                 <label style="font-size:smaller">Fecha atención:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" placeholder="Fecha atención" id="ingresoClinica" required/>
+                <input class="form-control" placeholder="Fecha atención" id="ingresoClinica" name="ingresoClinica.fechaAtencion" required/>
             </div>
         </div>
         <br />
@@ -185,7 +185,7 @@
                 <label style="font-size:smaller">Diagnóstico:</label>
             </div>
             <div class="col-md-4">
-                @Html.DropDownList("ingresoClinica.diagnostico", (IEnumerable<SelectListItem>)ViewBag.ItemDiagnostico, new { @class = "selectpicker", id = "diagnostico", multiple = true, required = true })
+                @Html.DropDownList("diagnosticos", (IEnumerable<SelectListItem>)ViewBag.ItemDiagnostico, new { @class = "selectpicker", id = "diagnostico", multiple = true, required = true })
             </div>
         </div>
         <br />
@@ -194,7 +194,7 @@
                 <label style="font-size:smaller">Categorización CAP:</label>
             </div>
             <div class="col-md-3">
-                @Html.DropDownList("ingresoClinica.categorizacionCAP", (IEnumerable<SelectListItem>)ViewBag.ItemCategorizacion, new { @class = "selectpicker", id = "categorizacion", multiple = true , required = true })
+                @Html.DropDownList("categorizacionCAP", (IEnumerable<SelectListItem>)ViewBag.ItemCategorizacion, new { @class = "selectpicker", id = "categorizacion", multiple = true , required = true })
             </div>
         </div>
         <br />

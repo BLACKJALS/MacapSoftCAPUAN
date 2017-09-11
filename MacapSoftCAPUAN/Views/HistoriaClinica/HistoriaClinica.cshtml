@@ -10,6 +10,7 @@
 <script src="~/Scripts/locales/bootstrap-datepicker.es.min.js"></script>
 @*<script src="http://momentjs.com/downloads/moment.min.js"></script>*@
 <script>
+    var concatenacion = "";
     $(document).ready(function () {
         var idPaciente = '@ViewBag.idPaciente';
         $("#idPac").val(idPaciente);
@@ -43,7 +44,81 @@
         var motivoIna = $("#motivoInasistencia").val();
         $("#motivoIn").val(motivoIna);
         document.getElementById("buttonHidden").click();
+    };
+
+
+    function disbledButton() {
+        //set initial state.
+        var chxDocGeneral = $('#chxDocumentoGeneral').is(':checked');
+        var chxInformeSesion = $('#chxInformeSesion').is(':checked');
+        var chxInasistencias = $('#chxInasistencias').is(':checked');
+        var chxRecepcionCaso = $('#chxRecepcionCaso').is(':checked');
+        var chxRemisiones = $('#chxRemisiones').is(':checked');
+        var concat = "";
+
+        if (chxDocGeneral == true) {
+            concat += $('#chxDocumentoGeneral').val() + ";";
+        }
+        if (chxInformeSesion == true) {
+            concat += $('#chxInformeSesion').val() + ";";
+        }
+        if (chxInasistencias == true) {
+            concat += $('#chxInasistencias').val() + ";";
+        }
+        if (chxRecepcionCaso == true) {
+            concat += $('#chxRecepcionCaso').val() + ";";
+        }
+        if (chxRemisiones == true) {
+            concat += $('#chxRemisiones').val() + ";";
+        }
+
+        if (chxDocGeneral == true || chxInformeSesion == true || chxInasistencias == true || chxRecepcionCaso == true || chxRemisiones == true) {
+            $("#buttonConsult").prop("disabled", false);
+        } else {
+            $("#buttonConsult").prop("disabled", true);
+        }
+        //if (motivoAcuerdo == false && motivoLogro == false && motivoRetiro == false && motivoAbandono == false && motivoCierre == false && motivoFinalizacion == false) {
+        //    $("#guardarRemitir").prop("disabled", true);
+        //} else {
+        //    $("#guardarRemitir").prop("disabled", false);
+        //}
+
+        concatenacion = concat;
+        //$("#concMotCierre").val(concat);
+        //$("#ConcatenacionChx").val(concat);
+        //enviar(concat);
+    };
+
+
+    $('#chxDocumentoGeneral').click(function () {
+        disbledButton();
+    });
+
+    $('#chxInformeSesion').click(function () {
+        disbledButton();
+    });
+
+    $('#chxInasistencias').click(function () {
+        disbledButton();
+    });
+
+    $('#chxRecepcionCaso').click(function () {
+        disbledButton();
+    });
+
+    $('#chxRemisiones').click(function () {
+        disbledButton();
+    });
+
+    function enviarParametros() {
+        var newConc = concatenacion;
+        var numHC = '@ViewBag.idPaciente';
+        //var firstname = "abc";
+        //var username = "abcd";
+        location.href = '@Url.Action("ElementosConsultarPost", "HistoriaClinica")?gifs=' + newConc + '&cnp=' + numHC;
+        @*location.href='@Url.Action("ElementosConsultarPost", "HistoriaClinica", new { id = ViewBag.checkAvailable, hc = a })*@
     }
+
 </script>
 }
 <h1 style="text-align:center;">Historia clínica</h1>
@@ -162,7 +237,7 @@
                             <label style="font-size:medium">Documento general:</label>
                         </div>
                         <div class="col-md-1">
-                            <input type="checkbox" id="IntentoSuicida" value="5" name="remision.motivoRemision.idMotivoRemision">
+                            <input type="checkbox" id="chxDocumentoGeneral" value="1">
                         </div>
                     </div>
                     <div class="row">
@@ -170,7 +245,7 @@
                             <label style="font-size:medium">Informe sesion:</label>
                         </div>
                         <div class="col-md-1">
-                            <input type="checkbox" id="IntentoSuicida" value="5" name="remision.motivoRemision.idMotivoRemision">
+                            <input type="checkbox" id="chxInformeSesion" value="2">
                         </div>
                     </div>
                     <div class="row">
@@ -178,7 +253,7 @@
                             <label style="font-size:medium">Inasitencias:</label>
                         </div>
                         <div class="col-md-1">
-                            <input type="checkbox" id="IntentoSuicida" value="5" name="remision.motivoRemision.idMotivoRemision">
+                            <input type="checkbox" id="chxInasistencias" value="3">
                         </div>
                     </div>
                     <div class="row">
@@ -186,7 +261,7 @@
                             <label style="font-size:medium">Recepción de caso:</label>
                         </div>
                         <div class="col-md-1">
-                            <input type="checkbox" id="IntentoSuicida" value="5" name="remision.motivoRemision.idMotivoRemision">
+                            <input type="checkbox" id="chxRecepcionCaso" value="4">
                         </div>
                     </div>
                     <div class="row">
@@ -194,11 +269,11 @@
                             <label style="font-size:medium">Remisiones:</label>
                         </div>
                         <div class="col-md-1">
-                            <input type="checkbox" id="Remisiones" value="5" name="remision.motivoRemision.idMotivoRemision">
+                            <input type="checkbox" id="chxRemisiones" value="5">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="buttonEdit" class="btn btn-default" data-dismiss="modal" onclick="return btnAbrirUsuarioCampo_Click();">
+                        <button type="button" id="buttonConsult" class="btn btn-default" data-dismiss="modal" onclick="return enviarParametros();">
                             Consultar
                         </button>
                         <button id="buttonSalir" type="button" class="btn btn-default" data-dismiss="modal" onclick="location.href='@Url.Action("listaHistoriasClinicas", "HistoriaClinica")'">Regresar</button>

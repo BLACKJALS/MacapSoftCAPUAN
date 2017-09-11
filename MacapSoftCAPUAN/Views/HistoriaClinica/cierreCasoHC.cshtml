@@ -15,8 +15,18 @@
 
         var numeroSesion = '@ViewBag.ItemNumeroSesion';
         var numeroInasistencias = '@ViewBag.ItemNumeroInasistencias';
-        //var fechNac = '@ViewBag.fechaNacimiento';
+        @*var fechNac = '@ViewBag.fechaNacimiento';*@
+        if (numeroSesion == "") {
+            numeroSesion = 0;
+        }
 
+        if (numeroInasistencias == "") {
+            numeroInasistencias = 0;
+        }
+
+        var numeroCitas = parseInt(numeroSesion) + parseInt(numeroInasistencias);
+        $("#citasTotales").val(numeroCitas);
+        $("#citasTotales").attr('readonly', 'readonly');
         $("#numeroCitas").val(numeroSesion);
         $("#numeroCitas").attr('readonly', 'readonly');
         $("#numeroIna").val(numeroInasistencias);
@@ -248,7 +258,7 @@
                 <label style="font-size:smaller">Número de citas asignadas:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" placeholder="Número de citas asignadas" name="cierreHC.numeroCitasAsignadas" required />
+                <input class="form-control" id="citasTotales" placeholder="Número de citas asignadas" name="cierreHC.numeroCitasAsignadas" required />
             </div>
         </div>
         <br />
