@@ -922,8 +922,10 @@ namespace MacapSoftCAPUAN.Controllers
         {
 
             MemoryStream workStream = new MemoryStream();
-            Document document = new Document();
+            Document document = new Document(PageSize.LETTER);
             PdfWriter.GetInstance(document, workStream).CloseStream = false;
+            //PdfWriter pdfWriter = PdfWriter.GetInstance(document, workStream);
+
             HC = new HistoriaClinicaBO();
 
 
@@ -938,15 +940,256 @@ namespace MacapSoftCAPUAN.Controllers
 
 
             document.Open();
-            document.Add(new Paragraph("Hello World"));
-            document.Add(new Paragraph(DateTime.Now.ToString()));
+            Paragraph title = new Paragraph();
+            title.Alignment = Element.ALIGN_CENTER;
+            title.Font = FontFactory.GetFont("Arial", 14);
+            title.Add("\nHistoria clínica\n\n");
+            document.Add(title);
+            //document.Add(new Paragraph(300f,DateTime.Now.ToString()));
+            PdfPTable table = new PdfPTable(3);
+
+            PdfPCell cell = new PdfPCell(new Phrase("Información general de la historia clínica", title.Font));
+            cell.Colspan = 3;
+            cell.BackgroundColor = new iTextSharp.text.BaseColor(51, 102, 102);
+            cell.HorizontalAlignment = Element.ALIGN_CENTER;
+            table.AddCell(cell);
+
+            Paragraph texto; 
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Fecha de recepción: " + ingresoClinica.fechaIngreso);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Fecha de atención: " + ingresoClinica.fechaAtencion);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Número de historia clínica: " + paciente.numeroHistoriaClinica);
+            table.AddCell(texto);
+
+
+            cell = new PdfPCell(new Phrase("Diagnósticos",texto.Font));
+            cell.Colspan = 3;
+            cell.HorizontalAlignment = Element.ALIGN_CENTER;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase("Categorización CAP", texto.Font));
+            cell.Colspan = 3;
+            cell.HorizontalAlignment = Element.ALIGN_CENTER;
+            table.AddCell(cell);
+
+
+            cell = new PdfPCell(new Phrase("Datos personales", title.Font));
+            cell.Colspan = 3;
+            cell.BackgroundColor = new iTextSharp.text.BaseColor(51, 102, 102);
+            cell.HorizontalAlignment = Element.ALIGN_CENTER;
+            table.AddCell(cell);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Nombre: " + paciente.nombre + " " + paciente.apellido);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Sexo: " + paciente.id_sexo);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Fecha de nacimiento: " + paciente.fechaNacimiento);
+            table.AddCell(texto);
+
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Número de documento: " + ingresoClinica.numeroDocumento);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Tipo de documento: " + ingresoClinica.id_tipoDocumento);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Lugar de nacimiento: " + paciente.id_ciudad + " Variable que trae el país");
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Edad: " + ingresoClinica.edad);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Estado civil: " + ingresoClinica.estadoCivil);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Religion: " + ingresoClinica.religion);
+            table.AddCell(texto);
+
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Escolaridad: " + ingresoClinica.id_NivelEscolaridad);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Profesión: " + ingresoClinica.profesion);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Ocupación: " + ingresoClinica.id_ocupacion);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Dirección: " + ingresoClinica.direccion);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Barrio: " + ingresoClinica.id_barrio);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Localidad: " + "Aquí va la localidad");
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Estrato: " + ingresoClinica.id_estrato);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Teléfono: " + ingresoClinica.telefono);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Email: " + ingresoClinica.email);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("EPS: " + ingresoClinica.tieneEps);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("EPC: " + ingresoClinica.tieneEpc);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Institución: " + ingresoClinica.id_Eps);
+            table.AddCell(texto);
+
+            cell = new PdfPCell(new Phrase("Datos de remitido", title.Font));
+            cell.Colspan = 3;
+            cell.BackgroundColor = new iTextSharp.text.BaseColor(51, 102, 102);
+            cell.HorizontalAlignment = Element.ALIGN_CENTER;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase("Institución que remite: "+ paciente.nombre, texto.Font));
+            cell.Colspan = 3;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase("Profesional que remite: " + paciente.nombre, texto.Font));
+            cell.Colspan = 3;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase("Fecha de remisión: " + paciente.nombre, texto.Font));
+            cell.Colspan = 3;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase("Datos consultante", title.Font));
+            cell.Colspan = 3;
+            cell.BackgroundColor = new iTextSharp.text.BaseColor(51, 102, 102);
+            cell.HorizontalAlignment = Element.ALIGN_CENTER;
+            table.AddCell(cell);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Nombres: " + ingresoClinica.tieneEps);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Sexo: " + ingresoClinica.tieneEpc);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Parentesco: " + ingresoClinica.id_Eps);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Teléfono: " + ingresoClinica.tieneEps);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Tipo de documento: " + ingresoClinica.tieneEpc);
+            table.AddCell(texto);
+
+            texto = new Paragraph();
+            texto.Font = FontFactory.GetFont("Arial", 9);
+            texto.Add("Número de documento: " + ingresoClinica.id_Eps);
+            table.AddCell(texto);
+
+            cell = new PdfPCell(new Phrase("Motivo Consulta", texto.Font));
+            cell.Colspan = 3;
+            cell.HorizontalAlignment = Element.ALIGN_CENTER;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase("Problemática", texto.Font));
+            cell.Colspan = 3;
+            cell.HorizontalAlignment = Element.ALIGN_CENTER;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase("Historia personal", texto.Font));
+            cell.Colspan = 3;
+            cell.HorizontalAlignment = Element.ALIGN_CENTER;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase("Antecedentes", texto.Font));
+            cell.Colspan = 3;
+            cell.HorizontalAlignment = Element.ALIGN_CENTER;
+            table.AddCell(cell);
+
+
+            document.Add(new Paragraph(""));
+            cell = new PdfPCell(new Phrase("Row 3, Col 2 and Col3"));
+            cell.Colspan = 2;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase("Row 4, Col 1 and Col2"));
+            cell.Colspan = 2;
+            table.AddCell(cell);
+            table.AddCell("Row 4, Col 3");
+            document.Add(table);
             document.Close();
 
             byte[] byteInfo = workStream.ToArray();
             workStream.Write(byteInfo, 0, byteInfo.Length);
             workStream.Position = 0;
 
-            return new FileStreamResult(workStream, "application/pdf");
+            return File(workStream, "application/pdf");
         }
 
 
