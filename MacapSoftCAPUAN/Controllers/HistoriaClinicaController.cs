@@ -892,6 +892,9 @@ namespace MacapSoftCAPUAN.Controllers
         public JsonResult AsignarUsuarioPost(string id, string docente, string estudiante)
         {
             HC = new HistoriaClinicaBO();
+            string mensajeError = "";
+            var listadoUsuariosPermisosDocente = (from item in HC.permisosUsuariosPac() where item.id_paciente == id && item.id_aplicationUser == estudiante select item).ToList();
+            var listadoUsuariosPermisosEstudiante = (from item in HC.permisosUsuariosPac() where item.id_paciente == id && item.id_aplicationUser == estudiante select item).ToList();
             List<PermisosUsuariosPaciente> lstPermisos = new List<PermisosUsuariosPaciente>();
             PermisosUsuariosPaciente doc = new PermisosUsuariosPaciente();
             PermisosUsuariosPaciente pac = new PermisosUsuariosPaciente();
@@ -902,11 +905,30 @@ namespace MacapSoftCAPUAN.Controllers
             pac.id_aplicationUser = estudiante;
             pac.id_paciente = id;
 
-            lstPermisos.Add(doc);
-            lstPermisos.Add(pac);
+            
+            
+            if (listadoUsuariosPermisosDocente.Count > 1)
+            {
+                mensajeError = "No se puede asignar el usuario porque ya tiene este usuario docente asignado.";
+            }
+            else {
+                lstPermisos.Add(doc);
+            }
 
-            HC.agregarEstrategiaIngreso(lstPermisos);
-            return Json("Asignación del usuario proceso éxitoso", JsonRequestBehavior.AllowGet);
+            if (listadoUsuariosPermisosDocente.Count > 1)
+            {
+                mensajeError += " No se puede asignar el usuario porque ya tiene este usuario estudiante asignado.";
+            }
+            else {
+                lstPermisos.Add(pac);
+            }
+
+            if (lstPermisos.Count>=1) {
+                HC.agregarEstrategiaIngreso(lstPermisos);
+                mensajeError = "Se asignó correctamente los usuarios";
+            }
+            
+            return Json(mensajeError, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -1262,7 +1284,7 @@ namespace MacapSoftCAPUAN.Controllers
 
 
 
-        public ActionResult cierreCasoHC(string id)
+        public ActionResult cierreCasoHC(string id, int inasistencia)
         {
             HC = new HistoriaClinicaBO();
             CierreCasoVM cierreCasoVM = new CierreCasoVM();
@@ -1307,6 +1329,11 @@ namespace MacapSoftCAPUAN.Controllers
             ViewBag.ItemNumHC = paciente.numeroHistoriaClinica;
             ViewBag.UsuarioCierre = usuario;
 
+            if (ingresoClinica.id_NivelEscolaridad != 0) {
+                var escolaridad = (from item in HC.listarNivelEscolaridad() where item.idNivelEscolaridad == ingresoClinica.id_NivelEscolaridad select item.nombre).FirstOrDefault();
+                ViewBag.Escolaridad = escolaridad;
+            }
+
             if (numeroConsultas > 0)
             {
                 ViewBag.ItemNumeroSesion = numeroConsultas;
@@ -1318,6 +1345,10 @@ namespace MacapSoftCAPUAN.Controllers
                 ViewBag.ItemNumeroInasistencias = numeroInasistencias;
             }
 
+
+            if (inasistencia == 1) {
+                ViewBag.estadoInasistencias = "1";
+            }
 
             return View(cierreCasoVM);
         }
@@ -1651,7 +1682,7 @@ namespace MacapSoftCAPUAN.Controllers
 
             if (consultasDiagnosticos != null) {
                 foreach (var item in Consultas) {
-                    var numeroConsulta = "Numero de consulta "+item.numeroSesion+": ";
+                    var numeroConsulta = "Número de consulta "+item.numeroSesion+": ";
                     diagnosticos.Add(numeroConsulta);
                     foreach (var item1 in consultasDiagnosticos)
                     {
@@ -1661,8 +1692,14 @@ namespace MacapSoftCAPUAN.Controllers
                             diagnosticos.Add(itemDiagnóstico);
                         }
                     }
+                    if (diagnosticos.Last().Contains("Número de consulta"))
+                    {
+                        diagnosticos.Add("No se ingreso un nuevo diagnóstico o se había ingresado uno ya existente.");
+                    }
                 }
             }
+
+            
 
 
             var listaDiagnostico = diagBo.listarDiagnostico();

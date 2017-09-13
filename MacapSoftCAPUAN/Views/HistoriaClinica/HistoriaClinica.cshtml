@@ -25,8 +25,8 @@
         }
 
         var inasistencias = '@ViewBag.conteo';
-        if (inasistencias >= 2) {
-            alert("El usuario ya ha inasistido dos o más veces, en caso de que falle nuevamente puede proceder a cerrar la HC, generar la inasistencia o continuar con el proceso.")
+        if (inasistencias >= 3) {
+            alert("El usuario ya ha inasistido tres o más veces, en caso de que falle nuevamente puede proceder a cerrar la HC, generar la inasistencia o continuar con el proceso.")
             $("#buttonCloseCH").prop('disabled', false);
         } else {
             $("#buttonCloseCH").prop('disabled', true);
@@ -204,7 +204,7 @@
                 </div>
                 <div class="col-md-2"></div>
                 <div class="col-md-3">
-                    <input type="button" value="Cierre de HC" class="form-control btn btn-primary" id="cierreHC" onclick="location.href='@Url.Action("cierreCasoHC", "HistoriaClinica",new { id = ViewBag.idPaciente})'"/>
+                    <input type="button" value="Cierre de HC" class="form-control btn btn-primary" id="cierreHC" onclick="location.href='@Url.Action("cierreCasoHC", "HistoriaClinica",new { id = ViewBag.idPaciente,  inasistencia = 0})'"/>
                 </div>
             </div>
             <br />
@@ -324,7 +324,7 @@
                         <br />
                         <div class="modal-footer">
                             <input type="submit" hidden id="buttonHidden"/>
-                            <button id="buttonCloseCH" type="button" class="btn btn-danger" data-dismiss="modal" onclick="location.href='@Url.Action("cierreCasoHC", "HistoriaClinica" )'">Cerrar HC</button>
+                            <button id="buttonCloseCH" type="button" class="btn btn-danger" data-dismiss="modal" onclick="location.href='@Url.Action("cierreCasoHC", "HistoriaClinica",new { id = ViewBag.idPaciente, inasistencia = 1} )'">Cerrar HC</button>
                             <button type="button" id="buttonEdit" class="btn btn-primary" onclick="return motInasistenci();">Generar inasistencia</button> @*onclick="location.href='@Url.Action("generarInasistenciaClinica", "HistoriaClinica", new { id = ViewBag.idPaciente, mot = $("#motivoInasistencia") })'">*@    
                             <button id="buttonSalir" type="button" class="btn btn-warning" data-dismiss="modal">Regresar</button>
                         </div>

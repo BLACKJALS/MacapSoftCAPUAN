@@ -109,13 +109,13 @@ namespace MacapSoftCAPUAN.Controllers
                         }
                         else
                         {
-                            ModelState.AddModelError("", "El usuario y/o contraseña que has introducido son incorrectas, si el error persiste comuníquese con el coordinador del CAP.");
+                            ModelState.AddModelError("", "El usuario y/o contraseña que ha introducido son incorrectas, si el error persiste comuníquese con el coordinador del CAP.");
                         }
 
                     }
                     else
                     {
-                        ModelState.AddModelError("", "El usuario y/o contraseña que has introducido son incorrectas, si el error persiste comuníquese con el coordinador del CAP.");
+                        ModelState.AddModelError("", "El usuario y/o contraseña que ha introducido son incorrectas, si el error persiste comuníquese con el coordinador del CAP.");
                     }
                     AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
                     return View(model);

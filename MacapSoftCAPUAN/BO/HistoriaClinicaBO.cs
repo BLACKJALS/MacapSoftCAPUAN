@@ -937,18 +937,30 @@ namespace MacapSoftCAPUAN.BO
 
             var listaDiagnostico = diagnostico.Split(',');
             var listaConsultas = hcDALC.listarConsultas();
+            var listaConsultasDiagnosticos = hcDALC.listarConsultaDiagnostico();
             var ultimaConsulta = (from item in listaConsultas where item.id_ingresoClinica == idHistoriaClinica select item).LastOrDefault();
+            var listaConsultasIngreso = (from item in hcDALC.listarConsultas() where item.id_ingresoClinica == ultimaConsulta.id_ingresoClinica select item).ToList();
 
             List<ConsultaDiagnostico> lstConsultaDiagnostico = new List<ConsultaDiagnostico>();
             ConsultaDiagnostico consultaDiagnostico;
-
+            List<ConsultaDiagnostico> consultaDiagnostico2 = new List<ConsultaDiagnostico>();
+            foreach (var item in listaConsultasIngreso) {
+                foreach (var item2 in listaConsultasDiagnosticos) {
+                    if (item.idConsulta == item2.id_consulta) {
+                        consultaDiagnostico2.Add(item2);
+                    }
+                }
+            }
 
             foreach (var itemDiagnostico in listaDiagnostico)
             {
-                consultaDiagnostico = new ConsultaDiagnostico();
-                consultaDiagnostico.id_diagnostico = itemDiagnostico;
-                consultaDiagnostico.id_consulta = ultimaConsulta.idConsulta;
-                lstConsultaDiagnostico.Add(consultaDiagnostico);
+                var listaDiagnosticoExistente = (from item in consultaDiagnostico2 where item.id_diagnostico == itemDiagnostico select item).ToList();
+                if (listaDiagnosticoExistente.Count == 0) {
+                    consultaDiagnostico = new ConsultaDiagnostico();
+                    consultaDiagnostico.id_diagnostico = itemDiagnostico;
+                    consultaDiagnostico.id_consulta = ultimaConsulta.idConsulta;
+                    lstConsultaDiagnostico.Add(consultaDiagnostico);
+                }
             }
             return hcDALC.guardarDiagnosticoConsultasInformes(lstConsultaDiagnostico);
         }
