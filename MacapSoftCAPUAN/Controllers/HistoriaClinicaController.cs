@@ -268,12 +268,14 @@ namespace MacapSoftCAPUAN.Controllers
                     if (recepcion.paciente != null)
                     {
                         ViewBag.existente = "Si";
-
-                        //recepcion.pais = pais.nombrePais;
                         var paisSelec = (from item in HC.listarPaises() where item.nombrePais == pais.nombrePais select item.idPais).LastOrDefault();
                         ViewBag.Pais = paisSelec;//pais.nombrePais;
                         var localidadSelec = (from item in localidades where item.idLocalidad == localidad.idLocalidad select item.idLocalidad).LastOrDefault();
                         ViewBag.Localidad = localidadSelec;
+                        ViewBag.CiudadValor = ciudad.idCiudad;
+                        ViewBag.CiudadTexto = ciudad.nombre;
+                        ViewBag.barrioValor = barrio.idBarrio;
+                        ViewBag.barrioTexto = barrio.nombre;
                         ViewBag.numeroHC = recepcion.paciente.numeroHistoriaClinica;
                         ViewBag.nombre = recepcion.paciente.nombre;
                         ViewBag.apellido = recepcion.paciente.apellido;
@@ -1788,6 +1790,48 @@ namespace MacapSoftCAPUAN.Controllers
             var ingresoUsuario = (from item in listaIngreso where item.id_paciente == hc select item).LastOrDefault();
             var listaInasistenciasUsuario = (from item in listaInasistencias where item.id_ingresoClinica == ingresoUsuario.idIngresoClinica select item).ToList();
             return Json(listaInasistenciasUsuario, JsonRequestBehavior.AllowGet);
+        }
+
+        //Consultar las ciudades según los paises
+        public JsonResult consultarCiudadesPorPais(string pais)
+        {
+            List<SelectListItem> listaItemsCuidades = new List<SelectListItem>();
+            SelectListItem items;
+            HC = new HistoriaClinicaBO();
+            var listaCiudades= (from item in  HC.listarCiudades() where item.id_pais == pais select item).ToList();
+
+            
+            foreach (var item in listaCiudades)
+            {
+                items = new SelectListItem();
+                items.Text = item.nombre;
+                items.Value = item.idCiudad;
+                listaItemsCuidades.Add(items);
+            }
+            ViewBag.ItemCiudades = listaCiudades;
+            return Json(listaCiudades, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        //Consultar los barrios según la localidad
+        public JsonResult consultarBarriosLocalidad(string localidad)
+        {
+            List<SelectListItem> listaItemsCuidades = new List<SelectListItem>();
+            SelectListItem items;
+            HC = new HistoriaClinicaBO();
+            var listaBarrios = (from item in HC.listarBarrios() where item.id_localidad == localidad select item).ToList();
+
+
+            foreach (var item in listaBarrios)
+            {
+                items = new SelectListItem();
+                items.Text = item.nombre;
+                items.Value = item.idBarrio;
+                listaItemsCuidades.Add(items);
+            }
+            ViewBag.ItemCiudades = listaBarrios;
+            return Json(listaBarrios, JsonRequestBehavior.AllowGet);
         }
 
     }
