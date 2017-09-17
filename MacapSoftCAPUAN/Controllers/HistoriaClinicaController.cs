@@ -2395,6 +2395,7 @@ namespace MacapSoftCAPUAN.Controllers
             PdfWriter.GetInstance(document, workStream).CloseStream = false;
 
             HC = new HistoriaClinicaBO();
+            diagBo = new DiagnosticoBO();
 
             var estadosConsulta = gifs.Split(';');
             string fechaRemisionRemitente = "";

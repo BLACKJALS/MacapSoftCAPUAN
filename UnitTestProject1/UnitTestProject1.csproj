@@ -91,7 +91,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="TestRole.cs" />
+    <Compile Include="UnitTestHistoriaClinica.cs" />
     <Compile Include="UnitTestModuloDiagnostico.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Usuarios.cs" />
