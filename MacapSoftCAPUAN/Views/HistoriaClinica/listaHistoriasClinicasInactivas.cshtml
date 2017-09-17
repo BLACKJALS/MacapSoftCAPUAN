@@ -20,7 +20,7 @@
         $(document).ready(function () {
                 $("#buttonOpen").prop("disabled", true);
                 $("#buttonEdit").prop("disabled", true);
-                alert("Debe seleccionar una historia clínica para ver la correspondiente información.");
+                alert("Debe seleccionar una historia clínica para ver la correspondiente información (solo para usuarios administradores).");
         });
         var concatenacion = "";
         var $table = $('#table'),
@@ -178,7 +178,10 @@
         <div class="row">
             <div class="col-md-10"></div>
             <div id="toolbar">
+                @if (User.IsInRole("Administrador"))
+                {
                 <input type="button" id="buttonOpen" class="btn btn-primary" value="Abrir" data-toggle="modal" data-target="#modalAbrirUsuario" />
+                }
                 <input type="button" class="btn btn-primary" value="Regresar" onclick="location.href='@Url.Action("Index", "HistoriaClinica" )'" />
             </div>
         </div>

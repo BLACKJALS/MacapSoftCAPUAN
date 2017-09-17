@@ -2373,7 +2373,7 @@ namespace MacapSoftCAPUAN.Controllers
             return View();
         }
 
-
+        [Authorize(Roles = "Administrador")]
         public ActionResult ElementosConsultarHistoriaClinicaInactivas(string gifs, string cnp)
         {
             List<Consulta> listaConsultasIngreso = new List<Consulta>();
