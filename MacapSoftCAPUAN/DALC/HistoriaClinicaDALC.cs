@@ -683,6 +683,15 @@ namespace MacapSoftCAPUAN.DALC
         }
 
 
+        public List<CategorizacionHC> listarCategorizacionIngresoClinica()
+        {
+            bd = new ApplicationDbContext();
+            List<CategorizacionHC> listaCategorizacionHC = new List<CategorizacionHC>();
+            listaCategorizacionHC = bd.categorizcionHcContext.ToList();
+            return listaCategorizacionHC;
+        }
+
+
         //Sentencia que modifica en base de datos el ingreso clínica
         public string modificarCierreHCIngresoCl(IngresoClinica ingresoClinica)
         {
@@ -786,6 +795,36 @@ namespace MacapSoftCAPUAN.DALC
                 bd.motivoCierreHcContext.Add(item);
                 bd.SaveChanges();
             }
+        }
+
+
+        //Eliminar un permiso a un paciente
+        public string eliminarUsuarioAsignadoHC(PermisosUsuariosPaciente permisoUsuarioPaciente) {
+
+            try
+            {
+                var permisoUsuarioPac = new PermisosUsuariosPaciente { idPermisosUsuario = permisoUsuarioPaciente.idPermisosUsuario };
+                using (var context = new ApplicationDbContext())
+                {
+                    context.permisosUsuariosPacienteContext.Attach(permisoUsuarioPac);
+                    context.permisosUsuariosPacienteContext.Remove(permisoUsuarioPac);
+                    context.SaveChanges();
+                }
+
+                return "Exito";
+            }
+            catch (Exception e)
+            {
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo eliminar el permiso usuario paciente.", e.Message);
+                return argxEx.ToString();
+            }
+
+
+            //bd = new ApplicationDbContext();
+            //bd.Entry(permisoUsuarioPaciente.AplicationUser).State = EntityState.Detached;
+            //bd.Entry(permisoUsuarioPaciente.Paciente).State = EntityState.Detached;
+            //bd.permisosUsuariosPacienteContext.Remove(permisoUsuarioPaciente);
+            //bd.SaveChanges();
         }
 
     }

@@ -1016,9 +1016,24 @@ namespace MacapSoftCAPUAN.BO
             hcDALC.agregarMotivosRemision(listaMotivosRemisison);
             return "Proceso Exitoso";
         }
+
+
+
+        //Se elimina un usuario asignado a la historia clínica
+        public string eliminarUsuarioAsignado(PermisosUsuariosPaciente permisosUsuarioPaciente) {
+            hcDALC = new HistoriaClinicaDALC();
+            hcDALC.eliminarUsuarioAsignadoHC(permisosUsuarioPaciente);
+            return "Proceso Exitoso";
+        }
+
+
+        public List<CategorizacionHC> listarCetegorizacionesHC()
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            return hcDALC.listarCategorizacionIngresoClinica();
+        }
+
         
-
-
 
     }
 }

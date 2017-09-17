@@ -239,6 +239,7 @@
     <Compile Include="ModelsVM\InformeSesion.cs" />
     <Compile Include="ModelsVM\ListadoHistoriasClinicas.cs" />
     <Compile Include="ModelsVM\MotivoRemisionVM.cs" />
+    <Compile Include="ModelsVM\PermisosUsuarioPacienteVM.cs" />
     <Compile Include="ModelsVM\RecepcionCaso.cs" />
     <Compile Include="ModelsVM\RemisionPaciente.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -573,6 +574,8 @@
     <Content Include="Views\HistoriaClinica\asignacionUsuarioExitoso.cshtml" />
     <Content Include="Views\HistoriaClinica\guardarInformeSesion.cshtml" />
     <Content Include="Views\HistoriaClinica\cierreCaso.cshtml" />
+    <Content Include="Views\HistoriaClinica\listarUsuariosAsignadosDeHC.cshtml" />
+    <Content Include="Views\HistoriaClinica\eliminarUsuarioAsig.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
