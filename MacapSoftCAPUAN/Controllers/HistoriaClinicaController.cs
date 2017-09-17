@@ -1400,7 +1400,7 @@ namespace MacapSoftCAPUAN.Controllers
             cell.Colspan = 2;
             table.AddCell(cell);
 
-            var consultasResultadoEv = (consultas != null) ? consultas.FirstOrDefault().resultadoAutoevaluacion : " ";
+            var consultasResultadoEv = (consultas.Count != 0) ? consultas.FirstOrDefault().resultadoAutoevaluacion : " ";
             cell = new PdfPCell(new Phrase("Resultados evaluación", subtitulos.Font));
             cell.Colspan = 3;
             cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
@@ -1427,7 +1427,7 @@ namespace MacapSoftCAPUAN.Controllers
             cell.HorizontalAlignment = Element.ALIGN_CENTER;
             table.AddCell(cell);
 
-            var consultasHipotesisPsicologica = (consultas != null) ? consultas.FirstOrDefault().hipotesisPsicologica : " ";
+            var consultasHipotesisPsicologica = (consultas.Count != 0) ? consultas.FirstOrDefault().hipotesisPsicologica : " ";
             cell = new PdfPCell(new Paragraph(consultasHipotesisPsicologica, informacionParrafo.Font));
             cell.Colspan = 3;
             table.AddCell(cell);
@@ -1438,7 +1438,7 @@ namespace MacapSoftCAPUAN.Controllers
             cell.HorizontalAlignment = Element.ALIGN_CENTER;
             table.AddCell(cell);
 
-            var consultasObjetivosTerapeuticos = (consultas != null) ? consultas.FirstOrDefault().objetivosTerapeuticos : " ";
+            var consultasObjetivosTerapeuticos = (consultas.Count != 0) ? consultas.FirstOrDefault().objetivosTerapeuticos : " ";
             cell = new PdfPCell(new Paragraph(consultasObjetivosTerapeuticos, informacionParrafo.Font));
             cell.Colspan = 3;
             table.AddCell(cell);
@@ -1449,7 +1449,7 @@ namespace MacapSoftCAPUAN.Controllers
             cell.HorizontalAlignment = Element.ALIGN_CENTER;
             table.AddCell(cell);
 
-            var consultasEstrategiasTecnicasTerapeuticas = (consultas != null) ? consultas.FirstOrDefault().estrategiasTecnicasTerapeuticas : " ";
+            var consultasEstrategiasTecnicasTerapeuticas = (consultas.Count != 0) ? consultas.FirstOrDefault().estrategiasTecnicasTerapeuticas : " ";
             cell = new PdfPCell(new Paragraph(consultasEstrategiasTecnicasTerapeuticas, informacionParrafo.Font));
             cell.Colspan = 3;
             table.AddCell(cell);
@@ -1460,7 +1460,7 @@ namespace MacapSoftCAPUAN.Controllers
             cell.HorizontalAlignment = Element.ALIGN_CENTER;
             table.AddCell(cell);
 
-            var consultasLogrosAlcSegConsultante = (consultas != null) ? consultas.FirstOrDefault().logrosAlcanzadosSegunConsultante : " ";
+            var consultasLogrosAlcSegConsultante = (consultas.Count != 0) ? consultas.FirstOrDefault().logrosAlcanzadosSegunConsultante : " ";
             cell = new PdfPCell(new Paragraph(consultasLogrosAlcSegConsultante, informacionParrafo.Font));
             cell.Colspan = 3;
             table.AddCell(cell);
@@ -1471,7 +1471,7 @@ namespace MacapSoftCAPUAN.Controllers
             cell.HorizontalAlignment = Element.ALIGN_CENTER;
             table.AddCell(cell);
 
-            var consultasResumen = (consultas != null) ? consultas.FirstOrDefault().resumen : " ";
+            var consultasResumen = (consultas.Count != 0) ? consultas.FirstOrDefault().resumen : " ";
             cell = new PdfPCell(new Paragraph(consultasResumen, informacionParrafo.Font));
             cell.Colspan = 3;
             table.AddCell(cell);
@@ -1482,7 +1482,7 @@ namespace MacapSoftCAPUAN.Controllers
             cell.HorizontalAlignment = Element.ALIGN_CENTER;
             table.AddCell(cell);
 
-            var consultasObservacionesRecomendaciones = (consultas != null) ? consultas.FirstOrDefault().observacionesRecomendaciones : " ";
+            var consultasObservacionesRecomendaciones = (consultas.Count != 0) ? consultas.FirstOrDefault().observacionesRecomendaciones : " ";
             cell = new PdfPCell(new Paragraph(consultasObservacionesRecomendaciones, informacionParrafo.Font));
             cell.Colspan = 3;
             table.AddCell(cell);
@@ -1702,7 +1702,7 @@ namespace MacapSoftCAPUAN.Controllers
             workStream.Write(byteInfo, 0, byteInfo.Length);
             workStream.Position = 0;
 
-            return File(workStream, "application/pdf");
+            return File(workStream, "application/pdf", "HistoriaClínica"+paciente.numeroHistoriaClinica+".pdf");
         }
 
 
@@ -2371,6 +2371,842 @@ namespace MacapSoftCAPUAN.Controllers
             var usuarioAsignado = (from item in HC.permisosUsuariosPac() where item.id_aplicationUser == usuarioId && item.id_paciente == nhc select item).FirstOrDefault();
             HC.eliminarUsuarioAsignado(usuarioAsignado);
             return View();
+        }
+
+
+        public ActionResult ElementosConsultarHistoriaClinicaInactivas(string gifs, string cnp)
+        {
+            List<Consulta> listaConsultasIngreso = new List<Consulta>();
+            List<Inasistencias> listaInasistencias = new List<Inasistencias>();
+            List<CategorizacionHC> listaCategorizacionHC = new List<CategorizacionHC>();
+            List<Consulta> listaConsulta;
+            List<Consulta> listaConsultaGeneralPorPaciente = new List<Consulta>();
+            List<CategorizacionHC> listaCategorizacion = new List<CategorizacionHC>();
+            Dictionary<string, string> diccionarioConsultasDiagnostico = new Dictionary<string, string>();
+            Dictionary<string, string> diccionarioCategorizacionCAP = new Dictionary<string, string>();
+            Dictionary<string, string> diccionarioRemisiones;
+            Remitido remitido;
+
+            string diagnosticoConsultas = "";
+            string categorizacionesHC = "";
+
+            MemoryStream workStream = new MemoryStream();
+            Document document = new Document(PageSize.LETTER);
+            PdfWriter.GetInstance(document, workStream).CloseStream = false;
+
+            HC = new HistoriaClinicaBO();
+
+            var estadosConsulta = gifs.Split(';');
+            string fechaRemisionRemitente = "";
+            string sexoConsultante = "";
+            var paciente = (from item in HC.listarPaciente() where item.numeroHistoriaClinica == cnp select item).FirstOrDefault();
+            var ingresoClinica = (from item in HC.listarIngresoClinica() where item.id_paciente == paciente.numeroHistoriaClinica && item.estadoHC == true select item).ToList();
+            var consultas = HC.listarConsultas();
+            var listaEntidadesRemitentes = HC.listarRemisiones();
+            var listaRemitidos = HC.listarRemitido();
+            var inasistencias = HC.listarInasistencias();
+            var consultasDiagnósticos = HC.listarConsultaDiagnosticos();
+            var categorizacionHC = HC.listarCetegorizacionesHC();
+            var categorizacionesNombre = HC.listarCategorizacion();
+
+
+            var sexo = (from item in HC.listarSexo() where item.id_Sexo == paciente.id_sexo select item.sexo).FirstOrDefault();
+            var ciudad = (from item in HC.listarCiudades() where item.idCiudad == paciente.id_ciudad select item.nombre).FirstOrDefault();
+            var pais = (from item in HC.listarCiudades() where item.idCiudad == paciente.id_ciudad select item.id_pais).FirstOrDefault();
+            var nombrePais = (from item in HC.listarPaises() where item.idPais == pais select item.nombrePais).FirstOrDefault();
+
+            document.Open();
+            Paragraph title = new Paragraph();
+            Paragraph informacionParrafo = new Paragraph();
+            Paragraph subtitulos = new Paragraph();
+            title.Alignment = Element.ALIGN_CENTER;
+            title.Font = FontFactory.GetFont("Arial", 13);
+            informacionParrafo.Font = FontFactory.GetFont("Arial", 9);
+            subtitulos.Font = FontFactory.GetFont("Arial", 11);
+
+            int ingr = 0;
+            foreach (var ingrClinica in ingresoClinica) {
+                listaConsulta = new List<Consulta>();
+                remitido = new Remitido();
+                var nivelEscolaridad = (from item in HC.listarNivelEscolaridad() where item.idNivelEscolaridad == ingrClinica.id_NivelEscolaridad select item.nombre).FirstOrDefault();
+                var ocupacion = (from item in HC.listarOcupacion() where item.id_Ocupacion == ingrClinica.id_ocupacion select item.nombre).FirstOrDefault();
+                var barrio = (from item in HC.listarBarrios() where item.idBarrio == ingrClinica.id_barrio select item.nombre).FirstOrDefault();
+                var barrioNombre = (from item in HC.listarBarrios() where item.idBarrio == ingrClinica.id_barrio select item).FirstOrDefault();
+                var localidad = (from item in HC.listarLocalidades() where item.idLocalidad == barrioNombre.id_localidad select item.nombre).FirstOrDefault();
+                var eps = (from item in HC.listarEps() where item.IdEPS == ingrClinica.id_Eps select item.nombre).FirstOrDefault();
+                var entidadRemitente = (from item in HC.listarRemitido() where item.id_ingresoCl == ingrClinica.idIngresoClinica select item).LastOrDefault();
+                var consultante = (from item in HC.listarConsultante() where item.cedula == ingrClinica.id_Consultante select item).LastOrDefault();
+                var estrategiasIngreso = (from item in HC.listarIngresoEstrategiasEvaluacion() where item.id_ingreso == ingrClinica.idIngresoClinica select item).LastOrDefault();
+                var remisiones = (from item in HC.listarRemisiones() where item.id_ingresoClinica == ingrClinica.idIngresoClinica select item).ToList();
+
+                var numeroConsultas = (from item in HC.listarConsultas() where item.id_ingresoClinica == ingrClinica.idIngresoClinica select item).Count();
+                var numeroInasistencias = (from item in HC.listarInasistencias() where item.id_ingresoClinica == ingrClinica.idIngresoClinica select item).Count();
+
+
+                var fechIngreso = (ingrClinica.fechaIngreso).ToString();
+                var fechnStIngreso = DateTime.Parse(fechIngreso);
+                string format = "yyyy-MM-dd";
+                var fecha = fechnStIngreso.ToString(format);
+
+                var fechNacimiento = (paciente.fechaNacimiento).ToString();
+                var fechnStNacimiento = DateTime.Parse(fechNacimiento);
+                string formatNafechnStNacimientocimiento = "yyyy-MM-dd";
+                var fechaNacimiento = fechnStNacimiento.ToString(formatNafechnStNacimientocimiento);
+
+
+                foreach (var itemInasistencias in inasistencias)
+                {
+                    if (ingrClinica.idIngresoClinica == itemInasistencias.id_ingresoClinica)
+                    {
+                        listaInasistencias.Add(itemInasistencias);
+                        break;
+                    }
+                }
+
+                foreach (var item in listaRemitidos) {
+                    if (item.id_ingresoCl == ingrClinica.idIngresoClinica) {
+                        remitido = item;
+                    }
+                }
+
+                if (remitido != null)
+                {
+                    var fechRemitente = (remitido.fechaRemision).ToString();
+                    var fechnRemitente = DateTime.Parse(fechRemitente);
+                    string formatNafechnRemitente = "yyyy-MM-dd";
+                    fechaRemisionRemitente = fechnRemitente.ToString(formatNafechnRemitente);
+                }
+
+                //--------------------------Creación de la recepción de caso o documento general
+                
+
+
+
+                
+                if (gifs.Contains("1") || gifs.Contains("4"))
+                {
+                    if (ingr > 0)
+                    {
+                        document.NewPage();
+                    }
+
+                    title = new Paragraph();
+                    title.Alignment = Element.ALIGN_CENTER;
+                    title.Font = FontFactory.GetFont("Arial", 13);
+                    title.Add("\nHistoria clínica" + " - " + paciente.nombre + " " + paciente.apellido + "\n\n");
+                    document.Add(title);
+                    //document.Add(new Paragraph(300f,DateTime.Now.ToString()));
+                    PdfPTable table = new PdfPTable(3);
+                    PdfPCell cell = new PdfPCell(new Phrase("Información general de la historia clínica", title.Font));
+                    Paragraph texto = new Paragraph();
+
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    cell.Colspan = 3;
+                    cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table.AddCell(cell);
+
+
+                    cell = new PdfPCell(new Phrase("Fecha de recepción: " + fecha, texto.Font));
+                    cell.Colspan = 3;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Phrase("Número de historia clínica: " + paciente.numeroHistoriaClinica, texto.Font));
+                    cell.Colspan = 3;
+                    table.AddCell(cell);
+
+                    foreach (var item in consultas) {
+                        if (item.id_ingresoClinica == ingrClinica.idIngresoClinica) {
+                            listaConsulta.Add(item);
+                            listaConsultaGeneralPorPaciente.Add(item);
+                        }
+                    }
+
+                    
+
+                    foreach (var item in listaConsulta)
+                    {
+                        foreach (var item1 in consultasDiagnósticos)
+                        {
+                            if (item.idConsulta == item1.id_consulta)
+                            {
+                                //diagnosticoConsultas += diagnosticoConsultas + item1.id_diagnostico+",";
+                                if (!(diccionarioConsultasDiagnostico.ContainsKey(item1.id_diagnostico)))
+                                {
+                                    diccionarioConsultasDiagnostico.Add(item1.id_diagnostico, item1.id_diagnostico);
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    if (diccionarioConsultasDiagnostico != null)
+                    {
+                        foreach (var item in diccionarioConsultasDiagnostico)
+                        {
+                            var nombreDiagnostico = (from item1 in diagBo.listarDiagnostico() where item1.Codigo == item.Key select item1.Nombre).FirstOrDefault();
+                            diagnosticoConsultas += item.Value + "-" + nombreDiagnostico + ",";
+                        }
+
+                    }
+
+
+
+                    cell = new PdfPCell(new Phrase("Diagnósticos", texto.Font));
+                    cell.Colspan = 3;
+                    cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Paragraph(diagnosticoConsultas, informacionParrafo.Font));
+                    cell.Colspan = 3;
+                    table.AddCell(cell);
+
+                    foreach (var item in categorizacionHC)
+                    {
+                        if (item.id_IngresoClinica == ingrClinica.idIngresoClinica)
+                        {
+                            listaCategorizacion.Add(item);
+                        }
+                    }
+
+                    foreach (var item in categorizacionesNombre)
+                    {
+                        foreach (var item1 in listaCategorizacion)
+                        {
+                            if (item.id_CategorizacionCAP == item1.id_Categorizacion)
+                            {
+                                if (!(diccionarioCategorizacionCAP.ContainsKey(item.nombre)))
+                                {
+                                    diccionarioCategorizacionCAP.Add(item.nombre, item.nombre);
+                                    //break;
+                                }
+                               
+                            }
+                        }
+                    }
+
+
+                    if (diccionarioCategorizacionCAP != null)
+                    {
+                        foreach (var item in diccionarioCategorizacionCAP)
+                        {
+                            categorizacionesHC += item.Value + ",";
+                        }
+
+                    }
+
+
+                    cell = new PdfPCell(new Phrase("Categorización CAP", texto.Font));
+                    cell.Colspan = 3;
+                    cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Paragraph(categorizacionesHC, informacionParrafo.Font));
+                    cell.Colspan = 3;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Phrase("Datos personales", title.Font));
+                    cell.Colspan = 3;
+                    cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table.AddCell(cell);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Nombre: " + paciente.nombre + " " + paciente.apellido);
+                    table.AddCell(texto);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Sexo: " + sexo);
+                    table.AddCell(texto);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Fecha de nacimiento: " + fechaNacimiento);
+                    table.AddCell(texto);
+
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Número de documento: " + ingrClinica.numeroDocumento);
+                    table.AddCell(texto);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Tipo de documento: " + ingrClinica.id_tipoDocumento);
+                    table.AddCell(texto);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Lugar de nacimiento: país:" + nombrePais + "- ciudad: " + ciudad);
+                    table.AddCell(texto);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Edad: " + ingrClinica.edad);
+                    table.AddCell(texto);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Estado civil: " + ingrClinica.estadoCivil);
+                    table.AddCell(texto);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Religion: " + ingrClinica.religion);
+                    table.AddCell(texto);
+
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Escolaridad: " + nivelEscolaridad);
+                    table.AddCell(texto);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Profesión: " + ingrClinica.profesion);
+                    table.AddCell(texto);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Ocupación: " + ocupacion);
+                    table.AddCell(texto);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Dirección: " + ingrClinica.direccion);
+                    table.AddCell(texto);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Barrio: " + barrio);
+                    table.AddCell(texto);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Localidad: " + localidad);
+                    table.AddCell(texto);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Estrato: " + ingrClinica.id_estrato);
+                    table.AddCell(texto);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Teléfono: " + ingrClinica.telefono);
+                    table.AddCell(texto);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Email: " + ingrClinica.email);
+                    table.AddCell(texto);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("EPS: " + ingrClinica.tieneEps);
+                    table.AddCell(texto);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("EPC: " + ingrClinica.tieneEpc);
+                    table.AddCell(texto);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Institución: " + eps);
+                    table.AddCell(texto);
+
+                    cell = new PdfPCell(new Phrase("Datos de remitido", title.Font));
+                    cell.Colspan = 3;
+                    cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table.AddCell(cell);
+
+                    var entidadRemitenteNombre = (entidadRemitente != null) ? entidadRemitente.nombreEntidad : "No tiene";
+                    cell = new PdfPCell(new Phrase("Institución que remite: " + entidadRemitenteNombre, texto.Font));
+                    cell.Colspan = 3;
+                    cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table.AddCell(cell);
+
+                    var entidadRemitenteNombreRemitente = (entidadRemitente != null) ? entidadRemitente.nombreRemitente : "No tiene";
+                    cell = new PdfPCell(new Phrase("Profesional que remite: " + entidadRemitenteNombreRemitente, texto.Font));
+                    cell.Colspan = 3;
+                    cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Phrase("Fecha de remisión: " + fechaRemisionRemitente, texto.Font));
+                    cell.Colspan = 3;
+                    cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Phrase("Datos consultante", title.Font));
+                    cell.Colspan = 3;
+                    cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table.AddCell(cell);
+
+                    var consultanteNombre = (consultante != null) ? consultante.nombre : "No tiene";
+                    var consultanteApellido = (consultante != null) ? consultante.apellido : "No tiene";
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Nombre: " + consultanteNombre + " " + consultanteApellido);
+                    table.AddCell(texto);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Sexo: " + sexoConsultante);
+                    table.AddCell(texto);
+
+                    var consultanteParentezco = (consultante != null) ? consultante.parentezco : "No tiene";
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Parentesco: " + consultanteParentezco);
+                    table.AddCell(texto);
+
+                    var consultanteTelefono = (consultante != null) ? consultante.telefono : "No tiene";
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Teléfono: " + consultanteTelefono);
+                    table.AddCell(texto);
+
+                    var consultanteTipoDocumento = (consultante != null) ? consultante.id_tipoDocumento : "No tiene";
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Tipo de documento: " + consultanteTipoDocumento);
+                    table.AddCell(texto);
+
+                    var consultanteCedula = (consultante != null) ? consultante.cedula : "No tiene";
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Número de documento: " + consultanteCedula);
+                    table.AddCell(texto);
+
+                    cell = new PdfPCell(new Phrase("Motivo Consulta", subtitulos.Font));
+                    cell.Colspan = 3;
+                    cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Paragraph(ingrClinica.motivoConsulta, informacionParrafo.Font));
+                    cell.Colspan = 3;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Phrase("Problemática", subtitulos.Font));
+                    cell.Colspan = 3;
+                    cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Paragraph(ingrClinica.problematicaActual, informacionParrafo.Font));
+                    cell.Colspan = 3;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Phrase("Historia personal", subtitulos.Font));
+                    cell.Colspan = 3;
+                    cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Paragraph(ingrClinica.historiaPersonal, informacionParrafo.Font));
+                    cell.Colspan = 3;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Phrase("Antecedentes", subtitulos.Font));
+                    cell.Colspan = 3;
+                    cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Paragraph(ingrClinica.antecedentes, informacionParrafo.Font));
+                    cell.Colspan = 3;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Phrase("Estrategias evaluación", subtitulos.Font));
+                    cell.Colspan = 3;
+                    cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table.AddCell(cell);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Pruebas psicométricas");
+                    table.AddCell(texto);
+
+                    var estrategiasIngPruebasPsico = (estrategiasIngreso != null) ? estrategiasIngreso.pruebasPsico : " ";
+                    cell = new PdfPCell(new Phrase(estrategiasIngPruebasPsico, informacionParrafo.Font));
+                    cell.Colspan = 2;
+                    table.AddCell(cell);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Cuestionarios");
+                    table.AddCell(texto);
+
+                    var estrategiasIngCuestionarios = (estrategiasIngreso != null) ? estrategiasIngreso.cuestionarios : " ";
+                    cell = new PdfPCell(new Phrase(estrategiasIngCuestionarios, informacionParrafo.Font));
+                    cell.Colspan = 2;
+                    table.AddCell(cell);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Pruebas proyectivas");
+                    table.AddCell(texto);
+
+                    var estrategiasIngPruebasProyectivas = (estrategiasIngreso != null) ? estrategiasIngreso.pruebasProyectivas : " ";
+                    cell = new PdfPCell(new Phrase(estrategiasIngPruebasProyectivas, informacionParrafo.Font));
+                    cell.Colspan = 2;
+                    table.AddCell(cell);
+
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Exámen mental");
+                    table.AddCell(texto);
+
+                    var estrategiasIngExamenMental = (estrategiasIngreso != null) ? estrategiasIngreso.examenMental : " ";
+                    cell = new PdfPCell(new Phrase(estrategiasIngExamenMental, informacionParrafo.Font));
+                    cell.Colspan = 2;
+                    table.AddCell(cell);
+
+                    texto = new Paragraph();
+                    texto.Font = FontFactory.GetFont("Arial", 9);
+                    texto.Add("Entrevistas");
+                    table.AddCell(texto);
+
+                    var estrategiasIngEntrevistas = (estrategiasIngreso != null) ? estrategiasIngreso.entrevistas : " ";
+                    cell = new PdfPCell(new Phrase(estrategiasIngEntrevistas, informacionParrafo.Font));
+                    cell.Colspan = 2;
+                    table.AddCell(cell);
+
+                    var consultasResultadoEv = (listaConsulta.Count != 0) ? listaConsulta.FirstOrDefault().resultadoAutoevaluacion : " ";
+                    cell = new PdfPCell(new Phrase("Resultados evaluación", subtitulos.Font));
+                    cell.Colspan = 3;
+                    cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Paragraph(consultasResultadoEv, informacionParrafo.Font));
+                    cell.Colspan = 3;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Phrase("Historia familiar", subtitulos.Font));
+                    cell.Colspan = 3;
+                    cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Paragraph(ingrClinica.historiaFamiliar, informacionParrafo.Font));
+                    cell.Colspan = 3;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Phrase("Hipótesis psicológica", subtitulos.Font));
+                    cell.Colspan = 3;
+                    cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table.AddCell(cell);
+
+                    var consultasHipotesisPsicologica = (listaConsulta.Count != 0) ? listaConsulta.FirstOrDefault().hipotesisPsicologica : " ";
+                    cell = new PdfPCell(new Paragraph(consultasHipotesisPsicologica, informacionParrafo.Font));
+                    cell.Colspan = 3;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Phrase("Objetivos terapéuticos", subtitulos.Font));
+                    cell.Colspan = 3;
+                    cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table.AddCell(cell);
+
+                    var consultasObjetivosTerapeuticos = (listaConsulta.Count != 0) ? listaConsulta.FirstOrDefault().objetivosTerapeuticos : " ";
+                    cell = new PdfPCell(new Paragraph(consultasObjetivosTerapeuticos, informacionParrafo.Font));
+                    cell.Colspan = 3;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Phrase("Estrategias y técnicas terapéuticas", subtitulos.Font));
+                    cell.Colspan = 3;
+                    cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table.AddCell(cell);
+
+                    var consultasEstrategiasTecnicasTerapeuticas = (listaConsulta.Count != 0) ? listaConsulta.FirstOrDefault().estrategiasTecnicasTerapeuticas : " ";
+                    cell = new PdfPCell(new Paragraph(consultasEstrategiasTecnicasTerapeuticas, informacionParrafo.Font));
+                    cell.Colspan = 3;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Phrase("Logros alcanzados según consultante", subtitulos.Font));
+                    cell.Colspan = 3;
+                    cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table.AddCell(cell);
+
+                    var consultasLogrosAlcSegConsultante = (listaConsulta.Count != 0) ? listaConsulta.FirstOrDefault().logrosAlcanzadosSegunConsultante : " ";
+                    cell = new PdfPCell(new Paragraph(consultasLogrosAlcSegConsultante, informacionParrafo.Font));
+                    cell.Colspan = 3;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Phrase("Resúmen", subtitulos.Font));
+                    cell.Colspan = 3;
+                    cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table.AddCell(cell);
+
+                    var consultasResumen = (listaConsulta.Count != 0) ? listaConsulta.FirstOrDefault().resumen : " ";
+                    cell = new PdfPCell(new Paragraph(consultasResumen, informacionParrafo.Font));
+                    cell.Colspan = 3;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Phrase("Observaciones y recomendaciones", subtitulos.Font));
+                    cell.Colspan = 3;
+                    cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    table.AddCell(cell);
+
+                    var consultasObservacionesRecomendaciones = (listaConsulta.Count != 0) ? listaConsulta.FirstOrDefault().observacionesRecomendaciones : " ";
+                    cell = new PdfPCell(new Paragraph(consultasObservacionesRecomendaciones, informacionParrafo.Font));
+                    cell.Colspan = 3;
+                    table.AddCell(cell);
+                    document.Add(table);
+                }
+                ingr++;
+            }
+            //--------------------------Creación de las consultas
+            //for (int i = 0; i <= numeroConsultas; i++) {
+            PdfPCell cell1 = new PdfPCell();
+            int i = 0;
+            if (gifs.Contains("2"))
+            {
+                foreach (var item in listaConsultaGeneralPorPaciente)
+                {
+                    string diagnosticosConsulta = "";
+                    var nombreDiag = "";
+                    if ((gifs.Contains("1") || gifs.Contains("4")))
+                    {
+                        document.NewPage();
+                    }
+                    else if (i > 0)
+                    {
+                        document.NewPage();
+                    }
+
+                    Paragraph textoConsulta;
+                    PdfPTable tableConsultas = new PdfPTable(1);
+                    cell1 = new PdfPCell(new Phrase("Consulta", title.Font));
+                    //cell.Colspan = 3;
+                    cell1.BackgroundColor = new iTextSharp.text.BaseColor(255, 255, 255);
+                    cell1.HorizontalAlignment = Element.ALIGN_CENTER;
+                    tableConsultas.AddCell(cell1);
+
+                    cell1 = new PdfPCell(new Phrase("Número de historia clínica" + " " + paciente.numeroHistoriaClinica, subtitulos.Font));
+                    cell1.Colspan = 3;
+                    cell1.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    tableConsultas.AddCell(cell1);
+
+                    cell1 = new PdfPCell(new Phrase("Sesión número" + " " + item.numeroSesion, subtitulos.Font));
+                    cell1.Colspan = 3;
+                    cell1.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    tableConsultas.AddCell(cell1);
+
+                    cell1 = new PdfPCell(new Phrase("Diagnósticos", subtitulos.Font));
+                    cell1.Colspan = 3;
+                    cell1.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell1.HorizontalAlignment = Element.ALIGN_CENTER;
+                    tableConsultas.AddCell(cell1);
+
+                    var consultaDiagnostico = (from item1 in HC.listarConsultaDiagnosticos() where item1.id_consulta == item.idConsulta select item1.id_diagnostico).ToList();
+                    if (consultaDiagnostico != null)
+                    {
+                        foreach (var diagnostico in consultaDiagnostico)
+                        {
+                            nombreDiag = (from diagnos in diagBo.listarDiagnostico() where diagnos.Codigo == diagnostico select diagnos.Nombre).FirstOrDefault();
+                            diagnosticosConsulta += diagnostico + "-" + nombreDiag + "*";
+                        }
+                    }
+
+                    var diagnosticosSesion = (diagnosticosConsulta != "") ? diagnosticosConsulta : "No se ingresaron diagnósticos.";
+                    textoConsulta = new Paragraph();
+                    textoConsulta.Font = FontFactory.GetFont("Arial", 9);
+                    textoConsulta.Add(diagnosticosSesion);
+                    tableConsultas.AddCell(textoConsulta);
+
+                    cell1 = new PdfPCell(new Phrase("Objetivos de la sesión", subtitulos.Font));
+                    cell1.Colspan = 3;
+                    cell1.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell1.HorizontalAlignment = Element.ALIGN_CENTER;
+                    tableConsultas.AddCell(cell1);
+
+                    var objetivoConsultaSesion = (item.objetivoSesion != null) ? item.objetivoSesion : " ";
+                    textoConsulta = new Paragraph();
+                    textoConsulta.Font = FontFactory.GetFont("Arial", 9);
+                    textoConsulta.Add(objetivoConsultaSesion);
+                    tableConsultas.AddCell(textoConsulta);
+
+                    cell1 = new PdfPCell(new Phrase("Ejercicios y eventos significativos", subtitulos.Font));
+                    cell1.Colspan = 3;
+                    cell1.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell1.HorizontalAlignment = Element.ALIGN_CENTER;
+                    tableConsultas.AddCell(cell1);
+
+                    var ejerciciosEventoSesion = (item.ejerciciosEvento != null) ? item.ejerciciosEvento : " ";
+                    textoConsulta = new Paragraph();
+                    textoConsulta.Font = FontFactory.GetFont("Arial", 9);
+                    textoConsulta.Add(ejerciciosEventoSesion);
+                    tableConsultas.AddCell(textoConsulta);
+
+                    cell1 = new PdfPCell(new Phrase("Desarrollo y temas tratados", subtitulos.Font));
+                    cell1.Colspan = 3;
+                    cell1.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell1.HorizontalAlignment = Element.ALIGN_CENTER;
+                    tableConsultas.AddCell(cell1);
+
+                    var desarrolloTemasTratadosSesion = (item.desarrolloTemasTratados != null) ? item.desarrolloTemasTratados : " ";
+                    textoConsulta = new Paragraph();
+                    textoConsulta.Font = FontFactory.GetFont("Arial", 9);
+                    textoConsulta.Add(desarrolloTemasTratadosSesion);
+                    tableConsultas.AddCell(textoConsulta);
+
+                    cell1 = new PdfPCell(new Phrase("Próxima sesión", subtitulos.Font));
+                    cell1.Colspan = 3;
+                    cell1.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell1.HorizontalAlignment = Element.ALIGN_CENTER;
+                    tableConsultas.AddCell(cell1);
+
+                    var tareasProximaSesionSesion = (item.tareasProximaSesion != null) ? item.tareasProximaSesion : " ";
+                    textoConsulta = new Paragraph();
+                    textoConsulta.Font = FontFactory.GetFont("Arial", 9);
+                    textoConsulta.Add(tareasProximaSesionSesion);
+                    tableConsultas.AddCell(textoConsulta);
+
+                    cell1 = new PdfPCell(new Phrase("Observaciones", subtitulos.Font));
+                    cell1.Colspan = 3;
+                    cell1.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    cell1.HorizontalAlignment = Element.ALIGN_CENTER;
+                    tableConsultas.AddCell(cell1);
+
+                    var observacionesRecomendacionesSesion = (item.observacionesRecomendaciones != null) ? item.observacionesRecomendaciones : " ";
+                    textoConsulta = new Paragraph();
+                    textoConsulta.Font = FontFactory.GetFont("Arial", 9);
+                    textoConsulta.Add(observacionesRecomendacionesSesion);
+                    tableConsultas.AddCell(textoConsulta);
+
+                    document.Add(tableConsultas);
+                    i += 1;
+                }
+            }
+            //}
+            //--------------------------Creación de las inasistencias
+            int j = 0;
+            if (gifs.Contains("3"))
+            {
+                if ((gifs.Contains("1") || gifs.Contains("2") || gifs.Contains("4")))
+                {
+                    document.NewPage();
+                }
+                if (j > 1)
+                {
+                    document.NewPage();
+                }
+                //document.NewPage();
+                foreach (var item in listaInasistencias)
+                {
+                    var fechInasistencia = (item.fechaInasistencia).ToString();
+                    var fechnStInasistencia = DateTime.Parse(fechInasistencia);
+                    string formatInasistencia = "yyyy-MM-dd";
+                    var fechaInasistencia = fechnStInasistencia.ToString(formatInasistencia);
+
+                    //document.NewPage();
+                    Paragraph textoInasistencia = new Paragraph();
+                    PdfPTable tableInasistencias = new PdfPTable(2);
+                    cell1 = new PdfPCell(new Phrase("Inasistencia", title.Font));
+                    cell1.Colspan = 2;
+                    cell1.BackgroundColor = new iTextSharp.text.BaseColor(255, 255, 255);
+                    cell1.HorizontalAlignment = Element.ALIGN_CENTER;
+                    tableInasistencias.AddCell(cell1);
+
+                    cell1 = new PdfPCell(new Phrase("Número de historia clínica" + " " + paciente.numeroHistoriaClinica, subtitulos.Font));
+                    cell1.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    tableInasistencias.AddCell(cell1);
+
+                    cell1 = new PdfPCell(new Phrase("Fecha de la inasistencia" + " " + fechaInasistencia, subtitulos.Font));
+                    cell1.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    tableInasistencias.AddCell(cell1);
+
+                    cell1 = new PdfPCell(new Paragraph(item.motivo, subtitulos.Font));
+                    cell1.Colspan = 3;
+                    tableInasistencias.AddCell(cell1);
+                    document.Add(tableInasistencias);
+                    j += 1;
+                }
+            }
+            //--------------------------Creación de las remisiones 
+            foreach (var ingrClinica in ingresoClinica)
+            {
+                diccionarioRemisiones = new Dictionary<string, string>();
+                document.NewPage();
+                var remisiones = (from item in HC.listarRemisiones() where item.id_ingresoClinica == ingrClinica.idIngresoClinica select item).ToList();
+                var fechaRemitido = "";
+                PdfPCell cell2 = new PdfPCell();
+                var concatRemisiones = "";
+                if (remisiones.Count > 0)
+                {
+                    var fechRemitido = (remisiones.FirstOrDefault().fechaRemitido).ToString();
+                    var fechNRemitido = DateTime.Parse(fechRemitido);
+                    string formatRemitido = "yyyy-MM-dd";
+                    fechaRemitido = fechNRemitido.ToString(formatRemitido);
+                }
+                else {
+                    fechaRemitido = "No tiene fecha";
+                }
+                 
+                Paragraph textoRemision = new Paragraph();
+                PdfPTable tableRemision = new PdfPTable(2);
+                cell2 = new PdfPCell(new Phrase("Remisiones", title.Font));
+                cell2.Colspan = 2;
+                cell2.BackgroundColor = new iTextSharp.text.BaseColor(255, 255, 255);
+                cell2.HorizontalAlignment = Element.ALIGN_CENTER;
+                tableRemision.AddCell(cell2);
+
+                cell2 = new PdfPCell(new Phrase("Número de historia clínica" + " " + paciente.numeroHistoriaClinica, subtitulos.Font));
+                cell2.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                tableRemision.AddCell(cell2);
+
+                cell2 = new PdfPCell(new Phrase("Fecha de la remisión" + " " + fechaRemitido, subtitulos.Font));
+                cell2.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                tableRemision.AddCell(cell2);
+
+                foreach (var item in remisiones)
+                {
+                    foreach (var item1 in HC.listarMotivosRemisiones())
+                    {
+                        if (item1.idMotivoRemision == item.motivoRemision)
+                        {
+                            if (!(diccionarioRemisiones.ContainsKey(item1.nombre)))
+                            {
+                                diccionarioRemisiones.Add(item1.nombre, item1.nombre);
+                            }
+                        }
+                    }
+                }
+
+                foreach (var item in diccionarioRemisiones)
+                {
+                    concatRemisiones += item.Value + ",";
+                }
+
+                cell2 = new PdfPCell(new Paragraph(concatRemisiones, subtitulos.Font));
+                cell2.Colspan = 3;
+                tableRemision.AddCell(cell2);
+                document.Add(tableRemision);
+            }
+            document.Close();
+
+            byte[] byteInfo = workStream.ToArray();
+            workStream.Write(byteInfo, 0, byteInfo.Length);
+            workStream.Position = 0;
+
+            return File(workStream, "application/pdf", "HistoriaClínicaNúmero" + paciente.numeroHistoriaClinica + ".pdf");
         }
 
     }

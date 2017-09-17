@@ -84,5 +84,6 @@ C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSo
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\Microsoft.Owin.Security.Google.xml
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\Microsoft.Owin.Security.Twitter.xml
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
+C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\obj\Debug\MacapSoftCAPUAN.csprojResolveAssemblyReference.cache
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\obj\Debug\MacapSoftCAPUAN.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\MacapSoftCAPUAN\obj\Debug\MacapSoftCAPUAN.pdb

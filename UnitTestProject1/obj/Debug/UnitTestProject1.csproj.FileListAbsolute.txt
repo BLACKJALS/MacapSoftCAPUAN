@@ -55,5 +55,4 @@ C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\UnitTes
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\UnitTestProject1\bin\Debug\Moq.pdb
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\UnitTestProject1\bin\Debug\Moq.xml
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\UnitTestProject1\bin\Debug\itextsharp.dll
-C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\UnitTestProject1\bin\Debug\itextsharp.xmlworker.dll
 C:\Users\Alejandro\documents\visual studio 2015\Projects\MacapSoftCAPUAN\UnitTestProject1\bin\Debug\itextsharp.xml

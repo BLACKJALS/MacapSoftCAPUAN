@@ -17,10 +17,16 @@
     <script src="~/Scripts/bootstrap-table/locale/bootstrap-table-es-CR.min.js"></script>
     <script>
 
-
+        $(document).ready(function () {
+                $("#buttonOpen").prop("disabled", true);
+                $("#buttonEdit").prop("disabled", true);
+                alert("Debe seleccionar una historia clínica para ver la correspondiente información.");
+        });
+        var concatenacion = "";
         var $table = $('#table'),
             $buttonBack = $('#buttonBack'),
             $button = $('#button');
+        var numHC;
 
         function formatoOperaciones(value, row, index) {
             return [
@@ -31,9 +37,11 @@
 
         window.eventosOperaciones = {
             'click .edit': function (e, value, row, index) {
-                $("#buttonAssing").click(function (e) {
-                    alert(row);
-                });
+                //$.each(row, function (key, value) {
+                $("#numeroHC").val(row.numeroHC);
+                $("#buttonOpen").prop("disabled", false);
+                numHC = row.numeroHC;
+                //});
             }
         };
 
@@ -68,6 +76,68 @@
             });
             location.reload();
         }
+
+
+        function disbledButton() {
+            //set initial state.
+            var chxDocGeneral = $('#chxDocumentoGeneral').is(':checked');
+            var chxInformeSesion = $('#chxInformeSesion').is(':checked');
+            var chxInasistencias = $('#chxInasistencias').is(':checked');
+            var chxRecepcionCaso = $('#chxRecepcionCaso').is(':checked');
+            var chxRemisiones = $('#chxRemisiones').is(':checked');
+            var concat = "";
+
+            if (chxDocGeneral == true) {
+                concat += $('#chxDocumentoGeneral').val() + ";";
+            }
+            if (chxInformeSesion == true) {
+                concat += $('#chxInformeSesion').val() + ";";
+            }
+            if (chxInasistencias == true) {
+                concat += $('#chxInasistencias').val() + ";";
+            }
+            if (chxRecepcionCaso == true) {
+                concat += $('#chxRecepcionCaso').val() + ";";
+            }
+            if (chxRemisiones == true) {
+                concat += $('#chxRemisiones').val() + ";";
+            }
+
+            if (chxDocGeneral == true || chxInformeSesion == true || chxInasistencias == true || chxRecepcionCaso == true || chxRemisiones == true) {
+                $("#buttonEdit").prop("disabled", false);
+            } else {
+                $("#buttonEdit").prop("disabled", true);
+            }
+            concatenacion = concat;
+        };
+
+
+        $('#chxDocumentoGeneral').click(function () {
+            disbledButton();
+        });
+
+        $('#chxInformeSesion').click(function () {
+            disbledButton();
+        });
+
+        $('#chxInasistencias').click(function () {
+            disbledButton();
+        });
+
+        $('#chxRecepcionCaso').click(function () {
+            disbledButton();
+        });
+
+        $('#chxRemisiones').click(function () {
+            disbledButton();
+        });
+
+        function enviarParametros() {
+            var newConc = concatenacion;
+            var numHCP = numHC;
+            location.href = '@Url.Action("ElementosConsultarHistoriaClinicaInactivas", "HistoriaClinica")?gifs=' + newConc + '&cnp=' + numHCP;
+        }
+
     </script>
 
 
@@ -108,7 +178,7 @@
         <div class="row">
             <div class="col-md-10"></div>
             <div id="toolbar">
-                <input type="button" class="btn btn-primary" value="Abrir" data-toggle="modal" data-target="#modalAbrirUsuario" />
+                <input type="button" id="buttonOpen" class="btn btn-primary" value="Abrir" data-toggle="modal" data-target="#modalAbrirUsuario" />
                 <input type="button" class="btn btn-primary" value="Regresar" onclick="location.href='@Url.Action("Index", "HistoriaClinica" )'" />
             </div>
         </div>
@@ -129,7 +199,7 @@
                                     <label style="font-size:medium">Documento general:</label>
                                 </div>
                                 <div class="col-md-1">
-                                    <input type="checkbox" id="DocumentoGeneral" value="5" name="remision.motivoRemision.idMotivoRemision">
+                                    <input type="checkbox" id="chxDocumentoGeneral" value="1">
                                 </div>
                             </div>
                             <div class="row">
@@ -137,7 +207,7 @@
                                     <label style="font-size:medium">Informe sesion:</label>
                                 </div>
                                 <div class="col-md-1">
-                                    <input type="checkbox" id="InformeSesion" value="5" name="remision.motivoRemision.idMotivoRemision">
+                                    <input type="checkbox" id="chxInformeSesion" value="2">
                                 </div>
                             </div>
                             <div class="row">
@@ -145,7 +215,7 @@
                                     <label style="font-size:medium">Inasitencias:</label>
                                 </div>
                                 <div class="col-md-1">
-                                    <input type="checkbox" id="IntentoSuicida" value="5" name="remision.motivoRemision.idMotivoRemision">
+                                    <input type="checkbox" id="chxInasistencias" value="3">
                                 </div>
                             </div>
                             <div class="row">
@@ -153,7 +223,7 @@
                                     <label style="font-size:medium">Recepción de caso:</label>
                                 </div>
                                 <div class="col-md-1">
-                                    <input type="checkbox" id="RecepcionCaso" value="5" name="remision.motivoRemision.idMotivoRemision">
+                                    <input type="checkbox" id="chxRecepcionCaso" value="4">
                                 </div>
                             </div>
                             <div class="row">
@@ -161,12 +231,12 @@
                                     <label style="font-size:medium">Remisiones:</label>
                                 </div>
                                 <div class="col-md-1">
-                                    <input type="checkbox" id="Remisiones" value="5" name="remision.motivoRemision.idMotivoRemision">
+                                    <input type="checkbox" id="chxRemisiones" value="5">
                                 </div>
                             </div>
 
                             <div class="modal-footer">
-                                <button type="button" id="buttonEdit" class="btn btn-default" data-dismiss="modal" onclick="return btnAbrirUsuarioCampo_Click();">
+                                <button type="button" id="buttonEdit" class="btn btn-default" data-dismiss="modal" onclick="return enviarParametros();">
                                     Consultar
                                 </button>
                                 <button id="buttonSalir" type="button" class="btn btn-default" data-dismiss="modal">Regresar</button>
