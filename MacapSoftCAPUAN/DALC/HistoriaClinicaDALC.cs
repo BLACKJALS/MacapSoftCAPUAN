@@ -282,32 +282,6 @@ namespace MacapSoftCAPUAN.DALC
         }
 
 
-
-        //public string agregarConsultantePaciente(consultantePaciente consultantePa)
-        //{
-
-        //    try
-        //    {
-        //        bd = new ApplicationDbContext();
-        //        bd.consultantePacienteContext.Add(consultantePa);
-        //        //bd.Entry(consultantePa.idConsultante.tipoDocumento).State = EntityState.Detached;
-        //        //bd.Entry(consultantePa.idConsultante).State = EntityState.Unchanged;
-        //        bd.Entry(consultantePa.IdConsultante).State = EntityState.Unchanged;
-        //        bd.Entry(consultantePa.IdPaciente).State = EntityState.Unchanged;
-        //        bd.SaveChanges();
-        //        return "ConsultantePaciente creado existosamente";
-        //    }
-        //    catch (Exception e)
-        //    {
-
-        //        System.ArgumentException argxEx = new System.ArgumentException("No se pudo crear el paciente ya existe la información del consultante paciente con ese documentos de identidad registrado.", e);
-        //        throw argxEx;
-
-        //    }
-
-        //}
-
-
         public void agregarConsecutivo(Consecutivo consecutivo)
         {
             bd = new ApplicationDbContext();

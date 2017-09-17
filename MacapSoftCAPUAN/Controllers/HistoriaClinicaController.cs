@@ -857,7 +857,7 @@ namespace MacapSoftCAPUAN.Controllers
 
 
 
-
+        [Authorize(Roles = "Administrador")]
         public ActionResult listaHistoriasClinicasInactivas()
         {
             return View();
@@ -865,7 +865,7 @@ namespace MacapSoftCAPUAN.Controllers
 
 
 
-
+        [Authorize(Roles = "Administrador")]
         public JsonResult listarHistoriasClinicasInactivasSegunUsuario()
         {
 
@@ -876,15 +876,15 @@ namespace MacapSoftCAPUAN.Controllers
                 listPc = HC.listarHCInactivasAdmin();
             }
 
-            if (User.IsInRole("Docente"))
-            {
-                listPc = HC.listarHCInactivasDocente();
-            }
-
-            if (User.IsInRole("Estudiante psicologo"))
-            {
-                listPc = HC.listarHCInactivasEstudiante();
-            }
+            //if (User.IsInRole("Docente"))
+            //{
+            //    listPc = HC.listarHCInactivasDocente();
+            //}
+            //
+            //if (User.IsInRole("Estudiante psicologo"))
+            //{
+            //    listPc = HC.listarHCInactivasEstudiante();
+            //}
             return Json(listPc, JsonRequestBehavior.AllowGet);
         }
 

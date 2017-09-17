@@ -346,6 +346,17 @@ namespace MacapSoftCAPUAN.BO
                 recepcionC.paciente.estadoHC = false;
                 paciente = recepcionC.paciente;
                 HC.modificarPaciente(paciente);
+                
+                if (recepcionC.consultante.cedula != null)
+                {
+                    var existe = (from item in hcDALC.listarConsultante() where recepcionC.consultante.cedula == item.cedula select item).LastOrDefault();
+                    if (existe == null)
+                    {
+                        //recepcionC.consultante.numeroDocumentoPaciente = pacienteIngr.numeroDocumento;
+                        HC.agregarConsultante(recepcionC.consultante);
+                        ingresoClinica.id_Consultante = recepcionC.consultante.cedula;
+                    }
+                }
                 HC.ingresoClinica(ingresoClinica);
                 var listaHCIngreso = HC.listarIngresoClinica().LastOrDefault();
                 recepcionC.cierre.id_ingresoClinica = listaHCIngreso.idIngresoClinica;
@@ -355,16 +366,6 @@ namespace MacapSoftCAPUAN.BO
                     recepcionC.remitido.id_ingresoCl = recepcionC.ingresoClinica.idIngresoClinica;
                     remitido = recepcionC.remitido;
                     HC.agregarRemitido(remitido);
-                }
-
-                if (recepcionC.consultante.cedula != null)
-                {
-                    var existe = (from item in hcDALC.listarConsultante() where recepcionC.consultante.cedula == item.cedula select item).LastOrDefault();
-                    if (existe == null)
-                    {
-                        //recepcionC.consultante.numeroDocumentoPaciente = pacienteIngr.numeroDocumento;
-                        HC.agregarConsultante(recepcionC.consultante);
-                    }
                 }
                 return "proceso exitoso";
             }
