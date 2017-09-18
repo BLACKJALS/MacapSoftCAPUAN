@@ -185,7 +185,7 @@ namespace MacapSoftCAPUAN.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Activo = true };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Activo = true, nombreUsuario = model.nombreUsuario };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -606,7 +606,7 @@ namespace MacapSoftCAPUAN.Controllers
                         select new
                         {
                             Id = user.Id,
-                            nombreUsuario = user.UserName,
+                            nombreUsuario = user.nombreUsuario,
                             Email = user.Email,
                             Role = role.Name,
                             Estado = user.Activo? "Activo":"Inactivo"

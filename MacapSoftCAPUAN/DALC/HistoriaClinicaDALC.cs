@@ -315,7 +315,6 @@ namespace MacapSoftCAPUAN.DALC
 
         public List<Remision> listaPacientesRemitidos() {
             bd = new ApplicationDbContext();
-            var listaUsuarios = bd.pacienteContext;
             var listaRemisiones = bd.remisionContext.ToList();
             return listaRemisiones;
         }
@@ -704,18 +703,20 @@ namespace MacapSoftCAPUAN.DALC
                         result.fechaFinalizaionPsicoterapia = cierre.fechaFinalizaionPsicoterapia;
                         result.fechaInicioPsicoterapia = cierre.fechaInicioPsicoterapia;
                         result.id_UsuarioCierraCaso = cierre.id_UsuarioCierraCaso;
+                        result.instrumentosEvaluacion = cierre.instrumentosEvaluacion;
+                        result.resultadoObtenidoEvaluacion = cierre.resultadoObtenidoEvaluacion;
 
-                        if (result.numeroCitasAsignadas != null)
+                        if (cierre.numeroCitasAsignadas != "0")
                         {
                             result.numeroCitasAsignadas = cierre.numeroCitasAsignadas;
                         }
 
-                        if (result.numeroSesionesRealizadas != null)
+                        if (cierre.numeroSesionesRealizadas != "0")
                         {
                             result.numeroSesionesRealizadas = cierre.numeroSesionesRealizadas;
                         }
 
-                        if (cierre.especificacionMotivoCierre != null)
+                        if (cierre.especificacionMotivoCierre != "0")
                         {
                             result.especificacionMotivoCierre = cierre.especificacionMotivoCierre;
                         }

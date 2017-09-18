@@ -985,6 +985,7 @@ namespace MacapSoftCAPUAN.Controllers
             var consultante = (from item in HC.listarConsultante() where item.cedula == ingresoClinica.id_Consultante select item).LastOrDefault();
             var estrategiasIngreso = (from item in HC.listarIngresoEstrategiasEvaluacion() where item.id_ingreso == ingresoClinica.idIngresoClinica select item).LastOrDefault();
             var remisiones = (from item in HC.listarRemisiones() where item.id_ingresoClinica == ingresoClinica.idIngresoClinica select item).ToList();
+            var nombreUsuario = (from item in HC.listarUsuario() where item.Id == ingresoClinica.idUser select item.nombreUsuario).FirstOrDefault();
 
             var numeroConsultas = (from item in HC.listarConsultas() where item.id_ingresoClinica == ingresoClinica.idIngresoClinica select item).Count();
             var numeroInasistencias = (from item in HC.listarInasistencias() where item.id_ingresoClinica == ingresoClinica.idIngresoClinica select item).Count();
@@ -1096,6 +1097,10 @@ namespace MacapSoftCAPUAN.Controllers
 
 
             cell = new PdfPCell(new Phrase("Fecha de recepción: " + fecha, texto.Font));
+            cell.Colspan = 3;
+            table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase("Usuario que generó el documento: " + nombreUsuario, texto.Font));
             cell.Colspan = 3;
             table.AddCell(cell);
 
@@ -1502,7 +1507,8 @@ namespace MacapSoftCAPUAN.Controllers
                     if (i > 0) {
                         document.NewPage();
                     }
-                
+                    var nombreUsuarioConsulta = (from item1 in HC.listarUsuario() where item1.Id == item.id_User select item1.nombreUsuario).FirstOrDefault();
+                    var nombreUsrConsulta = nombreUsuarioConsulta != null ? nombreUsuarioConsulta : "";
                 Paragraph textoConsulta;
                 PdfPTable tableConsultas = new PdfPTable(1);
                 cell = new PdfPCell(new Phrase("Consulta", title.Font));
@@ -1511,12 +1517,17 @@ namespace MacapSoftCAPUAN.Controllers
                 cell.HorizontalAlignment = Element.ALIGN_CENTER;
                 tableConsultas.AddCell(cell);
 
-                cell = new PdfPCell(new Phrase("Número de historia clínica"+ " "+ paciente.numeroHistoriaClinica, subtitulos.Font));
+                cell = new PdfPCell(new Phrase("Número de historia clínica"+ ": "+ paciente.numeroHistoriaClinica, subtitulos.Font));
                 cell.Colspan = 3;
                 cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
                 tableConsultas.AddCell(cell);
 
-                cell = new PdfPCell(new Phrase("Sesión número" + " " + item.numeroSesion, subtitulos.Font));
+                cell = new PdfPCell(new Phrase("Usuario quien antendió la consulta"+ ": "+ nombreUsrConsulta, subtitulos.Font));
+                cell.Colspan = 3;
+                cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                tableConsultas.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase("Sesión número" + ": " + item.numeroSesion, subtitulos.Font));
                 cell.Colspan = 3;
                 cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
                 tableConsultas.AddCell(cell);
@@ -1625,7 +1636,8 @@ namespace MacapSoftCAPUAN.Controllers
                     var fechnStInasistencia = DateTime.Parse(fechInasistencia);
                     string formatInasistencia = "yyyy-MM-dd";
                     var fechaInasistencia = fechnStInasistencia.ToString(formatInasistencia);
-
+                    var nombreUsuarioInasistencia = (from item1 in HC.listarUsuario() where item1.Id == item.usuario select item1.nombreUsuario).FirstOrDefault();
+                    var nombreUsrInasistencia = nombreUsuarioInasistencia != null ? nombreUsuarioInasistencia : "";
                     //document.NewPage();
                     Paragraph textoInasistencia = new Paragraph();
                     PdfPTable tableInasistencias = new PdfPTable(2);
@@ -1635,11 +1647,16 @@ namespace MacapSoftCAPUAN.Controllers
                     cell.HorizontalAlignment = Element.ALIGN_CENTER;
                     tableInasistencias.AddCell(cell);
 
-                    cell = new PdfPCell(new Phrase("Número de historia clínica" + " " + paciente.numeroHistoriaClinica, subtitulos.Font));
+                    cell = new PdfPCell(new Phrase("Número de historia clínica" + ": " + paciente.numeroHistoriaClinica, subtitulos.Font));
                     cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
                     tableInasistencias.AddCell(cell);
 
-                    cell = new PdfPCell(new Phrase("Fecha de la inasistencia" + " " + fechaInasistencia, subtitulos.Font));
+                    cell = new PdfPCell(new Phrase("Fecha de la inasistencia" + ": " + fechaInasistencia, subtitulos.Font));
+                    cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    tableInasistencias.AddCell(cell);
+
+                    cell = new PdfPCell(new Phrase("Usuario quién generó la inasistencia" + ": " + nombreUsrInasistencia, subtitulos.Font));
+                    cell.Colspan = 2;
                     cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
                     tableInasistencias.AddCell(cell);
 
@@ -1878,6 +1895,9 @@ namespace MacapSoftCAPUAN.Controllers
             cierresHC.fechaFinalizaionPsicoterapia = cierreCaso.cierreHC.fechaFinalizaionPsicoterapia;
             cierresHC.especificacionMotivoCierre = cierreCaso.cierreHC.especificacionMotivoCierre;
             cierresHC.numeroSesionesRealizadas = cierreCaso.cierreHC.numeroSesionesRealizadas;
+            cierresHC.numeroCitasAsignadas = cierreCaso.cierreHC.numeroCitasAsignadas;
+            cierresHC.instrumentosEvaluacion = cierreCaso.cierreHC.instrumentosEvaluacion;
+            cierresHC.resultadoObtenidoEvaluacion = cierreCaso.cierreHC.resultadoObtenidoEvaluacion;
 
             HC.remitirModificarPaciente(paciente);
             HC.modificarCierreHCIngresoClinica(ingresoClinica);
@@ -2378,12 +2398,12 @@ namespace MacapSoftCAPUAN.Controllers
         {
             List<Consulta> listaConsultasIngreso = new List<Consulta>();
             List<Inasistencias> listaInasistencias = new List<Inasistencias>();
-            List<CategorizacionHC> listaCategorizacionHC = new List<CategorizacionHC>();
+            List<CategorizacionHC> listaCategorizacionHC;
             List<Consulta> listaConsulta;
             List<Consulta> listaConsultaGeneralPorPaciente = new List<Consulta>();
-            List<CategorizacionHC> listaCategorizacion = new List<CategorizacionHC>();
-            Dictionary<string, string> diccionarioConsultasDiagnostico = new Dictionary<string, string>();
-            Dictionary<string, string> diccionarioCategorizacionCAP = new Dictionary<string, string>();
+            List<CategorizacionHC> listaCategorizacion;
+            Dictionary<string, string> diccionarioConsultasDiagnostico;
+            Dictionary<string, string> diccionarioCategorizacionCAP;
             Dictionary<string, string> diccionarioRemisiones;
             Remitido remitido;
 
@@ -2427,8 +2447,15 @@ namespace MacapSoftCAPUAN.Controllers
 
             int ingr = 0;
             foreach (var ingrClinica in ingresoClinica) {
+
                 listaConsulta = new List<Consulta>();
                 remitido = new Remitido();
+                diccionarioConsultasDiagnostico = new Dictionary<string, string>();
+                diccionarioCategorizacionCAP = new Dictionary<string, string>();
+                listaCategorizacionHC = new List<CategorizacionHC>();
+                listaCategorizacion = new List<CategorizacionHC>();
+                diagnosticoConsultas = "";
+
                 var nivelEscolaridad = (from item in HC.listarNivelEscolaridad() where item.idNivelEscolaridad == ingrClinica.id_NivelEscolaridad select item.nombre).FirstOrDefault();
                 var ocupacion = (from item in HC.listarOcupacion() where item.id_Ocupacion == ingrClinica.id_ocupacion select item.nombre).FirstOrDefault();
                 var barrio = (from item in HC.listarBarrios() where item.idBarrio == ingrClinica.id_barrio select item.nombre).FirstOrDefault();
@@ -2439,7 +2466,7 @@ namespace MacapSoftCAPUAN.Controllers
                 var consultante = (from item in HC.listarConsultante() where item.cedula == ingrClinica.id_Consultante select item).LastOrDefault();
                 var estrategiasIngreso = (from item in HC.listarIngresoEstrategiasEvaluacion() where item.id_ingreso == ingrClinica.idIngresoClinica select item).LastOrDefault();
                 var remisiones = (from item in HC.listarRemisiones() where item.id_ingresoClinica == ingrClinica.idIngresoClinica select item).ToList();
-
+                var nombreUsuario = (from item in HC.listarUsuario() where item.Id == ingrClinica.idUser select item.nombreUsuario).FirstOrDefault();
                 var numeroConsultas = (from item in HC.listarConsultas() where item.id_ingresoClinica == ingrClinica.idIngresoClinica select item).Count();
                 var numeroInasistencias = (from item in HC.listarInasistencias() where item.id_ingresoClinica == ingrClinica.idIngresoClinica select item).Count();
 
@@ -2513,6 +2540,10 @@ namespace MacapSoftCAPUAN.Controllers
                     table.AddCell(cell);
 
                     cell = new PdfPCell(new Phrase("Número de historia clínica: " + paciente.numeroHistoriaClinica, texto.Font));
+                    cell.Colspan = 3;
+                    table.AddCell(cell);
+
+                    cell = new PdfPCell(new Phrase("Usuario que generó el documento: " + nombreUsuario, texto.Font));
                     cell.Colspan = 3;
                     table.AddCell(cell);
 
@@ -2983,6 +3014,9 @@ namespace MacapSoftCAPUAN.Controllers
                 {
                     string diagnosticosConsulta = "";
                     var nombreDiag = "";
+                    var nombreUsuarioConsulta = (from item1 in HC.listarUsuario() where item1.Id == item.id_User select item1.nombreUsuario).FirstOrDefault();
+                    var nombreUsrConsulta = nombreUsuarioConsulta != null ? nombreUsuarioConsulta : "";
+
                     if ((gifs.Contains("1") || gifs.Contains("4")))
                     {
                         document.NewPage();
@@ -3006,6 +3040,11 @@ namespace MacapSoftCAPUAN.Controllers
                     tableConsultas.AddCell(cell1);
 
                     cell1 = new PdfPCell(new Phrase("Sesión número" + " " + item.numeroSesion, subtitulos.Font));
+                    cell1.Colspan = 3;
+                    cell1.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    tableConsultas.AddCell(cell1);
+
+                    cell1 = new PdfPCell(new Phrase("Usuario quien antendió la consulta" + ": " + nombreUsrConsulta, subtitulos.Font));
                     cell1.Colspan = 3;
                     cell1.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
                     tableConsultas.AddCell(cell1);
@@ -3112,6 +3151,9 @@ namespace MacapSoftCAPUAN.Controllers
                 //document.NewPage();
                 foreach (var item in listaInasistencias)
                 {
+                    var nombreUsuarioInasistencia = (from item1 in HC.listarUsuario() where item1.Id == item.usuario select item1.nombreUsuario).FirstOrDefault();
+                    var nombreUsrInasistencia = nombreUsuarioInasistencia != null ? nombreUsuarioInasistencia : "";
+
                     var fechInasistencia = (item.fechaInasistencia).ToString();
                     var fechnStInasistencia = DateTime.Parse(fechInasistencia);
                     string formatInasistencia = "yyyy-MM-dd";
@@ -3131,6 +3173,11 @@ namespace MacapSoftCAPUAN.Controllers
                     tableInasistencias.AddCell(cell1);
 
                     cell1 = new PdfPCell(new Phrase("Fecha de la inasistencia" + " " + fechaInasistencia, subtitulos.Font));
+                    cell1.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                    tableInasistencias.AddCell(cell1);
+
+                    cell1 = new PdfPCell(new Phrase("Usuario quién generó la inasistencia" + ": " + nombreUsrInasistencia, subtitulos.Font));
+                    cell1.Colspan = 2;
                     cell1.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
                     tableInasistencias.AddCell(cell1);
 

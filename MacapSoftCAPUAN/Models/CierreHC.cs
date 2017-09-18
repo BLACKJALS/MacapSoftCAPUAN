@@ -29,6 +29,8 @@ namespace MacapSoftCAPUAN.Models
         public string numeroSesionesRealizadas { get; set; }
         public string idUsuario { get; set; }
         public string especificacionMotivoCierre { get; set; }
+        public string instrumentosEvaluacion { get; set; }
+        public string resultadoObtenidoEvaluacion { get; set; }
         //public Consulta Consulta { get; set; }
         public IngresoClinica IngresoClinica { get; set; }
         public MotivosCierre MotivoCierre { get; set; }
