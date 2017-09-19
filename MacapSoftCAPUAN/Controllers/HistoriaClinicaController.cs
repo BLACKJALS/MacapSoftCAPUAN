@@ -892,6 +892,7 @@ namespace MacapSoftCAPUAN.Controllers
 
         //Metodo que permite asignar un usuario (estudiante, docente) a una HC.
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         public JsonResult AsignarUsuarioPost(string id, string docente, string estudiante)
         {
             HC = new HistoriaClinicaBO();
