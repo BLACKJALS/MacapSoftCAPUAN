@@ -153,13 +153,24 @@ namespace UnitTestProject1
             {
                 
                 hcDalc = new HistoriaClinicaDALC();
-                string validacionNumeroPaciente = "1010";
-                var pacientEncontrado = (from item in hcDalc.listarPacientes() where item.numeroHistoriaClinica == validacionNumeroPaciente && item.estadoHC == true select item).FirstOrDefault();
+                string validacionNumeroHistoriaClinica = "1010";
+                string validacionNumeroNuevoPaciente = "18";
+                var pacientEncontrado = (from item in hcDalc.listarPacientes() where item.numeroHistoriaClinica == validacionNumeroHistoriaClinica && item.estadoHC == true select item).FirstOrDefault();
+                var pacientNuevoEncontrado = (from item in hcDalc.listarPacientes() where item.numeroHistoriaClinica == validacionNumeroNuevoPaciente && item.estadoHC == true select item).FirstOrDefault();
                 if (pacientEncontrado != null)
                 {
                      generarNuevaHC = "Se realizará nueva HC";
                 }
                 else {
+                    generarNuevaHC = "Ya existe el paciente no se puede realizar recepción de caso";
+                }
+
+                if (pacientNuevoEncontrado != null)
+                {
+                    generarNuevaHC = "Se realizará nueva HC";
+                }
+                else
+                {
                     generarNuevaHC = "Ya existe el paciente no se puede realizar recepción de caso";
                 }
             }
@@ -180,13 +191,20 @@ namespace UnitTestProject1
                 
                 hcDalc = new HistoriaClinicaDALC();
                 string validacionNumeroPaciente = "1010101";
+                string validacionNumeroPacienteNoExistente = "123";
                 var listadoPacientes = (from item in hcDalc.listarPacientes() select item).ToList();
                 var pacientEncontrado = (from item in listadoPacientes where item.numeroHistoriaClinica == validacionNumeroPaciente select item).FirstOrDefault();
+                var pacientNoEncontrado = (from item in listadoPacientes where item.numeroHistoriaClinica == validacionNumeroPacienteNoExistente select item).FirstOrDefault();
                 if (pacientEncontrado != null)
                 {
                     generarNuevaHC = "Se encontró el paciente";
                 }
                 else
+                {
+                    generarNuevaHC = "No se encontró el paciente";
+                }
+
+                if (pacientNoEncontrado == null)
                 {
                     generarNuevaHC = "No se encontró el paciente";
                 }
@@ -207,9 +225,9 @@ namespace UnitTestProject1
             {
 
                 hcDalc = new HistoriaClinicaDALC();
-                
+                string numeroHistoriaClinicaActiva = "1010101";
                 var historiasClinicasActivas = (from item in hcDalc.listarPacientes() where item.estadoHC == false select item).ToList();
-                var historiaClinicaActiva = (from item in historiasClinicasActivas where item.numeroHistoriaClinica == "1010101" select item).FirstOrDefault();
+                var historiaClinicaActiva = (from item in historiasClinicasActivas where item.numeroHistoriaClinica == numeroHistoriaClinicaActiva select item).FirstOrDefault();
                 if (historiasClinicasActivas != null)
                 {
                     generarNuevaHC = "listado de hc activas encontrado";
@@ -429,9 +447,9 @@ namespace UnitTestProject1
 
             string concMotCierre = "1;2;3;4;5";
             hcDalc = new HistoriaClinicaDALC();
-            
 
-            var paciente = (from item in hcDalc.listarPacientes() where item.numeroHistoriaClinica == "1010101" select item).FirstOrDefault();
+            string numeroHistoriaClinica = "1010101";
+            var paciente = (from item in hcDalc.listarPacientes() where item.numeroHistoriaClinica == numeroHistoriaClinica select item).FirstOrDefault();
             var ingresoClinica = (from item in hcDalc.listarIngresoClinica() where item.id_paciente == paciente.numeroHistoriaClinica select item).LastOrDefault();
 
 
@@ -449,9 +467,6 @@ namespace UnitTestProject1
             consulta.logrosAlcanzadosSegunConsultante = "Logros de prueba";
             consulta.observacionesRecomendaciones = "Observaciones de prueba";
 
-
-
-            string numeroHistoriaClinica = "1010101";
             
             try
             {
@@ -544,13 +559,13 @@ namespace UnitTestProject1
             {
                 hcDalc = new HistoriaClinicaDALC();
                 //Listar todas las HC inactivas
-                var historiasClinicasActivas = (from item in hcDalc.listarPacientes() where item.estadoHC == true select item).ToList();
+                var historiasClinicasInActivas = (from item in hcDalc.listarPacientes() where item.estadoHC == true select item).ToList();
                 //Buscar unas historia clínica inactiva
-                var historiaClinicaActiva = (from item in historiasClinicasActivas where item.numeroHistoriaClinica == "1010101" && item.estadoHC == true select item).FirstOrDefault();
-                if (historiasClinicasActivas != null || historiaClinicaActiva != null)
+                var historiaClinicaActiva = (from item in historiasClinicasInActivas where item.numeroHistoriaClinica == "4" && item.estadoHC == true select item).FirstOrDefault();
+                if (historiasClinicasInActivas != null || historiaClinicaActiva == null)
                 {
                     generarNuevaHC = "listado de hc activas encontrado";
-                    Assert.IsNotNull(historiasClinicasActivas != null || historiaClinicaActiva !=null);
+                    Assert.IsNotNull(historiasClinicasInActivas != null || historiaClinicaActiva !=null);
                 }
             }
             catch (Exception ex)

@@ -55,7 +55,22 @@ namespace MacapSoftCAPUAN.BO
             return listaEps;
         }
 
+        public List<MotivosCierre> listarMotivosCierre()
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            var listaMotivosCierre = hcDALC.listarMotivosCierres();
+            return listaMotivosCierre;
+        }
 
+
+        public List<MotivoCierreHistoriaClinica> listarMotivoCierreHistoriaClinicaBO()
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            var listaMotivosCierre = hcDALC.listarMotivoCierreHistoriaClinica();
+            return listaMotivosCierre;
+        }
+
+        
 
         public string agregarpaciente(Paciente paciente)
         {

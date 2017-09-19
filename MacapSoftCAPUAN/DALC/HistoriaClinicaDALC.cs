@@ -435,6 +435,24 @@ namespace MacapSoftCAPUAN.DALC
         }
 
 
+        public List<MotivoCierreHistoriaClinica> listarMotivoCierreHistoriaClinica()
+        {
+            bd = new ApplicationDbContext();
+            List<MotivoCierreHistoriaClinica> listaMotivoCierreHistoriaClinica = new List<MotivoCierreHistoriaClinica>();
+            listaMotivoCierreHistoriaClinica = bd.motivoCierreHcContext.ToList();
+            return listaMotivoCierreHistoriaClinica;
+        }
+
+
+        public List<MotivosCierre> listarMotivosCierres()
+        {
+            bd = new ApplicationDbContext();
+            List<MotivosCierre> listaMotivosCierres = new List<MotivosCierre>();
+            listaMotivosCierres = bd.motivosCierreContext.ToList();
+            return listaMotivosCierres;
+        }
+
+
         public List<IngresoEstrategiasEvaluacion> listarEstrategiasEvaluacion()
         {
             bd = new ApplicationDbContext();
