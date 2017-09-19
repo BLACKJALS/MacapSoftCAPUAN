@@ -98,25 +98,11 @@
             //var username = "abcd";
             $("#nhc").val(usuario);
             $("#UsuarioAsig").val(nummero);
-            //Html0 .BeginForm("ElementosConsultarPost", "HistoriaClinica", FormMethod.Post, new { nhc = "nhc", UsuarioAsig = "UsuarioAsig" });
             location.href = '@Url.Action("eliminarUsuarioAsig", "HistoriaClinica")?nhc=' + nummero + '&UsuarioAsig=' + usuario;
-        @*location.href='@Url.Action("ElementosConsultarPost", "HistoriaClinica", new { id = ViewBag.checkAvailable, hc = a })*@
+        }
 
-            @*$("#nmod").val(usuario);
-            var parametrosFuncion = JSON.stringify({ 'nhc': $("#numHC").val(), 'UsuarioAsig': $("#nmod").val() });
-            $.ajax({
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                type: 'POST',
-                url: '@Url.Action("eliminarUsuarioAsignado", "HistoriaClinica")',
-                data: parametrosFuncion,
-                success: function (data) {
-                    $table.bootstrapTable('refresh');
-                },
-                failure: function (response) {
-                }
-            });
-            location.reload();*@
+        function goBack() {
+            window.history.go(-1);
         }
     </script>
 }
@@ -128,7 +114,7 @@
     <div class="row">
         <div class="col-md-11"></div>
         <div class="col-md-1">
-            <input type="button" class="btn btn-primary" style="align-content:center" value="Regresar" onclick="location.href='@Url.Action("Index", "HistoriaClinica" )'" />
+            <input type="button" class="btn btn-primary" style="align-content:center" value="Regresar" onclick="return goBack();" />
         </div>
     </div>
 
