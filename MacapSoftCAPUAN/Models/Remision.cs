@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace MacapSoftCAPUAN.Models
 {
@@ -21,12 +22,24 @@ namespace MacapSoftCAPUAN.Models
         //public string id_diagnostico { get; set; }
         [ForeignKey("User")]
         public string id_User { get; set; }
+
+        [AllowHtml]
         public string nombreInsitucionRemitida { get; set; }
+
+        [AllowHtml]
         public string servicioRemitido { get; set; }
+
+        [AllowHtml]
         public string evolucionPaciente { get; set; }
+
+        [AllowHtml]
         public string aspectosPositivos { get; set; }
+
+        [AllowHtml]
         public string recomendaciones { get; set; }
         public DateTime fechaRemitido { get; set; }
+
+        [AllowHtml]
         public string nombreProfesional { get; set; }
         public string diagnostico { get; set; }
         public int motivoRemision { get; set; }

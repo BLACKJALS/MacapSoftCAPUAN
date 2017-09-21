@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace MacapSoftCAPUAN.Models
 {
@@ -15,6 +16,7 @@ namespace MacapSoftCAPUAN.Models
         //public long ID { get; set; }
         [Key]
         public string Codigo { get; set; }
+        [AllowHtml]
         public string Nombre { get; set; }
         public string Destacado { get; set; }
     }

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace MacapSoftCAPUAN.Models
 {
@@ -19,6 +20,7 @@ namespace MacapSoftCAPUAN.Models
         [ForeignKey("User")]
         public string usuario { get; set; }
 
+        [AllowHtml]
         public string motivo { get; set; }
         public DateTime? fechaInasistencia { get; set; }
         public IngresoClinica IngresoClinica { get; set; }

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace MacapSoftCAPUAN.Models
 {
@@ -28,8 +29,11 @@ namespace MacapSoftCAPUAN.Models
         public string numeroCitasAsignadas { get; set; }
         public string numeroSesionesRealizadas { get; set; }
         public string idUsuario { get; set; }
+        [AllowHtml]
         public string especificacionMotivoCierre { get; set; }
+        [AllowHtml]
         public string instrumentosEvaluacion { get; set; }
+        [AllowHtml]
         public string resultadoObtenidoEvaluacion { get; set; }
         //public Consulta Consulta { get; set; }
         public IngresoClinica IngresoClinica { get; set; }

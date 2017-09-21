@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace MacapSoftCAPUAN.Models
 {
@@ -37,18 +38,38 @@ namespace MacapSoftCAPUAN.Models
         public string id_Consultante { get; set; }
 
         public int edad { get; set; }
+
+        [AllowHtml]
         public string direccion { get; set; }
+
+        [AllowHtml]
         public string telefono { get; set; }
+
+        [AllowHtml]
         public string email { get; set; }
+
+        [AllowHtml]
         public string profesion { get; set; }
-        //public string activo { get; set; }
+
+        [AllowHtml]
         public string antecedentes { get; set; }
+
+        [AllowHtml]
         public string estadoCivil { get; set; }
+
+        [AllowHtml]
         public string religion { get; set; }
-        //public string idUser { get; set; }
+
+        [AllowHtml]
         public string problematicaActual { get; set; }
+
+        [AllowHtml]
         public string historiaPersonal { get; set; }
+
+        [AllowHtml]
         public string historiaFamiliar { get; set; }
+
+        [AllowHtml]
         public string genograma { get; set; }
         public string tieneEps { get; set; }
         public string tieneEpc { get; set; }
@@ -70,7 +91,11 @@ namespace MacapSoftCAPUAN.Models
         public virtual ApplicationUser User { get; set; }
         public virtual Consultante Consultante { get; set; }
         public DateTime fechaIngreso { get; set; }
+
+        [AllowHtml]
         public string motivoConsulta { get; set; }
+
+        [AllowHtml]
         public string observaciones { get; set; }
         //public string idUsuario { get; set; }
         public string remitido { get; set; }//cambiar la propiedad a foranea
@@ -79,6 +104,7 @@ namespace MacapSoftCAPUAN.Models
         //public Consulta Consulta { get; set; }
         //[ForeignKey("Consulta")]
         //public int? id_consulta { get; set; }
+        [AllowHtml]
         public string especialidadRemitente { get; set; }
         public DateTime fechaRemision { get; set; }
 

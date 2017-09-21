@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace MacapSoftCAPUAN.Models
 {
@@ -20,8 +21,13 @@ namespace MacapSoftCAPUAN.Models
         public int id_sexo { get; set; }
         [ForeignKey("ConsecutivoID")]
         public int consecutivo { get; set; }
+
+        [AllowHtml]
         public string nombre { get; set; }
+
+        [AllowHtml]
         public string apellido { get; set; }
+
         public bool estadoHC { get; set; }
         public DateTime? fechaNacimiento { get; set; }
         public virtual Ciudades Ciudad { get; set; }

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace MacapSoftCAPUAN.Models
 {
@@ -25,10 +26,20 @@ namespace MacapSoftCAPUAN.Models
         public int idEstrategiaEvaluacion { get; set; }
         [ForeignKey("IngresoClinica")]
         public long? id_ingreso { get; set; }
+
+        [AllowHtml]
         public string pruebasPsico { get; set; }
+
+        [AllowHtml]
         public string cuestionarios { get; set; }
+
+        [AllowHtml]
         public string pruebasProyectivas { get; set; }
+
+        [AllowHtml]
         public string examenMental { get; set; }
+
+        [AllowHtml]
         public string entrevistas { get; set; }
         //[ForeignKey("EstrategiaEv")]
         //public int? id_estrategiEv { get; set; }
@@ -55,19 +66,45 @@ namespace MacapSoftCAPUAN.Models
         public string id_User { get; set; }
 
         public DateTime? fecha { get; set; }
+        [AllowHtml]
         public string objetivoSesion { get; set; }
+
+        [AllowHtml]
         public string ejerciciosEvento { get; set; }
+
+        [AllowHtml]
         public string desarrolloTemasTratados { get; set; }
+
+        [AllowHtml]
         public string tareasProximaSesion { get; set; }
+
+        [AllowHtml]
         public string reciboPago { get; set; }
+
+        [AllowHtml]
         public string resultadoAutoevaluacion { get; set; }
+
+        [AllowHtml]
         public string hipotesisPsicologica { get; set; }
+
+        [AllowHtml]
         public string objetivosTerapeuticos { get; set; }
+
+        [AllowHtml]
         public string estrategiasTecnicasTerapeuticas { get; set; }
+
+        [AllowHtml]
         public string logrosAlcanzadosSegunObjetivosTerapeuticos { get; set; }
+
+        [AllowHtml]
         public string logrosAlcanzadosSegunConsultante { get; set; }
+
+        [AllowHtml]
         public string resumen { get; set; }
+
+        [AllowHtml]
         public string observacionesRecomendaciones { get; set; }
+
         public int numeroSesion { get; set; }
         //public EstrategiasEvaluacion EstrategiasE { get; set; }
         public IngresoClinica IngresoClinica { get; set; }
