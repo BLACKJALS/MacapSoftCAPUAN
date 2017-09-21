@@ -1,6 +1,5 @@
 ﻿@model MacapSoftCAPUAN.Models.ApplicationUser
 @section scripts{
-    @Scripts.Render("~/bundles/bootstraptable")
     <link href="~/Content/bootstrap-table.css" rel="stylesheet" />
     <link href="~/Content/bootstrap-table.min.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap-table/bootstrap-table.js"></script>
@@ -51,7 +50,7 @@
                 var usrName = "@HttpContext.Current.User.Identity.Name";
                 $.each(row, function (key, value) {
                     //var myBookId = $("#prueba").val();
-                    if (key == "nombreUsuario") {
+                    if (key == "Email") {
                         if (usrName != value) {
                             $("#habilitarUsuarios").prop('disabled', false);
                         } else {

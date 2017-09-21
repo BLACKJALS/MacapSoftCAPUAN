@@ -15,8 +15,27 @@
 
         var numeroSesion = '@ViewBag.ItemNumeroSesion';
         var numeroInasistencias = '@ViewBag.ItemNumeroInasistencias';
-        //var fechNac = '@ViewBag.fechaNacimiento';
+        var estadoInasistencias = '@ViewBag.estadoInasistencias';
 
+        if (numeroSesion == "") {
+            numeroSesion = 0;
+        }
+
+        if (estadoInasistencias == "1") {
+
+            $('#MotivoAbandonoSesion').prop("checked", true);
+            disbledButton();
+        } else {
+            $("#guardarHistoria").prop("disabled", true);
+        }
+
+        if (numeroInasistencias == "") {
+            numeroInasistencias = 0;
+        }
+
+        var numeroCitas = parseInt(numeroSesion) + parseInt(numeroInasistencias);
+        $("#citasTotales").val(numeroCitas);
+        $("#citasTotales").attr('readonly', 'readonly');
         $("#numeroCitas").val(numeroSesion);
         $("#numeroCitas").attr('readonly', 'readonly');
         $("#numeroIna").val(numeroInasistencias);
@@ -46,6 +65,8 @@
         var usrCierre = '@ViewBag.UsuarioCierre';
         $("#usuarioCierra").val(usrCierre);
         $("#usuarioCierra").attr('readonly', 'readonly');
+
+        
     });
 
     $('#diagnostico').on('change', function () {
@@ -128,7 +149,7 @@
     </script>
 }
 
-<h1 style="text-align:center">Cierre de historia clínica</h1>
+<h1 style="text-align:center">Informe y cierre de historia clínica</h1>
 <div class="container">
     @using (Html.BeginForm("cierreCaso", "HistoriaClinica", FormMethod.Post))
     {
@@ -219,7 +240,7 @@
                 <label style="font-size:smaller">Escolaridad:</label>
             </div>
             <div class="col-md-2">
-                <label>@Model.ingresoClinica.id_NivelEscolaridad</label>
+                <label style="font-size:smaller">@ViewBag.Escolaridad</label>
                 @*<input class="form-control"  placeholder="Escolaridad" value="" required />*@
             </div>
             <div class="col-md-2">
@@ -248,7 +269,7 @@
                 <label style="font-size:smaller">Número de citas asignadas:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" placeholder="Número de citas asignadas" name="cierreHC.numeroCitasAsignadas" required />
+                <input class="form-control" id="citasTotales" name="cierreHC.numeroCitasAsignadas" required />
             </div>
         </div>
         <br />
@@ -257,13 +278,13 @@
                 <label style="font-size:smaller">Sesiones realizadas:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="numeroCitas" placeholder="Sesiones realizadas" value="" required />
+                <input class="form-control" id="numeroCitas" name="cierreHC.numeroSesionesRealizadas" required />
             </div>
             <div class="col-md-2">
                 <label style="font-size:smaller">Inasistencias:</label>
             </div>
             <div class="col-md-2">
-                <input class="form-control" id="numeroIna" placeholder="Inasistencias" required />
+                <input class="form-control" id="numeroIna"  required />
             </div>
         </div>
         <br />
@@ -282,7 +303,7 @@
             <label style="font-size:medium">Logro de objetivos:</label>
         </div>
         <div class="col-md-1">
-            <input type="checkbox" id="MotivoLogroObj" value="2" />
+            <input type="checkbox" id="MotivoLogroObj" value="2"/>
         </div>
     </div>
     <div class="row">
@@ -290,7 +311,7 @@
             <label style="font-size:medium">Retiro por consideración del consultante:</label>
         </div>
         <div class="col-md-1">
-            <input type="checkbox" id="MotivoRetiroConsideracion" value="3" />
+            <input type="checkbox" id="MotivoRetiroConsideracion" value="3"/>
         </div>
     </div>
     <div class="row">
@@ -298,7 +319,7 @@
             <label style="font-size:medium">Abandono de las sesiones por parte del consultante:</label>
         </div>
         <div class="col-md-1">
-            <input type="checkbox" id="MotivoAbandonoSesion" value="4" />
+            <input type="checkbox" id="MotivoAbandonoSesion" value="4"/>
         </div>
     </div>
     <div class="row">
@@ -306,7 +327,7 @@
             <label style="font-size:medium">Cierre por decisión del terapeuta:</label>
         </div>
         <div class="col-md-1">
-            <input type="checkbox" id="CierreDecision" value="5" />
+            <input type="checkbox" id="CierreDecision" value="5"/>
         </div>
     </div>
     <div class="row">
@@ -314,7 +335,7 @@
             <label style="font-size:medium">Por finalización del semestre:</label>
         </div>
         <div class="col-md-1">
-            <input type="checkbox" id="MotivoFinalizacionSem" value="6" />
+            <input type="checkbox" id="MotivoFinalizacionSem" value="6"/>
         </div>
     </div>
     <br />
@@ -349,6 +370,22 @@
         </div>
         <div class="form-group">
             <textarea class="form-control" style="min-width: 100%" rows="6" name="consulta.observacionesRecomendaciones" required></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-4">
+            <label style="font-size:medium">Instrumento de evaluación:</label>
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6" name="cierreHC.instrumentosEvaluacion" required></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-4">
+            <label style="font-size:medium">Resultado obtenido de evaluación:</label>
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6" name="cierreHC.resultadoObtenidoEvaluacion" required></textarea>
         </div>
     </div>
 

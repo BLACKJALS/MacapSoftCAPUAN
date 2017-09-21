@@ -79,8 +79,13 @@
                 url: '@Url.Action("AsignarUsuarioPost", "HistoriaClinica")',
                 data: parametrosFuncion,
                 success: function (data) {
-                    
-                    window.location = '@Url.Action("asignacionUsuarioExitoso", "HistoriaClinica")';
+                    if (data.indexOf("No se puede asignar") > -1) {
+                        alert("No se pudo asignar el(los) usuarios a una historia clínica, es posible que ya tengan estos usuarios asignados, para validar la información revise la funcionalidad de usuarios asignados ingresando a una HC.");
+                    } else {
+                        window.location = '@Url.Action("asignacionUsuarioExitoso", "HistoriaClinica")';
+                    }
+
+
                    // //alert("Funcionó");
                    // //$('#your-modal').modal('toggle');,
                    // //document.getElementById("myDialog").showModal();
@@ -206,7 +211,7 @@
                     <div class="form-horizontal">
                         <section>
                             <div class="form-group">
-                                <label class="col-md-3">Psicologo:</label>
+                                <label class="col-md-3">Psicólogo:</label>
                                 <div class="col-md-3">
                                     <div class="col-md-4">
                                         @Html.DropDownList("docente", (IEnumerable<SelectListItem>)ViewBag.docente, new { @class = "selectpicker", id = "docente", required = true})

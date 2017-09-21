@@ -10,7 +10,10 @@
     <link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap-datepicker.js"></script>
     <script src="~/Scripts/locales/bootstrap-datepicker.es.min.js"></script>
-
+    <script src="~/Scripts/bootstrap-select.min.js"></script>
+    <link href="~/Content/bootstrap-select.css" rel="stylesheet" />
+    <script src="~/Scripts/i18n/defaults-es_ES.js"></script>
+    <script src="~/Scripts/i18n/defaults-es_ES.min.js"></script>
     <script>
         $(document).ready(function () {
             $("#guardarRemitir").prop("disabled", true);
@@ -18,6 +21,8 @@
             $('#nombreRemitenteRemitido').prop("disabled", true);
             $('#fechaRemision').prop("disabled", true);
             $('#listadosEPS').prop("disabled", true);
+            //$('#lugarNacimientoPac').prop("disabled", true);
+
             var motConsul = '@ViewBag.motivoConsulta';
             var motObs = '@ViewBag.Observaciones';
             //$("#motivoConsultaingresoClinica").val(motConsul);
@@ -41,6 +46,11 @@
                 var fechN = '@ViewBag.fechaNacimiento';
                 var pais = '@ViewBag.Pais';
                 var localidad = '@ViewBag.Localidad';
+                var ciudadValor = '@ViewBag.CiudadValor';
+                var ciudadTexto = '@ViewBag.CiudadTexto';
+                var barrioValor = '@ViewBag.barrioValor';
+                var barrioTexto = '@ViewBag.barrioTexto';
+
                 $("#Documento").val(hcP);
                 $("#fechaNacimientoPaciente").val(fechN);
                 $("#fechaNacimientoPaciente").datepicker("option", "disabled", true);
@@ -56,6 +66,15 @@
                 $("#paisPac").val(pais);
                 $('#paisPac').attr('readonly', 'readonly');
                 $("#localidad").val(localidad);
+                //$("#lugarNacimientoPac").val(ciudad);
+
+                var toAppend = '<option value="' + ciudadValor + '">' + ciudadTexto + '</option>';
+                $('#lugarNacimientoPac').append(toAppend);
+                $('#lugarNacimientoPac').attr('readonly', 'readonly');
+
+                var toAppendBarrio = '<option value="' + barrioValor + '">' + barrioTexto + '</option>';
+                $('#Barrio').append(toAppendBarrio);
+
             } else {
                 $("#Documento").val(npC);
             }
@@ -131,6 +150,74 @@
                 alert("No se puede modificar el país de nacimiento");
             }
         });
+
+
+        $('#paisPac').on('change', function (e) {
+            $('#lugarNacimientoPac').prop("disabled", false);
+            var optionSelected = $("option:selected", this);
+            var pais = this.value;
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    type: 'GET',
+                    url: '/HistoriaClinica/consultarCiudadesPorPais' +"?pais="+ pais,
+                    data: { 'id': pais },
+                    success: function (result) {
+                        //$.each(json, function (i, value) {
+                        //    $('#lugarNacimientoPaciente').append($('<option>').text(value[2]).attr('value', value[0]));
+                        //});
+
+
+                        var toAppend = '';
+                        $('#lugarNacimientoPac').empty();
+                        for (var i = 0; i < result.length; i++) {
+                            toAppend += '<option value="'+ result[i]['idCiudad'] +'">' + result[i]['nombre'] + '</option>';
+                        }
+
+                        if (toAppend == "") {
+                            toAppend += '<option value="">El país no tiene registrado ciudades</option>';
+                        }
+                        $('#lugarNacimientoPac').append(toAppend);
+                    },
+                    failure: function (response) {
+                    }
+                });
+
+
+        });
+
+
+        $('#localidad').on('change', function (e) {
+
+            var optionSelected = $("option:selected", this);
+            var localidad = this.value;
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'GET',
+                url: '/HistoriaClinica/consultarBarriosLocalidad' + "?localidad=" + localidad,
+                data: { 'id': localidad },
+                success: function (result) {
+                    var toAppend = '';
+                    $('#Barrio').empty();
+                    for (var i = 0; i < result.length; i++) {
+                        toAppend += '<option value="' + result[i]['idBarrio'] + '">' + result[i]['nombre'] + '</option>';
+                    }
+
+                    if (toAppend == "") {
+                        toAppend += '<option value="">El país no tiene registrado ciudades</option>';
+                    }
+                    $('#Barrio').append(toAppend);
+                },
+                failure: function (response) {
+                }
+            });
+
+
+        });
+
+
+
 
         $('#lugarNacimientoPac').click(function () {
             var existente = '@ViewBag.existente';
@@ -396,7 +483,7 @@
             <div class="col-md-1">
                 <label style="font-size:smaller">Fecha de nacimiento:</label>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <input class="form-control" id="fechaNacimientoPaciente" name="paciente.fechaNacimiento" placeholder="fecha de nacimiento"  required />
             </div>
             <div class="col-md-2">
@@ -406,9 +493,11 @@
                 @Html.DropDownList("pais", (IEnumerable<SelectListItem>)ViewBag.ItemPaises, new { @class = "form-control", required = "true", id = "paisPac" })
             </div>
             <div class="col-md-2">
-                @Html.DropDownList("paciente.id_ciudad", (IEnumerable<SelectListItem>)ViewBag.ItemCiudades, new { @class = "form-control", id="lugarNacimientoPac", required = "true" })
-                @*<input class="form-control" id="lugarNacimientoPaciente" name="paciente.lugarNacimiento" placeholder="Lugar de nacimiento" required />*@
+                @*@Html.DropDownList("paciente.id_ciudad", (IEnumerable<SelectListItem>)ViewBag.ItemCiudades, new { @class = "form-control", id="lugarNacimientoPac", required = "true" })*@
+                <select class="form-control" id="lugarNacimientoPac" name="paciente.id_ciudad" placeholder="Lugar de nacimiento" required />
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-1">
                 <label style="font-size:smaller">Edad:</label>
             </div>
@@ -434,7 +523,8 @@
                 <label style="font-size:smaller">Barrio:</label>
             </div>
             <div class="col-md-3">
-                @Html.DropDownList("ingresoClinica.id_barrio", (IEnumerable<SelectListItem>)ViewBag.ItemBarrios, new { @class = "form-control", required = "true" })
+                @*@Html.DropDownList("ingresoClinica.id_barrio", (IEnumerable<SelectListItem>)ViewBag.ItemBarrios, new { @class = "form-control", required = "true", id="Barrio" })*@
+                <select class="form-control" id="Barrio" name="ingresoClinica.id_barrio" placeholder="Barrio" required />
                 @*<input class="form-control" id="Barrio" placeholder="Barrio" />*@
             </div>
             <div class="col-md-1">
