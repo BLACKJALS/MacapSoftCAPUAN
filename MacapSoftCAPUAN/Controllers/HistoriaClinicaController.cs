@@ -1165,7 +1165,7 @@ namespace MacapSoftCAPUAN.Controllers
 
             texto = new Paragraph();
             texto.Font = FontFactory.GetFont("Arial", 9);
-            texto.Add("Lugar de nacimiento: país:" + nombrePais + "- ciudad: "+ ciudad);
+            texto.Add("Lugar de nacimiento: país:" + nombrePais + "-"+ ciudad);
             table.AddCell(texto);
 
             texto = new Paragraph();
@@ -2489,7 +2489,6 @@ namespace MacapSoftCAPUAN.Controllers
                     if (ingrClinica.idIngresoClinica == itemInasistencias.id_ingresoClinica)
                     {
                         listaInasistencias.Add(itemInasistencias);
-                        break;
                     }
                 }
 

@@ -54,23 +54,28 @@
         }
 
         function btnAceptarEdicionCampo_Click() {
-            var parametrosFuncion = JSON.stringify({ idCodigo: $("#hdnIdColumna").val(), nombreEditado: $("#Nombre").val(), casoEditado: $("#casoEspecial").val() });
-            $.ajax({
-                contentType: 'application/json; charset=utf-8',
-                //dataType: 'json',
-                type: 'POST',
-                url: '@Url.Action("ModificarDiagnosticoCAP", "Diagnostico")',
-                data: parametrosFuncion,
-                success: function (data) {
-                    limpiarFormularioEditarCampo();
-                    $table.bootstrapTable('refresh');
-                    location.reload();
-                   
-                },
-                failure: function (response) {
-                    location.reload();
-                }
-            });
+            var estadoNombreDiagnostico = $("#Nombre").val();
+            if (estadoNombreDiagnostico != "") {
+                var parametrosFuncion = JSON.stringify({ idCodigo: $("#hdnIdColumna").val(), nombreEditado: $("#Nombre").val(), casoEditado: $("#casoEspecial").val() });
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    //dataType: 'json',
+                    type: 'POST',
+                    url: '@Url.Action("ModificarDiagnosticoCAP", "Diagnostico")',
+                    data: parametrosFuncion,
+                    success: function (data) {
+                        limpiarFormularioEditarCampo();
+                        $table.bootstrapTable('refresh');
+                        location.reload();
+
+                    },
+                    failure: function (response) {
+                        location.reload();
+                    }
+                });
+            } else {
+                alert("No ingresó información en el campo a editar");
+            }
             location.reload();
         }
 
