@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <br />
+            <li style="text-align:center">@Html.LabelForModel("Bienvenido(a): " + User.Identity.GetUserName(), htmlAttributes: new { title = "Manage", style = "color:white;text-align:right;font-size:large" });</li>
+            <br />
+            <li style="border-top-color:white;font-size:small;text-align-last:center;border:double"><a href="javascript:document.getElementById('logoutForm').submit()">Cerrar sesión</a></li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <br />
+        @*<li>@Html.ActionLink("Registrarse", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>*@
+        <li>@Html.ActionLink("Iniciar sesión", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", style = "font-size:small;border:double" })</li>
+    </ul>
+}

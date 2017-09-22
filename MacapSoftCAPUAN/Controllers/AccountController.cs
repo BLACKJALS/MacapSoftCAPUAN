@@ -167,8 +167,8 @@ namespace MacapSoftCAPUAN.Controllers
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
-        //[Authorize(Roles = "Administrador")]
+        //[AllowAnonymous]
+        [Authorize(Roles = "Administrador")]
         public ActionResult Register()
         {
             ViewBag.Name = new SelectList(context.Roles.ToList(), "Name", "Name");
@@ -178,8 +178,8 @@ namespace MacapSoftCAPUAN.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        //[Authorize(Roles = "Administrador")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Administrador")]
+        //[AllowAnonymous]
         //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {

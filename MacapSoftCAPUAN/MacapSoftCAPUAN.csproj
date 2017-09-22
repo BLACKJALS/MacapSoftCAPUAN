@@ -231,6 +231,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Mapeo.cs" />
+    <Compile Include="Migrations\201709211422565_m1.cs" />
+    <Compile Include="Migrations\201709211422565_m1.Designer.cs">
+      <DependentUpon>201709211422565_m1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelsVM\CierreCasoVM.cs" />
     <Compile Include="ModelsVM\DiagnosticoVM.cs" />
@@ -309,6 +313,8 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap-select.css.map" />
+    <None Include="Properties\PublishProfiles\macapsoft - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\macapsoft - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\MacapsoftUAN.pubxml" />
     <Content Include="Scripts\bootstrap-select.js" />
     <Content Include="Scripts\bootstrap-select.js.map" />
@@ -584,6 +590,11 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201709211422565_m1.resx">
+      <DependentUpon>201709211422565_m1.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

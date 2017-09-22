@@ -10,7 +10,7 @@ namespace MacapSoftCAPUAN.Models
     [Table("dbo.Eps")]
     public class Eps
     {
-        [Key]
+        [Key, MaxLength(50)]
         public string IdEPS { get; set; }
         public string nombre { get; set; }
     }

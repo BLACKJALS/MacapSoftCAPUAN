@@ -11,7 +11,7 @@ namespace MacapSoftCAPUAN.Models
     [Table("dbo.Paciente")]
     public class Paciente
     {
-        [Key]
+        [Key, MaxLength(50)]
         public string numeroHistoriaClinica { get; set; }
         //[ForeignKey("Paises")]
         //public string id_paises { get; set; }

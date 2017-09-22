@@ -10,7 +10,7 @@ namespace MacapSoftCAPUAN.Models
     [Table("dbo.tipos_documentos")]
     public class TiposDocumentos
     {
-        [Key]
+        [Key, MaxLength(20)]
         public string idDocumento { get; set; }
         public string tipo { get; set; }
     }

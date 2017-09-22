@@ -20,11 +20,18 @@ namespace MacapSoftCAPUAN.Models
         }
     }
 
+    [DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
             : base("macapsoft", throwIfV1Schema: false)
         {
+            this.Configuration.ValidateOnSaveEnabled = false;
+        }
+
+        static ApplicationDbContext()
+        {
+            DbConfiguration.SetConfiguration(new MySql.Data.Entity.MySqlEFConfiguration());
         }
 
         public static ApplicationDbContext Create()
@@ -62,5 +69,11 @@ namespace MacapSoftCAPUAN.Models
         public DbSet<MotivoCierreHistoriaClinica> motivoCierreHcContext { get; set; }
         public DbSet<CategorizacionHC> categorizcionHcContext { get; set; }
         public DbSet<MotivosCierre> motivosCierreContext { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Conventions.Remove<System.Data.Entity.ModelConfiguration.Conventions.PluralizingTableNameConvention>();
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

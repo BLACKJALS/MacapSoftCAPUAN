@@ -10,7 +10,7 @@ namespace MacapSoftCAPUAN.Models
     [Table("dbo.Paises")]
     public class Paises
     {
-        [Key]
+        [Key, MaxLength(20)]
         public string idPais { get; set; }
         public string nombrePais { get; set; }
         //public virtual ICollection<Ciudades> ciudades { get; set; }
@@ -22,7 +22,7 @@ namespace MacapSoftCAPUAN.Models
     [Table("dbo.Ciudades")]
     public class Ciudades
     {
-        [Key]
+        [Key, MaxLength(20)]
         public string idCiudad { get; set; }
         [ForeignKey("Pais")]
         public string id_pais { get; set; }
@@ -36,7 +36,7 @@ namespace MacapSoftCAPUAN.Models
     [Table("dbo.Localidades")]
     public class Localidades
     {
-        [Key]
+        [Key, MaxLength(20)]
         public string idLocalidad { get; set; }
         //[ForeignKey("Ciudad")]
         //public string id_ciudad { get; set; }
@@ -47,7 +47,7 @@ namespace MacapSoftCAPUAN.Models
 
     [Table("dbo.Barrios")]
     public class Barrios{
-        [Key]
+        [Key, MaxLength(20)]
         public string idBarrio { get; set; }
         [ForeignKey("Localidades")]
         public string id_localidad { get; set; }

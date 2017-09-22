@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="macapsoft-Web.config Connection String" description="macapsoft Connection String used in web.config by the application to access the database." defaultValue="server=127.0.0.1;user id=root;password=12345678;database=macapsoftbd" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Alejandro\\documents\\visual\ studio\ 2015\\Projects\\MacapSoftCAPUAN\\MacapSoftCAPUAN\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='macapsoft']/@connectionString" />
+  </parameter>
+</parameters>

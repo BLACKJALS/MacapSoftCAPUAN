@@ -11,7 +11,7 @@ namespace MacapSoftCAPUAN.Models
     [Table("dbo.Consultante")]
     public class Consultante
     {
-        [Key]
+        [Key, MaxLength(20)]
         //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         //public long id_Consultante { get; set; }
         public string cedula { get; set; }

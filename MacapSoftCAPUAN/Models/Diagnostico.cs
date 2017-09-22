@@ -14,7 +14,7 @@ namespace MacapSoftCAPUAN.Models
 
         //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         //public long ID { get; set; }
-        [Key]
+        [Key, MaxLength(20)]
         public string Codigo { get; set; }
         [AllowHtml]
         public string Nombre { get; set; }

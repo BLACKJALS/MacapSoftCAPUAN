@@ -1,0 +1,64 @@
+﻿@section Scripts{
+    <script>
+        function CrearDiagnostico() {
+            //if (ValidarFiltros() == true) {
+                var Codigo = $('#CodigoDiagnóstico').val(),
+                Nombre = $('#NombreDiagnóstico').val(),
+                Destacado = $('#Lista').val();
+
+                $('#Codigo').val(Codigo);
+                $('#Nombre').val(Nombre);
+                $('#Destacado').val(Destacado);
+
+                if (Destacado == "Seleccione") {
+                    alert("Por favor ingresar si el diagnóstico es destacado o no.");
+                    return false;
+                }
+            //}
+        }
+    </script>
+}
+
+
+<div class="panel panel-default" style="border:groove">
+    <div class="container">
+        <h3 align="center"><font size="16">Crear diagnóstico</font></h3>
+        <br />
+        <br />
+        @using (@Html.BeginForm("CrearDiagnosticoCAP", "Diagnostico", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.Hidden("Codigo");
+            @Html.Hidden("Nombre");
+            @Html.Hidden("Destacado");
+            <section>
+                <div class="form-group">
+                    <label class="col-md-3">Código del diagnóstico:</label>
+                    <div class="col-md-3">
+                        <input id="CodigoDiagnóstico" type="text" class="form-control" placeholder="Código" required/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3">Nombre del diagnóstico:</label>
+                    <div class="col-md-3">
+                        <input id="NombreDiagnóstico" type="text" class="form-control" placeholder="Nombre del diagnóstico" required/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3">Es importante:</label>
+                    <div class="col-md-3">
+                        @Html.DropDownList("Lista", (IEnumerable<SelectListItem>)ViewBag.ItemTypes, new { @class = "form-control", title = "Choose one of the following...", value = "asdas", required="true" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-1">
+                        <input type="button" class="btn btn-primary" value="Regresar" onclick="location.href='@Url.Action("Index", "HistoriaClinica" )'" />
+                    </div>
+                    <div class="col-md-5">
+                        <button id="btnGuardar" type="submit" value="Aceptar" class="btn btn-primary" onclick="return CrearDiagnostico();">Guardar</button>
+                    </div>
+                </div>
+            </section>
+        }
+    </div>
+</div>
+
