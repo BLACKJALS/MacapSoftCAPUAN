@@ -420,6 +420,7 @@ namespace MacapSoftCAPUAN.BO
                 var pacienteExst = (from item in HC.listarPaciente() where item.numeroHistoriaClinica == recepcionC.paciente.numeroHistoriaClinica select item).LastOrDefault();
                 if (pacienteExst == null) {
                     HC.agregarConsecutivo(consecutivo);
+                    paciente.consecutivo = consecutivo.idConsecutivo;
                     HC.agregarpaciente(paciente);
                     var usuarioId = System.Web.HttpContext.Current.User.Identity.GetUserId();
                     var usuarioExitente = (from item in HC.listarUsuario() where item.Id == usuarioId select item).FirstOrDefault();

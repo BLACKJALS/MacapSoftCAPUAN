@@ -251,7 +251,11 @@ namespace MacapSoftCAPUAN.Controllers
                     }
                     else
                     {
-                        ViewBag.itemConsecutivo = paciente.consecutivo;
+                        var numeroConsecutivo = (from item in HC.listarConsecutivo() where item.idConsecutivo == paciente.consecutivo select item.numeroConsecutivo).LastOrDefault();
+                        if (numeroConsecutivo != null ) {
+                            ViewBag.itemConsecutivo = numeroConsecutivo;
+                        }
+                        
                     }
                     ViewBag.nPc = identificacion;
                     ViewBag.ItemLocalidades = listaItemsLocalidades.ToList();
