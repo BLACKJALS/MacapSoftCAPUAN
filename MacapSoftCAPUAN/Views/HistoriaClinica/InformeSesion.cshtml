@@ -52,6 +52,13 @@
     @Html.Hidden("NumeroHCP");
     @Html.Hidden("Diag");
     <div class="row">
+        <div class="col-md-9">
+            <label style="font-size:smaller">Los campos que presentan el simbolo * son campos obligatorios y que no se encuentren bloqueados.</label>
+        </div>
+    </div>
+     <br />
+     <br />
+    <div class="row">
         <div class="col-md-1">
             <label style="font-size:smaller">Fecha actual:</label>
         </div>
@@ -71,7 +78,7 @@
             <input class="form-control" placeholder="N° sesión" id="numeroSesion" name="consulta.numeroSesion"/>
         </div>
         <div class="col-md-1">
-            <label style="font-size:smaller">Recibo de pago:</label>
+            <label style="font-size:smaller">Recibo de pago*:</label>
         </div>
         <div class="col-md-2">
             <input class="form-control" placeholder="Recibo pago"  name="consulta.reciboPago" required/>
@@ -100,23 +107,23 @@
         </div>
     </div>
     <br />
-    <h4 style="text-align:center; background-color:#9BC2E6">Objetivo de la sesión</h4>
+    <h4 style="text-align:center; background-color:#9BC2E6">Objetivo de la sesión*</h4>
     <div class="form-group">
         <textarea class="form-control" style="min-width: 100%" rows="6" name="consulta.objetivoSesion" required></textarea>
     </div>
-    <h4 style="text-align:center; background-color:#9BC2E6">Ejercicios y eventos significativos de la semana anterior</h4>
+    <h4 style="text-align:center; background-color:#9BC2E6">Ejercicios y eventos significativos de la semana anterior*</h4>
     <div class="form-group">
         <textarea class="form-control" style="min-width: 100%" rows="6" name="consulta.ejerciciosEvento" required></textarea>
     </div>
-    <h4 style="text-align:center; background-color:#9BC2E6">Desarrollo y temas tratados durante la sesión</h4>
+    <h4 style="text-align:center; background-color:#9BC2E6">Desarrollo y temas tratados durante la sesión*</h4>
     <div class="form-group">
         <textarea class="form-control" style="min-width: 100%" rows="6" name="consulta.desarrolloTemasTratados" required></textarea>
     </div>
-    <h4 style="text-align:center; background-color:#9BC2E6">Proxima sesión (Tareas, ejercicios, comentarios de la formulación y/o modificaciones)</h4>
+    <h4 style="text-align:center; background-color:#9BC2E6">Proxima sesión (Tareas, ejercicios, comentarios de la formulación y/o modificaciones)*</h4>
     <div class="form-group">
         <textarea class="form-control" style="min-width: 100%" rows="6" name="consulta.tareasProximaSesion" required></textarea>
     </div>
-    <h4 style="text-align:center; background-color:#9BC2E6">Observaciones</h4>
+    <h4 style="text-align:center; background-color:#9BC2E6">Observaciones*</h4>
     <div class="form-group">
         <textarea class="form-control" style="min-width: 100%" rows="6" name="consulta.observacionesRecomendaciones" required></textarea>
     </div>

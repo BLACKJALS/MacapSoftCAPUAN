@@ -176,6 +176,13 @@
         <input type="text"  name="paciente.numeroDocumento" id="pacienteNumero" style="visibility:hidden">
         <h3 style="text-align:center; background-color:#9BC2E6">Datos del paciente</h3>
         <div class="row">
+            <div class="col-md-9">
+                <label style="font-size:smaller">Los campos que presentan el simbolo * son campos obligatorios y que no se encuentren bloqueados.</label>
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="row">
             <div class="col-md-1">
                 <label style="font-size:smaller">Nombres:</label>
             </div>
@@ -216,7 +223,7 @@
                 @*<input class="form-control" id="edadPaciente" name="paciente.edad" placeholder="Edad (años)" value="@Model.paciente.edad" required />*@
             </div>
             <div class="col-md-1">
-                <label style="font-size:smaller">Remitido a:</label>
+                <label style="font-size:smaller">Remitido a*:</label>
             </div>
             <div class="col-md-2">
                 <input class="form-control" id="remitidoA" name="remisionP.nombreInsitucionRemitida" placeholder="Remitido a" required />
@@ -257,7 +264,7 @@
         <br />
         <div class="row">
             <div class="col-md-2">
-                <label style="font-size:smaller">Servicio al que se remite:</label>
+                <label style="font-size:smaller">Servicio al que se remite*:</label>
             </div>
             <div class="col-md-2">
                 <input class="form-control" id="servicioRemite" name="remisionP.servicioRemitido" placeholder="Servicio al que se remite" value="@ViewBag.edad" required />
@@ -265,21 +272,21 @@
         </div>
         <br />
         <div class="col-md-10">
-            <label style="font-size:smaller">Evolución del paciente durante la intervención psicológica:</label>
+            <label style="font-size:smaller">Evolución del paciente durante la intervención psicológica*:</label>
         </div>
         <div class="form-group">
             <textarea class="form-control" id="evolucionPacienIntervenPsico" name="remisionP.evolucionPaciente" style="min-width: 100%" rows="6" value="@ViewBag.motivoConsulta " required></textarea>
         </div>
         <br />
         <div class="col-md-10">
-            <label style="font-size:smaller">Aspectos positivos:</label>
+            <label style="font-size:smaller">Aspectos positivos*:</label>
         </div>
         <div class="form-group">
             <textarea class="form-control" style="min-width: 100%" rows="6" id="aspectosPositivos" name="remisionP.aspectosPositivos" value="'@ViewBag.Observaciones" required></textarea>
         </div>
         <br />
         <div class="col-md-10">
-            <label style="font-size:smaller">Recomendaciones:</label>
+            <label style="font-size:smaller">Recomendaciones*:</label>
         </div>
         <div class="form-group">
             <textarea class="form-control" style="min-width: 100%" rows="6" id="recomendaciones" name="remisionP.recomendaciones" value="'@ViewBag.Observaciones" required></textarea>

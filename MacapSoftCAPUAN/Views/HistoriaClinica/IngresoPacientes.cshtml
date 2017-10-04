@@ -420,6 +420,13 @@
     @Html.Hidden("Documento");
         <h3 style="text-align:center; background-color:#9BC2E6">Recepción de caso</h3>
         <div class="row">
+            <div class="col-md-9">
+                <label style="font-size:smaller">Los campos que presentan el simbolo * son campos obligatorios y que no se encuentren bloqueados.</label>
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="row">
             <div class="col-md-1">
                 <label style="font-size:smaller">Fecha de atención:</label>
             </div>
@@ -438,13 +445,13 @@
         <h3 style="text-align:center; background-color:#9BC2E6">Datos del paciente</h3>
         <div class="row">
             <div class="col-md-1">
-                <label style="font-size:smaller">Nombres:</label>
+                <label style="font-size:smaller">Nombres*:</label>
             </div>
             <div class="col-md-4">
                 <input class="form-control" id="nombrePaciente" name="paciente.nombre" placeholder="Nombres" value="@ViewBag.nombre" required />
             </div>
             <div class="col-md-2">
-                <label style="font-size:smaller">Apellidos:</label>
+                <label style="font-size:smaller">Apellidos*:</label>
             </div>
             <div class="col-md-4">
                 <input class="form-control" id="apellidoPaciente" name="paciente.apellido" placeholder="Apellidos" value="@ViewBag.apellido" required />
@@ -452,12 +459,12 @@
         </div>
         <br />
         <div class="row">
-            <label class="col-md-1" style="font-size:smaller">Tipo de documento:</label>
+            <label class="col-md-1" style="font-size:smaller">Tipo de documento*:</label>
             <div class="col-md-4">
                 @Html.DropDownList("ingresoClinica.id_tipoDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumento, new { @class = "form-control", id="tipoDocumentoPac", required = "true" })
             </div>
             <div class="col-md-2">
-                <label style="font-size:smaller">Número de documento:</label>
+                <label style="font-size:smaller">Número de documento*:</label>
             </div>
             <div class="col-md-4">
                 <input class="form-control" id="numeroDocumentoPaciente" pattern="[0-9]*" title="ejemplo: 77799887" name="ingresoClinica.numeroDocumento" placeholder="número documento" value="@ViewBag.numeroDocumento" required />
@@ -466,13 +473,13 @@
         <br />
         <div class="row">
             <div class="col-md-1">
-                <label style="font-size:smaller">Sexo:</label>
+                <label style="font-size:smaller">Sexo*:</label>
             </div>
             <div class="col-md-4">
                 @Html.DropDownList("paciente.id_sexo", (IEnumerable<SelectListItem>)ViewBag.Sexo, new { @class = "form-control", id = "sexo" })
             </div>
             <div class="col-md-2">
-                <label style="font-size:smaller">Escolaridad:</label>
+                <label style="font-size:smaller">Escolaridad*:</label>
             </div>
             <div class="col-md-4">
                 @Html.DropDownList("ingresoClinica.id_NivelEscolaridad", (IEnumerable<SelectListItem>)ViewBag.NivelEscolaridad, new { @class = "form-control", id = "nivelEscolaridad" })
@@ -481,13 +488,13 @@
         <br />
         <div class="row">
             <div class="col-md-1">
-                <label style="font-size:smaller">Fecha de nacimiento:</label>
+                <label style="font-size:smaller">Fecha de nacimiento*:</label>
             </div>
             <div class="col-md-4">
                 <input class="form-control" id="fechaNacimientoPaciente" name="paciente.fechaNacimiento" placeholder="fecha de nacimiento"  required />
             </div>
             <div class="col-md-2">
-                <label style="font-size:smaller">Lugar de nacimiento (País, Ciudad):</label>
+                <label style="font-size:smaller">Lugar de nacimiento (País, Ciudad)*:</label>
             </div>
             <div class="col-md-2">
                 @Html.DropDownList("pais", (IEnumerable<SelectListItem>)ViewBag.ItemPaises, new { @class = "form-control", required = "true", id = "paisPac" })
@@ -499,7 +506,7 @@
         </div>
         <div class="row">
             <div class="col-md-1">
-                <label style="font-size:smaller">Edad:</label>
+                <label style="font-size:smaller">Edad*:</label>
             </div>
             <div class="col-md-2">
                 <input class="form-control" id="edadPaciente" name="ingresoClinica.edad" placeholder="Edad (años)" onclick="return validarEdad();" value="@ViewBag.edad" required />
@@ -514,13 +521,13 @@
         </div>
         <div class="row">
             <div class="col-md-1">
-                <label style="font-size:smaller">Localidad:</label>
+                <label style="font-size:smaller">Localidad*:</label>
             </div>
             <div class="col-md-3">
                 @Html.DropDownList("ingresoClinica.id_localidad", (IEnumerable<SelectListItem>)ViewBag.ItemLocalidades, new { @class = "form-control", required = "true", id="localidad" })
             </div>
             <div class="col-md-1">
-                <label style="font-size:smaller">Barrio:</label>
+                <label style="font-size:smaller">Barrio*:</label>
             </div>
             <div class="col-md-3">
                 @*@Html.DropDownList("ingresoClinica.id_barrio", (IEnumerable<SelectListItem>)ViewBag.ItemBarrios, new { @class = "form-control", required = "true", id="Barrio" })*@
@@ -528,7 +535,7 @@
                 @*<input class="form-control" id="Barrio" placeholder="Barrio" />*@
             </div>
             <div class="col-md-1">
-                <label style="font-size:smaller">Dirección:</label>
+                <label style="font-size:smaller">Dirección*:</label>
             </div>
             <div class="col-md-3">
                 <input class="form-control" id="direccionPaciente" name="ingresoClinica.direccion" placeholder="Direccion" value="@ViewBag.direccion" required />
@@ -537,14 +544,14 @@
         <br />
         <div class="row">
             <div class="col-md-1">
-                <label style="font-size:smaller">Estrato:</label>
+                <label style="font-size:smaller">Estrato*:</label>
             </div>
             <div class="col-md-3">
                 @Html.DropDownList("ingresoClinica.id_estrato", (IEnumerable<SelectListItem>)ViewBag.ItemEstrato, new { @class = "form-control", required = "true" })
                 @*<input class="form-control" id="estratoPaciente" name="paciente.estrato" placeholder="Estrato" required />*@
             </div>
             <div class="col-md-1">
-                <label style="font-size:smaller">Teléfonos:</label>
+                <label style="font-size:smaller">Teléfonos*:</label>
             </div>
             <div class="col-md-3">
                 <input class="form-control" id="telefonoPaciente" pattern="[0-9]*" title="ejemplo: 77799887" name="ingresoClinica.telefono" placeholder="Telefonos" value="@ViewBag.telefono" required />
@@ -559,13 +566,13 @@
         <br />
         <div class="row">
             <div class="col-md-1">
-                <label style="font-size:smaller">Ocupación:</label>
+                <label style="font-size:smaller">Ocupación*:</label>
             </div>
             <div class="col-md-3">
                 @Html.DropDownList("ingresoClinica.id_ocupacion", (IEnumerable<SelectListItem>)ViewBag.Ocupacion, new { @class = "form-control", id = "ocupacion" })
             </div>
             <div class="col-md-1">
-                <label style="font-size:smaller">Profesión:</label>
+                <label style="font-size:smaller">Profesión*:</label>
             </div>
             <div class="col-md-3">
                 <input class="form-control" id="pacienteProfesion" name="ingresoClinica.profesion" placeholder="Profesión" value="@ViewBag.profesion" required />
@@ -574,26 +581,26 @@
         <br/>
         <div class="row">
             <div class="col-md-1">
-                <label style="font-size:smaller">EPSS:</label>
+                <label style="font-size:smaller">EPSS*:</label>
             </div>
             <div class="col-md-2">
                 @Html.DropDownList("ingresoClinica.tieneEps", (IEnumerable<SelectListItem>)ViewBag.ItemValidacion, new { @class = "form-control", id = "pacienteTenerEPS", required = "true" })
             </div>
             <div class="col-md-1">
-                <label style="font-size:smaller">EPSC:</label>
+                <label style="font-size:smaller">EPSC*:</label>
             </div>
             <div class="col-md-2">
                 @Html.DropDownList("ingresoClinica.tieneEpc", (IEnumerable<SelectListItem>)ViewBag.ItemValidacion, new { @class = "form-control", id="pacienteTenerEPSC" ,required = "true" })
             </div>
             <div class="col-md-1">
-                <label style="font-size:smaller">Institución:</label>
+                <label style="font-size:smaller">Institución*:</label>
             </div>
             <div class="col-md-2">
                 @*<input class="form-control" id="epsPaciente" name="paciente.eps.IdEPS" placeholder="EPSS" />*@
                 @Html.DropDownList("ingresoClinica.id_Eps", (IEnumerable<SelectListItem>)ViewBag.ItemEps, new { @class = "form-control", id = "listadosEPS", required = "true" })
             </div>
             <div class="col-md-1">
-                <label style="font-size:smaller">Viene remitido:</label>
+                <label style="font-size:smaller">Viene remitido*:</label>
             </div>
             <div class="col-md-2">
                 @Html.DropDownList("remitido.idRemitente", (IEnumerable<SelectListItem>)ViewBag.ItemValidacion, new { @class = "form-control", id = "pacienteVieneRemitido", required = "true" })
@@ -606,7 +613,7 @@
 
         <div class="row">
             <div class="col-md-2">
-                <label style="font-size:smaller">Institución que remite:</label>
+                <label style="font-size:smaller">Institución que remite*:</label>
             </div>
             <div class="col-md-10">
                 <input class="form-control" id="nombreEntidadRemitido" name="remitido.nombreEntidad" placeholder="IRemite" value="@ViewBag.entidadRemitido" required/>
@@ -615,7 +622,7 @@
         <br />
         <div class="row">
             <div class="col-md-2">
-                <label style="font-size:smaller">Profesional que remite:</label>
+                <label style="font-size:smaller">Profesional que remite*:</label>
             </div>
             <div class="col-md-9">
                 <input class="form-control" id="nombreRemitenteRemitido" name="remitido.nombreRemitente" placeholder="Profesional que remite" value="@ViewBag.profesionalRemitido" required/>
@@ -624,7 +631,7 @@
         <br />
         <div class="row">
             <div class="col-md-2">
-                <label style="font-size:smaller">Fecha de remisión:</label>
+                <label style="font-size:smaller">Fecha de remisión*:</label>
             </div>
             <div class="col-md-9">
                 <input class="form-control" id="fechaRemision" name="remitido.fechaRemision" placeholder="fecha de remisión" required />
@@ -634,13 +641,13 @@
         <h3 style="text-align:center; background-color:#9BC2E6">Datos del consultante</h3>
         <div class="row">
             <div class="col-md-1">
-                <label style="font-size:smaller">Nombres:</label>
+                <label style="font-size:smaller">Nombres*:</label>
             </div>
             <div class="col-md-4">
                 <input class="form-control" id="nombreConsultantePaciente" name="consultante.nombre" placeholder="Nombres" required/>
             </div>
             <div class="col-md-2">
-                <label style="font-size:smaller">Apellidos:</label>
+                <label style="font-size:smaller">Apellidos*:</label>
             </div>
             <div class="col-md-4">
                 <input class="form-control" id="apellidosConsultantePaciente" name="consultante.apellido" placeholder="Apellidos" required/>
@@ -649,13 +656,13 @@
         <br />
         <div class="row">
             <div class="col-md-1">
-                <label style="font-size:smaller">Parentesco:</label>
+                <label style="font-size:smaller">Parentesco*:</label>
             </div>
             <div class="col-md-4">
                 <input class="form-control" id="parentezcoConsultantePaciente" name="consultante.parentezco" placeholder="Parentesco" required/>
             </div>
             <div class="col-md-2">
-                <label style="font-size:smaller">Teléfonos de contacto:</label>
+                <label style="font-size:smaller">Teléfonos de contacto*:</label>
             </div>
             <div class="col-md-4">
                 <input class="form-control" id="telefonoConsultantePaciente" name="consultante.telefono" placeholder="Teléfonos de contacto" required/>
@@ -663,24 +670,24 @@
         </div>
         <br />
         <div class="row">
-            <label class="col-md-1" style="font-size:smaller">Tipo de documento:</label>
+            <label class="col-md-1" style="font-size:smaller">Tipo de documento*:</label>
             <div class="col-md-4">
                 @Html.DropDownList("consultante.id_tipoDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumentoConsultante, new { @class = "form-control", id="documentoConsultante", required = "true" })
             </div>
             <div class="col-md-2">
-                <label style="font-size:smaller">Número de documento:</label>
+                <label style="font-size:smaller">Número de documento*:</label>
             </div>
             <div class="col-md-4">
                 <input class="form-control" id="numeroDocumentoConsultante" name="consultante.cedula" placeholder="número documento" required />
             </div>
         </div>
 
-    <h3 style="text-align:center; background-color:#9BC2E6">Motivo de consulta</h3>
+    <h3 style="text-align:center; background-color:#9BC2E6">Motivo de consulta*</h3>
     <div class="form-group">
         <textarea class="form-control" id="motivoConsultaingresoClinica" name="ingresoClinica.motivoConsulta" style="min-width: 100%" rows="6"  required></textarea> @*value="@ViewBag.motivoConsulta"*@
     </div>
     <br />
-    <h3 style="text-align:center; background-color:#9BC2E6">Observaciones</h3>
+    <h3 style="text-align:center; background-color:#9BC2E6">Observaciones*</h3>
     <div class="form-group">
         <textarea class="form-control" style="min-width: 100%" rows="6" id="Observaciones"  name="ingresoClinica.observaciones"  required></textarea>   @*value="'@ViewBag.Observaciones"*@
     </div>
