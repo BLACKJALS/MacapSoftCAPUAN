@@ -9,7 +9,7 @@
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
-<body onload="disableBackButton();">
+<body>
     <div class="navbar navbar-default navbar-fixed-top navbar-custom" role="navigation" style="background-color:#06052F">
         <div class="container">
             <div class="navbar-header">
@@ -49,6 +49,14 @@
     window.location.hash = "Again-No-back-button"
     window.onhashchange = function () { window.location.hash = ""; }
     };
+
+    window.addEventListener("pageshow", function (event) {
+        var historyTraversal = event.persisted || (typeof window.performance != "undefined" && window.performance.navigation.type === 2);
+        if (historyTraversal) {
+            window.location.reload();
+        }
+    });
+
     </script>
 </body>
 </html>

@@ -460,7 +460,7 @@
                 <label style="font-size:smaller">Número de documento:</label>
             </div>
             <div class="col-md-4">
-                <input class="form-control" id="numeroDocumentoPaciente" name="ingresoClinica.numeroDocumento" placeholder="número documento" value="@ViewBag.numeroDocumento" required />
+                <input class="form-control" id="numeroDocumentoPaciente" pattern="[0-9]*" title="ejemplo: 77799887" name="ingresoClinica.numeroDocumento" placeholder="número documento" value="@ViewBag.numeroDocumento" required />
             </div>
         </div>
         <br />
@@ -547,7 +547,7 @@
                 <label style="font-size:smaller">Teléfonos:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="telefonoPaciente" name="ingresoClinica.telefono" placeholder="Telefonos" value="@ViewBag.telefono" required />
+                <input class="form-control" id="telefonoPaciente" pattern="[0-9]*" title="ejemplo: 77799887" name="ingresoClinica.telefono" placeholder="Telefonos" value="@ViewBag.telefono" required />
             </div>
             <div class="col-md-1">
                 <label style="font-size:smaller">Email:</label>
