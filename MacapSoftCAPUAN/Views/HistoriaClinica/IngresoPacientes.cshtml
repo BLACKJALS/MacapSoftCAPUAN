@@ -21,6 +21,8 @@
             $('#nombreRemitenteRemitido').prop("disabled", true);
             $('#fechaRemision').prop("disabled", true);
             $('#listadosEPS').prop("disabled", true);
+            $('#otroBarrio').prop("disabled", true);
+            
             //$('#lugarNacimientoPac').prop("disabled", true);
 
             var motConsul = '@ViewBag.motivoConsulta';
@@ -191,27 +193,36 @@
 
             var optionSelected = $("option:selected", this);
             var localidad = this.value;
-            $.ajax({
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                type: 'GET',
-                url: '/HistoriaClinica/consultarBarriosLocalidad' + "?localidad=" + localidad,
-                data: { 'id': localidad },
-                success: function (result) {
-                    var toAppend = '';
-                    $('#Barrio').empty();
-                    for (var i = 0; i < result.length; i++) {
-                        toAppend += '<option value="' + result[i]['idBarrio'] + '">' + result[i]['nombre'] + '</option>';
-                    }
+            if (localidad == "Otros") {
+                $("#Barrio").prop('disabled', true);
+                $("#otroBarrio").prop('disabled', false);
+                $("#EstadoBarrio").val("1");
+            } else {
+                $("#EstadoBarrio").val("0");
+                $("#Barrio").prop('disabled', false);
+                $("#otroBarrio").prop('disabled', true);
+                  $.ajax({
+                      contentType: 'application/json; charset=utf-8',
+                      dataType: 'json',
+                      type: 'GET',
+                      url: '/HistoriaClinica/consultarBarriosLocalidad' + "?localidad=" + localidad,
+                      data: { 'id': localidad },
+                      success: function (result) {
+                          var toAppend = '';
+                          $('#Barrio').empty();
+                          for (var i = 0; i < result.length; i++) {
+                              toAppend += '<option value="' + result[i]['idBarrio'] + '">' + result[i]['nombre'] + '</option>';
+                          }
 
-                    if (toAppend == "") {
-                        toAppend += '<option value="">La localidad no tiene registrado ningún barrio.</option>';
-                    }
-                    $('#Barrio').append(toAppend);
-                },
-                failure: function (response) {
-                }
-            });
+                          if (toAppend == "") {
+                              toAppend += '<option value="">La localidad no tiene registrado ningún barrio.</option>';
+                          }
+                          $('#Barrio').append(toAppend);
+                      },
+                      failure: function (response) {
+                      }
+                  });
+            }
 
 
         });
@@ -418,6 +429,7 @@
     {
     @Html.Hidden("Informacion");
     @Html.Hidden("Documento");
+    @Html.Hidden("EstadoBarrio");
         <h3 style="text-align:center; background-color:#9BC2E6">Recepción de caso</h3>
         <div class="row">
             <div class="col-md-9">
@@ -535,14 +547,20 @@
                 @*<input class="form-control" id="Barrio" placeholder="Barrio" />*@
             </div>
             <div class="col-md-1">
+                <label style="font-size:smaller">Otro (Localidad,barrio)*:</label>
+            </div>
+            <div class="col-md-3">
+                <input class="form-control" id="otroBarrio" name="ingresoClinica.id_barrio" placeholder="Otra localidad (barrio)" value="@ViewBag.direccion" required />
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-1">
                 <label style="font-size:smaller">Dirección*:</label>
             </div>
             <div class="col-md-3">
                 <input class="form-control" id="direccionPaciente" name="ingresoClinica.direccion" placeholder="Direccion" value="@ViewBag.direccion" required />
             </div>
-        </div>
-        <br />
-        <div class="row">
             <div class="col-md-1">
                 <label style="font-size:smaller">Estrato*:</label>
             </div>
@@ -556,15 +574,16 @@
             <div class="col-md-3">
                 <input class="form-control" id="telefonoPaciente" pattern="[0-9]*" title="ejemplo: 77799887" name="ingresoClinica.telefono" placeholder="Telefonos" value="@ViewBag.telefono" required />
             </div>
+            
+        </div>
+        <br />
+        <div class="row">
             <div class="col-md-1">
                 <label style="font-size:smaller">Email:</label>
             </div>
             <div class="col-md-3">
-                <input class="form-control" id="emailPaciente" pattern="[A-Za-z0-9._%+-]+@("@")[a-z0-9.-]+\.[a-z]{2,3}$" title="ejemplo: nombreCorreo@hotmail.com" name="ingresoClinica.email" placeholder="Email" value="@ViewBag.email"/>
+                <input class="form-control" id="emailPaciente" pattern="[A-Za-z0-9._%+-]+@("@")[a-z0-9.-]+\.[a-z]{2,3}$" title="ejemplo: nombreCorreo@hotmail.com" name="ingresoClinica.email" placeholder="Email" value="@ViewBag.email" />
             </div>
-        </div>
-        <br />
-        <div class="row">
             <div class="col-md-1">
                 <label style="font-size:smaller">Ocupación*:</label>
             </div>

@@ -741,33 +741,6 @@ namespace MacapSoftCAPUAN.DALC
                         db.SaveChanges();
                     }
                 }
-
-
-                //var cierreHC = new CierreHC { idCierreHC = cierre.idCierreHC };
-                //using (var context = new ApplicationDbContext())
-                //{
-                //    context.cierreHcContext.Attach(cierreHC);
-                //    cierreHC.idCierreHC = cierre.idCierreHC;
-                //    cierreHC.fechaFinalizaionPsicoterapia = cierre.fechaFinalizaionPsicoterapia;
-                //    cierreHC.fechaInicioPsicoterapia = cierre.fechaInicioPsicoterapia;
-                //    cierreHC.id_UsuarioCierraCaso = cierre.id_UsuarioCierraCaso;
-
-                //    if (cierreHC.numeroCitasAsignadas != null)
-                //    {
-                //        cierreHC.numeroCitasAsignadas = cierre.numeroCitasAsignadas;
-                //    }
-
-                //    if (cierreHC.numeroSesionesRealizadas != null)
-                //    {
-                //        cierreHC.numeroSesionesRealizadas = cierre.numeroSesionesRealizadas;
-                //    }
-                    
-                //    if (cierre.especificacionMotivoCierre != null) {
-                //        cierreHC.especificacionMotivoCierre = cierre.especificacionMotivoCierre;
-                //    }
-                //    context.SaveChanges();
-                //}
-
                 return "Exito";
             }
             catch (Exception e)
@@ -811,13 +784,22 @@ namespace MacapSoftCAPUAN.DALC
                 System.ArgumentException argxEx = new System.ArgumentException("No se pudo eliminar el permiso usuario paciente.", e.Message);
                 return argxEx.ToString();
             }
+        }
 
 
-            //bd = new ApplicationDbContext();
-            //bd.Entry(permisoUsuarioPaciente.AplicationUser).State = EntityState.Detached;
-            //bd.Entry(permisoUsuarioPaciente.Paciente).State = EntityState.Detached;
-            //bd.permisosUsuariosPacienteContext.Remove(permisoUsuarioPaciente);
-            //bd.SaveChanges();
+        public string guardarBarrio(Barrios barrio) {
+            try
+            {
+                bd = new ApplicationDbContext();
+                bd.barriosContext.Add(barrio);
+                bd.SaveChanges();
+                return "Proceso exitoso";
+            }
+            catch (Exception e)
+            {
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo crear el barrio.", e);
+                return argxEx.ToString();
+            }
         }
 
     }

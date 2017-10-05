@@ -525,7 +525,7 @@ namespace MacapSoftCAPUAN.Controllers
 
         //Método en el cual se guarda el ingreso "Recepción de caso de un paciente", sea nuevo o antiguo.
         [HttpPost]
-        public ActionResult IngresoPacientesCreado(RecepcionCaso model, string Informacion, string Documento)
+        public ActionResult IngresoPacientesCreado(RecepcionCaso model, string Informacion, string Documento, string EstadoBarrio)
         {
             HC = new HistoriaClinicaBO();
             Paciente paciente = new Paciente();
@@ -536,6 +536,7 @@ namespace MacapSoftCAPUAN.Controllers
             Consecutivo consecutivo = new Consecutivo();
             Paciente pacienteEx = new Paciente();
             var listaPacientes = HC.listarPaciente();
+            string validacionVista = "";
             if (model.paciente.numeroHistoriaClinica != Documento)
             {
                 var listaP = (from item in listaPacientes where item.numeroHistoriaClinica == Documento select item).FirstOrDefault();
@@ -561,12 +562,39 @@ namespace MacapSoftCAPUAN.Controllers
             }
             if (pacienteEx != null)
             {
+                if (EstadoBarrio == "1")
+                {
+                    Barrios barrio = new Barrios();
+                    barrio.idBarrio = model.ingresoClinica.id_barrio;
+                    barrio.id_localidad = "Otros";
+                    barrio.nombre = model.ingresoClinica.id_barrio;
+                    HC.guardarBarrio(barrio);
+                }
                 HC.modificarRecepcionCasoModel(model);
             }
             else {
 
                 try{
-                    HC.crearRecepcionCasoModel(model);
+                    if (EstadoBarrio == "1")
+                    {
+                        var barrioExi = (from item in HC.listarBarrios() where item.idBarrio == model.ingresoClinica.id_barrio select item).LastOrDefault();
+                        if (!(barrioExi != null))
+                        {
+                            Barrios barrio = new Barrios();
+                            barrio.idBarrio = model.ingresoClinica.id_barrio;
+                            barrio.id_localidad = "Otros";
+                            barrio.nombre = model.ingresoClinica.id_barrio;
+                            HC.guardarBarrio(barrio);
+                            HC.crearRecepcionCasoModel(model);
+                        }
+                        else {
+                            validacionVista = "No se pudo crear ya existe el barrio";
+                        }
+                    }
+                    else {
+                        HC.crearRecepcionCasoModel(model);
+                    }
+                    
                 }
                 catch (Exception ex){
                     ViewBag.error = ex.Message;
@@ -606,7 +634,14 @@ namespace MacapSoftCAPUAN.Controllers
                     return View("PacienteRemitido", remPaciente);
                 }
                 else {
-                    return View("IngresoPacienteCreado");
+                    if (validacionVista == "No se pudo crear ya existe el barrio") {
+                        return View("IngresoPacientesCreado");
+                    }
+                    else
+                    {
+                        return View("IngresoPacienteCreado");
+                    }
+                    
                 }
             }
             catch (Exception ex)
@@ -2516,8 +2551,7 @@ namespace MacapSoftCAPUAN.Controllers
 
 
                 
-                if (gifs.Contains("1") || gifs.Contains("4"))
-                {
+                
                     if (ingr > 0)
                     {
                         document.NewPage();
@@ -2528,7 +2562,9 @@ namespace MacapSoftCAPUAN.Controllers
                     title.Font = FontFactory.GetFont("Arial", 13);
                     title.Add("\nHistoria clínica" + " - " + paciente.nombre + " " + paciente.apellido + "\n\n");
                     document.Add(title);
-                    //document.Add(new Paragraph(300f,DateTime.Now.ToString()));
+                //document.Add(new Paragraph(300f,DateTime.Now.ToString()));
+                if (gifs.Contains("1") || gifs.Contains("4"))
+                {
                     PdfPTable table = new PdfPTable(3);
                     PdfPCell cell = new PdfPCell(new Phrase("Información general de la historia clínica", title.Font));
                     Paragraph texto = new Paragraph();
