@@ -647,12 +647,12 @@ namespace MacapSoftCAPUAN.Controllers
             return Json("Ok", JsonRequestBehavior.AllowGet);
         }
 
-        [Authorize(Roles = "Administrador")]
+        //[Authorize(Roles = "Administrador")]
         public ActionResult cambiarContraseña() {
             return View();
         }
 
-        [Authorize(Roles = "Administrador")]
+        //[Authorize(Roles = "Administrador")]
         [HttpPost]
         public async Task<ActionResult> CambiarContraseña(LoginViewModel model, string nuevaContra)
         {
