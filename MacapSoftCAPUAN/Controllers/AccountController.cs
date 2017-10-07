@@ -11,10 +11,12 @@ using Microsoft.Owin.Security;
 using MacapSoftCAPUAN.Models;
 using System.Collections.Generic;
 using MacapSoftCAPUAN.BO;
+using System.Web.UI;
 
 namespace MacapSoftCAPUAN.Controllers
 {
-    
+
+    [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -59,10 +61,19 @@ namespace MacapSoftCAPUAN.Controllers
         //
         // GET: /Account/Login
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login(string id, string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
+            if (id == "1")
+            {
+                LoginViewModel model = new LoginViewModel();
+                ModelState.AddModelError("", "El usuario está inactivo, comuníquese con el coordinador del CAP.");
+                return View(model);
+            }
+            else {
+                ViewBag.ReturnUrl = returnUrl;
+                return View();
+            }
+            
         }
         public ApplicationDbContext UsersContext { get; set; }
         //
@@ -86,7 +97,13 @@ namespace MacapSoftCAPUAN.Controllers
             if (user != null) {
                 if (user.Activo == false) {
                     ModelState.AddModelError("", "El usuario está inactivo, comuníquese con el coordinador del CAP.");
-                    return View(model);
+                    //AuthenticationManager.SignOut();
+                    //Session.Abandon();
+                    //Session.Clear();
+                    HttpContext.Server.TransferRequest("~/Account/LogOff?numero=1");
+                    
+                    ModelState.AddModelError("", "El usuario está inactivo, comuníquese con el coordinador del CAP.");
+                    //return View("");
                 }
             }
                 
@@ -480,13 +497,19 @@ namespace MacapSoftCAPUAN.Controllers
         // POST: /Account/LogOff
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public ActionResult LogOff()
+        public ActionResult LogOff(string numero)
         {
             //AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             //return RedirectToAction("Index", "HistoriaClinica");
             AuthenticationManager.SignOut();
             Session.Abandon();
-            return RedirectToAction("Login","Account");
+            if (numero == "1") {
+                return RedirectToAction("Login", "Account", new { id = "1" });
+            }
+            else{
+                return RedirectToAction("Login", "Account", new { id = "0" });
+            }
+            
         }
 
         //
@@ -648,12 +671,14 @@ namespace MacapSoftCAPUAN.Controllers
         }
 
         //[Authorize(Roles = "Administrador")]
+        [Authorize]
         public ActionResult cambiarContraseña() {
             return View();
         }
 
         //[Authorize(Roles = "Administrador")]
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> CambiarContraseña(LoginViewModel model, string nuevaContra)
         {
             AccountBO accBO = new AccountBO();

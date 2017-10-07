@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace MacapSoftCAPUAN.Controllers
 {
@@ -22,8 +23,8 @@ namespace MacapSoftCAPUAN.Controllers
         // GET: HistoriaClinica
         public HistoriaClinicaBO HC;
         public DiagnosticoBO diagBo;
-        
 
+        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult Index()
         {
             return View();
@@ -31,14 +32,14 @@ namespace MacapSoftCAPUAN.Controllers
 
 
 
-
+        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult ingresoPaciente() {
             return View();
         }
 
 
 
-
+        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult IngresoPacientes(string identificacion)
         {
 
@@ -717,8 +718,8 @@ namespace MacapSoftCAPUAN.Controllers
         }
 
 
-
-
+        [Authorize(Roles = "Administrador")]
+        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult listarPacientesRemitidos() {
             return View();
         }
@@ -804,7 +805,7 @@ namespace MacapSoftCAPUAN.Controllers
 
 
 
-
+        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult buscarPacientes() {
             return View();
         }
@@ -827,7 +828,7 @@ namespace MacapSoftCAPUAN.Controllers
 
 
 
-
+        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult listaHistoriasClinicas() {
             HC = new HistoriaClinicaBO();
             List<SelectListItem> listaItemsDocentes = new List<SelectListItem>();
@@ -897,6 +898,7 @@ namespace MacapSoftCAPUAN.Controllers
 
 
         [Authorize(Roles = "Administrador")]
+        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult listaHistoriasClinicasInactivas()
         {
             return View();
@@ -975,7 +977,7 @@ namespace MacapSoftCAPUAN.Controllers
         }
 
 
-
+        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult asignacionUsuarioExitoso() {
             return View();
         }
@@ -1793,8 +1795,8 @@ namespace MacapSoftCAPUAN.Controllers
             
         }
 
-        
 
+        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult remitirPaciente(string id) {
 
             RemisionPaciente remisionPac = new RemisionPaciente();
@@ -1831,7 +1833,7 @@ namespace MacapSoftCAPUAN.Controllers
         }
 
 
-
+        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult cierreCasoHC(string id, int inasistencia)
         {
             HC = new HistoriaClinicaBO();
@@ -1947,7 +1949,7 @@ namespace MacapSoftCAPUAN.Controllers
         }
 
 
-
+        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult documentoGeneral(string id)
         {
             HC = new HistoriaClinicaBO();
@@ -2176,7 +2178,7 @@ namespace MacapSoftCAPUAN.Controllers
         }
 
 
-
+        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult guardarDocumentoGeneral(DocumentoGeneralVM documentoGeneral, string NumeroHCP, string Diag, string Cat)
         {
             HC = new HistoriaClinicaBO();
@@ -2212,10 +2214,11 @@ namespace MacapSoftCAPUAN.Controllers
         }
 
 
-        
+
 
 
         //Metodo con el cual se realzia la validación de parámetros y direccionamiento a la vista de informe de sesión.
+        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult InformeSesion(string id) {
             List<SelectListItem> listaItemsDiagnostico = new List<SelectListItem>();
             Consulta consulta = new Consulta();
@@ -2278,6 +2281,7 @@ namespace MacapSoftCAPUAN.Controllers
 
         //Método con el cual se guarda el informe de sesión.
         [HttpPost]
+        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult guardarInformeSesion(Consulta consulta, string NumeroHCP, string Diag) {
             HC = new HistoriaClinicaBO();
 
@@ -2299,6 +2303,7 @@ namespace MacapSoftCAPUAN.Controllers
 
 
         //Método con el cual se genera la inasistencia.
+        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult generarInasistenciaClinica(string id, string motivoIn, DateTime Fecha)
         {
             Inasistencias inasistencia = new Inasistencias();
@@ -2322,7 +2327,7 @@ namespace MacapSoftCAPUAN.Controllers
             return View();
         }
 
-
+        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult consultarInasistencias(string id) {
             ViewBag.nhc = id;
             return View();
@@ -2386,6 +2391,7 @@ namespace MacapSoftCAPUAN.Controllers
 
         //Listar usuarios asignados a la historia clínica
         [Authorize(Roles = "Administrador")]
+        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult listarUsuariosAsignadosDeHC(string id)
         {
             ViewBag.nhc = id;
@@ -2424,6 +2430,7 @@ namespace MacapSoftCAPUAN.Controllers
         //}
 
         [Authorize(Roles = "Administrador")]
+        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult eliminarUsuarioAsig(string nhc, string UsuarioAsig)
         {
             HC = new HistoriaClinicaBO();
@@ -2434,6 +2441,7 @@ namespace MacapSoftCAPUAN.Controllers
         }
 
         [Authorize(Roles = "Administrador")]
+        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult ElementosConsultarHistoriaClinicaInactivas(string gifs, string cnp)
         {
             List<Consulta> listaConsultasIngreso = new List<Consulta>();

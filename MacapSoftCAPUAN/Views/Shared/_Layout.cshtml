@@ -44,11 +44,11 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
     <script type="text/javascript">
-    function disableBackButton() {
-    window.location.hash = "";
-    window.location.hash = "Again-No-back-button"
-    window.onhashchange = function () { window.location.hash = ""; }
-    };
+    //function disableBackButton() {
+    //window.location.hash = "";
+    //window.location.hash = "Again-No-back-button"
+    //window.onhashchange = function () { window.location.hash = ""; }
+    //};
 
     window.addEventListener("pageshow", function (event) {
         var historyTraversal = event.persisted || (typeof window.performance != "undefined" && window.performance.navigation.type === 2);

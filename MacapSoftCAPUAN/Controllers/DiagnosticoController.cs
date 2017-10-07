@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace MacapSoftCAPUAN.Controllers
 {
     [Authorize]
+    [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
     public class DiagnosticoController : Controller
     {
         private DiagnosticosDALC diag;

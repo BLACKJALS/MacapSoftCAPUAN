@@ -72,7 +72,7 @@ namespace UnitTestProject1
             recepcionCaso.remitido = remitido;
             try
             {
-                ingresoRecepcion.IngresoPacientesCreado(recepcionCaso, "0", "1010101");
+                ingresoRecepcion.IngresoPacientesCreado(recepcionCaso, "0", "1010101","0");
             }
             catch (Exception ex)
             {
@@ -135,7 +135,7 @@ namespace UnitTestProject1
             recepcionCaso.remitido = remitido;
             try
             {
-                ingresoRecepcion.IngresoPacientesCreado(recepcionCaso, "0", "1010101");
+                ingresoRecepcion.IngresoPacientesCreado(recepcionCaso, "0", "1010101","0");
             }
             catch (Exception ex)
             {
