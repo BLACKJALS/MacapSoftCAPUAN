@@ -73,17 +73,19 @@ namespace MacapSoftCAPUAN.Controllers
 
         [Authorize(Roles = "Administrador")]
         [HttpPost]
-        public ActionResult ModificarDiagnosticoCAP(string idCodigo, string nombreEditado, string casoEditado)
+        public JsonResult ModificarDiagnosticoCAP(string idCodigo, string nombreEditado, string casoEditado)
         {
             diag = new DiagnosticosDALC();
             try
             {
                 diag.ModificarDiagnostico(idCodigo, nombreEditado, casoEditado);
-                return RedirectToAction("Index", "HistoriaClinica");
+                return Json("Ok",JsonRequestBehavior.AllowGet);
+                //return RedirectToAction("Index", "HistoriaClinica");
             }
             catch (Exception e)
             {
-                return View("ErrorModificarDiagnostico");
+                return Json("False", JsonRequestBehavior.DenyGet);
+                //return View("ErrorModificarDiagnostico");
                 throw;
             }
 

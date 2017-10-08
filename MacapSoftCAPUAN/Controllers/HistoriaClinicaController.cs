@@ -1904,7 +1904,7 @@ namespace MacapSoftCAPUAN.Controllers
         }
 
 
-
+        [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
         public ActionResult cierreCaso(CierreCasoVM cierreCaso, string concMotCierre, string NumeroHCP) {
             //MotivosCierre motivosCierre;
             MotivoCierreHistoriaClinica motivoCierreHC;
