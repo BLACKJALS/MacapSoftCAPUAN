@@ -26,7 +26,7 @@
 
         var inasistencias = '@ViewBag.conteo';
         if (inasistencias >= 3) {
-            alert("El usuario ya ha inasistido tres o más veces, en caso de que falle nuevamente puede proceder a cerrar la HC, generar la inasistencia o continuar con el proceso.")
+            alert("El paciente ya ha inasistido tres o más veces, en caso de que falle nuevamente puede proceder a cerrar la HC, generar la inasistencia o continuar con el proceso.")
             $("#buttonCloseCH").prop('disabled', false);
         } else {
             $("#buttonCloseCH").prop('disabled', true);
