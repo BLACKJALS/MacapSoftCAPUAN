@@ -1,0 +1,140 @@
+﻿@model MacapSoftCAPUAN.ModelsVM.InformeSesion
+@{
+    ViewBag.Title = "InformeSesion";
+}
+<meta charset="utf-8">
+@section scripts{
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+@*<script src="~/Scripts/bootstrap-select.js"></script>*@
+<script src="~/Scripts/bootstrap-select.min.js"></script>
+<link href="~/Content/bootstrap-select.css" rel="stylesheet" />
+<script src="~/Scripts/i18n/defaults-es_ES.js"></script>
+<script src="~/Scripts/i18n/defaults-es_ES.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        var numeroSesion = '@ViewBag.ItemNumeroSesion';
+        var diagnosticosAnts = '@ViewBag.Diagnosticos';
+        if (diagnosticosAnts != null) {
+            $("#diagnosticosAnteriores").val(diagnosticosAnts);
+        }
+        $("#numeroSesion").val(parseInt(numeroSesion) + 1);
+        $("#numeroSesion").attr('readonly', 'readonly');
+
+        var nHC = '@ViewBag.ItemNumHC';
+        $("#numeroHC").val(nHC);
+        $("#numeroHC").attr('readonly', 'readonly');
+        $("#NumeroHCP").val(nHC);
+
+        var hoy = new Date();
+        var fechaHoy = hoy.getFullYear() + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + ("0" + hoy.getDate()).slice(-2);
+        $("#FechaActual").val(fechaHoy);
+        $("#FechaActual").attr('readonly', 'readonly');
+        
+    });
+
+    $('#diagnostico').on('change', function () {
+        var diagnosticos = $(this).val();
+        $("#Diag").val(diagnosticos);
+    });
+
+    function goBack() {
+        window.history.back();
+    }
+
+</script>
+}
+<h1 style="text-align:center">Informe sesión</h1>
+<br />
+<div class="container">
+@using (@Html.BeginForm("guardarInformeSesion", "HistoriaClinica", FormMethod.Post, new { @class = "form-horizontal", id = "FormularioInformeSesion" }))
+{
+    @Html.Hidden("NumeroHCP");
+    @Html.Hidden("Diag");
+    <div class="row">
+        <div class="col-md-9">
+            <label style="font-size:smaller">Los campos que presentan el simbolo * son campos obligatorios y que no se encuentren bloqueados.</label>
+        </div>
+    </div>
+     <br />
+     <br />
+    <div class="row">
+        <div class="col-md-1">
+            <label style="font-size:smaller">Fecha actual:</label>
+        </div>
+        <div class="col-md-2">
+            <input class="form-control" placeholder="Fecha actual" id="FechaActual" name="consulta.fecha" required/>
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">N° Historia:</label>
+        </div>
+        <div class="col-md-2">
+            <input class="form-control" placeholder="N° Historia" id="numeroHC"/>
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">N° Sesión:</label>
+        </div>
+        <div class="col-md-2">
+            <input class="form-control" placeholder="N° sesión" id="numeroSesion" name="consulta.numeroSesion"/>
+        </div>
+        <div class="col-md-1">
+            <label style="font-size:smaller">Recibo de pago*:</label>
+        </div>
+        <div class="col-md-2">
+            <input class="form-control" placeholder="Recibo pago"  name="consulta.reciboPago" required/>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+            <label style="font-size:smaller">Diagnósticos anteriores por consulta:</label>
+        </div>
+        <div class="col-md-5">
+            @foreach (var item in @ViewBag.Diagnosticos)
+            {
+              <label style="font-size:smaller">@item</label>
+              <br />
+            }
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-1">
+            <label style="font-size:smaller">Diagnóstico:</label>
+        </div>
+        <div class="col-md-4">
+            @Html.DropDownList("diagnostico", (IEnumerable<SelectListItem>)ViewBag.ItemDiagnostico, new { @class = "selectpicker", id = "diagnostico", multiple = true })
+        </div>
+    </div>
+    <br />
+    <h4 style="text-align:center; background-color:#9BC2E6">Objetivo de la sesión*</h4>
+    <div class="form-group">
+        <textarea class="form-control" style="min-width: 100%" rows="6" name="consulta.objetivoSesion" required></textarea>
+    </div>
+    <h4 style="text-align:center; background-color:#9BC2E6">Ejercicios y eventos significativos de la semana anterior*</h4>
+    <div class="form-group">
+        <textarea class="form-control" style="min-width: 100%" rows="6" name="consulta.ejerciciosEvento" required></textarea>
+    </div>
+    <h4 style="text-align:center; background-color:#9BC2E6">Desarrollo y temas tratados durante la sesión*</h4>
+    <div class="form-group">
+        <textarea class="form-control" style="min-width: 100%" rows="6" name="consulta.desarrolloTemasTratados" required></textarea>
+    </div>
+    <h4 style="text-align:center; background-color:#9BC2E6">Proxima sesión (Tareas, ejercicios, comentarios de la formulación y/o modificaciones)*</h4>
+    <div class="form-group">
+        <textarea class="form-control" style="min-width: 100%" rows="6" name="consulta.tareasProximaSesion" required></textarea>
+    </div>
+    <h4 style="text-align:center; background-color:#9BC2E6">Observaciones*</h4>
+    <div class="form-group">
+        <textarea class="form-control" style="min-width: 100%" rows="6" name="consulta.observacionesRecomendaciones" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-2">
+            <input type="submit" value="Guardar" class="form-control btn btn-primary" />
+        </div>
+        <div class="col-md-2">
+            <input type="submit" value="Cancelar" class="form-control" onclick="return goBack();"/> @*onclick="location.href='@Url.Action("historiaClinica", "HistoriaClinica")'" />*@
+        </div>
+    </div>
+}
+</div>

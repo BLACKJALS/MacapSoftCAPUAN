@@ -1,0 +1,627 @@
+﻿@model MacapSoftCAPUAN.ModelsVM.DocumentoGeneralVM
+@{
+    ViewBag.Title = "documentoGeneral";
+}
+<meta charset="utf-8">
+@section scripts{
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/locales/bootstrap-datepicker.es.min.js"></script>
+    @*<script src="~/Scripts/bootstrap-select.js"></script>*@   
+    <script src="~/Scripts/bootstrap-select.min.js"></script>
+    <link href="~/Content/bootstrap-select.css" rel="stylesheet" />
+    <script src="~/Scripts/i18n/defaults-es_ES.js"></script>
+    <script src="~/Scripts/i18n/defaults-es_ES.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#fechaRemision').prop("disabled", true);
+            $('#listadosEPS').prop("disabled", true);
+            var numeroHcp = '@Model.paciente.numeroHistoriaClinica';
+            $("#NumeroHCP").val(numeroHcp);
+            $("#NumeroHC").attr('readonly', 'readonly');
+            $("#sexo").prop("disabled", true);
+            var pais = '@ViewBag.Pais';
+            $("#paisPac").val(pais);
+            $("#paisPac").prop("disabled", true);
+            $("#lugarNacimientoPac").prop("disabled", true);
+            $("#nivelEscolaridad").prop("disabled", true);
+            $("#ocupacion").prop("disabled", true);
+            $("#barrio").prop("disabled", true);
+            var localidad = '@ViewBag.Localidad';
+            $("#localidades").val(localidad);
+            $("#localidades").prop("disabled", true);
+
+            var motConsul = '@ViewBag.motivoConsulta';
+
+            $('.selectpicker').selectpicker({
+                liveSearch: true,
+                showSubtext: true
+            });
+
+            var hoy = new Date();
+            var fechaHoy = hoy.getFullYear() + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + ("0" + hoy.getDate()).slice(-2);
+            $("#ingresoClinica").val(fechaHoy);
+            $("#ingresoClinica").attr('readonly', 'readonly');
+
+
+            $('#diagnostico').on('change', function () {
+                var diagnosticos = $(this).val();
+                $("#Diag").val(diagnosticos);
+            });
+
+
+            $('#categorizacion').on('change', function () {
+                var catego = $(this).val();
+                $("#Cat").val(catego);
+            });
+
+            @*var diagn = '@Model.ingresoClinica.diagnostico';
+            $("#diagnostico").val(diagn);*@
+
+            var cateCA = '@Model.ingresoClinica.categorizacionCAP';
+            $("#categorizacion").val(cateCA);
+
+            var motivoConsulta = '@Model.ingresoClinica.motivoConsulta';
+            $("#motivoConsulta").val(motivoConsulta);
+
+            var probleAct = '@Model.ingresoClinica.problematicaActual';
+            $("#problematicaActual").val(probleAct);
+
+            var hsPers = '@Model.ingresoClinica.historiaPersonal';
+            $("#historiaPersonal").val(hsPers);
+
+            var antece = '@Model.ingresoClinica.antecedentes';
+            $("#antecedentes").val(antece);
+
+            var resulEval = '@Model.consulta.resultadoAutoevaluacion';
+            $("#resultadosEvaluacion").val(resulEval);
+
+            var histFam = '@Model.ingresoClinica.historiaFamiliar';
+            $("#historiaFamiliar").val(histFam);
+
+            var gen = '@Model.ingresoClinica.genograma';
+            $("#genograma").val(gen);
+
+            var hipoPsico = '@Model.consulta.hipotesisPsicologica';
+            $("#hipotesisPsicologicas").val(hipoPsico);
+
+            var objTera = '@Model.consulta.objetivosTerapeuticos';
+            $("#objetivosTerapeuticos").val(objTera);
+
+            var estrTera = '@Model.consulta.estrategiasTecnicasTerapeuticas';
+            $("#estrategiasTerapeuticas").val(estrTera);
+
+            var loObjetera = '@Model.consulta.logrosAlcanzadosSegunObjetivosTerapeuticos';
+            $("#logrosObjetivosTerape").val(loObjetera);
+
+            var loSegConsul = '@Model.consulta.logrosAlcanzadosSegunConsultante';
+            $("#logrosSegunConsultante").val(loSegConsul);
+
+            var res = '@Model.consulta.resumen';
+            $("#resumen").val(res);
+
+            var obsRecomen = '@Model.consulta.observacionesRecomendaciones';
+            $("#observacionesRecomendaciones").val(obsRecomen);
+
+
+            var estado = '@ViewBag.estadoDocumento';
+
+            if (estado == 1) {
+                $("#diagnostico").prop('disabled', true);
+                $("#categorizacion").prop('disabled', true);
+                $("#motivoConsulta").prop('disabled', true);
+                $("#problematicaActual").prop('disabled', true);
+                $("#historiaPersonal").prop('disabled', true);
+                $("#antecedentes").prop('disabled', true);
+                $("#resultadosEvaluacion").prop('disabled', true);
+                $("#historiaFamiliar").prop('disabled', true);
+                $("#historiaFamiliar").prop('disabled', true);
+                $("#genograma").prop('disabled', true);
+                $("#hipotesisPsicologicas").prop('disabled', true);
+                $("#objetivosTerapeuticos").prop('disabled', true);
+                $("#estrategiasTerapeuticas").prop('disabled', true);
+                $("#logrosObjetivosTerape").prop('disabled', true);
+                $("#logrosSegunConsultante").prop('disabled', true);
+                $("#resumen").prop('disabled', true);
+                $("#estadoCivil").prop('disabled', true);
+                $("#religion").prop('disabled', true);
+                $("#pruebasPsicometricas").prop('disabled', true);
+                $("#cuestionarios").prop('disabled', true);
+                $("#pruebasProyectivas").prop('disabled', true);
+                $("#examenMental").prop('disabled', true);
+                $("#entrevistas").prop('disabled', true);
+                $("#observacionesRecomendaciones").prop('disabled', true);
+                $("#btnGuardar").prop('disabled', true);
+
+            }
+        });
+
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+}
+
+
+
+
+<h1 style="text-align:center">Documento general</h1>
+
+<div class="col-lg-12 jumbotron">
+    @*style="border:dashed"*@
+    <h3 style="text-align:center; background-color:#9BC2E6">Historia Clínica</h3>
+    <div class="container">
+@using (@Html.BeginForm("guardarDocumentoGeneral", "HistoriaClinica", FormMethod.Post, new { @class = "form-horizontal", id = "FormularioDocumentoGeneral" }))
+{
+        @Html.Hidden("NumeroHCP");
+        @Html.Hidden("Diag");
+        @Html.Hidden("Cat");
+
+        <div class="row">
+            <div class="col-md-9">
+                <label style="font-size:smaller">Los campos que presentan el simbolo * son campos obligatorios y que no se encuentren bloqueados.</label>
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-md-3">
+                <label style="font-size:smaller">Fecha de recepción de caso:</label>
+            </div>
+            <div class="col-md-3">
+                <label>@ViewBag.fechaIngreso</label>@*<input class="form-control" placeholder="Fecha de recepción" />*@
+            </div>
+            <div class="col-md-2">
+                <label style="font-size:smaller">Fecha atención:</label>
+            </div>
+            <div class="col-md-4">
+                <input class="form-control" placeholder="Fecha atención" id="ingresoClinica" name="ingresoClinica.fechaAtencion" required/>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-3">
+                <label style="font-size:smaller">Número de Historia Clínica:</label>
+            </div>
+            <div class="col-md-3">
+                @*<label>@Model.paciente.numeroHistoriaClinica</label>*@
+                <input class="form-control" id="NumeroHC" placeholder="Número HC" value="@Model.paciente.numeroHistoriaClinica"/>
+            </div>
+            <div class="col-md-2">
+                <label style="font-size:smaller">Diagnóstico*:</label>
+            </div>
+            <div class="col-md-4">
+                @Html.DropDownList("diagnosticos", (IEnumerable<SelectListItem>)ViewBag.ItemDiagnostico, new { @class = "selectpicker", id = "diagnostico", multiple = true, required = true })
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-3">
+                <label style="font-size:smaller">Categorización CAP*:</label>
+            </div>
+            <div class="col-md-3">
+                @Html.DropDownList("categorizacionCAP", (IEnumerable<SelectListItem>)ViewBag.ItemCategorizacion, new { @class = "selectpicker", id = "categorizacion", multiple = true , required = true })
+            </div>
+        </div>
+        <br />
+        <h3 style="text-align:center; background-color:#9BC2E6">Datos del paciente</h3>
+        <div class="row">
+            <div class="col-md-1">
+                <label style="font-size:smaller">Nombres:</label>
+            </div>
+            <div class="col-md-3">
+                <label>@Model.paciente.nombre</label>
+                @*<input class="form-control"  placeholder="Nombres" value="@ViewBag.nombre" required />*@
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Apellidos:</label>
+            </div>
+            <div class="col-md-3">
+                <label>@Model.paciente.apellido</label>
+                @*<input class="form-control"  placeholder="Apellidos" value="@ViewBag.apellido" required />*@
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Sexo:</label>
+            </div>
+            <div class="col-md-3">
+                @Html.DropDownList("paciente.id_sexo", (IEnumerable<SelectListItem>)ViewBag.Sexo, new { @class = "form-control", id = "sexo" })
+                @*<input class="form-control" placeholder="Sexo" value="@ViewBag.sexo" required />*@
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            
+        </div>
+        <br />
+        <div class="row">
+            <label class="col-md-1" style="font-size:smaller">Tipo de documento:</label>
+            <div class="col-md-3">
+                <label>@Model.ingresoClinica.id_tipoDocumento</label>
+                @*@Html.DropDownList("paciente.id_tipoDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumento, new { @class = "form-control", id = "tipoDocumentoPac" })*@
+            </div>
+            <div class="col-md-2">
+                <label style="font-size:smaller">Número de documento:</label>
+            </div>
+            <div class="col-md-3">
+                <label>@Model.ingresoClinica.numeroDocumento</label>
+                @*<input class="form-control" placeholder="numero documento" value="@ViewBag.numeroDocumento" required />*@
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-1">
+                <label style="font-size:smaller">Fecha de nacimiento:</label>
+            </div>
+            <div class="col-md-3">
+                <label>@ViewBag.fechaNacimiento</label>
+                @*<input class="form-control" placeholder="fecha de nacimiento" />*@
+            </div>
+            <div class="col-md-2">
+                <label style="font-size:smaller">Lugar de nacimiento (País, Ciudad):</label>
+            </div>
+            <div class="col-md-2">
+                @*<label>@Model.paciente.id_paises</label>*@
+                @*<input class="form-control" placeholder="País" required />*@
+                @Html.DropDownList("paciente.id_paises", (IEnumerable<SelectListItem>)ViewBag.ItemPaises, new { @class = "form-control", required = "true", id = "paisPac" })
+            </div>
+            <div class="col-md-2">
+                @*<label>@Model.paciente.id_ciudad</label>*@
+                @*<input class="form-control" placeholder="País" required />*@
+                @Html.DropDownList("paciente.id_ciudad", (IEnumerable<SelectListItem>)ViewBag.ItemCiudades, new { @class = "form-control", id = "lugarNacimientoPac", required = "true" })
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-1">
+                <label style="font-size:smaller">Edad:</label>
+            </div>
+            <div class="col-md-3">
+                <label>@Model.ingresoClinica.edad</label>
+                @*<input class="form-control" id="edadPaciente" name="ingresoClinica.edad" placeholder="Edad (años)" onclick="return validarEdad();" value="@ViewBag.edad" required />*@
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Estado civil*:</label>
+            </div>
+            <div class="col-md-3">
+                <input class="form-control" id="estadoCivil" placeholder="Estado civil" name="ingresoClinica.estadoCivil" value="@Model.ingresoClinica.estadoCivil" required/>
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Religión*:</label>
+            </div>
+            <div class="col-md-3">
+                @*@Html.DropDownList("lista", (IEnumerable<SelectListItem>)ViewBag.ItemBarrios, new { @class = "form-control", title = "Seleccione uno de los siguientes barrios", placeholder = "asdas" })*@
+                <input class="form-control" id="religion" name="ingresoClinica.religion" value="@Model.ingresoClinica.religion" placeholder="Religión" required/>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-1">
+                <label style="font-size:smaller">Escolaridad:</label>
+            </div>
+            <div class="col-md-3">
+                @*<label>@Model.ingresoClinica.id_NivelEscolaridad</label>*@
+                @Html.DropDownList("ingresoClinica.id_NivelEscolaridad", (IEnumerable<SelectListItem>)ViewBag.NivelEscolaridad, new { @class = "form-control", id = "nivelEscolaridad" })
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Profesión:</label>
+            </div>
+            <div class="col-md-3">
+                <label>@Model.ingresoClinica.profesion</label>
+                @*<input class="form-control" placeholder="Profesión" value="" required />*@
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Ocupación:</label>
+            </div>
+            <div class="col-md-3">
+                @*<label>@Model.ingresoClinica.Ocupacion</label>*@
+                @Html.DropDownList("ingresoClinica.id_ocupacion", (IEnumerable<SelectListItem>)ViewBag.Ocupacion, new { @class = "form-control", id = "ocupacion" })
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-1">
+                <label style="font-size:smaller">Dirección:</label>
+            </div>
+            <div class="col-md-3">
+                <label>@Model.ingresoClinica.direccion</label>
+                @*<input class="form-control" placeholder="Dirección" />*@
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Barrio:</label>
+            </div>
+            <div class="col-md-3">
+                @*<label>@Model.ingresoClinica.id_barrio</label>*@
+                @Html.DropDownList("ingresoClinica.id_barrio", (IEnumerable<SelectListItem>)ViewBag.ItemBarrios, new { @class = "form-control", required = "true", id="barrio" })
+                @*<input class="form-control" placeholder="Barrio" />*@
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Localidad:</label>
+            </div>
+            <div class="col-md-3">
+                @*<label>@Model.ingresoClinica.id_localidad</label>*@
+                @Html.DropDownList("ingresoClinica.id_localidad", (IEnumerable<SelectListItem>)ViewBag.ItemLocalidades, new { @class = "form-control", required = "true", id="localidades" })
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-1">
+                <label style="font-size:smaller">Estrato:</label>
+            </div>
+            <div class="col-md-3">
+                <label>@Model.ingresoClinica.id_estrato</label>
+                @*<input class="form-control" placeholder="Estrato" />*@
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Teléfonos:</label>
+            </div>
+            <div class="col-md-3">
+                <label>@Model.ingresoClinica.telefono</label>
+                @*<input class="form-control" placeholder="Teléfonos" />*@
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Email:</label>
+            </div>
+            <div class="col-md-3">
+                <label>@Model.ingresoClinica.email</label>
+                @*<input class="form-control" placeholder="Email" />*@
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-1">
+                <label style="font-size:smaller">EPSS:</label>
+            </div>
+            <div class="col-md-1">
+                <label>@Model.ingresoClinica.tieneEps</label>
+                @*<input class="form-control" placeholder="EPSS" />*@
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">EPSC:</label>
+            </div>
+            <div class="col-md-1">
+                <label>@Model.ingresoClinica.tieneEpc</label>
+                @*<input class="form-control" placeholder="EPSC" />*@
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Institución:</label>
+            </div>
+            <div class="col-md-2">
+                @*<label>@Model.remitido.nombreEntidad</label>*@
+                @Html.DropDownList("ingresoClinica.id_Eps", (IEnumerable<SelectListItem>)ViewBag.ItemEps, new { @class = "form-control", id = "listadosEPS", required = "true" })
+            </div>
+            
+            @*<div class="col-md-2">*@
+                @*<input class="form-control" placeholder="VRemitido" />*@
+                @*@Html.DropDownList("remitido.idRemitente", (IEnumerable<SelectListItem>)ViewBag.ItemValidacion, new { @class = "form-control", id = "pacienteVieneRemitido", required = "true" })*@
+            @*</div>*@
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-6">
+                <label style="font-size:smaller">Si se presenta información a continuación es porque el paciente viene remitido</label>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-2">
+                <label style="font-size:smaller">Institución que remite:</label>
+            </div>
+            <div class="col-md-10">
+                <label>@Model.remitido.nombreEntidad</label>
+                @*<input class="form-control" placeholder="IRemite" />*@
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-2">
+                <label style="font-size:smaller">Profesional que remite:</label>
+            </div>
+            <div class="col-md-9">
+                <label>@Model.remitido.nombreRemitente</label>
+                @*<input class="form-control" placeholder="Profesional que remite" />*@
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-2">
+                <label style="font-size:smaller">Fecha de remisión:</label>
+            </div>
+            <div class="col-md-9">
+                <label>@ViewBag.fechaRemision</label>
+                @*<input class="form-control" id="fechaRemision" name="remitido.fechaRemision" placeholder="fecha de remisión" required />*@
+            </div>
+        </div>
+        <br />
+        <h4 style="text-align:center; background-color:#9BC2E6">Datos del consultante</h4>
+        <div class="row">
+            <div class="col-md-1">
+                <label style="font-size:smaller">Nombres:</label>
+            </div>
+            <div class="col-md-3">
+                <label>@Model.consultante.nombre</label>
+                @*<input class="form-control" placeholder="Nombre" />*@
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Apellidos:</label>
+            </div>
+            <div class="col-md-3">
+                <label>@Model.consultante.apellido</label>
+                @*<input class="form-control" placeholder="Apellidos" />*@
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Sexo:</label>
+            </div>
+            <div class="col-md-3">
+                <label>@Model.consultante.id_sexo</label>
+                @*<input class="form-control" placeholder="Sexo" value="@ViewBag.sexo" required />*@
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-1">
+                <label style="font-size:smaller">Parentesco:</label>
+            </div>
+            <div class="col-md-3">
+                <label>@Model.consultante.parentezco</label>
+                @*<input class="form-control" placeholder="Parentesco" />*@
+            </div>
+            <div class="col-md-2">
+                <label style="font-size:smaller">Teléfonos de contacto:</label>
+            </div>
+            <div class="col-md-3">
+                <label>@Model.consultante.telefono</label>
+                @*<input class="form-control" placeholder="Teléfonos de contacto" />*@
+            </div>
+        </div>
+        <br />
+        <div class="row">
+        <label class="col-md-1" style="font-size:smaller">Tipo de documento:</label>
+        <div class="col-md-3">
+            <label>@Model.consultante.id_tipoDocumento</label>
+            @*@Html.DropDownList("consultante.id_tipoDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumentoConsultante, new { @class = "form-control", id = "documentoConsultante", required = "true" })*@
+        </div>
+        <div class="col-md-2">
+            <label style="font-size:smaller">Número de documento:</label>
+        </div>
+        <div class="col-md-3">
+            <label>@Model.consultante.cedula</label>
+            @*<input class="form-control" placeholder="Número documento" required />*@
+        </div>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Motivo de consulta*</h4>
+        <div class="form-group">
+            <textarea id="motivoConsulta" class="form-control" style="min-width: 100%" value="@Model.ingresoClinica.motivoConsulta" rows="6" required></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6"  required>Problemática actual*</h4>
+        <div class="form-group">
+            <textarea id="problematicaActual" class="form-control" style="min-width: 100%" rows="6" name="ingresoClinica.problematicaActual" value="@Model.ingresoClinica.problematicaActual" required></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Historia personal*</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="historiaPersonal" name="ingresoClinica.historiaPersonal" value="@Model.ingresoClinica.historiaPersonal" required></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Antecedentes (Médicos, psicológicos, psiquiátricos y otros relacionados)*</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="antecedentes" name="ingresoClinica.antecedentes" value="@Model.ingresoClinica.antecedentes" required></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Estrategias de evaluación</h4>
+        <div style="border:double">
+            <br />
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <label style="font-size:smaller">Pruebas psicométricas:</label>
+                </div>
+                <div class="col-md-9">
+                    <input class="form-control" id="pruebasPsicometricas" placeholder="Diligencie" name="estrategiaEva.pruebasPsico" value="@Model.estrategiaEva.pruebasPsico"/>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <label style="font-size:smaller">Cuestionarios:</label>
+                </div>
+                <div class="col-md-9">
+                    <input class="form-control" id="cuestionarios" placeholder="Diligencie" name="estrategiaEva.cuestionarios" value="@Model.estrategiaEva.cuestionarios"/>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <label style="font-size:smaller">Pruebas proyectivas:</label>
+                </div>
+                <div class="col-md-9">
+                    <input class="form-control" id="pruebasProyectivas" placeholder="Diligencie" name="estrategiaEva.pruebasProyectivas" value="@Model.estrategiaEva.pruebasProyectivas"/>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <label style="font-size:smaller">Exámen mental:</label>
+                </div>
+                <div class="col-md-9">
+                    <input class="form-control" id="examenMental" placeholder="Diligencie" name="estrategiaEva.examenMental" value="@Model.estrategiaEva.examenMental"/>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <label style="font-size:smaller">Entrevistas:</label>
+                </div>
+                <div class="col-md-9">
+                    <input class="form-control" id="entrevistas" placeholder="Diligencie" name="estrategiaEva.entrevistas" value="@Model.estrategiaEva.entrevistas"/>
+                </div>
+            </div>
+            <br />
+        </div>
+        @*<div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
+        </div>*@
+        <h4 style="text-align:center; background-color:#9BC2E6">Resultados de evaluación*</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="resultadosEvaluacion" name="consulta.resultadoAutoevaluacion" value="@Model.consulta.resultadoAutoevaluacion" required></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Historia Familiar (Relaciones familiares y Eventos significativos)*</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="historiaFamiliar" name="ingresoClinica.historiaFamiliar" value="@Model.ingresoClinica.historiaFamiliar" required></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Genograma*</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="genograma" name="ingresoClinica.genograma" value="@Model.ingresoClinica.genograma" required></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Hipótesis Psicológicas*</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="hipotesisPsicologicas" name="consulta.hipotesisPsicologica" value="@Model.consulta.hipotesisPsicologica" required></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Objetivos terapéuticos*</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="objetivosTerapeuticos" name="consulta.objetivosTerapeuticos" value="@Model.consulta.objetivosTerapeuticos" required></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Estrategias y Tecnicas Terapéuticas*</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="estrategiasTerapeuticas" name="consulta.estrategiasTecnicasTerapeuticas" value="@Model.consulta.estrategiasTecnicasTerapeuticas" required></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Logros alcanzados con base en los objetivos terapéuticos*</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="logrosObjetivosTerape" name="consulta.logrosAlcanzadosSegunObjetivosTerapeuticos" value="@Model.consulta.logrosAlcanzadosSegunObjetivosTerapeuticos" required></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Logros alcanzados según el consultante*</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="logrosSegunConsultante" name="consulta.logrosAlcanzadosSegunConsultante" value="@Model.consulta.logrosAlcanzadosSegunConsultante" required></textarea>
+        </div>
+        <h4 style="text-align:center; background-color:#9BC2E6">Resúmen*</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="resumen" name="consulta.resumen" value="@Model.consulta.resumen" required></textarea>
+        </div>
+        @*<h4 style="text-align:center; background-color:#9BC2E6">Remisiones</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="remisiones"></textarea>
+        </div>*@
+        <h4 style="text-align:center; background-color:#9BC2E6">Observaciones y Recomendaciones*</h4>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="observacionesRecomendaciones" name="consulta.observacionesRecomendaciones" value="@Model.consulta.observacionesRecomendaciones" required></textarea>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <input type="submit" id="btnGuardar"  value="Guardar" class="form-control btn btn-primary" />
+            </div>
+            <div class="col-md-2">
+                <input type="button" value="Cancelar" class="form-control" onclick="return goBack();"/>
+            </div>
+        </div>
+}
+    </div>
+</div>
+
+
+

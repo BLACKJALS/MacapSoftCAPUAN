@@ -14,7 +14,8 @@
     $(document).ready(function () {
         var idPaciente = '@ViewBag.idPaciente';
         $("#idPac").val(idPaciente);
-
+        $("#buttonConsult").prop('disabled', true);
+        
         var estadoDoc = '@ViewBag.estadoDocumentoGen';
         if (estadoDoc == "True") {
             $("#informeSesion").prop('disabled', false);

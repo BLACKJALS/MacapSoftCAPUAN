@@ -842,8 +842,8 @@ namespace MacapSoftCAPUAN.Controllers
             listaItemsDocentes.Add(documento);
             listaItemsEstudiantes.Add(documento);
 
-            var listaUsuariosDocente = HC.listarUsuarioDocente();
-            var listaUsuariosEstudiante = HC.listarUsuarioEstudiante();
+            var listaUsuariosDocente = (from item in HC.listarUsuarioDocente() where item.Activo == true select item).ToList();
+            var listaUsuariosEstudiante = (from item in HC.listarUsuarioEstudiante() where item.Activo == true select item).ToList();
 
             if (listaUsuariosDocente != null) {
                 foreach (var item in listaUsuariosDocente)
