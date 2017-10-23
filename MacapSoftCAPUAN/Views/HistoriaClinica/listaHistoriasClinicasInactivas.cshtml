@@ -85,6 +85,8 @@
             var chxInasistencias = $('#chxInasistencias').is(':checked');
             var chxRecepcionCaso = $('#chxRecepcionCaso').is(':checked');
             var chxRemisiones = $('#chxRemisiones').is(':checked');
+            var chxCierres = $('#chxCierres').is(':checked');
+            
             var concat = "";
 
             if (chxDocGeneral == true) {
@@ -102,8 +104,11 @@
             if (chxRemisiones == true) {
                 concat += $('#chxRemisiones').val() + ";";
             }
+            if (chxCierres == true) {
+                concat += $('#chxCierres').val() + ";";
+            }
 
-            if (chxDocGeneral == true || chxInformeSesion == true || chxInasistencias == true || chxRecepcionCaso == true || chxRemisiones == true) {
+            if (chxDocGeneral == true || chxInformeSesion == true || chxInasistencias == true || chxRecepcionCaso == true || chxRemisiones == true || chxCierres == true) {
                 $("#buttonEdit").prop("disabled", false);
             } else {
                 $("#buttonEdit").prop("disabled", true);
@@ -129,6 +134,10 @@
         });
 
         $('#chxRemisiones').click(function () {
+            disbledButton();
+        });
+
+        $('#chxCierres').click(function () {
             disbledButton();
         });
 
@@ -237,7 +246,14 @@
                                     <input type="checkbox" id="chxRemisiones" value="5">
                                 </div>
                             </div>
-
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <label style="font-size:medium">Cierre:</label>
+                                </div>
+                                <div class="col-md-1">
+                                    <input type="checkbox" id="chxCierres" value="6">
+                                </div>
+                            </div>
                             <div class="modal-footer">
                                 <button type="button" id="buttonEdit" class="btn btn-default" data-dismiss="modal" onclick="return enviarParametros();">
                                     Consultar

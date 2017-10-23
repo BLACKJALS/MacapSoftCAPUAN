@@ -21,6 +21,8 @@
             $("#NumeroHCP").val(numeroHcp);
             $("#NumeroHC").attr('readonly', 'readonly');
             $("#sexo").prop("disabled", true);
+            $("#sexoConsultante").prop("disabled", true);
+            
             var pais = '@ViewBag.Pais';
             $("#paisPac").val(pais);
             $("#paisPac").prop("disabled", true);
@@ -454,8 +456,8 @@
                 <label style="font-size:smaller">Sexo:</label>
             </div>
             <div class="col-md-3">
-                <label>@Model.consultante.id_sexo</label>
-                @*<input class="form-control" placeholder="Sexo" value="@ViewBag.sexo" required />*@
+                @Html.DropDownList("consultante.id_sexo", (IEnumerable<SelectListItem>)ViewBag.Sexo, new { @class = "form-control", id = "sexoConsultante" })
+                @*<label>@Model.consultante.id_sexo</label>*@
             </div>
         </div>
         <br />

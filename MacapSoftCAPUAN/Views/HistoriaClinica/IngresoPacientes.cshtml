@@ -284,14 +284,15 @@
                     $("#telefonoConsultantePaciente").prop("disabled", true);
                     $("#documentoConsultante").prop("disabled", true);
                     $("#numeroDocumentoConsultante").prop("disabled", true);
+                    $('#sexoConsultante').prop("disabled", true);
                     var x = $("#tipoDocumentoPac option:selected").text();
-                    if (x == "TI" || x == "RC" || x == "Seleccione") {
+                    if (x == "TI" || x == "RC" || x == "Seleccione" || x == "NUIP") {
                         alert("Esta ingresando el tipo de documento de un mayor de edad no correspondiente, validar nuevamente el tipo de documento asociado.");
                         document.getElementById("tipoDocumentoPac").options[1].disabled = false;
                         document.getElementById("tipoDocumentoPac").options[2].disabled = false;
                         document.getElementById("tipoDocumentoPac").options[3].disabled = true;
                         document.getElementById("tipoDocumentoPac").options[4].disabled = true;
-                        //document.getElementById("tipoDocumentoPac").tex = "Seleccione";
+                        document.getElementById("tipoDocumentoPac").options[5].disabled = true;
                         document.getElementById("tipoDocumentoPac").value = "";
                         //$("tipoDocumentoPac").val("");
                     } else {
@@ -301,6 +302,7 @@
                                 document.getElementById("tipoDocumentoPac").options[2].disabled = false;
                                 document.getElementById("tipoDocumentoPac").options[3].disabled = true;
                                 document.getElementById("tipoDocumentoPac").options[4].disabled = true;
+                                document.getElementById("tipoDocumentoPac").options[5].disabled = true;
                             }
                         }
                     }
@@ -318,6 +320,7 @@
                         document.getElementById("tipoDocumentoPac").options[2].disabled = true;
                         document.getElementById("tipoDocumentoPac").options[3].disabled = false;
                         document.getElementById("tipoDocumentoPac").options[4].disabled = false;
+                        document.getElementById("tipoDocumentoPac").options[5].disabled = false;
                         //document.getElementById("tipoDocumentoPac").tex = "Seleccione";
                         document.getElementById("tipoDocumentoPac").value = "";
                         //$("tipoDocumentoPac").val("");
@@ -328,6 +331,7 @@
                                 document.getElementById("tipoDocumentoPac").options[2].disabled = true;
                                 document.getElementById("tipoDocumentoPac").options[3].disabled = false;
                                 document.getElementById("tipoDocumentoPac").options[4].disabled = false;
+                                document.getElementById("tipoDocumentoPac").options[5].disabled = false;
                             }
                         }
                     }
@@ -698,6 +702,15 @@
             </div>
             <div class="col-md-4">
                 <input class="form-control" id="numeroDocumentoConsultante" name="consultante.cedula" placeholder="número documento" required />
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-1">
+                <label style="font-size:smaller">Sexo*:</label>
+            </div>
+            <div class="col-md-4">
+                @Html.DropDownList("consultante.id_sexo", (IEnumerable<SelectListItem>)ViewBag.Sexo, new { @class = "form-control", id = "sexoConsultante" })
             </div>
         </div>
 

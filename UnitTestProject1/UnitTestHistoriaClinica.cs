@@ -419,7 +419,7 @@ namespace UnitTestProject1
 
 
         [TestMethod]
-        public void generarInasistencia()
+        public void UnitTestGenerarInasistencia()
         {
             string numeroHistoriaClinica = "1010101";
             string motivoInasistencia = "No pudo asistir por problemas familiares.";
