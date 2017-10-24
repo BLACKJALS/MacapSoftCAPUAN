@@ -740,13 +740,13 @@ namespace MacapSoftCAPUAN.Controllers
                 }
                 if (result1.Errors.Contains("Passwords must have at least one non letter or digit character. Passwords must have at least one digit ('0'-'9'). Passwords must have at least one uppercase ('A'-'Z')."))
                 {
-                    ModelState.AddModelError("", "Las contraseñas deben tener al menos una letra o un carácter de dígito. Al menos una minúscula('a' - 'z'), una mayúscula('A' - 'Z').");
+                    ModelState.AddModelError("", "La contraseña debe tener al menos un caracter (_-*#), un dígito entre 0-9. Al menos una minúscula('a' - 'z'), una mayúscula('A' - 'Z').");
                     return View(model);
                 }
                 else {
                     if (result1.Errors.Contains("Passwords must have at least one non letter or digit character."))
                     {
-                        ModelState.AddModelError("", "La contraseña debe tener al menos un caracter (_-*#).");
+                        ModelState.AddModelError("", "La contraseña debe tener al menos un caracter (_-*#) y un dígito entre 0-9.");
                         return View(model);
                     }
                     if (result1.Errors.Contains("Passwords must have at least one digit ('0'-'9')."))
@@ -755,7 +755,7 @@ namespace MacapSoftCAPUAN.Controllers
                         return View(model);
                     }else
                     {
-                        ModelState.AddModelError("", "Las contraseñas deben tener al menos una minúscula('a' - 'z'), al menos una mayúscula('A' - 'Z') y al menos un caracter (_-*#).");
+                        ModelState.AddModelError("", "La contraseña debe tener al menos una letra o un carácter de dígito entre 0-9, al menos una minúscula('a' - 'z'), al menos una mayúscula('A' - 'Z') y al menos un caracter (_-*#).");
                         return View(model);
                     }
                 }
@@ -765,7 +765,7 @@ namespace MacapSoftCAPUAN.Controllers
                 return View(model);
             }
             
-            ModelState.AddModelError("", "Las contraseñas deben tener al menos una letra o un carácter de dígito.Las contraseñas deben tener al menos una minúscula('a' - 'z').Las contraseñas deben tener al menos una mayúscula('A' - 'Z').");
+            ModelState.AddModelError("", "La contraseña debe tener al menos una letra o un carácter de dígito entre 0-9.Las contraseñas deben tener al menos una minúscula('a' - 'z').Las contraseñas deben tener al menos una mayúscula('A' - 'Z')  y al menos un caracter (_-*#).");
             return View(model);
             //return RedirectToAction("RecuperarContraseña", "Account");
         }

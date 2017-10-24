@@ -66,7 +66,7 @@ namespace MacapSoftCAPUAN.Models
     {
         [Required]
         [Display(Name = "Email")]
-        [EmailAddress]
+        //[EmailAddress]
         public string Email { get; set; }
         //[Required]
         [DataType(DataType.Password)]
@@ -85,6 +85,7 @@ namespace MacapSoftCAPUAN.Models
 
         [Required]
         [EmailAddress]
+        [RegularExpression(@"[A-Za-z0-9._%+-]+@uan.edu.co", ErrorMessage = "Ingrese un correo institucional de la UAN válido, ejemplo: nombreCorreo@uan.edu.co")]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
