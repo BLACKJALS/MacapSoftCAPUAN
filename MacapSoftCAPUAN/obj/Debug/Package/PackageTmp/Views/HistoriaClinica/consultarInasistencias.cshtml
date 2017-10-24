@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewBag.Title = "consultarInasistencias";
+}
+<meta charset="utf-8">
+
+@section scripts{
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <link href="~/Content/bootstrap-table.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-table.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-table/bootstrap-table.js"></script>
+    <script src="~/Scripts/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="~/Scripts/bootstrap-table/locale/bootstrap-table-es-CR.min.js"></script>
+    <script>
+
+        function winLOSSFormatter(value) {
+            var date = new Date(parseInt(value.slice(6, -2)));
+            return date.toLocaleDateString();
+        }
+        var $table = $('#table'),
+            $buttonBack = $('#buttonBack'),
+            $button = $('#button');
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+}
+<h2 align="center"><font size="16">Listado de inasistencias</font></h2>
+<br />
+<div class="form-group">
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-md-11"></div>
+        <div class="col-md-1">
+            <input type="button" class="btn btn-primary" style="align-content:center" value="Regresar" onclick="return goBack();" />
+        </div>
+    </div>
+
+</div>
+<div class="container">
+    
+    
+    
+    <table id="table"
+           data-toggle="table"
+           data-search="true"
+           data-height="460"
+           data-detail-formatter="detailFormatter"
+           data-pagination="true"
+           data-page-size="20"
+           data-page-list="[20,50,100]"
+           data-pagination-first-text="Inicio"
+           data-pagination-pre-text="Anterior"
+           data-pagination-next-text="Siguiente"
+           data-pagination-last-text="Ultimo"
+           data-url='@Url.Action("consultarInasistenciasPost", "HistoriaClinica",new {hc = ViewBag.nhc})'>
+        <thead>
+            <tr>
+                <th data-field="id_ingresoClinica">Número de ingreso clínica</th>
+                <th data-field="motivo">Motivo</th>
+                <th data-field="fechaInasistencia" data-formatter="winLOSSFormatter">Fecha de inasistencia</th>
+            </tr>
+        </thead>
+    </table>
+</div>
