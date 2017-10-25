@@ -1405,9 +1405,10 @@ namespace MacapSoftCAPUAN.Controllers
                     texto.Add("Nombre: " + consultanteNombre + " " + consultanteApellido);
                     table.AddCell(texto);
 
+                    var sexoConsultanteValidacion = (sexoConsultante != "") ? sexoConsultante : "No tiene";
                     texto = new Paragraph();
                     texto.Font = FontFactory.GetFont("Arial", 9);
-                    texto.Add("Sexo: " + sexoConsultante);
+                    texto.Add("Sexo: " + sexoConsultanteValidacion);
                     table.AddCell(texto);
 
                     var consultanteParentezco = (consultante != null) ? consultante.parentezco : "No tiene";
@@ -2849,6 +2850,10 @@ namespace MacapSoftCAPUAN.Controllers
                 var listaIngresoCl = HC.listarIngresoClinica();
                 var paciente = (from item in HC.listarPaciente() where item.numeroHistoriaClinica == numeroHC && item.estadoHC == false select item).LastOrDefault();
                 var ingreso = (from item in listaIngresoCl where item.id_paciente == paciente.numeroHistoriaClinica && item.estadoHC == false select item).LastOrDefault();
+                var eps = (from item in HC.listarEps() where item.IdEPS == ingreso.id_Eps select item.nombre).LastOrDefault();
+
+                var validacionEps = (eps != null) ? eps : "No se ingreso una eps";
+
                 if (listarInasistencia != null) {
                     var conteoInasistencia = (from item in listarInasistencia where item.id_ingresoClinica == ingreso.idIngresoClinica select item).Count();
                     if (conteoInasistencia != 0) {
@@ -2860,6 +2865,7 @@ namespace MacapSoftCAPUAN.Controllers
                 historiaCl.paciente = paciente;
                 ViewBag.idPaciente = paciente.numeroHistoriaClinica;
                 ViewBag.estadoDocumentoGen = ingreso.estadoDocumentoGeneral;
+                ViewBag.eps = validacionEps;
                 return View(historiaCl);
             }
             catch (Exception ex)
@@ -3048,8 +3054,8 @@ namespace MacapSoftCAPUAN.Controllers
             var paciente = (from item in HC.listarPaciente() where item.numeroHistoriaClinica == ingreso.id_paciente select item).LastOrDefault();
             var remitido = (from item in HC.listarRemitido() where item.id_ingresoCl == ingreso.idIngresoClinica select item).LastOrDefault();
             var consultante = (from item in HC.listarConsultante() where item.cedula == ingreso.id_Consultante select item).LastOrDefault();
-            var estrategiaIngreso = (from item in HC.listarIngresoEstrategiasEvaluacion() where item.id_ingreso == ingreso.idIngresoClinica select item).FirstOrDefault();
-            var consulta = (from item in HC.listarConsultas() where item.id_ingresoClinica == ingreso.idIngresoClinica select item).FirstOrDefault();
+            var estrategiaIngreso = (from item in HC.listarIngresoEstrategiasEvaluacion() where item.id_ingreso == ingreso.idIngresoClinica select item).LastOrDefault();
+            var consulta = (from item in HC.listarConsultas() where item.id_ingresoClinica == ingreso.idIngresoClinica && item.numeroSesion == 1 select item).LastOrDefault();
 
             Paises pais = new Paises();
             var paises = HC.listarPaises();
@@ -3245,6 +3251,10 @@ namespace MacapSoftCAPUAN.Controllers
                 documentoGeneralVM.consulta = consulta;
             }
 
+            if (ingreso.religion != null) {
+                ViewBag.estadoDiagnósticos = "1";
+            }
+
             if (ingreso.estadoDocumentoGeneral == true) {
                 ViewBag.estadoDocumento = "1";
             }
@@ -3253,20 +3263,30 @@ namespace MacapSoftCAPUAN.Controllers
         }
 
 
+
         [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
-        public ActionResult guardarDocumentoGeneral(DocumentoGeneralVM documentoGeneral, string NumeroHCP, string Diag, string Cat)
+        public ActionResult guardarDocumentoGeneral(DocumentoGeneralVM documentoGeneral, string NumeroHCP, string Diag, string Cat, string estadoDocumento)
         {
             HC = new HistoriaClinicaBO();
             
             var ingreso = (from item in HC.listarIngresoClinica() where item.id_paciente == NumeroHCP where item.estadoHC == false select item).LastOrDefault();
-            ingreso.estadoCivil = documentoGeneral.ingresoClinica.estadoCivil;
+            //ingreso.estadoCivil = documentoGeneral.ingresoClinica.estadoCivil;
             //ingreso.diagnostico = Diag;
             //ingreso.categorizacionCAP = Cat;
             documentoGeneral.diagnosticos = Diag;
             documentoGeneral.categorizacionCAP = Cat;
-            
-            ingreso.estadoDocumentoGeneral = true;
+
+            if (estadoDocumento == "1")
+            {
+                ingreso.estadoDocumentoGeneral = true;
+            }
+            else {
+                ingreso.estadoDocumentoGeneral = false;
+            }
+
+            ingreso.motivoConsulta = documentoGeneral.ingresoClinica.motivoConsulta;
             ingreso.religion = documentoGeneral.ingresoClinica.religion;
+            ingreso.estadoCivil = documentoGeneral.ingresoClinica.estadoCivil;
             ingreso.problematicaActual = documentoGeneral.ingresoClinica.problematicaActual;
             ingreso.historiaPersonal = documentoGeneral.ingresoClinica.historiaPersonal;
             ingreso.antecedentes = documentoGeneral.ingresoClinica.antecedentes;
@@ -3278,11 +3298,30 @@ namespace MacapSoftCAPUAN.Controllers
             var usuario = (from item in HC.listarUsuario() where item.Id == user select item.Id).FirstOrDefault();
             documentoGeneral.consulta.id_ingresoClinica = ingreso.idIngresoClinica;
             documentoGeneral.consulta.id_User = usuario;
+            documentoGeneral.ingresoClinica.idIngresoClinica = ingreso.idIngresoClinica;
+            var documentoConsultaGeneralExistente = (from item in HC.listarConsultas() where item.id_ingresoClinica == documentoGeneral.ingresoClinica.idIngresoClinica && item.numeroSesion == 1 select item).ToList().LastOrDefault();
+
+            if (documentoConsultaGeneralExistente != null)
+            {
+                HC.eliminarConsultaDocumentoGeneral(documentoConsultaGeneralExistente);
+            }
+
+
             HC.agregarConsulta(documentoGeneral.consulta);
-            
-            HC.crearDiagnosticosYcategorizacion(ingreso.idIngresoClinica, documentoGeneral.diagnosticos, documentoGeneral.categorizacionCAP);
 
             documentoGeneral.estrategiaEva.id_ingreso = ingreso.idIngresoClinica;
+
+            if (!(String.IsNullOrEmpty(Diag)) && !(String.IsNullOrEmpty(Cat)))
+            {
+                HC.crearDiagnosticosYcategorizacion(ingreso.idIngresoClinica, documentoGeneral.diagnosticos, documentoGeneral.categorizacionCAP);
+            }
+
+            var ingresoEstrategiasEv = (from item in HC.listarIngresoEstrategiasEvaluacion() where item.id_ingreso == documentoGeneral.ingresoClinica.idIngresoClinica select item).ToList().LastOrDefault();
+
+            if (ingresoEstrategiasEv != null)
+            {
+                HC.eliminarIngresoEstrategiaEvDocumentoGeneral(ingresoEstrategiasEv);
+            }
             HC.agregarEstrategiaIngreso(documentoGeneral.estrategiaEva);
 
             return View("DocumentoGeneralCreado");
@@ -3902,16 +3941,17 @@ namespace MacapSoftCAPUAN.Controllers
                     cell.HorizontalAlignment = Element.ALIGN_CENTER;
                     table.AddCell(cell);
 
-                    var consultanteNombre = (consultante != null) ? consultante.nombre : "No tiene";
-                    var consultanteApellido = (consultante != null) ? consultante.apellido : "No tiene";
+                    var consultanteNombre = (consultante != null) ? consultante.nombre : "No se ingreso nombre";
+                    var consultanteApellido = (consultante != null) ? consultante.apellido : " ni apellido";
                     texto = new Paragraph();
                     texto.Font = FontFactory.GetFont("Arial", 9);
                     texto.Add("Nombre: " + consultanteNombre + " " + consultanteApellido);
                     table.AddCell(texto);
 
+                    var sexoConsultanteValidacion = (sexoConsultante != "") ? sexoConsultante : "No tiene";
                     texto = new Paragraph();
                     texto.Font = FontFactory.GetFont("Arial", 9);
-                    texto.Add("Sexo: " + sexoConsultante);
+                    texto.Add("Sexo: " + sexoConsultanteValidacion);
                     table.AddCell(texto);
 
                     var consultanteParentezco = (consultante != null) ? consultante.parentezco : "No tiene";

@@ -523,10 +523,18 @@ namespace MacapSoftCAPUAN.DALC
                 using (var context = new ApplicationDbContext())
                 {
                     context.ingresoClinicaContext.Attach(ingresoNuevo);
-                    ingresoNuevo.estadoCivil = ingresoCl.estadoCivil;
-                    ingresoNuevo.religion = ingresoCl.religion;
-                    ingresoNuevo.categorizacionCAP = ingresoCl.categorizacionCAP;
-                    //ingresoNuevo.diagnostico = ingresoCl.diagnostico;
+
+                    if (ingresoCl.estadoCivil != null)
+                    {
+                        ingresoNuevo.estadoCivil = ingresoCl.estadoCivil;
+                    }
+
+                    if (ingresoCl.religion != null)
+                    {
+                        ingresoNuevo.religion = ingresoCl.religion;
+                    }
+                    
+                    ingresoNuevo.motivoConsulta = ingresoCl.motivoConsulta;
                     ingresoNuevo.problematicaActual = ingresoCl.problematicaActual;
                     ingresoNuevo.historiaPersonal = ingresoCl.historiaPersonal;
                     ingresoNuevo.antecedentes = ingresoCl.antecedentes;
@@ -798,6 +806,52 @@ namespace MacapSoftCAPUAN.DALC
             catch (Exception e)
             {
                 System.ArgumentException argxEx = new System.ArgumentException("No se pudo crear el barrio.", e);
+                return argxEx.ToString();
+            }
+        }
+
+
+        public string eliminarConsultaDoumentoGeneralExistente(Consulta consulta)
+        {
+
+            try
+            {
+                var consult = new Consulta { idConsulta = consulta.idConsulta };
+                using (var context = new ApplicationDbContext())
+                {
+                    context.consultaContext.Attach(consult);
+                    context.consultaContext.Remove(consult);
+                    context.SaveChanges();
+                }
+
+                return "Exito";
+            }
+            catch (Exception e)
+            {
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo eliminar el documento general del paciente.", e.Message);
+                return argxEx.ToString();
+            }
+        }
+
+
+        public string eliminarIngresoEstrategiaEvaluacionDocumentoGeneral(IngresoEstrategiasEvaluacion ingresoEstrategiaEvaluacion)
+        {
+
+            try
+            {
+                var ingresoEstrategiaEv = new IngresoEstrategiasEvaluacion { idEstrategiaEvaluacion = ingresoEstrategiaEvaluacion.idEstrategiaEvaluacion };
+                using (var context = new ApplicationDbContext())
+                {
+                    context.ingresoEstrategiasEvaluacionContext.Attach(ingresoEstrategiaEv);
+                    context.ingresoEstrategiasEvaluacionContext.Remove(ingresoEstrategiaEv);
+                    context.SaveChanges();
+                }
+
+                return "Exito";
+            }
+            catch (Exception e)
+            {
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo eliminar el documento general del paciente.", e.Message);
                 return argxEx.ToString();
             }
         }

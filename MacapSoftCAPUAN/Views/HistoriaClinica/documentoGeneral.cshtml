@@ -22,7 +22,7 @@
             $("#NumeroHC").attr('readonly', 'readonly');
             $("#sexo").prop("disabled", true);
             $("#sexoConsultante").prop("disabled", true);
-            
+
             var pais = '@ViewBag.Pais';
             $("#paisPac").val(pais);
             $("#paisPac").prop("disabled", true);
@@ -107,11 +107,21 @@
             $("#observacionesRecomendaciones").val(obsRecomen);
 
 
-            var estado = '@ViewBag.estadoDocumento';
-
+            var estadoDoc = '@ViewBag.estadoDocumento';
+            var estado = '@ViewBag.estadoDiagnósticos';
+            
             if (estado == 1) {
                 $("#diagnostico").prop('disabled', true);
                 $("#categorizacion").prop('disabled', true);
+                $("#estadoCivil").prop('disabled', true);
+                $("#religion").prop('disabled', true);
+            }
+
+            if (estadoDoc == 1) {
+                $("#diagnostico").prop('disabled', true);
+                $("#categorizacion").prop('disabled', true);
+                $("#estadoCivil").prop('disabled', true);
+                $("#religion").prop('disabled', true);
                 $("#motivoConsulta").prop('disabled', true);
                 $("#problematicaActual").prop('disabled', true);
                 $("#historiaPersonal").prop('disabled', true);
@@ -126,8 +136,6 @@
                 $("#logrosObjetivosTerape").prop('disabled', true);
                 $("#logrosSegunConsultante").prop('disabled', true);
                 $("#resumen").prop('disabled', true);
-                $("#estadoCivil").prop('disabled', true);
-                $("#religion").prop('disabled', true);
                 $("#pruebasPsicometricas").prop('disabled', true);
                 $("#cuestionarios").prop('disabled', true);
                 $("#pruebasProyectivas").prop('disabled', true);
@@ -135,9 +143,39 @@
                 $("#entrevistas").prop('disabled', true);
                 $("#observacionesRecomendaciones").prop('disabled', true);
                 $("#btnGuardar").prop('disabled', true);
-
             }
         });
+
+        $('#confirmacionDocumentoGeneral').click(function () {
+            var validacionCheckDocumentoGeneral = $('#confirmacionDocumentoGeneral').is(':checked');
+            if (validacionCheckDocumentoGeneral == false) {
+                $("#buttonEdit").prop('disabled', true);
+            } else {
+                $("#buttonEdit").prop('disabled', false);
+            }
+            validacionDocumentoGeneral();
+        });
+
+        function validacionDocumentoGeneral() {
+            $('#preValidacionCheck').click();
+        }
+
+        function validarInformacion() {
+            $('#confirmacionDocumentoGeneral').attr('checked', true);
+            var validacionCheckDocumentoGeneral = $('#confirmacionDocumentoGeneral').is(':checked');
+            var estadoDoc = "0";
+
+            if (validacionCheckDocumentoGeneral == true) {
+                estadoDoc = "1";
+                $('#confirmacionDocumentoGeneral').attr('checked', true);
+            }
+
+            $("#estadoDocumento").val(estadoDoc);
+        }
+
+        function cerrar() {
+            $('#confirmacionDocumentoGeneral').attr('checked', false);
+        }
 
 
         function goBack() {
@@ -160,10 +198,10 @@
         @Html.Hidden("NumeroHCP");
         @Html.Hidden("Diag");
         @Html.Hidden("Cat");
-
+        @Html.Hidden("estadoDocumento");
         <div class="row">
             <div class="col-md-9">
-                <label style="font-size:smaller">Los campos que presentan el simbolo * son campos obligatorios y que no se encuentren bloqueados.</label>
+                <label style="font-size:smaller">Los campos que presentan el simbolo * son campos obligatorios.</label>
             </div>
         </div>
         <br />
@@ -496,21 +534,21 @@
             @*<input class="form-control" placeholder="Número documento" required />*@
         </div>
         </div>
-        <h4 style="text-align:center; background-color:#9BC2E6">Motivo de consulta*</h4>
+        <h4 style="text-align:center; background-color:#9BC2E6">Motivo de consulta</h4>
         <div class="form-group">
-            <textarea id="motivoConsulta" class="form-control" style="min-width: 100%" value="@Model.ingresoClinica.motivoConsulta" rows="6" required></textarea>
+            <textarea id="motivoConsulta" class="form-control" style="min-width: 100%" name="ingresoClinica.motivoConsulta" value="@Model.ingresoClinica.motivoConsulta" rows="6"></textarea>
         </div>
-        <h4 style="text-align:center; background-color:#9BC2E6"  required>Problemática actual*</h4>
+        <h4 style="text-align:center; background-color:#9BC2E6">Problemática actual</h4>
         <div class="form-group">
-            <textarea id="problematicaActual" class="form-control" style="min-width: 100%" rows="6" name="ingresoClinica.problematicaActual" value="@Model.ingresoClinica.problematicaActual" required></textarea>
+            <textarea id="problematicaActual" class="form-control" style="min-width: 100%" rows="6" name="ingresoClinica.problematicaActual" value="@Model.ingresoClinica.problematicaActual" ></textarea>
         </div>
-        <h4 style="text-align:center; background-color:#9BC2E6">Historia personal*</h4>
+        <h4 style="text-align:center; background-color:#9BC2E6">Historia personal</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="historiaPersonal" name="ingresoClinica.historiaPersonal" value="@Model.ingresoClinica.historiaPersonal" required></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="historiaPersonal" name="ingresoClinica.historiaPersonal" value="@Model.ingresoClinica.historiaPersonal" ></textarea>
         </div>
-        <h4 style="text-align:center; background-color:#9BC2E6">Antecedentes (Médicos, psicológicos, psiquiátricos y otros relacionados)*</h4>
+        <h4 style="text-align:center; background-color:#9BC2E6">Antecedentes (Médicos, psicológicos, psiquiátricos y otros relacionados)</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="antecedentes" name="ingresoClinica.antecedentes" value="@Model.ingresoClinica.antecedentes" required></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="antecedentes" name="ingresoClinica.antecedentes" value="@Model.ingresoClinica.antecedentes" ></textarea>
         </div>
         <h4 style="text-align:center; background-color:#9BC2E6">Estrategias de evaluación</h4>
         <div style="border:double">
@@ -569,49 +607,58 @@
         @*<div class="form-group">
             <textarea class="form-control" style="min-width: 100%" rows="6"></textarea>
         </div>*@
-        <h4 style="text-align:center; background-color:#9BC2E6">Resultados de evaluación*</h4>
+        <h4 style="text-align:center; background-color:#9BC2E6">Resultados de evaluación</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="resultadosEvaluacion" name="consulta.resultadoAutoevaluacion" value="@Model.consulta.resultadoAutoevaluacion" required></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="resultadosEvaluacion" name="consulta.resultadoAutoevaluacion" value="@Model.consulta.resultadoAutoevaluacion" ></textarea>
         </div>
-        <h4 style="text-align:center; background-color:#9BC2E6">Historia Familiar (Relaciones familiares y Eventos significativos)*</h4>
+        <h4 style="text-align:center; background-color:#9BC2E6">Historia Familiar (Relaciones familiares y Eventos significativos)</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="historiaFamiliar" name="ingresoClinica.historiaFamiliar" value="@Model.ingresoClinica.historiaFamiliar" required></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="historiaFamiliar" name="ingresoClinica.historiaFamiliar" value="@Model.ingresoClinica.historiaFamiliar" ></textarea>
         </div>
-        <h4 style="text-align:center; background-color:#9BC2E6">Genograma*</h4>
+        <h4 style="text-align:center; background-color:#9BC2E6">Genograma</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="genograma" name="ingresoClinica.genograma" value="@Model.ingresoClinica.genograma" required></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="genograma" name="ingresoClinica.genograma" value="@Model.ingresoClinica.genograma" ></textarea>
         </div>
-        <h4 style="text-align:center; background-color:#9BC2E6">Hipótesis Psicológicas*</h4>
+        <h4 style="text-align:center; background-color:#9BC2E6">Hipótesis Psicológicas</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="hipotesisPsicologicas" name="consulta.hipotesisPsicologica" value="@Model.consulta.hipotesisPsicologica" required></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="hipotesisPsicologicas" name="consulta.hipotesisPsicologica" value="@Model.consulta.hipotesisPsicologica" ></textarea>
         </div>
-        <h4 style="text-align:center; background-color:#9BC2E6">Objetivos terapéuticos*</h4>
+        <h4 style="text-align:center; background-color:#9BC2E6">Objetivos terapéuticos</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="objetivosTerapeuticos" name="consulta.objetivosTerapeuticos" value="@Model.consulta.objetivosTerapeuticos" required></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="objetivosTerapeuticos" name="consulta.objetivosTerapeuticos" value="@Model.consulta.objetivosTerapeuticos" ></textarea>
         </div>
-        <h4 style="text-align:center; background-color:#9BC2E6">Estrategias y Tecnicas Terapéuticas*</h4>
+        <h4 style="text-align:center; background-color:#9BC2E6">Estrategias y Técnicas Terapéuticas</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="estrategiasTerapeuticas" name="consulta.estrategiasTecnicasTerapeuticas" value="@Model.consulta.estrategiasTecnicasTerapeuticas" required></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="estrategiasTerapeuticas" name="consulta.estrategiasTecnicasTerapeuticas" value="@Model.consulta.estrategiasTecnicasTerapeuticas" ></textarea>
         </div>
-        <h4 style="text-align:center; background-color:#9BC2E6">Logros alcanzados con base en los objetivos terapéuticos*</h4>
+        <h4 style="text-align:center; background-color:#9BC2E6">Logros alcanzados con base en los objetivos terapéuticos</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="logrosObjetivosTerape" name="consulta.logrosAlcanzadosSegunObjetivosTerapeuticos" value="@Model.consulta.logrosAlcanzadosSegunObjetivosTerapeuticos" required></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="logrosObjetivosTerape" name="consulta.logrosAlcanzadosSegunObjetivosTerapeuticos" value="@Model.consulta.logrosAlcanzadosSegunObjetivosTerapeuticos" ></textarea>
         </div>
-        <h4 style="text-align:center; background-color:#9BC2E6">Logros alcanzados según el consultante*</h4>
+        <h4 style="text-align:center; background-color:#9BC2E6">Logros alcanzados según el consultante</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="logrosSegunConsultante" name="consulta.logrosAlcanzadosSegunConsultante" value="@Model.consulta.logrosAlcanzadosSegunConsultante" required></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="logrosSegunConsultante" name="consulta.logrosAlcanzadosSegunConsultante" value="@Model.consulta.logrosAlcanzadosSegunConsultante" ></textarea>
         </div>
-        <h4 style="text-align:center; background-color:#9BC2E6">Resúmen*</h4>
+        <h4 style="text-align:center; background-color:#9BC2E6">Resúmen</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="resumen" name="consulta.resumen" value="@Model.consulta.resumen" required></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="resumen" name="consulta.resumen" value="@Model.consulta.resumen" ></textarea>
         </div>
         @*<h4 style="text-align:center; background-color:#9BC2E6">Remisiones</h4>
         <div class="form-group">
             <textarea class="form-control" style="min-width: 100%" rows="6" id="remisiones"></textarea>
         </div>*@
-        <h4 style="text-align:center; background-color:#9BC2E6">Observaciones y Recomendaciones*</h4>
+        <h4 style="text-align:center; background-color:#9BC2E6">Observaciones y Recomendaciones</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="observacionesRecomendaciones" name="consulta.observacionesRecomendaciones" value="@Model.consulta.observacionesRecomendaciones" required></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="observacionesRecomendaciones" name="consulta.observacionesRecomendaciones" value="@Model.consulta.observacionesRecomendaciones" ></textarea>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-10">
+                <label style="font-size:medium">Si el documento general se encuentra totalmente diligenciado favor seleccione esta casilla:</label>
+            </div>
+            <div class="col-md-1">
+                <input type="checkbox" id="confirmacionDocumentoGeneral" value="1" />
+            </div>
         </div>
         <div class="form-group">
             <div class="col-md-2">
@@ -622,6 +669,38 @@
             </div>
         </div>
 }
+    </div>
+</div>
+<div>
+    <input id="preValidacionCheck" type="button" hidden="hidden"  data-toggle="modal" data-target="#modalValidarDocumentoGeneral" />
+</div>
+
+
+<div id="modalValidarDocumentoGeneral" class="modal fade" role="dialog" data-backdrop="static">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Guardar documento general</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="form-horizontal">
+                        <section>
+                            <div class="form-group">
+                                <label class="col-md-10">Usted ha seleccionado que el documento general se encuentra totalmente diligenciado, "recuerde que una vez hecho esto, no podrá volver a editarlo".</label>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="buttonEdit" class="btn btn-default" data-dismiss="modal" onclick="return validarInformacion();">
+                        Aceptar
+                        </button>
+                    <button id="buttonSalir" type="button" class="btn btn-default" data-dismiss="modal" onclick="return cerrar();">Cancelar</button>
+                    </div>
+               </div>
+            </div>
+        </div>
     </div>
 </div>
 

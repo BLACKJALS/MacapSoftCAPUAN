@@ -1050,10 +1050,25 @@ namespace MacapSoftCAPUAN.BO
             return hcDALC.listarCategorizacionIngresoClinica();
         }
 
+
         public string guardarBarrio(Barrios barrio) {
             hcDALC = new HistoriaClinicaDALC();
             return hcDALC.guardarBarrio(barrio);
         }
-        
+
+
+        public string eliminarConsultaDocumentoGeneral(Consulta consulta)
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            return hcDALC.eliminarConsultaDoumentoGeneralExistente(consulta);
+        }
+
+
+        public string eliminarIngresoEstrategiaEvDocumentoGeneral(IngresoEstrategiasEvaluacion ingresoEstrategiaEv)
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            return hcDALC.eliminarIngresoEstrategiaEvaluacionDocumentoGeneral(ingresoEstrategiaEv);
+        }
+
     }
 }
