@@ -856,5 +856,36 @@ namespace MacapSoftCAPUAN.DALC
             }
         }
 
+
+        public string modificarConsultaDocumentoGeneral(Consulta consulta)
+        {
+
+            try
+            {
+                var consult = new Consulta { idConsulta = consulta.idConsulta };
+                using (var context = new ApplicationDbContext())
+                {
+                    context.consultaContext.Attach(consult);
+
+                    consult.resultadoAutoevaluacion = consulta.resultadoAutoevaluacion;
+                    consult.hipotesisPsicologica = consulta.hipotesisPsicologica;
+                    consult.objetivosTerapeuticos = consulta.objetivosTerapeuticos;
+                    consult.estrategiasTecnicasTerapeuticas = consulta.estrategiasTecnicasTerapeuticas;
+                    consult.logrosAlcanzadosSegunObjetivosTerapeuticos = consulta.logrosAlcanzadosSegunObjetivosTerapeuticos;
+                    consult.logrosAlcanzadosSegunConsultante = consulta.logrosAlcanzadosSegunConsultante;
+                    consult.resumen = consulta.resumen;
+                    consult.observacionesRecomendaciones = consulta.observacionesRecomendaciones;
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+
+                System.ArgumentException argxEx = new System.ArgumentException("No se pudo actualizar la informacion de ingreso nueva.", e.Message);
+                return argxEx.ToString();
+            }
+            return "Exito";
+        }
+
     }
 }

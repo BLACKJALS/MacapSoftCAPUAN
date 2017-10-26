@@ -1184,7 +1184,6 @@ namespace MacapSoftCAPUAN.Controllers
                                 {
                                     diccionarioConsultasDiagnostico.Add(item1.id_diagnostico, item1.id_diagnostico);
                                 }
-                                break;
                             }
                         }
                     }
@@ -1194,7 +1193,7 @@ namespace MacapSoftCAPUAN.Controllers
                         foreach (var item in diccionarioConsultasDiagnostico)
                         {
                             var nombreDiagnostico = (from item1 in diagBo.listarDiagnostico() where item1.Codigo == item.Key select item1.Nombre).FirstOrDefault();
-                            diagnosticoConsultas += item.Value + "-" + nombreDiagnostico + ",";
+                            diagnosticoConsultas += item.Value + "-" + nombreDiagnostico + ", ";
                         }
 
                     }
@@ -1240,7 +1239,7 @@ namespace MacapSoftCAPUAN.Controllers
                     {
                         foreach (var item in diccionarioCategorizacionCAP)
                         {
-                            categorizacionesHC += item.Value + ",";
+                            categorizacionesHC += item.Value + ", ";
                         }
 
                     }
@@ -3230,7 +3229,7 @@ namespace MacapSoftCAPUAN.Controllers
                 var fechR = (remitido.fechaRemision).ToString();
                 var fechRStr = DateTime.Parse(fechR);
                 string format2 = "yyyy-MM-dd";
-                var fechaRemision = fechnStr.ToString(format2);
+                var fechaRemision = fechRStr.ToString(format2);
                 ViewBag.fechaRemision = fechaRemision;
             }
 
@@ -3303,11 +3302,12 @@ namespace MacapSoftCAPUAN.Controllers
 
             if (documentoConsultaGeneralExistente != null)
             {
-                HC.eliminarConsultaDocumentoGeneral(documentoConsultaGeneralExistente);
+                documentoGeneral.consulta.idConsulta = documentoConsultaGeneralExistente.idConsulta;
+                HC.modificarConsultaDocumentoGeneral(documentoGeneral.consulta);
             }
-
-
-            HC.agregarConsulta(documentoGeneral.consulta);
+            else {
+                HC.agregarConsulta(documentoGeneral.consulta);
+            } 
 
             documentoGeneral.estrategiaEva.id_ingreso = ingreso.idIngresoClinica;
 

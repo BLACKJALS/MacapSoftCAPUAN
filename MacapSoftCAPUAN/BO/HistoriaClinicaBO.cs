@@ -1070,5 +1070,11 @@ namespace MacapSoftCAPUAN.BO
             return hcDALC.eliminarIngresoEstrategiaEvaluacionDocumentoGeneral(ingresoEstrategiaEv);
         }
 
+        public string modificarConsultaDocumentoGeneral(Consulta consulta)
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            return hcDALC.modificarConsultaDocumentoGeneral(consulta);
+        }
+        
     }
 }
