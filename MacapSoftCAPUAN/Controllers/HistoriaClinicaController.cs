@@ -1166,8 +1166,18 @@ namespace MacapSoftCAPUAN.Controllers
                     {
                         if (item.id_ingresoClinica == ingrClinica.idIngresoClinica)
                         {
-                            listaConsulta.Add(item);
+                            //listaConsulta.Add(item);
                             listaConsultaGeneralPorPaciente.Add(item);
+                        }
+                    }
+
+                    var consultaDocumentoGeneral = (from item in consultas where item.id_ingresoClinica == ingrClinica.idIngresoClinica && item.numeroSesion == 1 select item).ToList();
+
+                    if (consultaDocumentoGeneral.Count > 0)
+                    {
+                        foreach (var item in consultaDocumentoGeneral)
+                        {
+                            listaConsulta.Add(item);
                         }
                     }
 
@@ -1206,7 +1216,8 @@ namespace MacapSoftCAPUAN.Controllers
                     cell.HorizontalAlignment = Element.ALIGN_CENTER;
                     table.AddCell(cell);
 
-                    cell = new PdfPCell(new Paragraph(diagnosticoConsultas, informacionParrafo.Font));
+                    var validacionDiagnosticosConsultas = (diagnosticoConsultas != "") ? diagnosticoConsultas : "No se ingresó diagnosticos";
+                    cell = new PdfPCell(new Paragraph(validacionDiagnosticosConsultas, informacionParrafo.Font));
                     cell.Colspan = 3;
                     table.AddCell(cell);
 
@@ -1618,8 +1629,8 @@ namespace MacapSoftCAPUAN.Controllers
                     cell.Colspan = 3;
                     table.AddCell(cell);
                     document.Add(table);
+                    ingr++;
                 }
-                ingr++;
             }
             //--------------------------Creación de las consultas
             //for (int i = 0; i <= numeroConsultas; i++) {
@@ -1873,6 +1884,12 @@ namespace MacapSoftCAPUAN.Controllers
                             concatRemisiones += item.Value + ",";
                         }
 
+                        cell2 = new PdfPCell(new Phrase("Factores de riesgo", title.Font));
+                        cell2.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                        cell2.Colspan = 3;
+                        cell2.HorizontalAlignment = Element.ALIGN_CENTER;
+                        tableRemision.AddCell(cell2);
+
                         cell2 = new PdfPCell(new Paragraph(concatRemisiones, subtitulos.Font));
                         cell2.Colspan = 3;
                         tableRemision.AddCell(cell2);
@@ -2021,12 +2038,12 @@ namespace MacapSoftCAPUAN.Controllers
                         cell2.Colspan = 3;
                         tableRemision.AddCell(cell2);
 
-                        var numeroCitas = cierres.Count > 0 ? cierres.FirstOrDefault().numeroCitasAsignadas : "";
+                        var numeroCitas = cierres.FirstOrDefault().numeroCitasAsignadas != null ? cierres.FirstOrDefault().numeroCitasAsignadas : "No tuvo citas asignadas.";
                         cell2 = new PdfPCell(new Paragraph("Número de citas asignadas: " + numeroCitas, subtitulos.Font));
                         cell2.Colspan = 3;
                         tableRemision.AddCell(cell2);
 
-                        var numeroSesiones = cierres.Count > 0 ? cierres.FirstOrDefault().numeroSesionesRealizadas : "";
+                        var numeroSesiones = cierres.FirstOrDefault().numeroSesionesRealizadas !=null ? cierres.FirstOrDefault().numeroSesionesRealizadas : "No tuvo citas asignadas.";
                         cell2 = new PdfPCell(new Paragraph("Número de sesiones realizadas: " + numeroSesiones, subtitulos.Font));
                         cell2.Colspan = 3;
                         tableRemision.AddCell(cell2);
@@ -3709,12 +3726,23 @@ namespace MacapSoftCAPUAN.Controllers
 
                     foreach (var item in consultas) {
                         if (item.id_ingresoClinica == ingrClinica.idIngresoClinica) {
-                            listaConsulta.Add(item);
+                            //listaConsulta.Add(item);
                             listaConsultaGeneralPorPaciente.Add(item);
                         }
                     }
 
-                    
+
+                    var consultaDocumentoGeneral = (from item in consultas where item.id_ingresoClinica == ingrClinica.idIngresoClinica && item.numeroSesion == 1 select item).ToList();
+
+                    if (consultaDocumentoGeneral.Count > 0)
+                    {
+                        foreach (var item in consultaDocumentoGeneral)
+                        {
+                                listaConsulta.Add(item);
+                        }
+                    }
+
+
 
                     foreach (var item in listaConsulta)
                     {
@@ -3727,7 +3755,7 @@ namespace MacapSoftCAPUAN.Controllers
                                 {
                                     diccionarioConsultasDiagnostico.Add(item1.id_diagnostico, item1.id_diagnostico);
                                 }
-                                break;
+                                //break;
                             }
                         }
                     }
@@ -3750,7 +3778,8 @@ namespace MacapSoftCAPUAN.Controllers
                     cell.HorizontalAlignment = Element.ALIGN_CENTER;
                     table.AddCell(cell);
 
-                    cell = new PdfPCell(new Paragraph(diagnosticoConsultas, informacionParrafo.Font));
+                    var validacionDiagnosticosConsultas = (diagnosticoConsultas != "") ? diagnosticoConsultas : "No se ingresó diagnosticos";
+                    cell = new PdfPCell(new Paragraph(validacionDiagnosticosConsultas, informacionParrafo.Font));
                     cell.Colspan = 3;
                     table.AddCell(cell);
 
@@ -4162,8 +4191,8 @@ namespace MacapSoftCAPUAN.Controllers
                     cell.Colspan = 3;
                     table.AddCell(cell);
                     document.Add(table);
+                    ingr++;
                 }
-                ingr++;
             }
             //--------------------------Creación de las consultas
             //for (int i = 0; i <= numeroConsultas; i++) {
@@ -4398,6 +4427,12 @@ namespace MacapSoftCAPUAN.Controllers
                         cell2.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
                         tableRemision.AddCell(cell2);
 
+                        cell2 = new PdfPCell(new Phrase("Factores de riesgo", title.Font));
+                        cell2.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                        cell2.Colspan = 3;
+                        cell2.HorizontalAlignment = Element.ALIGN_CENTER;
+                        tableRemision.AddCell(cell2);
+
                         foreach (var item in remisiones)
                         {
                             foreach (var item1 in HC.listarMotivosRemisiones())
@@ -4465,7 +4500,7 @@ namespace MacapSoftCAPUAN.Controllers
                 {
                     document.NewPage();
                 }
-                var cierres = (from item in HC.listarCierres() where item.id_ingresoClinica == ingrClinica.idIngresoClinica select item).ToList();
+                var cierres = (from item in HC.listarCierres() where item.id_ingresoClinica == ingrClinica.idIngresoClinica && ingrClinica.estadoRemision == false select item).ToList();
                 if (cierres.Count > 0)
                 {
                     List<MotivoCierreHistoriaClinica> motivosCierres = new List<MotivoCierreHistoriaClinica>();
@@ -4563,12 +4598,12 @@ namespace MacapSoftCAPUAN.Controllers
                     cell2.Colspan = 3;
                     tableRemision.AddCell(cell2);
 
-                    var numeroCitas = cierres.Count > 0 ? cierres.FirstOrDefault().numeroCitasAsignadas : "";
+                    var numeroCitas = cierres.FirstOrDefault().numeroCitasAsignadas != null ? cierres.FirstOrDefault().numeroCitasAsignadas : "No tuvo citas asignadas.";
                     cell2 = new PdfPCell(new Paragraph("Número de citas asignadas: " + numeroCitas, subtitulos.Font));
                     cell2.Colspan = 3;
                     tableRemision.AddCell(cell2);
 
-                    var numeroSesiones = cierres.Count > 0 ? cierres.FirstOrDefault().numeroSesionesRealizadas : "";
+                    var numeroSesiones = cierres.FirstOrDefault().numeroSesionesRealizadas != null ? cierres.FirstOrDefault().numeroSesionesRealizadas : "No tuvo sesiones realizadas.";
                     cell2 = new PdfPCell(new Paragraph("Número de sesiones realizadas: " + numeroSesiones, subtitulos.Font));
                     cell2.Colspan = 3;
                     tableRemision.AddCell(cell2);
