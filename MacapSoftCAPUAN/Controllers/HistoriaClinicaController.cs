@@ -1072,6 +1072,7 @@ namespace MacapSoftCAPUAN.Controllers
                 listaCategorizacionHC = new List<CategorizacionHC>();
                 listaCategorizacion = new List<CategorizacionHC>();
                 diagnosticoConsultas = "";
+                categorizacionesHC = "";
 
                 var nivelEscolaridad = (from item in HC.listarNivelEscolaridad() where item.idNivelEscolaridad == ingrClinica.id_NivelEscolaridad select item.nombre).FirstOrDefault();
                 var ocupacion = (from item in HC.listarOcupacion() where item.id_Ocupacion == ingrClinica.id_ocupacion select item.nombre).FirstOrDefault();
@@ -1098,6 +1099,8 @@ namespace MacapSoftCAPUAN.Controllers
                 string formatNafechnStNacimientocimiento = "yyyy-MM-dd";
                 var fechaNacimiento = fechnStNacimiento.ToString(formatNafechnStNacimientocimiento);
 
+                
+                var validarSexoConsultante = (consultante != null)? (from item in HC.listarSexo() where item.id_Sexo == consultante.id_sexo select item.sexo).FirstOrDefault() : "No tiene sexo";
 
                 foreach (var itemInasistencias in inasistencias)
                 {
@@ -1255,14 +1258,14 @@ namespace MacapSoftCAPUAN.Controllers
 
                     }
 
-
+                    var validacionCategorizacionConsultas = (categorizacionesHC != "") ? categorizacionesHC : "No se ingresó categorizaciones.";
                     cell = new PdfPCell(new Phrase("Categorización CAP", texto.Font));
                     cell.Colspan = 3;
                     cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
                     cell.HorizontalAlignment = Element.ALIGN_CENTER;
                     table.AddCell(cell);
 
-                    cell = new PdfPCell(new Paragraph(categorizacionesHC, informacionParrafo.Font));
+                    cell = new PdfPCell(new Paragraph(validacionCategorizacionConsultas, informacionParrafo.Font));
                     cell.Colspan = 3;
                     table.AddCell(cell);
 
@@ -1415,10 +1418,10 @@ namespace MacapSoftCAPUAN.Controllers
                     texto.Add("Nombre: " + consultanteNombre + " " + consultanteApellido);
                     table.AddCell(texto);
 
-                    var sexoConsultanteValidacion = (sexoConsultante != "") ? sexoConsultante : "No tiene";
+                    //var sexoConsultanteValidacion = (sexoConsultante != "") ? sexoConsultante : "No tiene";
                     texto = new Paragraph();
                     texto.Font = FontFactory.GetFont("Arial", 9);
-                    texto.Add("Sexo: " + sexoConsultanteValidacion);
+                    texto.Add("Sexo: " + validarSexoConsultante);
                     table.AddCell(texto);
 
                     var consultanteParentezco = (consultante != null) ? consultante.parentezco : "No tiene";
@@ -3643,6 +3646,7 @@ namespace MacapSoftCAPUAN.Controllers
                 listaCategorizacionHC = new List<CategorizacionHC>();
                 listaCategorizacion = new List<CategorizacionHC>();
                 diagnosticoConsultas = "";
+                categorizacionesHC = "";
 
                 var nivelEscolaridad = (from item in HC.listarNivelEscolaridad() where item.idNivelEscolaridad == ingrClinica.id_NivelEscolaridad select item.nombre).FirstOrDefault();
                 var ocupacion = (from item in HC.listarOcupacion() where item.id_Ocupacion == ingrClinica.id_ocupacion select item.nombre).FirstOrDefault();
@@ -3669,8 +3673,9 @@ namespace MacapSoftCAPUAN.Controllers
                 string formatNafechnStNacimientocimiento = "yyyy-MM-dd";
                 var fechaNacimiento = fechnStNacimiento.ToString(formatNafechnStNacimientocimiento);
 
+                var validarSexoConsultante = (consultante != null) ? (from item in HC.listarSexo() where item.id_Sexo == consultante.id_sexo select item.sexo).FirstOrDefault() : "No tiene sexo";
 
-                foreach (var itemInasistencias in inasistencias)
+                    foreach (var itemInasistencias in inasistencias)
                 {
                     if (ingrClinica.idIngresoClinica == itemInasistencias.id_ingresoClinica)
                     {
@@ -3817,14 +3822,14 @@ namespace MacapSoftCAPUAN.Controllers
 
                     }
 
-
+                    var validacionCategorizacionConsultas = (categorizacionesHC != "") ? categorizacionesHC : "No se ingresó categorizaciones.";
                     cell = new PdfPCell(new Phrase("Categorización CAP", texto.Font));
                     cell.Colspan = 3;
                     cell.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
                     cell.HorizontalAlignment = Element.ALIGN_CENTER;
                     table.AddCell(cell);
 
-                    cell = new PdfPCell(new Paragraph(categorizacionesHC, informacionParrafo.Font));
+                    cell = new PdfPCell(new Paragraph(validacionCategorizacionConsultas, informacionParrafo.Font));
                     cell.Colspan = 3;
                     table.AddCell(cell);
 
@@ -3977,10 +3982,10 @@ namespace MacapSoftCAPUAN.Controllers
                     texto.Add("Nombre: " + consultanteNombre + " " + consultanteApellido);
                     table.AddCell(texto);
 
-                    var sexoConsultanteValidacion = (sexoConsultante != "") ? sexoConsultante : "No tiene";
+                    //var sexoConsultanteValidacion = (validarSexoConsultante != "") ? sexoConsultante : "No tiene";
                     texto = new Paragraph();
                     texto.Font = FontFactory.GetFont("Arial", 9);
-                    texto.Add("Sexo: " + sexoConsultanteValidacion);
+                    texto.Add("Sexo: " + validarSexoConsultante);
                     table.AddCell(texto);
 
                     var consultanteParentezco = (consultante != null) ? consultante.parentezco : "No tiene";

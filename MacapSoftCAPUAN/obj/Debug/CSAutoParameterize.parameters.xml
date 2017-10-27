@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<parameters>
-  <parameter name="macapsoft-Web.config Connection String" description="macapsoft Connection String used in web.config by the application to access the database." defaultValue="Database=macapsoft;Data Source=us-cdbr-azure-east-c.cloudapp.net;User Id=b7848d2ee09e83;Password=9fe97a28" tags="SqlConnectionString">
-    <parameterEntry kind="XmlFile" scope="C:\\Users\\Alejandro\\documents\\visual\ studio\ 2015\\Projects\\MacapSoftCAPUAN\\MacapSoftCAPUAN\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='macapsoft']/@connectionString" />
-  </parameter>
-  <parameter name="MacapSoftCAPUAN.Models.ApplicationDbContext-Web.config Connection String" description="MacapSoftCAPUAN.Models.ApplicationDbContext Connection String used in web.config by the application to access the database." defaultValue="MacapSoftCAPUAN.Models.ApplicationDbContext_ConnectionString" tags="SqlConnectionString">
-    <parameterEntry kind="XmlFile" scope="C:\\Users\\Alejandro\\documents\\visual\ studio\ 2015\\Projects\\MacapSoftCAPUAN\\MacapSoftCAPUAN\\obj\\Debug\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='MacapSoftCAPUAN.Models.ApplicationDbContext']/@connectionString" />
-  </parameter>
-</parameters>
