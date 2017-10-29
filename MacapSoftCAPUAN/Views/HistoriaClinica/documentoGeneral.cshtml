@@ -64,52 +64,109 @@
             var cateCA = '@Model.ingresoClinica.categorizacionCAP';
             $("#categorizacion").val(cateCA);
 
-            var motivoConsulta = '@Model.ingresoClinica.motivoConsulta';
-            $("#motivoConsulta").val(motivoConsulta);
+            var acentoMotivoConsulta = '@Model.ingresoClinica.motivoConsulta';
+            var textoNuevoMotivConsul = $('<textarea />').html(acentoMotivoConsulta).text();
+            $("#motivoConsulta").val(textoNuevoMotivConsul);
+
+            //var motivoConsulta = '@Model.ingresoClinica.motivoConsulta';
+            //$("#motivoConsulta").val(motivoConsulta);
 
             var probleAct = '@Model.ingresoClinica.problematicaActual';
-            $("#problematicaActual").val(probleAct);
+            var textoprobleAct = $('<textarea />').html(probleAct).text();
+            $("#problematicaActual").val(textoprobleAct);
+
+            @*var probleAct = '@Model.ingresoClinica.problematicaActual';
+            $("#problematicaActual").val(probleAct);*@
 
             var hsPers = '@Model.ingresoClinica.historiaPersonal';
-            $("#historiaPersonal").val(hsPers);
+            var textohsPers = $('<textarea />').html(hsPers).text();
+            $("#historiaPersonal").val(textohsPers);
+
+            @*var hsPers = '@Model.ingresoClinica.historiaPersonal';
+            $("#historiaPersonal").val(hsPers);*@
 
             var antece = '@Model.ingresoClinica.antecedentes';
-            $("#antecedentes").val(antece);
+            var textohsAntece = $('<textarea />').html(antece).text();
+            $("#antecedentes").val(textohsAntece);
+
+            @*var antece = '@Model.ingresoClinica.antecedentes';
+            $("#antecedentes").val(antece);*@
 
             var resulEval = '@Model.consulta.resultadoAutoevaluacion';
-            $("#resultadosEvaluacion").val(resulEval);
+            var textoResulEval = $('<textarea />').html(resulEval).text();
+            $("#resultadosEvaluacion").val(textoResulEval);
+
+            @*var resulEval = '@Model.consulta.resultadoAutoevaluacion';
+            $("#resultadosEvaluacion").val(resulEval);*@
 
             var histFam = '@Model.ingresoClinica.historiaFamiliar';
-            $("#historiaFamiliar").val(histFam);
+            var textohistFam = $('<textarea />').html(histFam).text();
+            $("#historiaFamiliar").val(textohistFam);
+
+            @*var histFam = '@Model.ingresoClinica.historiaFamiliar';
+            $("#historiaFamiliar").val(histFam);*@
+
 
             var gen = '@Model.ingresoClinica.genograma';
-            $("#genograma").val(gen);
+            var textogen = $('<textarea />').html(gen).text();
+            $("#genograma").val(textogen);
+
+            @*var gen = '@Model.ingresoClinica.genograma';
+            $("#genograma").val(gen);*@
 
             var hipoPsico = '@Model.consulta.hipotesisPsicologica';
-            $("#hipotesisPsicologicas").val(hipoPsico);
+            var textoNuevoHiPsi = $('<textarea />').html(hipoPsico).text();
+            $("#hipotesisPsicologicas").val(textoNuevoHiPsi);
+
+            //var hipoPsico = '@Model.consulta.hipotesisPsicologica';
+            //$("#hipotesisPsicologicas").val(hipoPsico);
 
             var objTera = '@Model.consulta.objetivosTerapeuticos';
-            $("#objetivosTerapeuticos").val(objTera);
+            var textoobjTera = $('<textarea />').html(objTera).text();
+            $("#objetivosTerapeuticos").val(textoobjTera);
+
+            @*var objTera = '@Model.consulta.objetivosTerapeuticos';
+            $("#objetivosTerapeuticos").val(objTera);*@
 
             var estrTera = '@Model.consulta.estrategiasTecnicasTerapeuticas';
-            $("#estrategiasTerapeuticas").val(estrTera);
+            var textoestrTera = $('<textarea />').html(estrTera).text();
+            $("#estrategiasTerapeuticas").val(textoestrTera);
+
+            @*var estrTera = '@Model.consulta.estrategiasTecnicasTerapeuticas';
+            $("#estrategiasTerapeuticas").val(estrTera);*@
 
             var loObjetera = '@Model.consulta.logrosAlcanzadosSegunObjetivosTerapeuticos';
-            $("#logrosObjetivosTerape").val(loObjetera);
+            var textoloObjetera = $('<textarea />').html(loObjetera).text();
+            $("#logrosObjetivosTerape").val(textoloObjetera);
+
+            @*var loObjetera = '@Model.consulta.logrosAlcanzadosSegunObjetivosTerapeuticos';
+            $("#logrosObjetivosTerape").val(loObjetera);*@
 
             var loSegConsul = '@Model.consulta.logrosAlcanzadosSegunConsultante';
-            $("#logrosSegunConsultante").val(loSegConsul);
+            var textoloSegConsul = $('<textarea />').html(loSegConsul).text();
+            $("#logrosSegunConsultante").val(textoloSegConsul);
+
+            @*var loSegConsul = '@Model.consulta.logrosAlcanzadosSegunConsultante';
+            $("#logrosSegunConsultante").val(loSegConsul);*@
 
             var res = '@Model.consulta.resumen';
-            $("#resumen").val(res);
+            var textolores = $('<textarea />').html(res).text();
+            $("#resumen").val(textolores);
+
+            @*var res = '@Model.consulta.resumen';
+            $("#resumen").val(res);*@
 
             var obsRecomen = '@Model.consulta.observacionesRecomendaciones';
-            $("#observacionesRecomendaciones").val(obsRecomen);
+            var textobsRecomen = $('<textarea />').html(obsRecomen).text();
+            $("#observacionesRecomendaciones").val(textobsRecomen);
+
+            @*var obsRecomen = '@Model.consulta.observacionesRecomendaciones';
+            $("#observacionesRecomendaciones").val(obsRecomen);*@
 
 
             var estadoDoc = '@ViewBag.estadoDocumento';
             var estado = '@ViewBag.estadoDiagnósticos';
-            
+
             if (estado == 1) {
                 $("#diagnostico").prop('disabled', true);
                 $("#categorizacion").prop('disabled', true);
@@ -623,7 +680,7 @@
         </div>
         <h4 style="text-align:center; background-color:#9BC2E6">Hipótesis Psicológicas</h4>
         <div class="form-group">
-            <textarea class="form-control" style="min-width: 100%" rows="6" id="hipotesisPsicologicas" name="consulta.hipotesisPsicologica" value="@Model.consulta.hipotesisPsicologica" ></textarea>
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="hipotesisPsicologicas" name="consulta.hipotesisPsicologica"></textarea>
         </div>
         <h4 style="text-align:center; background-color:#9BC2E6">Objetivos terapéuticos</h4>
         <div class="form-group">
