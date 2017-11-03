@@ -1641,6 +1641,21 @@ namespace MacapSoftCAPUAN.Controllers
             int i = 0;
             if (gifs.Contains("2"))
             {
+                if (!(gifs.Contains("1") || gifs.Contains("4"))) {
+                    foreach (var item in consultas)
+                    {
+                        foreach (var ingrClinica in ingresoClinica)
+                        {
+                            if (item.id_ingresoClinica == ingrClinica.idIngresoClinica)
+                            {
+                                //listaConsulta.Add(item);
+                                listaConsultaGeneralPorPaciente.Add(item);
+                            }
+                        }
+                    }
+                }
+
+
                 foreach (var item in listaConsultaGeneralPorPaciente)
                 {
                     string diagnosticosConsulta = "";
@@ -4205,6 +4220,21 @@ namespace MacapSoftCAPUAN.Controllers
             int i = 0;
             if (gifs.Contains("2"))
             {
+                if (!(gifs.Contains("1") || gifs.Contains("4")))
+                {
+                    foreach (var item in consultas)
+                    {
+                        foreach (var ingrClinica in ingresoClinica)
+                        {
+                            if (item.id_ingresoClinica == ingrClinica.idIngresoClinica)
+                            {
+                                //listaConsulta.Add(item);
+                                listaConsultaGeneralPorPaciente.Add(item);
+                            }
+                        }
+                    }
+                }
+
                 foreach (var item in listaConsultaGeneralPorPaciente)
                 {
                     string diagnosticosConsulta = "";
@@ -4494,142 +4524,145 @@ namespace MacapSoftCAPUAN.Controllers
 
             //--------------------------Creación de los cierres
             int l = 0;
-            foreach (var ingrClinica in ingresoClinica)
+            if (gifs.Contains("6"))
             {
-                diccionarioCierres = new Dictionary<string, string>();
-                if ((gifs.Contains("1") || gifs.Contains("4") || gifs.Contains("2") || gifs.Contains("3") || gifs.Contains("5")))
+                foreach (var ingrClinica in ingresoClinica)
                 {
-                    document.NewPage();
-                }
-                if (l > 0)
-                {
-                    document.NewPage();
-                }
-                var cierres = (from item in HC.listarCierres() where item.id_ingresoClinica == ingrClinica.idIngresoClinica && ingrClinica.estadoRemision == false select item).ToList();
-                if (cierres.Count > 0)
-                {
-                    List<MotivoCierreHistoriaClinica> motivosCierres = new List<MotivoCierreHistoriaClinica>();
-                    var fechaIniPsico = "";
-                    var fechaFinaliPsico = "";
-                    PdfPCell cell2 = new PdfPCell();
-                    var concatCierres = "";
+                    diccionarioCierres = new Dictionary<string, string>();
+                    if ((gifs.Contains("1") || gifs.Contains("4") || gifs.Contains("2") || gifs.Contains("3") || gifs.Contains("5")))
+                    {
+                        document.NewPage();
+                    }
+                    if (l > 0)
+                    {
+                        document.NewPage();
+                    }
+                    var cierres = (from item in HC.listarCierres() where item.id_ingresoClinica == ingrClinica.idIngresoClinica && ingrClinica.estadoRemision == false select item).ToList();
                     if (cierres.Count > 0)
                     {
-                        var fechIniPsico = (cierres.FirstOrDefault().fechaInicioPsicoterapia).ToString();
-                        var fechNIniPsico = DateTime.Parse(fechIniPsico);
-                        string formatIniPsico = "yyyy-MM-dd";
-                        fechaIniPsico = fechNIniPsico.ToString(formatIniPsico);
-
-                        var fechFinaliPsico = (cierres.FirstOrDefault().fechaFinalizaionPsicoterapia).ToString();
-                        var fechNFinaliPsico = DateTime.Parse(fechFinaliPsico);
-                        string formatFinaliPsico = "yyyy-MM-dd";
-                        fechaFinaliPsico = fechNFinaliPsico.ToString(formatFinaliPsico);
-
-                    }
-                    else
-                    {
-                        fechaIniPsico = "No tiene fecha";
-                        fechaFinaliPsico = "No tiene fecha";
-                    }
-
-                    Paragraph textoRemision = new Paragraph();
-                    PdfPTable tableRemision = new PdfPTable(2);
-                    cell2 = new PdfPCell(new Phrase("INFORME Y CIERRE DE HISTORIA CLÍNICA", title.Font));
-                    cell2.Colspan = 2;
-                    cell2.BackgroundColor = new iTextSharp.text.BaseColor(255, 255, 255);
-                    cell2.HorizontalAlignment = Element.ALIGN_CENTER;
-                    tableRemision.AddCell(cell2);
-
-                    cell2 = new PdfPCell(new Phrase("Número de historia clínica" + " " + paciente.numeroHistoriaClinica, subtitulos.Font));
-                    cell2.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
-                    tableRemision.AddCell(cell2);
-
-                    cell2 = new PdfPCell(new Phrase("Fecha del cierre" + " " + fechaFinaliPsico, subtitulos.Font));
-                    cell2.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
-                    tableRemision.AddCell(cell2);
-
-
-
-                    foreach (var item in HC.listarMotivoCierreHistoriaClinicaBO())
-                    {
-                        foreach (var item1 in cierres)
+                        List<MotivoCierreHistoriaClinica> motivosCierres = new List<MotivoCierreHistoriaClinica>();
+                        var fechaIniPsico = "";
+                        var fechaFinaliPsico = "";
+                        PdfPCell cell2 = new PdfPCell();
+                        var concatCierres = "";
+                        if (cierres.Count > 0)
                         {
-                            if (item.id_Cierre == item1.idCierreHC)
-                            {
-                                motivosCierres.Add(item);
+                            var fechIniPsico = (cierres.FirstOrDefault().fechaInicioPsicoterapia).ToString();
+                            var fechNIniPsico = DateTime.Parse(fechIniPsico);
+                            string formatIniPsico = "yyyy-MM-dd";
+                            fechaIniPsico = fechNIniPsico.ToString(formatIniPsico);
 
-                            }
+                            var fechFinaliPsico = (cierres.FirstOrDefault().fechaFinalizaionPsicoterapia).ToString();
+                            var fechNFinaliPsico = DateTime.Parse(fechFinaliPsico);
+                            string formatFinaliPsico = "yyyy-MM-dd";
+                            fechaFinaliPsico = fechNFinaliPsico.ToString(formatFinaliPsico);
+
                         }
-                    }
-
-
-                    foreach (var item in HC.listarMotivosCierre())
-                    {
-                        foreach (var item1 in motivosCierres)
+                        else
                         {
-                            if (item1.id_MotivoCierre == item.idMotivoCierre)
+                            fechaIniPsico = "No tiene fecha";
+                            fechaFinaliPsico = "No tiene fecha";
+                        }
+
+                        Paragraph textoRemision = new Paragraph();
+                        PdfPTable tableRemision = new PdfPTable(2);
+                        cell2 = new PdfPCell(new Phrase("INFORME Y CIERRE DE HISTORIA CLÍNICA", title.Font));
+                        cell2.Colspan = 2;
+                        cell2.BackgroundColor = new iTextSharp.text.BaseColor(255, 255, 255);
+                        cell2.HorizontalAlignment = Element.ALIGN_CENTER;
+                        tableRemision.AddCell(cell2);
+
+                        cell2 = new PdfPCell(new Phrase("Número de historia clínica" + " " + paciente.numeroHistoriaClinica, subtitulos.Font));
+                        cell2.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                        tableRemision.AddCell(cell2);
+
+                        cell2 = new PdfPCell(new Phrase("Fecha del cierre" + " " + fechaFinaliPsico, subtitulos.Font));
+                        cell2.BackgroundColor = new iTextSharp.text.BaseColor(155, 194, 230);
+                        tableRemision.AddCell(cell2);
+
+
+
+                        foreach (var item in HC.listarMotivoCierreHistoriaClinicaBO())
+                        {
+                            foreach (var item1 in cierres)
                             {
-                                if (!(diccionarioCierres.ContainsKey(item.Nombre)))
+                                if (item.id_Cierre == item1.idCierreHC)
                                 {
-                                    diccionarioCierres.Add(item.Nombre, item.Nombre);
-                                    //break;
-                                }
+                                    motivosCierres.Add(item);
 
+                                }
                             }
                         }
-                    }
 
 
-                    if (diccionarioCierres != null)
-                    {
-                        foreach (var item in diccionarioCierres)
+                        foreach (var item in HC.listarMotivosCierre())
                         {
-                            concatCierres += item.Value + ",";
+                            foreach (var item1 in motivosCierres)
+                            {
+                                if (item1.id_MotivoCierre == item.idMotivoCierre)
+                                {
+                                    if (!(diccionarioCierres.ContainsKey(item.Nombre)))
+                                    {
+                                        diccionarioCierres.Add(item.Nombre, item.Nombre);
+                                        //break;
+                                    }
+
+                                }
+                            }
                         }
 
+
+                        if (diccionarioCierres != null)
+                        {
+                            foreach (var item in diccionarioCierres)
+                            {
+                                concatCierres += item.Value + ",";
+                            }
+
+                        }
+
+                        cell2 = new PdfPCell(new Paragraph("Motivos de cierre: " + concatCierres, subtitulos.Font));
+                        cell2.Colspan = 3;
+                        tableRemision.AddCell(cell2);
+
+                        var fechaInicio = cierres.Count > 0 ? cierres.FirstOrDefault().fechaInicioPsicoterapia.ToString() : "";
+                        cell2 = new PdfPCell(new Paragraph("Fecha de inicio de la psicoterápia: " + fechaIniPsico, subtitulos.Font));
+                        cell2.Colspan = 3;
+                        tableRemision.AddCell(cell2);
+
+                        var fechaFin = cierres.Count > 0 ? cierres.FirstOrDefault().fechaFinalizaionPsicoterapia.ToString() : "";
+                        cell2 = new PdfPCell(new Paragraph("Fecha de finalización de la psicoterápia: " + fechaFinaliPsico, subtitulos.Font));
+                        cell2.Colspan = 3;
+                        tableRemision.AddCell(cell2);
+
+                        var numeroCitas = cierres.FirstOrDefault().numeroCitasAsignadas != null ? cierres.FirstOrDefault().numeroCitasAsignadas : "No tuvo citas asignadas.";
+                        cell2 = new PdfPCell(new Paragraph("Número de citas asignadas: " + numeroCitas, subtitulos.Font));
+                        cell2.Colspan = 3;
+                        tableRemision.AddCell(cell2);
+
+                        var numeroSesiones = cierres.FirstOrDefault().numeroSesionesRealizadas != null ? cierres.FirstOrDefault().numeroSesionesRealizadas : "No tuvo sesiones realizadas.";
+                        cell2 = new PdfPCell(new Paragraph("Número de sesiones realizadas: " + numeroSesiones, subtitulos.Font));
+                        cell2.Colspan = 3;
+                        tableRemision.AddCell(cell2);
+
+                        var especificacionMotivoCierreHC = cierres.Count > 0 ? cierres.FirstOrDefault().especificacionMotivoCierre : "";
+                        cell2 = new PdfPCell(new Paragraph("Especificación motivo del cierre: " + especificacionMotivoCierreHC, subtitulos.Font));
+                        cell2.Colspan = 3;
+                        tableRemision.AddCell(cell2);
+
+                        var instrumentoEva = cierres.Count > 0 ? cierres.FirstOrDefault().instrumentosEvaluacion : "";
+                        cell2 = new PdfPCell(new Paragraph("Instrumentos evaluación: " + instrumentoEva, subtitulos.Font));
+                        cell2.Colspan = 3;
+                        tableRemision.AddCell(cell2);
+
+                        var resultadosObtenidos = cierres.Count > 0 ? cierres.FirstOrDefault().resultadoObtenidoEvaluacion : "";
+                        cell2 = new PdfPCell(new Paragraph("Resultados obtenidos: " + resultadosObtenidos, subtitulos.Font));
+                        cell2.Colspan = 3;
+                        tableRemision.AddCell(cell2);
+
+                        document.Add(tableRemision);
+                        l += 1;
                     }
-
-                    cell2 = new PdfPCell(new Paragraph("Motivos de cierre: "+concatCierres, subtitulos.Font));
-                    cell2.Colspan = 3;
-                    tableRemision.AddCell(cell2);
-
-                    var fechaInicio = cierres.Count > 0 ? cierres.FirstOrDefault().fechaInicioPsicoterapia.ToString() : "";
-                    cell2 = new PdfPCell(new Paragraph("Fecha de inicio de la psicoterápia: " + fechaIniPsico, subtitulos.Font));
-                    cell2.Colspan = 3;
-                    tableRemision.AddCell(cell2);
-
-                    var fechaFin = cierres.Count > 0 ? cierres.FirstOrDefault().fechaFinalizaionPsicoterapia.ToString() : "";
-                    cell2 = new PdfPCell(new Paragraph("Fecha de finalización de la psicoterápia: " + fechaFinaliPsico, subtitulos.Font));
-                    cell2.Colspan = 3;
-                    tableRemision.AddCell(cell2);
-
-                    var numeroCitas = cierres.FirstOrDefault().numeroCitasAsignadas != null ? cierres.FirstOrDefault().numeroCitasAsignadas : "No tuvo citas asignadas.";
-                    cell2 = new PdfPCell(new Paragraph("Número de citas asignadas: " + numeroCitas, subtitulos.Font));
-                    cell2.Colspan = 3;
-                    tableRemision.AddCell(cell2);
-
-                    var numeroSesiones = cierres.FirstOrDefault().numeroSesionesRealizadas != null ? cierres.FirstOrDefault().numeroSesionesRealizadas : "No tuvo sesiones realizadas.";
-                    cell2 = new PdfPCell(new Paragraph("Número de sesiones realizadas: " + numeroSesiones, subtitulos.Font));
-                    cell2.Colspan = 3;
-                    tableRemision.AddCell(cell2);
-
-                    var especificacionMotivoCierreHC = cierres.Count > 0 ? cierres.FirstOrDefault().especificacionMotivoCierre : "";
-                    cell2 = new PdfPCell(new Paragraph("Especificación motivo del cierre: " + especificacionMotivoCierreHC, subtitulos.Font));
-                    cell2.Colspan = 3;
-                    tableRemision.AddCell(cell2);
-
-                    var instrumentoEva = cierres.Count > 0 ? cierres.FirstOrDefault().instrumentosEvaluacion : "";
-                    cell2 = new PdfPCell(new Paragraph("Instrumentos evaluación: " + instrumentoEva, subtitulos.Font));
-                    cell2.Colspan = 3;
-                    tableRemision.AddCell(cell2);
-
-                    var resultadosObtenidos = cierres.Count > 0 ? cierres.FirstOrDefault().resultadoObtenidoEvaluacion : "";
-                    cell2 = new PdfPCell(new Paragraph("Resultados obtenidos: " + resultadosObtenidos, subtitulos.Font));
-                    cell2.Colspan = 3;
-                    tableRemision.AddCell(cell2);
-
-                    document.Add(tableRemision);
-                    l += 1;
                 }
             }
 
