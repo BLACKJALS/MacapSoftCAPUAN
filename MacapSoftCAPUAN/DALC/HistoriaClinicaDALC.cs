@@ -77,6 +77,16 @@ namespace MacapSoftCAPUAN.DALC
 
 
 
+        public List<Departamentos> listarDepartamentos()
+        {
+            bd = new ApplicationDbContext();
+            List<Departamentos> listaDepartamentos = new List<Departamentos>();
+            listaDepartamentos = bd.departamentosContext.ToList();
+            return listaDepartamentos;
+        }
+
+
+
         public List<Consulta> listarConsultas()
         {
             bd = new ApplicationDbContext();

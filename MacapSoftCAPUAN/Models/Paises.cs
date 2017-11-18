@@ -19,16 +19,28 @@ namespace MacapSoftCAPUAN.Models
         //}
     }
 
-    [Table("dbo.Ciudades")]
-    public class Ciudades
-    {
-        [Key, MaxLength(20)]
-        public string idCiudad { get; set; }
+    [Table("dbo.Departamentos")]
+    public class Departamentos {
+        [Key, MaxLength(50)]
+        public string idDepartamento { get; set; }
         [ForeignKey("Pais")]
         public string id_pais { get; set; }
 
         public string nombre { get; set; }
         public Paises Pais { get; set; }
+    }
+
+
+    [Table("dbo.Ciudades")]
+    public class Ciudades
+    {
+        [Key, MaxLength(20)]
+        public string idCiudad { get; set; }
+        [ForeignKey("Departamento")]
+        public string id_Departamento { get; set; }
+
+        public string nombre { get; set; }
+        public Departamentos Departamento { get; set; }
     }
 
 

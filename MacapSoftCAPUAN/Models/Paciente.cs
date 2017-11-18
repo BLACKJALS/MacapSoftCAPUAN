@@ -15,6 +15,8 @@ namespace MacapSoftCAPUAN.Models
         public string numeroHistoriaClinica { get; set; }
         //[ForeignKey("Paises")]
         //public string id_paises { get; set; }
+        [ForeignKey("Departamento")]
+        public string id_departamento { get; set; }
         [ForeignKey("Ciudad")]
         public string id_ciudad { get; set; }
         [ForeignKey("Sexo")]
@@ -30,6 +32,7 @@ namespace MacapSoftCAPUAN.Models
 
         public bool estadoHC { get; set; }
         public DateTime? fechaNacimiento { get; set; }
+        public virtual Departamentos Departamento { get; set; }
         public virtual Ciudades Ciudad { get; set; }
         public virtual Consecutivo ConsecutivoID { get; set; }
         //public virtual Paises Paises { get; set; }//Se agregó el virtual

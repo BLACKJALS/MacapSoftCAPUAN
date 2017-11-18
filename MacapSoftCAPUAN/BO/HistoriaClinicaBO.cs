@@ -32,6 +32,15 @@ namespace MacapSoftCAPUAN.BO
 
 
 
+        public List<Departamentos> listarDepartamentos()
+        {
+            hcDALC = new HistoriaClinicaDALC();
+            var listaDepartamentos = hcDALC.listarDepartamentos();
+            return listaDepartamentos;
+        }
+
+
+        
         public List<Ciudades> listarCiudades()
         {
             hcDALC = new HistoriaClinicaDALC();

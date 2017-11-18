@@ -42,6 +42,7 @@ namespace MacapSoftCAPUAN.Models
         public DbSet<Diagnostico> diagnosticoContext { get; set; }
         public DbSet<Paises> paisesContext { get; set; }
         public DbSet<Ciudades> ciudadesContext { get; set; }
+        public DbSet<Departamentos> departamentosContext { get; set; }
         public DbSet<Localidades> localidadesContext { get; set; }
         public DbSet<Barrios> barriosContext { get; set; }
         public DbSet<Paciente> pacienteContext { get; set; }

@@ -73,9 +73,11 @@ namespace MacapSoftCAPUAN.Controllers
                     pais = new Paises();
                     var paises = HC.listarPaises();
                     var ciudades = HC.listarCiudades();
+                    var departamentos = HC.listarDepartamentos();
                     var ciudad = (from item in ciudades where item.idCiudad == paciente.id_ciudad select item).FirstOrDefault();
                     if (ciudad != null) {
-                        pais = (from item in paises where item.idPais == ciudad.id_pais select item).FirstOrDefault();
+                        var departamento = (from item in departamentos where item.idDepartamento == ciudad.id_Departamento select item).FirstOrDefault();
+                        pais = (from item in paises where item.idPais == departamento.id_pais select item).FirstOrDefault();
                     }
                     recepcion.paciente = paciente;
 
@@ -277,7 +279,10 @@ namespace MacapSoftCAPUAN.Controllers
                         var paisSelec = (from item in HC.listarPaises() where item.nombrePais == pais.nombrePais select item.idPais).LastOrDefault();
                         ViewBag.Pais = paisSelec;//pais.nombrePais;
                         var localidadSelec = (from item in localidades where item.idLocalidad == localidad.idLocalidad select item.idLocalidad).LastOrDefault();
+                        var departamento = (from item in HC.listarDepartamentos() where item.id_pais == paisSelec select item).FirstOrDefault();
                         ViewBag.Localidad = localidadSelec;
+                        ViewBag.DepartamentoValor = departamento.idDepartamento;
+                        ViewBag.DepartamentoTexto = departamento.nombre;
                         ViewBag.CiudadValor = ciudad.idCiudad;
                         ViewBag.CiudadTexto = ciudad.nombre;
                         ViewBag.barrioValor = barrio.idBarrio;
@@ -1055,8 +1060,10 @@ namespace MacapSoftCAPUAN.Controllers
 
             var sexo = (from item in HC.listarSexo() where item.id_Sexo == paciente.id_sexo select item.sexo).FirstOrDefault();
             var ciudad = (from item in HC.listarCiudades() where item.idCiudad == paciente.id_ciudad select item.nombre).FirstOrDefault();
-            var pais = (from item in HC.listarCiudades() where item.idCiudad == paciente.id_ciudad select item.id_pais).FirstOrDefault();
-            var nombrePais = (from item in HC.listarPaises() where item.idPais == pais select item.nombrePais).FirstOrDefault();
+            var ciudadObject = (from item in HC.listarCiudades() where item.idCiudad == paciente.id_ciudad select item).FirstOrDefault();
+            var departamento = (from item in HC.listarDepartamentos() where item.idDepartamento == ciudadObject.id_Departamento select item).FirstOrDefault();
+            //var pais = (from item in HC.listarCiudades() where item.idCiudad == paciente.id_ciudad select item.id_pais).FirstOrDefault();
+            var nombrePais = (from item in HC.listarPaises() where item.idPais == departamento.id_pais select item.nombrePais).FirstOrDefault();
 
             document.Open();
             Paragraph title = new Paragraph();
@@ -2330,10 +2337,13 @@ namespace MacapSoftCAPUAN.Controllers
             Paises pais = new Paises();
             var paises = HC.listarPaises();
             var ciudades = HC.listarCiudades();
+            var departamentos = HC.listarDepartamentos();
             var ciudad = (from item in ciudades where item.idCiudad == paciente.id_ciudad select item).FirstOrDefault();
             if (ciudad != null)
             {
-                pais = (from item in paises where item.idPais == ciudad.id_pais select item).FirstOrDefault();
+                var departamento = (from item in departamentos where item.idDepartamento == ciudad.id_Departamento select item).FirstOrDefault();
+                pais = (from item in paises where item.idPais == departamento.id_pais select item).FirstOrDefault();
+                //pais = (from item in paises where item.idPais == ciudad.id_pais select item).FirstOrDefault();
             }
 
             Localidades localidad = new Localidades();
@@ -2828,13 +2838,40 @@ namespace MacapSoftCAPUAN.Controllers
             return Json(listaInasistenciasUsuario, JsonRequestBehavior.AllowGet);
         }
 
+
+        //Consultar los departamentos según los paises
+        public JsonResult consultarDepartamentosPorPais(string pais)
+        {
+            List<SelectListItem> listaItemsDepartamento = new List<SelectListItem>();
+            SelectListItem items;
+            SelectListItem seleccion = new SelectListItem();
+            HC = new HistoriaClinicaBO();
+            var listaDepartamentos = (from item in HC.listarDepartamentos() where item.id_pais == pais select item).ToList();
+
+            seleccion.Text = "Seleccione";
+            seleccion.Value = "";
+
+            listaItemsDepartamento.Add(seleccion);
+
+            foreach (var item in listaDepartamentos)
+            {
+                items = new SelectListItem();
+                items.Text = item.nombre;
+                items.Value = item.idDepartamento;
+                listaItemsDepartamento.Add(items);
+            }
+            ViewBag.ItemDepartamento = listaItemsDepartamento;
+            return Json(listaItemsDepartamento, JsonRequestBehavior.AllowGet);
+        }
+
+
         //Consultar las ciudades según los paises
-        public JsonResult consultarCiudadesPorPais(string pais)
+        public JsonResult consultarCiudadesPorPais(string departamento)
         {
             List<SelectListItem> listaItemsCuidades = new List<SelectListItem>();
             SelectListItem items;
             HC = new HistoriaClinicaBO();
-            var listaCiudades= (from item in  HC.listarCiudades() where item.id_pais == pais select item).ToList();
+            var listaCiudades= (from item in  HC.listarCiudades() where item.id_Departamento == departamento select item).ToList();
 
             
             foreach (var item in listaCiudades)
@@ -2964,8 +3001,10 @@ namespace MacapSoftCAPUAN.Controllers
 
             var sexo = (from item in HC.listarSexo() where item.id_Sexo == paciente.id_sexo select item.sexo).FirstOrDefault();
             var ciudad = (from item in HC.listarCiudades() where item.idCiudad == paciente.id_ciudad select item.nombre).FirstOrDefault();
-            var pais = (from item in HC.listarCiudades() where item.idCiudad == paciente.id_ciudad select item.id_pais).FirstOrDefault();
-            var nombrePais = (from item in HC.listarPaises() where item.idPais == pais select item.nombrePais).FirstOrDefault();
+            var ciudadObject = (from item in HC.listarCiudades() where item.idCiudad == paciente.id_ciudad select item).FirstOrDefault();
+            var departamento = (from item in HC.listarDepartamentos() where item.idDepartamento == ciudadObject.id_Departamento select item).FirstOrDefault();
+            //var pais = (from item in HC.listarCiudades() where item.idCiudad == paciente.id_ciudad select item.id_pais).FirstOrDefault();
+            var nombrePais = (from item in HC.listarPaises() where item.idPais == departamento.id_pais select item.nombrePais).FirstOrDefault();
 
             document.Open();
             Paragraph title = new Paragraph();

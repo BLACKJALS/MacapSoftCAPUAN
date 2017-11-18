@@ -22,7 +22,7 @@
             $('#fechaRemision').prop("disabled", true);
             $('#listadosEPS').prop("disabled", true);
             $('#otroBarrio').prop("disabled", true);
-            
+
             //$('#lugarNacimientoPac').prop("disabled", true);
 
             var motConsul = '@ViewBag.motivoConsulta';
@@ -47,6 +47,8 @@
             if (existente == "Si") {
                 var fechN = '@ViewBag.fechaNacimiento';
                 var pais = '@ViewBag.Pais';
+                var departamentoValor = '@ViewBag.DepartamentoValor';
+                var departamentoTexto = '@ViewBag.DepartamentoTexto';
                 var localidad = '@ViewBag.Localidad';
                 var ciudadValor = '@ViewBag.CiudadValor';
                 var ciudadTexto = '@ViewBag.CiudadTexto';
@@ -67,12 +69,17 @@
                 $('#lugarNacimientoPac').attr('readonly', 'readonly');
                 $("#paisPac").val(pais);
                 $('#paisPac').attr('readonly', 'readonly');
+
                 $("#localidad").val(localidad);
                 //$("#lugarNacimientoPac").val(ciudad);
 
                 var toAppend = '<option value="' + ciudadValor + '">' + ciudadTexto + '</option>';
                 $('#lugarNacimientoPac').append(toAppend);
                 $('#lugarNacimientoPac').attr('readonly', 'readonly');
+
+                var toAppendDepartamento = '<option value="' + departamentoValor + '">' + departamentoTexto + '</option>';
+                $('#Departamento').append(toAppendDepartamento);
+                $('#Departamento').attr('readonly', 'readonly');
 
                 var toAppendBarrio = '<option value="' + barrioValor + '">' + barrioTexto + '</option>';
                 $('#Barrio').append(toAppendBarrio);
@@ -159,6 +166,37 @@
 
 
         $('#paisPac').on('change', function (e) {
+            $('#Departamento').prop("disabled", false);
+            var optionSelected = $("option:selected", this);
+            var pais = this.value;
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'GET',
+                url: '/HistoriaClinica/consultarDepartamentosPorPais' + "?pais=" + pais,
+                data: { 'id': pais },
+                success: function (result) {
+                    var toAppend = '';
+                    $('#Departamento').empty();
+                    for (var i = 0; i < result.length; i++) {
+                        toAppend += '<option value="' + result[i]['Value'] + '">' + result[i]['Text'] + '</option>';
+                    }
+
+                    if (toAppend == "") {
+                        toAppend += '<option value="">El país no tiene registrado departamentos</option>';
+                    }
+                    $('#Departamento').append(toAppend);
+                },
+                failure: function (response) {
+                }
+            });
+
+
+        });
+
+
+
+        $('#Departamento').on('change', function (e) {
             $('#lugarNacimientoPac').prop("disabled", false);
             var optionSelected = $("option:selected", this);
             var pais = this.value;
@@ -166,7 +204,7 @@
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
                     type: 'GET',
-                    url: '/HistoriaClinica/consultarCiudadesPorPais' +"?pais="+ pais,
+                    url: '/HistoriaClinica/consultarCiudadesPorPais' + "?departamento=" + pais,
                     data: { 'id': pais },
                     success: function (result) {
                         //$.each(json, function (i, value) {
@@ -232,7 +270,12 @@
         });
 
 
-
+        $('#Departamento').click(function () {
+            var existente = '@ViewBag.existente';
+            if (existente == "Si") {
+                alert("No se puede modificar el departamento de nacimiento");
+            }
+        });
 
         $('#lugarNacimientoPac').click(function () {
             var existente = '@ViewBag.existente';
@@ -495,41 +538,49 @@
             <div class="col-md-1">
                 <label style="font-size:smaller">Sexo*:</label>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
                 @Html.DropDownList("paciente.id_sexo", (IEnumerable<SelectListItem>)ViewBag.Sexo, new { @class = "form-control", id = "sexo" })
             </div>
             <div class="col-md-2">
-                <label style="font-size:smaller">Escolaridad*:</label>
+                <label style="font-size:smaller">Lugar de nacimiento (País, departamento, ciudad)*:</label>
             </div>
-            <div class="col-md-4">
-                @Html.DropDownList("ingresoClinica.id_NivelEscolaridad", (IEnumerable<SelectListItem>)ViewBag.NivelEscolaridad, new { @class = "form-control", id = "nivelEscolaridad" })
+            <div class="col-md-2">
+                @Html.DropDownList("pais", (IEnumerable<SelectListItem>)ViewBag.ItemPaises, new { @class = "form-control", required = "true", id = "paisPac" })
+            </div>
+            <div class="col-md-3">
+                @*@Html.DropDownList("paciente.id_ciudad", (IEnumerable<SelectListItem>)ViewBag.ItemCiudades, new { @class = "form-control", id="lugarNacimientoPac", required = "true" })*@
+                <select class="form-control" id="Departamento" name="paciente.id_departamento" placeholder="Departamento" required />Please select a timezone
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-1">
+                    <label style="font-size:smaller">Fecha de nacimiento*:</label>
+                </div>
+                <div class="col-md-4">
+                    <input class="form-control" id="fechaNacimientoPaciente" name="paciente.fechaNacimiento" placeholder="fecha de nacimiento" required />
+                </div>
+                <div class="col-md-2">
+                    @*@Html.DropDownList("paciente.id_ciudad", (IEnumerable<SelectListItem>)ViewBag.ItemCiudades, new { @class = "form-control", id="lugarNacimientoPac", required = "true" })*@
+                    <select class="form-control" id="lugarNacimientoPac" title="Debe escoger una ciudad en el recuadro anterior" name="paciente.id_ciudad" placeholder="Lugar de nacimiento" required />
+                </div>
+                
             </div>
         </div>
         <br />
         <div class="row">
             <div class="col-md-1">
-                <label style="font-size:smaller">Fecha de nacimiento*:</label>
-            </div>
-            <div class="col-md-4">
-                <input class="form-control" id="fechaNacimientoPaciente" name="paciente.fechaNacimiento" placeholder="fecha de nacimiento"  required />
-            </div>
-            <div class="col-md-2">
-                <label style="font-size:smaller">Lugar de nacimiento (País, Ciudad)*:</label>
-            </div>
-            <div class="col-md-2">
-                @Html.DropDownList("pais", (IEnumerable<SelectListItem>)ViewBag.ItemPaises, new { @class = "form-control", required = "true", id = "paisPac" })
-            </div>
-            <div class="col-md-2">
-                @*@Html.DropDownList("paciente.id_ciudad", (IEnumerable<SelectListItem>)ViewBag.ItemCiudades, new { @class = "form-control", id="lugarNacimientoPac", required = "true" })*@
-                <select class="form-control" id="lugarNacimientoPac" name="paciente.id_ciudad" placeholder="Lugar de nacimiento" required />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-1">
                 <label style="font-size:smaller">Edad*:</label>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <input class="form-control" id="edadPaciente" name="ingresoClinica.edad" placeholder="Edad (años)" onclick="return validarEdad();" value="@ViewBag.edad" required />
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Escolaridad*:</label>
+            </div>
+            <div class="col-md-3">
+                @Html.DropDownList("ingresoClinica.id_NivelEscolaridad", (IEnumerable<SelectListItem>)ViewBag.NivelEscolaridad, new { @class = "form-control", id = "nivelEscolaridad" })
             </div>
         </div>
         <br />

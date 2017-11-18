@@ -231,9 +231,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Mapeo.cs" />
-    <Compile Include="Migrations\201709211422565_m1.cs" />
-    <Compile Include="Migrations\201709211422565_m1.Designer.cs">
-      <DependentUpon>201709211422565_m1.cs</DependentUpon>
+    <Compile Include="Migrations\201711170238153_m1.cs" />
+    <Compile Include="Migrations\201711170238153_m1.Designer.cs">
+      <DependentUpon>201711170238153_m1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelsVM\CierreCasoVM.cs" />
@@ -592,8 +592,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201709211422565_m1.resx">
-      <DependentUpon>201709211422565_m1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201711170238153_m1.resx">
+      <DependentUpon>201711170238153_m1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
