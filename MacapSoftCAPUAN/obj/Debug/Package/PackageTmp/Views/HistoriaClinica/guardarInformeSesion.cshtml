@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "guardarInformeSesion";
+}
+
+@section scripts{
+    <script>
+        function goBack() {
+            window.history.go(-2);
+        }
+    </script>
+}
+<h2 class="text-success">Se ha creado correctamente el informe de sesión.</h2>
+<br />
+<br />
+<div class="form-group">
+    <div class="col-md-2">
+        <input type="button" class="btn btn-success" value="Regresar" onclick="return goBack();" />
+    </div>
+</div>
+<br />

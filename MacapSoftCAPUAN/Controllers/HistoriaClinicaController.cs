@@ -279,7 +279,7 @@ namespace MacapSoftCAPUAN.Controllers
                         var paisSelec = (from item in HC.listarPaises() where item.nombrePais == pais.nombrePais select item.idPais).LastOrDefault();
                         ViewBag.Pais = paisSelec;//pais.nombrePais;
                         var localidadSelec = (from item in localidades where item.idLocalidad == localidad.idLocalidad select item.idLocalidad).LastOrDefault();
-                        var departamento = (from item in HC.listarDepartamentos() where item.id_pais == paisSelec select item).FirstOrDefault();
+                        var departamento = (from item in HC.listarDepartamentos() where item.idDepartamento == recepcion.paciente.id_departamento select item).FirstOrDefault();
                         ViewBag.Localidad = localidadSelec;
                         ViewBag.DepartamentoValor = departamento.idDepartamento;
                         ViewBag.DepartamentoTexto = departamento.nombre;

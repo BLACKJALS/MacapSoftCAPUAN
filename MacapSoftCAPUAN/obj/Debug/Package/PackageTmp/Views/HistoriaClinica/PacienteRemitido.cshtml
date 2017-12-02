@@ -1,0 +1,345 @@
+﻿@model MacapSoftCAPUAN.ModelsVM.RemisionPaciente
+@{
+    ViewBag.Title = "Paciente Remitido";
+}
+
+
+<meta charset="utf-8">
+@section scripts{
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <link href="~/Content/bootstrap-datepicker.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/locales/bootstrap-datepicker.es.min.js"></script>
+    @*<script src="http://momentjs.com/downloads/moment.min.js"></script>*@
+    <script>
+        $(document).ready(function () {
+            var idPaciente = '@ViewBag.Pac';
+            $("#pacienteNumero").val(idPaciente);
+            $("#guardarRemitir").prop("disabled", true);
+            $('#nombreEntidadRemitido').prop("disabled", true);
+            $('#nombreRemitenteRemitido').prop("disabled", true);
+            var hoy = new Date();
+            var fechaHoy = hoy.getFullYear() + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + ("0" + hoy.getDate()).slice(-2);
+            $("#fechaRemision").val(fechaHoy);
+
+            $("#fechaRemision").attr('readonly', 'readonly');
+            $("#RemitidoPor").attr('readonly', 'readonly');
+            $("#numeroDocumentoPaciente").attr('readonly', 'readonly');
+
+            var fechIngr = '@ViewBag.fechaIniciopsicoterapia';
+            $("#fechaIniPsico").val(fechIngr);
+            $("#fechaIniPsico").attr('readonly', 'readonly');
+
+            var hoy = new Date();
+            var fechaHoy = hoy.getFullYear() + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + ("0" + hoy.getDate()).slice(-2);
+            $("#fechaFinPsico").val(fechaHoy);
+            $("#fechaFinPsico").attr('readonly', 'readonly');
+        });
+
+
+        //$(function () {
+        //    $('#fechaIniPsico').datepicker({
+        //        format: 'yyyy-mm-dd',
+        //        onShow: function (ct) {
+        //            this.setOptions({
+        //                minDate: jQuery('#fechaIniPsico').val() ? jQuery('#fechaIniPsico').val() : false
+        //                , formatDate: 'Y-m-d'
+        //                , language: 'es'
+        //            })
+        //        },
+        //        timepicker: false
+        //    });
+        //});
+
+        //$(function () {
+        //    $('#fechaFinPsico').datepicker({
+        //        format: 'yyyy-mm-dd',
+        //        onShow: function (ct) {
+        //            this.setOptions({
+        //                minDate: jQuery('#fechaFinPsico').val() ? jQuery('#fechaFinPsico').val() : false
+        //                , formatDate: 'Y-m-d'
+        //                , language: 'es'
+        //            })
+        //        },
+        //        timepicker: false
+        //    });
+        //});
+
+
+        //$(function () {
+        //    $('#fechaRemision').datepicker({
+        //        format: 'yyyy-mm-dd',
+        //        onShow: function (ct) {
+        //            this.setOptions({
+        //                minDate: jQuery('#fechaRemision').val() ? jQuery('#fechaRemision').val() : false
+        //                , formatDate: 'Y-m-d'
+        //                , language: 'es'
+        //            })
+        //        },
+        //        timepicker: false
+        //    });
+        //});
+
+
+        //function fechaHoy() {
+        //    var hoy = new Date();
+        //    var fechaHoy = hoy.getFullYear() + "-" + ("0" + (hoy.getMonth() + 1)).slice(-2) + "-" + ("0" + hoy.getDate()).slice(-2);
+        //    $("#fechaRemision").val(fechaHoy);
+        //}
+
+        function regresar(){
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: '@Url.Action("Index", "HistoriaClinica")',
+                failure: function (response) {
+                    //$('#result').html(response);
+                }
+            });
+        }
+
+
+        $('#checkBoxSendRemision').click(function () {
+            disbledButtonRemisions();
+        });
+
+
+        function disbledButton() {
+            //set initial state.
+            var intentoSuicida = $('#IntentoSuicida').is(':checked');
+            var abuso = $('#Abuso').is(':checked');
+            var psicosis = $('#psicosis').is(':checked');
+            var consumo = $('#consumo').is(':checked');
+            var violencia = $('#violencia').is(':checked');
+            var concat    = "";
+
+            if(intentoSuicida == true){
+                concat += $('#IntentoSuicida').val()+";";
+            }
+            if(abuso == true){
+                concat += $('#Abuso').val()+";";
+            }
+            if(psicosis == true){
+                concat += $('#psicosis').val()+";";
+            }
+            if(consumo == true){
+                concat += $('#consumo').val()+";";
+            }
+            if(violencia == true){
+                concat += $('#violencia').val()+";";
+            }
+
+            if (intentoSuicida == true || abuso == true || psicosis == true || consumo == true || violencia == true) {
+                $("#guardarHistoria").prop("disabled", true);
+            }else{
+                $("#guardarHistoria").prop("disabled", false);
+            }
+            if (intentoSuicida == false && abuso == false && psicosis == false && consumo == false && violencia == false ) {
+                $("#guardarRemitir").prop("disabled", true);
+            } else {
+                $("#guardarRemitir").prop("disabled", false);
+            }
+
+            $("#concMremison").val(concat);
+        };
+
+        $('#IntentoSuicida').click(function () {
+            disbledButton();
+        });
+
+        $('#Abuso').click(function () {
+            disbledButton();
+        });
+
+        $('#psicosis').click(function () {
+            disbledButton();
+        });
+
+        $('#consumo').click(function () {
+            disbledButton();
+        });
+
+        $('#violencia').click(function () {
+            disbledButton();
+        });
+
+    </script>
+}
+
+<h2 style="text-align:center;">Remitir paciente</h2>
+<div class="container">
+    @using (Html.BeginForm("RemitirPaciente", "HistoriaClinica", FormMethod.Post))
+    {
+        @Html.Hidden("concMremison");
+        @*@Html.Hidden("fechaRemision");*@
+        <input type="text"  name="paciente.numeroDocumento" id="pacienteNumero" style="visibility:hidden">
+        <h3 style="text-align:center; background-color:#9BC2E6">Datos del paciente</h3>
+        <div class="row">
+            <div class="col-md-9">
+                <label style="font-size:smaller">Los campos que presentan el simbolo * son campos obligatorios.</label>
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="row">
+            <div class="col-md-1">
+                <label style="font-size:smaller">Nombres:</label>
+            </div>
+            <div class="col-md-4">
+                <label>@Model.paciente.nombre</label>
+                @*<input class="form-control" id="nombrePaciente" name="paciente.nombre" placeholder="Nombres" value="@Model.paciente.nombre" required />*@
+            </div>
+            <div class="col-md-2">
+                <label style="font-size:smaller">Apellidos:</label>
+            </div>
+            <div class="col-md-4">
+                <label>@Model.paciente.apellido</label>
+                @*<input class="form-control" id="apellidoPaciente" name="paciente.apellido" placeholder="Apellidos" value="@Model.paciente.apellido" required />*@
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <label class="col-md-1" style="font-size:smaller">Tipo de documento:</label>
+            <div class="col-md-4">
+                <label>@Model.ingresoClinica.id_tipoDocumento</label>
+                @*@Html.DropDownList("paciente.id_tipoDocumento", (IEnumerable<SelectListItem>)ViewBag.ItemDocumento, new { @class = "form-control", id = "tipoDocumentoPac" })*@
+            </div>
+            <div class="col-md-2">
+                <label style="font-size:smaller">Número de historia clínica:</label>
+            </div>
+            <div class="col-md-4">
+                @*<label>@Model.paciente.numeroHistoriaClinica</label>*@
+                <input class="form-control" id="numeroDocumentoPaciente" name="paciente.numeroHistoriaClinica" placeholder="número documento" value="@Model.paciente.numeroHistoriaClinica" required />
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-1">
+                <label style="font-size:smaller">Edad:</label>
+            </div>
+            <div class="col-md-1">
+                <label>@Model.ingresoClinica.edad</label>
+                @*<input class="form-control" id="edadPaciente" name="paciente.edad" placeholder="Edad (años)" value="@Model.paciente.edad" required />*@
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Remitido a*:</label>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" id="remitidoA" name="remisionP.nombreInsitucionRemitida" placeholder="Remitido a" required />
+            </div>
+            <div class="col-md-1">
+                <label style="font-size:smaller">Remitido por:</label>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" id="RemitidoPor" name="remisionP.nombreProfesional" placeholder="Remitido por" value="@ViewBag.usr" required />
+            </div>
+            <div class="col-md-2">
+                <label style="font-size:smaller">Fecha remisión (Hoy)</label>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" id="fechaRemision" name="remisionP.fechaRemitido" placeholder="fecha de remisión" onclick="return fechaHoy();" required/>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-2">
+                <label style="font-size:smaller">Fecha de inicio de la psicoterápia:</label>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" id="fechaIniPsico" placeholder="Fecha inicio psicoterápia" name="cierre.fechaInicioPsicoterapia" required/>
+                @*<input type="text" class="form-control" id="fechaRemision" onclick="return fechaHoy();"/>*@
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-2">
+                <label style="font-size:smaller">Fecha de final de la psicoterápia:</label>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" id="fechaFinPsico" name="cierre.fechaFinalizaionPsicoterapia" placeholder="Fecha final psicoterápia" required/>
+                @*<input type="text" class="form-control" id="fechaRemision" onclick="return fechaHoy();"/>*@
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-2">
+                <label style="font-size:smaller">Servicio al que se remite*:</label>
+            </div>
+            <div class="col-md-2">
+                <input class="form-control" id="servicioRemite" name="remisionP.servicioRemitido" placeholder="Servicio al que se remite" value="@ViewBag.edad" required />
+            </div>
+        </div>
+        <br />
+        <div class="col-md-10">
+            <label style="font-size:smaller">Evolución del paciente durante la intervención psicológica*:</label>
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" id="evolucionPacienIntervenPsico" name="remisionP.evolucionPaciente" style="min-width: 100%" rows="6" value="@ViewBag.motivoConsulta " required></textarea>
+        </div>
+        <br />
+        <div class="col-md-10">
+            <label style="font-size:smaller">Aspectos positivos*:</label>
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="aspectosPositivos" name="remisionP.aspectosPositivos" value="'@ViewBag.Observaciones" required></textarea>
+        </div>
+        <br />
+        <div class="col-md-10">
+            <label style="font-size:smaller">Recomendaciones*:</label>
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" style="min-width: 100%" rows="6" id="recomendaciones" name="remisionP.recomendaciones" value="'@ViewBag.Observaciones" required></textarea>
+        </div>
+        <br />
+        <h3 style="text-align:center; background-color:#9BC2E6">Factores de riesgo*</h3>
+        <div class="row">
+            <div class="col-md-4">
+                <label style="font-size:medium">Intento o ideación suicida:</label>
+            </div>
+            <div class="col-md-1">
+                <input type="checkbox" id="IntentoSuicida" value="43" name="remision.motivoRemision.idMotivoRemision">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label style="font-size:medium">Abuso sexual:</label>
+            </div>
+            <div class="col-md-1">
+                <input type="checkbox" id="Abuso" value="13" name="remision.motivoRemision.idMotivoRemision"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label style="font-size:medium">Psicósis y/o trastorno de personalidad:</label>
+            </div>
+            <div class="col-md-1">
+                <input type="checkbox" id="psicosis" value="3" name="remision.motivoRemision.idMotivoRemision"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label style="font-size:medium">Consumo de estupefacientes:</label>
+            </div>
+            <div class="col-md-1">
+                <input type="checkbox" id="consumo" value="23" name="remision.motivoRemision.idMotivoRemision"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label style="font-size:medium">Violencia domestica no denunciada:</label>
+            </div>
+            <div class="col-md-1">
+                <input type="checkbox" id="violencia" value="33" name="remision.motivoRemision.idMotivoRemision"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <input type="submit" class="form-control btn btn-primary" id="guardarRemitir" value="Remitir" />
+            </div>
+            <div class="col-md-4">
+                <input type="button" class="form-control" id="Cancelar" onclick="location.href='@Url.Action("Index", "HistoriaClinica")'" value="Cancelar" />
+            </div>
+        </div>
+    }
+</div>
